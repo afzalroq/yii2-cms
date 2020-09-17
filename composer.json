@@ -1,0 +1,41 @@
+{
+  "name": "abdualiym/yii2-cms",
+  "description": "Yii2 little cms extension",
+  "keywords": [
+    "yii2",
+    "framework",
+    "advanced",
+    "content",
+    "cms"
+  ],
+  "homepage": "https://www.github.com/",
+  "type": "yii2-extension",
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Olimjon Aripdjanov",
+      "email": "a.abdualiym@gmail.com",
+      "homepage": "https://sayti.uz"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "~2.0",
+    "abdualiym/yii2-language": "^1.0",
+    "zelenin/yii2-slug-behavior": "~1.5.1",
+    "kartik-v/yii2-widget-fileinput": "@dev",
+    "yii-dream-team/yii2-upload-behavior": "^1.2.3",
+    "mihaildev/yii2-elfinder": "*",
+    "sadovojav/yii2-ckeditor": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "abdualiym\\cms\\": ""
+    }
+  },
+  "extra": {
+    "bootstrap": "abdualiym\\cms\\Bootstrap"
+  }
+}
