@@ -7,13 +7,13 @@ The extension allows manage html content block.
 - Install with composer:
 
 ```bash
-composer require abdualiym/yii2-cms "^1.0"
+composer require afzalroq/yii2-cms "^1.0"
 ```
 
 - **After composer install** run console command for create tables:
 
 ```bash
-php yii migrate/up --migrationPath=@vendor/abdualiym/yii2-cms/migrations
+php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ```
 
 - Setup in common config storage and language configurations.
@@ -24,7 +24,7 @@ php yii migrate/up --migrationPath=@vendor/abdualiym/yii2-cms/migrations
 ```php
 'modules' => [
     'cms' => [ // don`t change module key
-        'class' => '@abdualiym\cms\Module',
+        'class' => '@afzalroq\cms\Module',
         'storageRoot' => $params['staticPath'],
         'storageHost' => $params['staticHostInfo'],
         'thumbs' => [ // 'sm' and 'md' keys are reserved
@@ -84,7 +84,7 @@ Extension registers next language arrays to Yii::$app->params[] for use in views
 ]
 ```
 
-###Examples for use in frontend see [yii2-language](https://github.com/Abdualiym/yii2-language) extension
+###Examples for use in frontend see [yii2-language](https://github.com/afzalroq/yii2-language) extension
 
 
 ---
