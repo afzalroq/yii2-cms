@@ -1,6 +1,6 @@
 <?php
 
-namespace abdualiym\cms;
+namespace afzalroq\cms;
 
 use yii\base\BootstrapInterface;
 
