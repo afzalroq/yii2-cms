@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use abdualiym\cms\entities\ArticleCategories;
-use abdualiym\language\Language;
+use afzalroq\cms\entities\ArticleCategories;
+use afzalroq\cms\Language;
 
 /* @var $this yii\web\View */
 /* @var $model ArticleCategories */

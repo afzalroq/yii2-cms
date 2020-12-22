@@ -1,10 +1,10 @@
 <?php
 
-namespace abdualiym\cms\controllers;
+namespace afzalroq\cms\controllers;
 
 use Yii;
-use abdualiym\cms\entities\Collections;
-use abdualiym\cms\forms\CollectionsSearch;
+use afzalroq\cms\entities\Collections;
+use afzalroq\cms\forms\CollectionsSearch;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

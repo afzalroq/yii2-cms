@@ -1,9 +1,9 @@
 <?php
 
-namespace abdualiym\cms\forms;
+namespace afzalroq\cms\forms;
 
-use abdualiym\cms\entities\Text;
-use abdualiym\cms\entities\TextTranslation;
+use afzalroq\cms\entities\Text;
+use afzalroq\cms\entities\TextTranslation;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 

@@ -1,13 +1,13 @@
 <?php
 
 
-namespace abdualiym\cms\widgets;
+namespace afzalroq\cms\widgets;
 
 
-use abdualiym\cms\components\FileType;
-use abdualiym\cms\entities\CaE;
-use abdualiym\cms\entities\Entities;
-use abdualiym\cms\entities\Items;
+use afzalroq\cms\components\FileType;
+use afzalroq\cms\entities\CaE;
+use afzalroq\cms\entities\Entities;
+use afzalroq\cms\entities\Items;
 use kartik\datecontrol\DateControl;
 use kartik\file\FileInput;
 use mihaildev\elfinder\ElFinder;

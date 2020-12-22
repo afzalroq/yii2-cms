@@ -1,9 +1,9 @@
 <?php
 
-namespace abdualiym\cms\forms;
+namespace afzalroq\cms\forms;
 
-use abdualiym\cms\entities\ArticleCategories;
-use abdualiym\cms\entities\Articles;
+use afzalroq\cms\entities\ArticleCategories;
+use afzalroq\cms\entities\Articles;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;

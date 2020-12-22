@@ -1,10 +1,10 @@
 <?php
 
-namespace abdualiym\cms\controllers;
+namespace afzalroq\cms\controllers;
 
-use abdualiym\cms\entities\Collections;
-use abdualiym\cms\entities\Options;
-use abdualiym\cms\forms\OptionsSearch;
+use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Options;
+use afzalroq\cms\forms\OptionsSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;

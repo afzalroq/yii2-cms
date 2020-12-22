@@ -1,7 +1,7 @@
 <?php
 
-use abdualiym\cms\entities\Entities;
-use abdualiym\cms\widgets\CmsForm;
+use afzalroq\cms\entities\Entities;
+use afzalroq\cms\widgets\CmsForm;
 use kartik\datecontrol\DateControl;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;

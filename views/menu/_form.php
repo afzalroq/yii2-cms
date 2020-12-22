@@ -1,10 +1,10 @@
 <?php
 
-use abdualiym\cms\entities\ArticleCategories;
-use abdualiym\cms\entities\Collections;
-use abdualiym\cms\entities\Menu;
-use abdualiym\cms\entities\Options;
-use abdualiym\cms\entities\Pages;
+use afzalroq\cms\entities\ArticleCategories;
+use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\Options;
+use afzalroq\cms\entities\Pages;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;

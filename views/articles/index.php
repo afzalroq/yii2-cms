@@ -1,7 +1,7 @@
 <?php
 
-use abdualiym\cms\entities\Articles;
-use abdualiym\cms\forms\ArticlesSearch;
+use afzalroq\cms\entities\Articles;
+use afzalroq\cms\forms\ArticlesSearch;
 use yii\grid\GridView;
 use yii\helpers\Html;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace abdualiym\cms\controllers;
+namespace afzalroq\cms\controllers;
 
-use abdualiym\cms\entities\Menu;
-use abdualiym\cms\forms\MenuSearch;
+use afzalroq\cms\entities\Menu;
+use afzalroq\cms\forms\MenuSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;

@@ -1,7 +1,7 @@
 <?php
 
-use abdualiym\cms\entities\Collections;
-use abdualiym\cms\entities\Options;
+use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Options;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 

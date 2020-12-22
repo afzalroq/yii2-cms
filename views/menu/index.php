@@ -1,9 +1,9 @@
 <?php
 
-use abdualiym\cms\forms\MenuSearch;
+use afzalroq\cms\forms\MenuSearch;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use abdualiym\cms\entities\Menu;
+use afzalroq\cms\entities\Menu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel MenuSearch */

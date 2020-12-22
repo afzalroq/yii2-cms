@@ -1,10 +1,10 @@
 <?php
 
-namespace abdualiym\cms\forms;
+namespace afzalroq\cms\forms;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use abdualiym\cms\entities\Entities;
+use afzalroq\cms\entities\Entities;
 
 /**
  * EntitiesSearch represents the model behind the search form of `abdualiym\cms\entities\Entities`.

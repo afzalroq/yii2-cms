@@ -1,6 +1,6 @@
 <?php
 
-namespace abdualiym\cms\entities;
+namespace afzalroq\cms\entities;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;

@@ -1,6 +1,6 @@
 <?php
 
-use abdualiym\cms\entities\Articles;
+use afzalroq\cms\entities\Articles;
 use mihaildev\elfinder\ElFinder;
 use sadovojav\ckeditor\CKEditor;
 use yii\helpers\Html;

@@ -1,8 +1,8 @@
 <?php
 
-use abdualiym\cms\components\FileType;
-use abdualiym\cms\entities\Collections;
-use abdualiym\language\Language;
+use afzalroq\cms\components\FileType;
+use afzalroq\cms\entities\Collections;
+use afzalroq\cms\Language;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 

@@ -1,8 +1,8 @@
 <?php
 
-use abdualiym\cms\components\FileType;
-use abdualiym\cms\entities\Collections;
-use abdualiym\cms\entities\Options;
+use afzalroq\cms\components\FileType;
+use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Options;
 use yii\bootstrap\ToggleButtonGroup;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;

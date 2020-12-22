@@ -1,8 +1,8 @@
 <?php
 
-namespace abdualiym\cms\entities;
+namespace afzalroq\cms\entities;
 
-use abdualiym\cms\validators\SlugValidator;
+use afzalroq\cms\validators\SlugValidator;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
