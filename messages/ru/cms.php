@@ -51,4 +51,10 @@ return [
     'The requested page does not exist.' => 'Запрашиваемая страница не существует.',
     'Addresses of sales offices UZTELECOM' => 'Адреса офисов продаж УЗТЕЛЕКОМ',
 
+    'Disabled' => '',
+    'Common' => 'Общие',
+    'Translatable' => 'Переводимый',
+    'Yes' => 'Да',
+    'No' => 'Нет',
+
 ];

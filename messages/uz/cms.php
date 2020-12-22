@@ -51,7 +51,8 @@ return [
     'The requested page does not exist.' => 'So‘ralgan sahifa mavjud emas.',
     'Addresses of sales offices UZTELECOM' => 'UZTELECOM savdo ofislarining manzillari',
 
-
-
+    'Disabled' => '',
+    'Common' => 'Umumiy',
+    'Translatable' => 'Tarjimali'
 
 ];
