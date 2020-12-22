@@ -40,7 +40,7 @@ class m201219_132100_create_options_and_items_table extends Migration
 			'fkey-cms_options_and_items-item_id',
 			'cms_options_and_items',
 			'item_id',
-			'cms_collections',
+			'cms_items',
 			'id');
 	}
 
