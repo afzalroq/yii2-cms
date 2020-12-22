@@ -1,8 +1,8 @@
 <?php
 
-namespace abdualiym\cms\widgets\menu;
+namespace afzalroq\cms\widgets\menu;
 
-use abdualiym\cms\entities\Menu;
+use afzalroq\cms\entities\Menu;
 use yii\bootstrap\Widget;
 use yii\helpers\VarDumper;
 

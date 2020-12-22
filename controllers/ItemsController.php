@@ -1,10 +1,10 @@
 <?php
 
-namespace abdualiym\cms\controllers;
+namespace afzalroq\cms\controllers;
 
-use abdualiym\cms\entities\Entities;
-use abdualiym\cms\entities\Items;
-use abdualiym\cms\forms\ItemsSearch;
+use afzalroq\cms\entities\Entities;
+use afzalroq\cms\entities\Items;
+use afzalroq\cms\forms\ItemsSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;

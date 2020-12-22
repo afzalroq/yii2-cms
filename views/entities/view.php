@@ -1,8 +1,8 @@
 <?php
 
-use abdualiym\cms\components\FileType;
-use abdualiym\cms\entities\CaE;
-use abdualiym\cms\entities\Entities;
+use afzalroq\cms\components\FileType;
+use afzalroq\cms\entities\CaE;
+use afzalroq\cms\entities\Entities;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;

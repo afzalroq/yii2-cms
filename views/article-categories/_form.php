@@ -4,7 +4,7 @@ use mihaildev\elfinder\ElFinder;
 use sadovojav\ckeditor\CKEditor;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use abdualiym\cms\entities\ArticleCategories;
+use afzalroq\cms\entities\ArticleCategories;
 
 /* @var $this yii\web\View */
 /* @var $model ArticleCategories */

@@ -1,5 +1,5 @@
 <?php
-use abdualiym\cms\entities\ArticleCategories;
+use afzalroq\cms\entities\ArticleCategories;
 
 /* @var $this yii\web\View */
 /* @var $model ArticleCategories */

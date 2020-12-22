@@ -1,6 +1,6 @@
 <?php
 
-use abdualiym\cms\entities\Articles;
+use afzalroq\cms\entities\Articles;
 
 /* @var $this yii\web\View */
 /* @var $model Articles */

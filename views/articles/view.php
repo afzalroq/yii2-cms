@@ -1,9 +1,9 @@
 <?php
 
-use abdualiym\cms\entities\Articles;
+use afzalroq\cms\entities\Articles;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use abdualiym\language\Language;
+use afzalroq\cms\components\Language;
 
 /* @var $this yii\web\View */
 /* @var $model Articles */

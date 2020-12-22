@@ -6,7 +6,7 @@
 
 /* @var $unassignedCollections abdualiym\cms\entities\Collections[] */
 
-use abdualiym\cms\entities\CaE;
+use afzalroq\cms\entities\CaE;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;

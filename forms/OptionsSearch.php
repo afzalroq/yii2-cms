@@ -1,11 +1,11 @@
 <?php
 
-namespace abdualiym\cms\forms;
+namespace afzalroq\cms\forms;
 
-use abdualiym\cms\entities\Collections;
+use afzalroq\cms\entities\Collections;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use abdualiym\cms\entities\Options;
+use afzalroq\cms\entities\Options;
 
 /**
  * OptionsSearch represents the model behind the search form of `abdualiym\cms\entities\Options`.

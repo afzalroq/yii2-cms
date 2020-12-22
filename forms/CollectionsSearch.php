@@ -1,10 +1,10 @@
 <?php
 
-namespace abdualiym\cms\forms;
+namespace afzalroq\cms\forms;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use abdualiym\cms\entities\Collections;
+use afzalroq\cms\entities\Collections;
 
 /**
  * CollectionsSearch represents the model behind the search form of `abdualiym\cms\entities\Collections`.

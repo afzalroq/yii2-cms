@@ -1,10 +1,10 @@
 <?php
 
-namespace abdualiym\cms\controllers;
+namespace afzalroq\cms\controllers;
 
-use abdualiym\cms\entities\CaE;
-use abdualiym\cms\entities\Entities;
-use abdualiym\cms\forms\EntitiesSearch;
+use afzalroq\cms\entities\CaE;
+use afzalroq\cms\entities\Entities;
+use afzalroq\cms\forms\EntitiesSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -16,11 +16,7 @@ use yii\web\NotFoundHttpException;
 class EntitiesController extends Controller
 {
 
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function behaviors()
+    public function behaviors()
 	{
 		return [
 			'verbs' => [

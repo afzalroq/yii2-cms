@@ -2,7 +2,7 @@
 
 use yii\grid\GridView;
 use yii\helpers\Html;
-use abdualiym\cms\entities\Collections;
+use afzalroq\cms\entities\Collections;
 
 /* @var $this yii\web\View */
 /* @var $searchModel abdualiym\cms\forms\CollectionsSearch */
@@ -10,7 +10,7 @@ use abdualiym\cms\entities\Collections;
 /* @var $collection Collections */
 
 $slugUrl = '&slug=' . $collection->slug;
-$this->title = Yii::t('cms', 'Options');
+$this->title = $collection->name_0;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="collections-index">

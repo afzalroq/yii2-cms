@@ -1,10 +1,10 @@
 <?php
 
-use abdualiym\cms\forms\MenuSearch;
+use afzalroq\cms\forms\MenuSearch;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use abdualiym\cms\entities\Menu;
-use abdualiym\cms\entities\Collections;
+use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\Collections;
 
 /* @var $this yii\web\View */
 /* @var $searchModel abdualiym\cms\forms\CollectionsSearch */

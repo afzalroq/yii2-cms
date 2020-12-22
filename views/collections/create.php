@@ -1,6 +1,6 @@
 <?php
 
-use abdualiym\cms\entities\Collections;
+use afzalroq\cms\entities\Collections;
 
 /* @var $this yii\web\View */
 /* @var $model Collections */

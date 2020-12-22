@@ -1,8 +1,8 @@
 <?php
 
-namespace abdualiym\cms\forms;
+namespace afzalroq\cms\forms;
 
-use abdualiym\cms\entities\ArticleCategories;
+use afzalroq\cms\entities\ArticleCategories;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 

@@ -1,7 +1,7 @@
 <?php
 
-use abdualiym\cms\components\FileType;
-use abdualiym\cms\entities\Entities;
+use afzalroq\cms\components\FileType;
+use afzalroq\cms\entities\Entities;
 use yii\bootstrap\ToggleButtonGroup;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;

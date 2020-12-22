@@ -12,6 +12,19 @@ composer require afzalroq/yii2-cms "^1.0"
 
 - **After composer install** run console command for create tables:
 
+```php
+'controllerMap' => [
+    'migrate' => [
+        'class' => MigrateController::class,
+        'autoDiscover' => true,
+        'migrationPaths' => [
+            '@vendor/afzalroq/yii2-cms/migrations'
+        ],
+    ],
+]
+```
+
+
 ```bash
 php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ```
@@ -51,11 +64,27 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 
 - In admin panel add belove links for manage pages, article categories, articles and menu:
 ```php
-/cms/pages/index
-/cms/article-categories/index
-/cms/articles/index
+/cms/collections/index
+/cms/entities/index
 /cms/menu/index
+???...
+/cms/articles/index
 ```
+
+#TODO:
+
+###Examples
+
+get photo url:
+```php
+abdualiym\language\Language::getPhotoUrl($object, 'profile');
+```
+
+get attribute value by app language:
+```php
+abdualiym\language\Language::get($object, 'title');
+```
+
 
 > CKEditor use Elfinder plugin for save files and images. Refer [Elfinder readme](https://github.com/MihailDev/yii2-elfinder) for proper configuration
 

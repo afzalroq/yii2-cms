@@ -1,6 +1,6 @@
 <?php
 
-namespace abdualiym\cms\entities;
+namespace afzalroq\cms\entities;
 
 use abdualiym\slider\entities\Categories;
 use abdualiym\slider\entities\Slides;

@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use abdualiym\cms\entities\Menu;
+use afzalroq\cms\entities\Menu;
 
 /* @var $this yii\web\View */
 /* @var $model \abdualiym\cms\entities\Options */

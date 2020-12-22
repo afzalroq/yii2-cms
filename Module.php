@@ -2,8 +2,8 @@
 
 namespace afzalroq\cms;
 
-use abdualiym\cms\entities\Menu;
-use abdualiym\language\Language;
+use afzalroq\cms\entities\Menu;
+use afzalroq\cms\components\Language;
 
 /**
  * Class Module

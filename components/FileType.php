@@ -1,7 +1,7 @@
 <?php
 
 
-namespace abdualiym\cms\components;
+namespace afzalroq\cms\components;
 
 
 class FileType
