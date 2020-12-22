@@ -1,6 +1,6 @@
 {
   "name": "afzalroq/yii2-cms",
-  "description": "Yii2 little cms extension",
+  "description": "Yii2 cms extension",
   "keywords": [
     "yii2",
     "framework",
@@ -13,9 +13,9 @@
   "license": "BSD-3-Clause",
   "authors": [
     {
-      "name": "Sayti.uz",
-      "email": "dev@sayti.uz",
-      "homepage": "https://sayti.uz"
+      "name": "Proactive.uz",
+      "email": "info@proactive.uz",
+      "homepage": "https://proactive.uz"
     }
   ],
   "require": {
@@ -36,10 +36,10 @@
   },
   "autoload": {
     "psr-4": {
-      "abdualiym\\cms\\": ""
+      "afzalroq\\cms\\": ""
     }
   },
   "extra": {
-    "bootstrap": "abdualiym\\cms\\Bootstrap"
+    "bootstrap": "afzalroq\\cms\\Bootstrap"
   }
 }
