@@ -12,6 +12,19 @@ composer require afzalroq/yii2-cms "^1.0"
 
 - **After composer install** run console command for create tables:
 
+```php
+'controllerMap' => [
+    'migrate' => [
+        'class' => MigrateController::class,
+        'autoDiscover' => true,
+        'migrationPaths' => [
+            '@vendor/afzalroq/yii2-cms/migrations'
+        ],
+    ],
+]
+```
+
+
 ```bash
 php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ```

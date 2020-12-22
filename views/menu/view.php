@@ -1,6 +1,6 @@
 <?php
 
-use afzalroq\cms\Language;
+use afzalroq\cms\components\Language;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use afzalroq\cms\entities\Menu;

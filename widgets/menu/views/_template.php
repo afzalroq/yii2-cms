@@ -1,6 +1,6 @@
 <?php
 
-use afzalroq\cms\Language;
+use afzalroq\cms\components\Language;
 
 $url = Yii::$app->language;
 

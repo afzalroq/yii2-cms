@@ -4,13 +4,12 @@ use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Options;
 use kartik\file\FileInput;
-use kartik\form\ActiveForm;
+//use kartik\form\ActiveForm;
 use mihaildev\elfinder\ElFinder;
 use sadovojav\ckeditor\CKEditor;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-
-//use yii\widgets\ActiveForm;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model Options */
@@ -18,8 +17,6 @@ use yii\helpers\Html;
 /* @var $form ActiveForm */
 
 $hasTranslatableAttributes = 0;
-
-
 ?>
 
 <?php if(Yii::$app->session->hasFlash('success')): ?>

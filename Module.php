@@ -3,7 +3,7 @@
 namespace afzalroq\cms;
 
 use afzalroq\cms\entities\Menu;
-use afzalroq\cms\Language;
+use afzalroq\cms\components\Language;
 
 /**
  * Class Module

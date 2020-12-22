@@ -12,13 +12,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="entities-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a(Yii::t('cms', 'Create Entities'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -26,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-//            'id',
             'slug',
             [
                 'attribute' => 'text_1',
@@ -46,17 +41,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \abdualiym\cms\entities\Entities::textList()[$model->text_3];
                 }
             ],
-            //'text_4',
-            //'text_5',
-            //'text_6',
-            //'text_7',
-            //'text_label_1',
-            //'text_label_2',
-            //'text_label_3',
-            //'text_label_4',
-            //'text_label_5',
-            //'text_label_6',
-            //'text_label_7',
             [
                 'attribute' => 'file_1',
                 'value' => function ($model) {
@@ -75,13 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \abdualiym\cms\entities\Entities::fileList()[$model->file_3];
                 }
             ],
-            //'file_label_1',
-            //'file_label_2',
-            //'file_label_3',
-            //'use_date',
-            //'use_status',
             'created_at:datetime',
-            //'updated_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

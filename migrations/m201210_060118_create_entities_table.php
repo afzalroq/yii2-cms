@@ -19,6 +19,11 @@ class m201210_060118_create_entities_table extends Migration
 
         $this->createTable('{{%cms_entities}}', [
             'id' => $this->primaryKey(),
+            'name_0' => $this->string(),
+            'name_1' => $this->string(),
+            'name_2' => $this->string(),
+            'name_3' => $this->string(),
+            'name_4' => $this->string(),
             'slug' => $this->string()->notNull()->unique(),
             'text_1' => $this->tinyInteger(),
             'text_2' => $this->tinyInteger(),

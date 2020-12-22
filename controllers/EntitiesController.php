@@ -16,11 +16,7 @@ use yii\web\NotFoundHttpException;
 class EntitiesController extends Controller
 {
 
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function behaviors()
+    public function behaviors()
 	{
 		return [
 			'verbs' => [
