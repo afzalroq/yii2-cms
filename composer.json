@@ -1,6 +1,6 @@
 {
   "name": "afzalroq/yii2-cms",
-  "description": "Yii2 little cms extension",
+  "description": "Yii2 cms extension",
   "keywords": [
     "yii2",
     "framework",
@@ -8,13 +8,13 @@
     "content",
     "cms"
   ],
-  "homepage": "https://www.github.com/afzalroq",
+  "homepage": "https://www.github.com/",
   "type": "yii2-extension",
   "license": "BSD-3-Clause",
   "authors": [
     {
       "name": "Proactive.uz",
-      "email": "dev@proactive.uz",
+      "email": "info@proactive.uz",
       "homepage": "https://proactive.uz"
     }
   ],
@@ -25,7 +25,11 @@
     "kartik-v/yii2-widget-fileinput": "@dev",
     "yii-dream-team/yii2-upload-behavior": "^1.2.3",
     "mihaildev/yii2-elfinder": "*",
-    "sadovojav/yii2-ckeditor": "dev-master"
+    "sadovojav/yii2-ckeditor": "dev-master",
+    "gregwar/image": "2.*",
+    "kartik-v/yii2-datecontrol": "dev-master",
+    "kartik-v/yii2-widget-datepicker": "^1.4",
+    "kartik-v/yii2-widget-datetimepicker": "^1.4"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*"

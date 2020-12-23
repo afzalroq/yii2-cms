@@ -12,6 +12,8 @@ composer require afzalroq/yii2-cms "^1.0"
 
 - **After composer install** run console command for create tables:
 
+#### Add to console config for auto discover migrations
+
 ```php
 'controllerMap' => [
     'migrate' => [

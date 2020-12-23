@@ -28,24 +28,22 @@ use yii\widgets\ActiveForm;
     <div class="box">
         <div class="box-body">
             <div class="row">
+
+                <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                    <div class="col-sm-4">
+                        <?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]) ?>
+                    </div>
+                <?php endforeach; ?>
+
                 <div class="col-sm-4">
-					<?= $form->field($model, 'name_0')->textInput(['maxlength' => true]) ?>
-                </div>
-                <div class="col-sm-4">
-					<?= $form->field($model, 'name_1')->textInput(['maxlength' => true]) ?>
-                </div>
-                <div class="col-sm-4">
-					<?= $form->field($model, 'name_2')->textInput(['maxlength' => true]) ?>
-                </div>
-                <div class="col-sm-4">
-					<?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
                 </div>
 
                 <div class="col-sm-4">
-					<?= $form->field($model, 'use_in_menu')->dropDownList(Collections::optionUseInMenuList()) ?>
+                    <?= $form->field($model, 'use_in_menu')->dropDownList(Collections::optionUseInMenuList()) ?>
                 </div>
                 <div class="col-sm-3" style="padding-top: 23px">
-					<?= $form->field($model, 'use_parenting')->checkbox() ?>
+                    <?= $form->field($model, 'use_parenting')->checkbox() ?>
                 </div>
             </div>
         </div>
