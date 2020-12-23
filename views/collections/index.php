@@ -7,7 +7,7 @@ use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\Collections;
 
 /* @var $this yii\web\View */
-/* @var $searchModel abdualiym\cms\forms\CollectionsSearch */
+/* @var $searchModel afzalroq\cms\forms\CollectionsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('cms', 'Collections');

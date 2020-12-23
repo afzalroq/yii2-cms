@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model \abdualiym\cms\entities\Pages */
+/* @var $model \afzalroq\cms\entities\Pages */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

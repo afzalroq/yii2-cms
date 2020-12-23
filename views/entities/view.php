@@ -8,7 +8,7 @@ use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model abdualiym\cms\entities\Entities */
+/* @var $model afzalroq\cms\entities\Entities */
 
 $this->title = $model->slug;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Entities'), 'url' => ['index']];
@@ -141,8 +141,8 @@ YiiAsset::register($this);
 							'file_1_label',
 							[
 								'attribute' => 'file_1_mimeType',
-								'value' => $model->file_1_mimeType !== null ? FileType::MIME_TYPES[$model->file_1_mimeType] : null
-							],
+                                'value' => empty($model->file_1_mimeType) ? null : FileType::fileMimeTypes($model->file_1_mimeType)
+                            ],
 							'file_1_dimensionW',
 							'file_1_dimensionH',
 							[
@@ -163,8 +163,8 @@ YiiAsset::register($this);
 							'file_2_label',
 							[
 								'attribute' => 'file_2_mimeType',
-								'value' => $model->file_2_mimeType !== null ? FileType::MIME_TYPES[$model->file_2_mimeType] : null
-							],
+                                'value' => empty($model->file_2_mimeType) ? null : FileType::fileMimeTypes($model->file_2_mimeType)
+                            ],
 							'file_2_dimensionW',
 							'file_2_dimensionH',
 							[
@@ -185,7 +185,7 @@ YiiAsset::register($this);
 							'file_3_label',
 							[
 								'attribute' => 'file_3_mimeType',
-								'value' => $model->file_3_mimeType !== null ? FileType::MIME_TYPES[$model->file_3_mimeType] : null
+                                'value' => empty($model->file_3_mimeType) ? null : FileType::fileMimeTypes($model->file_3_mimeType)
 							],
 							'file_3_dimensionW',
 							'file_3_dimensionH',

@@ -1,7 +1,8 @@
 <?php
 
-namespace abdualiym\cms\entities;
+namespace afzalroq\cms\entities;
 
+use afzalroq\cms\components\FileType;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
@@ -109,9 +110,7 @@ class Entities extends \yii\db\ActiveRecord
 
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public static function tableName()
     {
         return 'cms_entities';
@@ -212,14 +211,13 @@ class Entities extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
-            [['file_1_mimeType', 'file_2_mimeType', 'file_3_mimeType' ,'name_0' ,'name_1','name_2' ,'name_3' ,'name_4'], 'string'],
+            [['name_0' ,'name_1','name_2' ,'name_3' ,'name_4'], 'string'],
             [['file_1_dimensionW', 'file_1_dimensionH', 'file_1_maxSize', 'file_2_dimensionW', 'file_2_dimensionH', 'file_2_maxSize', 'file_3_dimensionW', 'file_3_dimensionH', 'file_3_maxSize'], 'integer'],
+
+            [['file_1_mimeType', 'file_2_mimeType', 'file_3_mimeType'], 'each', 'rule' => ['in', 'range' => array_keys(FileType::MIME_TYPES)]],
 
             [['slug'], 'required'],
             [['text_1', 'text_2', 'text_3', 'text_4', 'text_5', 'text_6', 'text_7', 'file_1', 'file_2', 'file_3', 'use_date', 'use_status'], 'integer'],
@@ -229,9 +227,6 @@ class Entities extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

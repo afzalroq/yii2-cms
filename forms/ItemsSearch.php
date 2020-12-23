@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 use afzalroq\cms\entities\Items;
 
 /**
- * ItemsSearch represents the model behind the search form of `abdualiym\cms\entities\Items`.
+ * ItemsSearch represents the model behind the search form of `afzalroq\cms\entities\Items`.
  */
 class ItemsSearch extends Items
 {

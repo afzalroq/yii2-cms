@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 use afzalroq\cms\entities\Options;
 
 /**
- * OptionsSearch represents the model behind the search form of `abdualiym\cms\entities\Options`.
+ * OptionsSearch represents the model behind the search form of `afzalroq\cms\entities\Options`.
  */
 class OptionsSearch extends Options
 {

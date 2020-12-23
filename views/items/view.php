@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model abdualiym\cms\entities\Items */
+/* @var $model afzalroq\cms\entities\Items */
 /* @var $entity Entities */
 
 $this->title = $model->slug;
