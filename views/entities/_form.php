@@ -23,6 +23,11 @@ use yii\widgets\ActiveForm;
                 <div class="col-md-6">
 					<?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
                 </div>
+                <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                <div class="col-md-3">
+                    <?= $form->field($model, 'name_'.$key)->textInput(['maxlength' => true]) ?>
+                </div>
+                <?php endforeach; ?>
                 <div class="col-md-3">
 					<?= $form->field($model, 'use_date')->widget(ToggleButtonGroup::class, [
 						'type' => 'radio',

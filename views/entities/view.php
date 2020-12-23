@@ -125,6 +125,53 @@ YiiAsset::register($this);
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <?= DetailView::widget([
+                                'model' => $model,
+                                'attributes' => [
+                                    [
+                                        'attribute' => 'name_0',
+                                        'value' => function($model) {
+                                            return $model->name_0 ?? Yii::t('cms', 'No');
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'name_1',
+                                        'value' => function($model) {
+                                            return $model->name_1 ?? Yii::t('cms', 'No');
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'name_2',
+                                        'value' => function($model) {
+                                            return $model->name_2 ?? Yii::t('cms', 'No');
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'name_3',
+                                        'value' => function($model) {
+                                            return $model->name_3 ?? Yii::t('cms', 'No');
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'name_4',
+                                        'value' => function($model) {
+                                            return $model->name_4 ?? Yii::t('cms', 'No');
+                                        }
+                                    ],
+                                ]
+                            ]) ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="box">
         <div class="box-body">
             <div class="row">
