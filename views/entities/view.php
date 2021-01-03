@@ -8,7 +8,7 @@ use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model afzalroq\cms\entities\Entities */
+/* @var $model abdualiym\cms\entities\Entities */
 
 $this->title = $model->slug;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Entities'), 'url' => ['index']];
@@ -42,9 +42,11 @@ YiiAsset::register($this);
 							],
 							[
 								'attribute' => 'use_status',
-								'value' => function($model) {
-									return $model->use_status ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No');
-								}
+								'value' => $model->use_status ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
+							],
+							[
+								'attribute' => 'use_in_menu',
+								'value' => $model->use_in_menu ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
 							],
 							'created_at:datetime',
 							'updated_at:datetime',
@@ -125,53 +127,6 @@ YiiAsset::register($this);
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="box">
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <?= DetailView::widget([
-                                'model' => $model,
-                                'attributes' => [
-                                    [
-                                        'attribute' => 'name_0',
-                                        'value' => function($model) {
-                                            return $model->name_0 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'name_1',
-                                        'value' => function($model) {
-                                            return $model->name_1 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'name_2',
-                                        'value' => function($model) {
-                                            return $model->name_2 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'name_3',
-                                        'value' => function($model) {
-                                            return $model->name_3 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'name_4',
-                                        'value' => function($model) {
-                                            return $model->name_4 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                ]
-                            ]) ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="box">
         <div class="box-body">
             <div class="row">
@@ -188,8 +143,8 @@ YiiAsset::register($this);
 							'file_1_label',
 							[
 								'attribute' => 'file_1_mimeType',
-                                'value' => empty($model->file_1_mimeType) ? null : FileType::fileMimeTypes($model->file_1_mimeType)
-                            ],
+								'value' => $model->file_1_mimeType !== null ? FileType::MIME_TYPES[$model->file_1_mimeType] : null
+							],
 							'file_1_dimensionW',
 							'file_1_dimensionH',
 							[
@@ -210,8 +165,8 @@ YiiAsset::register($this);
 							'file_2_label',
 							[
 								'attribute' => 'file_2_mimeType',
-                                'value' => empty($model->file_2_mimeType) ? null : FileType::fileMimeTypes($model->file_2_mimeType)
-                            ],
+								'value' => $model->file_2_mimeType !== null ? FileType::MIME_TYPES[$model->file_2_mimeType] : null
+							],
 							'file_2_dimensionW',
 							'file_2_dimensionH',
 							[
@@ -232,7 +187,7 @@ YiiAsset::register($this);
 							'file_3_label',
 							[
 								'attribute' => 'file_3_mimeType',
-                                'value' => empty($model->file_3_mimeType) ? null : FileType::fileMimeTypes($model->file_3_mimeType)
+								'value' => $model->file_3_mimeType !== null ? FileType::MIME_TYPES[$model->file_3_mimeType] : null
 							],
 							'file_3_dimensionW',
 							'file_3_dimensionH',

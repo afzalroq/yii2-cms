@@ -2,8 +2,6 @@
 
 namespace afzalroq\cms\entities;
 
-use abdualiym\slider\entities\Categories;
-use abdualiym\slider\entities\Slides;
 use Yii;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -74,7 +72,7 @@ class Articles extends \yii\db\ActiveRecord
 
             [['date'], 'string', 'max' => 10],
 
-            ['photo', 'image'],
+            ['photo', 'image', 'extensions' => 'png, jpg'],
         ];
     }
 

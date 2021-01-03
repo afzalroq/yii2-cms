@@ -1,7 +1,7 @@
 <?php
 
 use afzalroq\cms\entities\Pages;
-use afzalroq\cms\components\Language;
+use afzalroq\language\Language;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 

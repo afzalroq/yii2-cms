@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model \afzalroq\cms\entities\Pages */
+/* @var $model \abdualiym\cms\entities\Pages */
 
 $this->title = Yii::t('cms', 'Update');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Pages'), 'url' => ['index']];

@@ -1,13 +1,11 @@
 <?php
 
-use afzalroq\cms\forms\MenuSearch;
+use afzalroq\cms\entities\Collections;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use afzalroq\cms\entities\Menu;
-use afzalroq\cms\entities\Collections;
 
 /* @var $this yii\web\View */
-/* @var $searchModel afzalroq\cms\forms\CollectionsSearch */
+/* @var $searchModel abdualiym\cms\forms\CollectionsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('cms', 'Collections');
@@ -27,9 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 'name_0',
-	            'slug',
-	            'use_in_menu',
-	            'use_parenting',
+                'slug',
+                [
+                    'attribute' => 'use_in_menu',
+                    'value' => function ($model) {
+                        return Collections::optionUseInMenuList()[$model->use_in_menu];
+                    }
+                ],
+                'use_parenting',
                 [
                     'attribute' => 'option_file_1',
                     'value' => function (Collections $model) {

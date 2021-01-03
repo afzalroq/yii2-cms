@@ -5,12 +5,12 @@ use yii\helpers\Html;
 use afzalroq\cms\entities\Collections;
 
 /* @var $this yii\web\View */
-/* @var $searchModel afzalroq\cms\forms\CollectionsSearch */
+/* @var $searchModel abdualiym\cms\forms\CollectionsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $collection Collections */
 
 $slugUrl = '&slug=' . $collection->slug;
-$this->title = $collection->name_0;
+$this->title = Yii::t('cms', 'Options');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="collections-index">

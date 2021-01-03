@@ -92,4 +92,14 @@ class Pages extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        Menu::deleteAll(['type' => Menu::TYPE_OPTION, 'type_helper' => $this->id]);
+        return true;
+    }
 }

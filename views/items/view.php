@@ -2,11 +2,13 @@
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Entities;
+use afzalroq\cms\widgets\CmsForm;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model afzalroq\cms\entities\Items */
+/* @var $model abdualiym\cms\entities\Items */
 /* @var $entity Entities */
 
 $this->title = $model->slug;
@@ -15,18 +17,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
 [$entity_text_attrs, $entity_file_attrs] = $entity->textAFileAttrs();
 
-$attributes = [
+$text_attributes = [];
+$file_attributes = [];
+$main_attributes = [
 	'id',
 	'entity_id',
 	'slug',
 ];
 
-foreach(Yii::$app->params['cms']['languages2'] as $key => $language) {
-	foreach($entity_file_attrs as $attr => $value) {
-		$attributes[] = [
+$cmsForm = new CmsForm((new ActiveForm()), $model, $entity);
+
+
+foreach($entity_file_attrs as $attr => $value)
+	foreach(Yii::$app->params['cms']['languages2'] as $key => $language)
+		$file_attributes[] = [
 			'attribute' => $attr . '_' . $key,
 			'format' => 'html',
-			'value' => function($model) use ($attr, $key) {
+			'value' => function($model) use ($attr, $key, $entity) {
 				switch(FileType::fileMimeType($model->entity[$attr . '_mimeType'])) {
 					case FileType::TYPE_FILE:
 						return $model[$attr . '_' . $key];
@@ -37,12 +44,14 @@ foreach(Yii::$app->params['cms']['languages2'] as $key => $language) {
 				}
 			}
 		];
-	}
 
-	foreach($entity_text_attrs as $attr => $value) {
-		$attributes[] = $attr . '_' . $key;
-	}
-}
+foreach($entity_text_attrs as $attr => $value)
+	foreach(Yii::$app->params['cms']['languages2'] as $key => $language)
+		$text_attributes[] = [
+			'attribute' => $attr . '_' . $key,
+			'format' => 'html'
+		];
+
 ?>
 
 <div class="items-view">
@@ -59,7 +68,23 @@ foreach(Yii::$app->params['cms']['languages2'] as $key => $language) {
 
 	<?= DetailView::widget([
 		'model' => $model,
-		'attributes' => $attributes
+		'attributes' => $main_attributes
 	]) ?>
+    <div class="row">
+
+        <div class="col-sm-4">
+			<?= DetailView::widget([
+				'model' => $model,
+				'attributes' => $text_attributes
+			]) ?>
+        </div>
+        <div class="col-sm-8">
+			<?= DetailView::widget([
+				'model' => $model,
+				'attributes' => $file_attributes
+			]) ?>
+        </div>
+
+    </div>
 
 </div>

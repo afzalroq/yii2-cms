@@ -5,6 +5,7 @@ namespace afzalroq\cms\entities;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\rbac\Item;
 
 /**
  * This is the model class for table "cms_options_and_items".
@@ -12,7 +13,7 @@ use yii\db\ActiveRecord;
  * @property int         $option_id
  * @property int         $item_id
  *
- * @property Collections $item
+ * @property Items       $item
  * @property Options     $option
  */
 class OaI extends ActiveRecord
@@ -34,7 +35,7 @@ class OaI extends ActiveRecord
 		return [
 			[['option_id', 'item_id'], 'required'],
 			[['option_id', 'item_id'], 'integer'],
-			[['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Collections::class, 'targetAttribute' => ['item_id' => 'id']],
+			[['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Items::class, 'targetAttribute' => ['item_id' => 'id']],
 			[['option_id'], 'exist', 'skipOnError' => true, 'targetClass' => Options::class, 'targetAttribute' => ['option_id' => 'id']],
 		];
 	}
@@ -57,7 +58,7 @@ class OaI extends ActiveRecord
 	 */
 	public function getItem()
 	{
-		return $this->hasOne(Collections::class, ['id' => 'item_id']);
+		return $this->hasOne(Items::class, ['id' => 'item_id']);
 	}
 
 	/**

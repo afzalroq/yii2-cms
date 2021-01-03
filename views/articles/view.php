@@ -3,7 +3,7 @@
 use afzalroq\cms\entities\Articles;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use afzalroq\cms\components\Language;
+use afzalroq\language\Language;
 
 /* @var $this yii\web\View */
 /* @var $model Articles */
