@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model afzalroq\cms\entities\Items */
-/* @var $entity \abdualiym\cms\entities\Entities */
+/* @var $entity \afzalroq\cms\entities\Entities */
 
 $this->title = Yii::t('cms', 'Update Items: {name}', [
     'name' => $model->slug,

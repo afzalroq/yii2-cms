@@ -1,9 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model afzalroq\cms\entities\Entities */
-/* @var $cae afzalroq\cms\entities\CaE */
-/* @var $unassignedCollections afzalroq\cms\entities\Collections[] */
+/* @var $model abdualiym\cms\entities\Entities */
+/* @var $cae abdualiym\cms\entities\CaE */
+/* @var $unassignedCollections abdualiym\cms\entities\Collections[] */
 
 
 $this->title = Yii::t('cms', 'Create CaE');
