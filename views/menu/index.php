@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'type',
                 'value' => function (Menu $model) {
-                    return $model->typesList($model->type);
+                    return $model->typesLists($model->type);
                 },
             ],
             [

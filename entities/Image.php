@@ -3,12 +3,7 @@
 namespace afzalroq\cms\entities;
 
 use Yii;
-use yii\behaviors\AttributeBehavior;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
-use yiidreamteam\upload\ImageUploadBehavior;
 use Gregwar\Image\Image as GregImage;
 
 /**
