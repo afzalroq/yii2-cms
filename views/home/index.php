@@ -17,6 +17,7 @@ $this->title = 'My Yii Application';
 <div class="site-index">
     <div class="row">
         <div class="col-sm-6">
+            
             <?= ListView::widget([
                 'dataProvider' => $collectionProvider,
                 'options' => [
