@@ -21,7 +21,13 @@ $this->params['breadcrumbs'][] = $this->title;
 //]);
 
 $hasTranslatableAttrs = 0;
-
+if ($collection->use_seo)
+    foreach ($model->seo_values as $key => $value)
+        if ($value !== null)
+            $seo_values [] = [
+                'attribute' => $key,
+                'value' => $value
+            ];
 
 ?>
 <div class="menu-view">
@@ -136,6 +142,12 @@ $hasTranslatableAttrs = 0;
         </div>
     </div>
 </div>
+<?php if ($collection->use_seo): ?>
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => $seo_values
+    ]) ?>
+<?php endif; ?>
 <script>
     if (!<?= $hasTranslatableAttrs ?>)
         document.querySelector('#translatable').innerHTML = ''

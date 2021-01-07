@@ -7,7 +7,7 @@ use yii\data\ActiveDataProvider;
 use afzalroq\cms\entities\Collections;
 
 /**
- * CollectionsSearch represents the model behind the search form of `abdualiym\cms\entities\Collections`.
+ * CollectionsSearch represents the model behind the search form of `afzalroq\cms\entities\Collections`.
  */
 class CollectionsSearch extends Collections
 {

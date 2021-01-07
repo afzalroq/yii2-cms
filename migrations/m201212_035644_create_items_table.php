@@ -70,6 +70,7 @@ class m201212_035644_create_items_table extends Migration
 			'file_3_2' => $this->string(),
 			'file_3_3' => $this->string(),
 			'file_3_4' => $this->string(),
+			'seo_values' => $this->json(),
 
 			'date' => $this->integer()->unsigned(),
 			'status' => $this->tinyInteger(),

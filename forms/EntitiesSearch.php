@@ -7,7 +7,7 @@ use yii\data\ActiveDataProvider;
 use afzalroq\cms\entities\Entities;
 
 /**
- * EntitiesSearch represents the model behind the search form of `abdualiym\cms\entities\Entities`.
+ * EntitiesSearch represents the model behind the search form of `afzalroq\cms\entities\Entities`.
  */
 class EntitiesSearch extends Entities
 {

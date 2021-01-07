@@ -19,6 +19,7 @@ use yii\db\ActiveRecord;
  * @property string      $slug
  * @property int         $use_in_menu
  * @property int|null    $use_parenting
+ * @property int|null    $use_seo
  * @property int|null    $option_file_1
  * @property int|null    $option_file_2
  * @property string|null $option_file_1_label
@@ -162,7 +163,7 @@ class Collections extends ActiveRecord
 			[['file_1_dimensionW', 'file_1_dimensionH', 'file_2_dimensionW', 'file_2_dimensionH', 'file_1_maxSize', 'file_2_maxSize'], 'integer'],
 
 			[['slug', 'use_in_menu'], 'required'],
-			[['use_in_menu', 'use_parenting', 'option_file_1', 'option_file_2', 'option_name', 'option_content', 'option_default_id', 'created_at', 'updated_at'], 'integer'],
+			[['use_in_menu', 'use_parenting', 'option_file_1', 'option_file_2', 'option_name', 'option_content', 'option_default_id', 'created_at', 'updated_at','use_seo'], 'integer'],
 			[['option_file_1_validator', 'option_file_2_validator'], 'safe'],
 			[['name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'slug', 'option_file_1_label', 'option_file_2_label'], 'string', 'max' => 255],
 			[['slug'], 'unique'],
@@ -193,6 +194,7 @@ class Collections extends ActiveRecord
 			'slug' => Yii::t('cms', 'Slug'),
 			'use_in_menu' => Yii::t('cms', 'Use in menu'),
 			'use_parenting' => Yii::t('cms', 'Use parenting'),
+			'use_seo' => Yii::t('cms', 'Use SEO'),
 
 			'option_file_1' => Yii::t('cms', 'Option File 1'),
 			'option_file_2' => Yii::t('cms', 'Option File 2'),

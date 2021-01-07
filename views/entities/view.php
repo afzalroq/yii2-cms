@@ -42,10 +42,16 @@ YiiAsset::register($this);
 							],
 							[
 								'attribute' => 'use_status',
-								'value' => function($model) {
-									return $model->use_status ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No');
-								}
+								'value' => $model->use_status ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
 							],
+							[
+								'attribute' => 'use_in_menu',
+								'value' => $model->use_in_menu ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
+							],
+                            [
+                                'attribute' => 'use_seo',
+                                'value' => $model->use_seo ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
+                            ],
 							'created_at:datetime',
 							'updated_at:datetime',
 						],
@@ -119,53 +125,6 @@ YiiAsset::register($this);
 									'text_7_label',
 								]
 							]) ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="box">
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <?= DetailView::widget([
-                                'model' => $model,
-                                'attributes' => [
-                                    [
-                                        'attribute' => 'name_0',
-                                        'value' => function($model) {
-                                            return $model->name_0 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'name_1',
-                                        'value' => function($model) {
-                                            return $model->name_1 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'name_2',
-                                        'value' => function($model) {
-                                            return $model->name_2 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'name_3',
-                                        'value' => function($model) {
-                                            return $model->name_3 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'name_4',
-                                        'value' => function($model) {
-                                            return $model->name_4 ?? Yii::t('cms', 'No');
-                                        }
-                                    ],
-                                ]
-                            ]) ?>
                         </div>
                     </div>
                 </div>

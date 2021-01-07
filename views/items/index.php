@@ -9,14 +9,18 @@ use yii\grid\GridView;
 /* @var $entity \abdualiym\cms\entities\Entities */
 
 $slugUrl = '&slug=' . $entity->slug;
-$this->title = $entity->text_1;
+$this->title = Yii::t('cms', 'Items');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="items-index">
 
+    <h1><?= Html::encode($this->title) ?></h1>
+
     <p>
         <?= Html::a(Yii::t('cms', 'Create Items'), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
     </p>
+
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
