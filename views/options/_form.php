@@ -17,7 +17,7 @@ use yii\helpers\Html;
 /* @var $collection Collections */
 /* @var $form ActiveForm */
 
-$hasTranslatableAttributes = 0;
+$hasTranslatableAttrs = 0;
 
 
 ?>
@@ -27,7 +27,7 @@ $hasTranslatableAttributes = 0;
 <?php endif; ?>
 <div class="pages-form">
 
-	<?php $form = ActiveForm::begin(); ?>
+	<?php $form = \yii\widgets\ActiveForm::begin(); ?>
 
 	<?= $form->field($model, 'collection_id')->textInput(['value' => $collection->id, 'type' => 'hidden'])->label(false) ?>
 
@@ -150,14 +150,14 @@ $hasTranslatableAttributes = 0;
 						<?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                             <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
 
-								<?php if($collection->option_name && $collection->option_name == Collections::OPTION_NAME_TRANSLATABLE): $hasTranslatableAttributes = 1 ?>
+								<?php if($collection->option_name && $collection->option_name == Collections::OPTION_NAME_TRANSLATABLE): $hasTranslatableAttrs = 1 ?>
 									<?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]) ?>
 								<?php endif; ?>
 								<?php if($collection->option_content): ?>
-									<?php if($collection->option_content == Collections::OPTION_CONTENT_TRANSLATABLE_TEXTAREA): $hasTranslatableAttributes = 1 ?>
+									<?php if($collection->option_content == Collections::OPTION_CONTENT_TRANSLATABLE_TEXTAREA): $hasTranslatableAttrs = 1 ?>
 										<?= $form->field($model, 'content_' . $key)->textarea(); ?>
 									<?php endif; ?>
-									<?php if($collection->option_content == Collections::OPTION_CONTENT_TRANSLATABLE_CKEDITOR): $hasTranslatableAttributes = 1 ?>
+									<?php if($collection->option_content == Collections::OPTION_CONTENT_TRANSLATABLE_CKEDITOR): $hasTranslatableAttrs = 1 ?>
 										<?= $form->field($model, 'content_' . $key)->widget(CKEditor::class, [
 											'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
 												'extraPlugins' => 'image2,widget,oembed,video',
@@ -168,7 +168,7 @@ $hasTranslatableAttributes = 0;
 									<?php endif; ?>
 								<?php endif; ?>
                                 <div class="row">
-									<?php if($collection->option_file_1 == Collections::OPTION_FILE_TRANSLATABLE): $hasTranslatableAttributes = 1 ?>
+									<?php if($collection->option_file_1 == Collections::OPTION_FILE_TRANSLATABLE): $hasTranslatableAttrs = 1 ?>
                                         <div class="col-md-6">
 											<?php if(FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_IMAGE) : ?>
 												<?= $form->field($model, 'file_1_' . $key)->widget(FileInput::class, [
@@ -193,7 +193,7 @@ $hasTranslatableAttributes = 0;
 											<?php endif; ?>
                                         </div>
 									<?php endif; ?>
-									<?php if($collection->option_file_2 == Collections::OPTION_FILE_TRANSLATABLE): $hasTranslatableAttributes = 1 ?>
+									<?php if($collection->option_file_2 == Collections::OPTION_FILE_TRANSLATABLE): $hasTranslatableAttrs = 1 ?>
                                         <div class="col-md-6">
 											<?php if(FileType::fileMimeType($collection->file_2_mimeType) === FileType::TYPE_IMAGE) : ?>
 												<?= $form->field($model, 'file_2_' . $key)->widget(FileInput::class, [
@@ -227,13 +227,49 @@ $hasTranslatableAttributes = 0;
             </div>
         </div>
     </div>
+    <?php if ($collection->use_seo): ?>
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+                <div class="box">
+                    <div class="box-body">
+                        <?php if ($hasTranslatableAttrs): ?>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                                    <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                                        <a href="#<?= $key ?>S" aria-controls="<?= $key ?>S" role="tab"
+                                           data-toggle="tab"><?= $language ?></a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <div class="tab-content">
+                                <br>
+                                <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                                    <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
 
+                                        <?= $form->field($model,'meta_title_'.$key)->textInput() ?>
+                                        <?= $form->field($model,'meta_keyword_'.$key)->textInput() ?>
+                                        <?= $form->field($model,'meta_des_'.$key)->textInput() ?>
+
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php else:?>
+                            <?= $form->field($model,'meta_title_0')->textInput() ?>
+                            <?= $form->field($model,'meta_keyword_0')->textInput() ?>
+                            <?= $form->field($model,'meta_des_0')->textInput() ?>
+                        <?php endif;?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
     <div class="form-group">
 		<?= Html::submitButton($model->isNewRecord ? Yii::t('cms', 'Create') : Yii::t('cms', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-	<?php ActiveForm::end(); ?>
+	<?php \yii\widgets\ActiveForm::end(); ?>
     <script>
-        if (!<?= $hasTranslatableAttributes?>)
+        if (!<?= $hasTranslatableAttrs?>)
             document.querySelector('#translatable').innerHTML = ''
     </script>
 </div>

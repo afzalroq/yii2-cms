@@ -42,6 +42,7 @@ use yii\db\ActiveRecord;
  * @property string|null $file_3_validator
  * @property int|null    $use_date
  * @property int|null    $use_status
+ * @property int|null    $use_seo
  * @property int|null    $use_in_menu
  * @property int         $created_at
  * @property int         $updated_at
@@ -224,7 +225,7 @@ class Entities extends ActiveRecord
 			[['file_1_dimensionW', 'file_1_dimensionH', 'file_1_maxSize', 'file_2_dimensionW', 'file_2_dimensionH', 'file_2_maxSize', 'file_3_dimensionW', 'file_3_dimensionH', 'file_3_maxSize'], 'integer'],
 
 			[['slug'], 'required'],
-			[['text_1', 'text_2', 'text_3', 'text_4', 'text_5', 'text_6', 'text_7', 'file_1', 'file_2', 'file_3', 'use_date', 'use_status', 'use_in_menu'], 'integer'],
+			[['text_1', 'text_2', 'text_3', 'text_4', 'text_5', 'text_6', 'text_7', 'file_1', 'file_2', 'file_3', 'use_date', 'use_status', 'use_in_menu','use_seo'], 'integer'],
 			[['file_1_validator', 'file_2_validator', 'file_3_validator'], 'safe'],
 			[['slug', 'text_1_label', 'text_2_label', 'text_3_label', 'text_4_label', 'text_5_label', 'text_6_label', 'text_7_label', 'file_1_label', 'file_2_label', 'file_3_label'], 'string', 'max' => 255],
 			[['slug'], 'unique'],
@@ -270,6 +271,7 @@ class Entities extends ActiveRecord
 			'use_date' => Yii::t('cms', 'Use date'),
 			'use_status' => Yii::t('cms', 'Use status'),
 			'use_in_menu' => Yii::t('cms', 'Use in menu'),
+			'use_seo' => Yii::t('cms', 'Use SEO'),
 			'created_at' => Yii::t('cms', 'Created at'),
 			'updated_at' => Yii::t('cms', 'Updated at'),
 		];

@@ -31,7 +31,7 @@ class Module extends \yii\base\Module
     }
 
     private function registerAppParams()
-    {-
+    {
         $languageIds = [];
         foreach ($this->languages as $prefix => $language) {
             \Yii::$app->params['cms']['languageIds'][$prefix] = $language['id'];
