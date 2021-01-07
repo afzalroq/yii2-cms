@@ -7,7 +7,7 @@ use afzalroq\cms\components\Language;
 
 /**
  * Class Module
- * @package abdualiym\cms
+ * @package afzalroq\cms
  * @property string $storageRoot
  * @property string $storageHost
  * @property array $thumbs

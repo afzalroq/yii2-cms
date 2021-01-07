@@ -122,11 +122,11 @@ class Items extends ActiveRecord
     {
         if ($this->entity->use_seo)
             $this->seo_values = [
-                'meta_title_0' =>$this->meta_title_0 ?? null,
-                'meta_title_1' =>$this->meta_title_1 ?? null,
-                'meta_title_2' =>$this->meta_title_2 ?? null,
-                'meta_title_3' =>$this->meta_title_3 ?? null,
-                'meta_title_4' =>$this->meta_title_4 ?? null,
+                'meta_title_0' => $this->meta_title_0 ?? null,
+                'meta_title_1' => $this->meta_title_1 ?? null,
+                'meta_title_2' => $this->meta_title_2 ?? null,
+                'meta_title_3' => $this->meta_title_3 ?? null,
+                'meta_title_4' => $this->meta_title_4 ?? null,
 
                 'meta_des_0' => $this->meta_des_0 ?? null,
                 'meta_des_1' => $this->meta_des_1 ?? null,
@@ -250,19 +250,41 @@ class Items extends ActiveRecord
 
             [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
                 'file',
-                'mimeTypes' => (!$this->isNewRecord) ?? [FileType::fileAccepts($this->entity->file_1_mimeType)],
-                'maxSize' => (!$this->isNewRecord) ?? $this->entity->file_1_maxSize * 1024 * 1024
+                'extensions' => FileType::fileExtensions($this->entity->file_1_mimeType),
+                'maxSize' => $this->entity->file_1_maxSize * 1024 * 1024
             ],
             [['file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'],
                 'file',
-                'mimeTypes' => (!$this->isNewRecord) ?? [FileType::fileAccepts($this->entity->file_2_mimeType)],
-                'maxSize' => (!$this->isNewRecord) ?? $this->entity->file_2_maxSize * 1024 * 1024
+                'extensions' => FileType::fileExtensions($this->entity->file_2_mimeType),
+                'maxSize' => $this->entity->file_2_maxSize * 1024 * 1024
             ],
             [['file_3_0', 'file_3_1', 'file_3_2', 'file_3_3', 'file_3_4'],
                 'file',
-                'mimeTypes' => (!$this->isNewRecord) ?? [FileType::fileAccepts($this->entity->file_3_mimeType)],
-                'maxSize' => (!$this->isNewRecord) ?? $this->entity->file_3_maxSize * 1024 * 1024
+                'extensions' => FileType::fileExtensions($this->entity->file_3_mimeType),
+                'maxSize' => $this->entity->file_3_maxSize * 1024 * 1024
             ],
+
+            [['text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_1);
+            }],
+            [['text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_2);
+            }],
+            [['text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_3);
+            }],
+            [['text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_4);
+            }],
+            [['text_5_0', 'text_5_1', 'text_5_2', 'text_5_3', 'text_5_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_5);
+            }],
+            [['text_6_0', 'text_6_1', 'text_6_2', 'text_6_3', 'text_6_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_6);
+            }],
+            [['text_7_0', 'text_7_1', 'text_7_2', 'text_7_3', 'text_7_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_7);
+            }],
 
             ['options', 'safe'],
             [['entity_id'], 'required'],
@@ -273,6 +295,21 @@ class Items extends ActiveRecord
             [['slug'], 'unique'],
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Entities::class, 'targetAttribute' => ['entity_id' => 'id']],
         ];
+    }
+
+    public function requireValidator($type)
+    {
+        switch ($type) {
+            case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**

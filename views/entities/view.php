@@ -8,7 +8,7 @@ use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model abdualiym\cms\entities\Entities */
+/* @var $model afzalroq\cms\entities\Entities */
 
 $this->title = $model->slug;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Entities'), 'url' => ['index']];

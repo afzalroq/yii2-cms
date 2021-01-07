@@ -79,12 +79,12 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 
 get photo url:
 ```php
-abdualiym\language\Language::getPhotoUrl($object, 'profile');
+afzalroq\language\Language::getPhotoUrl($object, 'profile');
 ```
 
 get attribute value by app language:
 ```php
-abdualiym\language\Language::get($object, 'title');
+afzalroq\language\Language::get($object, 'title');
 ```
 
 

@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\entities;
 
+use afzalroq\cms\components\FileType;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
@@ -143,7 +144,19 @@ class Options extends ActiveRecord
     public function rules()
     {
         return [
-            [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4', 'file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'], 'file'],
+
+            [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
+                'file',
+                'mimeTypes' => FileType::fileExtensions($this->collection->file_1_mimeType),
+                'maxSize' => $this->collection->file_1_maxSize * 1024 * 1024
+            ],
+
+            [['file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'],
+                'file',
+                'extensions' => FileType::fileExtensions($this->collection->file_2_mimeType),
+                'maxSize' => $this->collection->file_2_maxSize * 1024 * 1024
+            ],
+
             [['collection_id', 'slug'], 'required'],
             [['collection_id', 'parent_id', 'sort', 'created_at', 'updated_at'], 'integer'],
             [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
