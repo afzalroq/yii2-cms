@@ -4,6 +4,8 @@
 namespace afzalroq\cms\components;
 
 
+use yii\helpers\VarDumper;
+
 class FileType
 {
     const MIME_TYPES = [
