@@ -17,7 +17,9 @@ $this->title = 'My Yii Application';
 <div class="site-index">
     <div class="row">
         <div class="col-sm-6">
-            
+            <p>
+                <?= Html::a('Collections', Url::to(['/cms/collections/index']), ['class' => 'btn btn-success']) ?>
+            </p>
             <?= ListView::widget([
                 'dataProvider' => $collectionProvider,
                 'options' => [
@@ -42,6 +44,9 @@ $this->title = 'My Yii Application';
             ]) ?>
         </div>
         <div class="col-sm-6">
+            <p>
+                <?= Html::a('Entities', Url::to(['/cms/entities/index']), ['class' => 'btn btn-success']) ?>
+            </p>
             <?= ListView::widget([
                 'dataProvider' => $entityProvider,
                 'options' => [
