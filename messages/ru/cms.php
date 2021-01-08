@@ -51,10 +51,49 @@ return [
     'The requested page does not exist.' => 'Запрашиваемая страница не существует.',
     'Addresses of sales offices UZTELECOM' => 'Адреса офисов продаж УЗТЕЛЕКОМ',
 
-    'Disabled' => '',
+
+    //collection
+    'Collection' => 'Коллекция',
+    'Option' => 'Опция',
+    'Entity' => 'Cущность',
+    'Item' => 'Вещь',
+
+    'Options and items' => 'Опции и Вещь',
+
+    'Disabled' => 'Отключено',
     'Common' => 'Общие',
     'Translatable' => 'Переводимый',
     'Yes' => 'Да',
     'No' => 'Нет',
+    'Name' => 'Hазвание',
+    'Option' => 'Опция',
+    'Content' => 'Содержание',
+    'Label' => 'Mетка',
+    'File' => 'Файл',
+    'Validator' => 'Bалидатор',
+    'Use in menu' => 'Использовать в меню',
+    'Use parenting' => 'Воспользуйтесь воспитанием',
+    'Option File' => 'Файл опций',
+    'Option File' => 'Файл опций',
+    'Extension' => 'Расширение',
+    'Width' => 'Ширина',
+    'Height' => 'Высота',
+    'Max size' => 'Максимальный размер',
+    'Default option' => 'Вариант по умолчанию',
 
+    //option
+    'Parent' => 'Родитель',
+    'Sort' => 'Сортировать',
+    'Created At' => 'Создано в',
+    'Updated At' => 'Обновлено в',
+
+    //entity
+    'Input' => 'Ввод',
+    'String' => 'Строка',
+    'Integer' => 'Целое число',
+    'Url' => 'Url',
+    'Textarea' => 'Textarea',
+    'Required' => 'Oбязательный',
+    'Date' => 'Дата',
+    'Datetime' => 'Дата и время',
 ];

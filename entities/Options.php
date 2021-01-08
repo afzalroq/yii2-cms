@@ -1,13 +1,17 @@
 <?php
 
-namespace afzalroq\cms\entities;
+namespace abdualiym\cms\entities;
 
-use afzalroq\cms\components\FileType;
+use http\Url;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yiidreamteam\upload\FileUploadBehavior;
+use yiidreamteam\upload\ImageUploadBehavior;
+use abdualiym\cms\components\FileType;
+use yii\helpers\Html;
+
 
 /**
  * This is the model class for table "cms_options".
@@ -36,31 +40,17 @@ use yiidreamteam\upload\FileUploadBehavior;
  * @property string|null $file_2_2
  * @property string|null $file_2_3
  * @property string|null $file_2_4
- * @property int $seo_values
  * @property int $sort
  * @property int $created_at
  * @property int $updated_at
+ * @property Options $parent
  *
  * @property Collections $collection
  */
 class Options extends ActiveRecord
 {
-
-    public $meta_title_0;
-    public $meta_title_1;
-    public $meta_title_2;
-    public $meta_title_3;
-    public $meta_title_4;
-    public $meta_des_0;
-    public $meta_des_1;
-    public $meta_des_2;
-    public $meta_des_3;
-    public $meta_des_4;
-    public $meta_keyword_0;
-    public $meta_keyword_1;
-    public $meta_keyword_2;
-    public $meta_keyword_3;
-    public $meta_keyword_4;
+    public $hasTranslatableAttrs;
+    public $translatableAttrs;
 
     /**
      * {@inheritdoc}
@@ -70,13 +60,65 @@ class Options extends ActiveRecord
         return 'cms_options';
     }
 
-    public function getCorT($justAttr)
+    public function getTranslatableAttrs(): void
+    {
+        $hasTranslatable = false;
+        $translatableAttrs = [];
+        $collection = $this->collection;
+
+        if ($collection->option_name === Collections::OPTION_NAME_TRANSLATABLE) {
+            $translatableAttrs[] = 'name';
+            $hasTranslatable = true;
+        }
+        if ($collection->option_content === Collections::OPTION_CONTENT_TRANSLATABLE_TEXTAREA ||
+            $collection->option_content === Collections::OPTION_CONTENT_TRANSLATABLE_CKEDITOR) {
+            $translatableAttrs[] = 'content';
+            $hasTranslatable = true;
+        }
+        if ($collection->option_file_1 === Collections::OPTION_FILE_TRANSLATABLE) {
+            $translatableAttrs[] = 'file_1';
+            $hasTranslatable = true;
+        }
+        if ($collection->option_file_2 === Collections::OPTION_FILE_TRANSLATABLE) {
+            $translatableAttrs[] = 'file_2';
+            $hasTranslatable = true;
+        }
+
+        $this->translatableAttrs = $translatableAttrs;
+        $this->hasTranslatableAttrs = $hasTranslatable;
+    }
+
+    public function getParentValue()
+    {
+        return ($this->parent_id)
+            ? Html::a($this->parent->slug, \yii\helpers\Url::to(['/cms/options/view', 'id' => $this->parent_id, 'slug' => $this->collection->slug]))
+            : null;
+    }
+
+    public function getFileAttrValue($attr)
+    {
+        $entityAttr = substr($attr, 0, -2);
+        switch (FileType::fileMimeType($this->collection[$entityAttr . '_mimeType'])) {
+            case FileType::TYPE_FILE:
+                return $this->{$attr};
+            case FileType::TYPE_IMAGE:
+                return Html::img($this->getImageUrl(
+                    $attr,
+                    $this->collection[$entityAttr . '_dimensionW'],
+                    $this->collection[$entityAttr . '_dimensionH']
+                ));
+            default:
+                return null;
+        }
+    }
+
+    public function getCorT($collectionAttr)
     {
         if (!$this->collection)
             return null;
 
-        $attrValue = $this->collection['option_' . $justAttr];
-        switch ($justAttr) {
+        $attrValue = $this->collection['option_' . $collectionAttr];
+        switch ($collectionAttr) {
             case 'name':
                 if ($attrValue === Collections::OPTION_NAME_COMMON)
                     return false;
@@ -131,7 +173,7 @@ class Options extends ActiveRecord
         $module = Yii::$app->getModule('slider');
 
         return [
-            'class' => FileUploadBehavior::class,
+            'class' => ImageUploadBehavior::class,
             'attribute' => $attribute,
             'filePath' => $module->storageRoot . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
             'fileUrl' => $module->storageHost . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
@@ -147,7 +189,7 @@ class Options extends ActiveRecord
 
             [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
                 'file',
-                'extensions' => FileType::fileExtensions($this->collection->file_1_mimeType),
+                'mimeTypes' => FileType::fileExtensions($this->collection->file_1_mimeType),
                 'maxSize' => $this->collection->file_1_maxSize * 1024 * 1024
             ],
 
@@ -157,10 +199,10 @@ class Options extends ActiveRecord
                 'maxSize' => $this->collection->file_2_maxSize * 1024 * 1024
             ],
 
-            [['collection_id', 'slug'], 'required'],
+            [['collection_id', 'slug', 'sort'], 'required'],
             [['collection_id', 'parent_id', 'sort', 'created_at', 'updated_at'], 'integer'],
             [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
-            [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4','meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],
+            [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4',], 'string', 'max' => 255],
             [['slug'], 'unique'],
             [['collection_id'], 'exist', 'skipOnError' => true, 'targetClass' => Collections::class, 'targetAttribute' => ['collection_id' => 'id']],
         ];
@@ -177,6 +219,7 @@ class Options extends ActiveRecord
         return [
             'id' => Yii::t('cms', 'ID'),
             'slug' => Yii::t('cms', 'Slug'),
+            'parent_id' => Yii::t('cms', 'Parent'),
             'name_0' => Yii::t('cms', 'Name') . '(' . $language0 . ')',
             'name_1' => Yii::t('cms', 'Name') . '(' . $language1 . ')',
             'name_2' => Yii::t('cms', 'Name') . '(' . $language2 . ')',
@@ -197,27 +240,13 @@ class Options extends ActiveRecord
             'file_2_2' => Yii::t('cms', 'File') . '2(' . $language2 . ')',
             'file_2_3' => Yii::t('cms', 'File') . '2(' . $language3 . ')',
             'file_2_4' => Yii::t('cms', 'File') . '2(' . $language4 . ')',
-            'meta_title_0' => Yii::t('cms', 'Seo Title') . '(' . $language0 . ')',
-            'meta_des_0' => Yii::t('cms', 'Seo Description') . '(' . $language0 . ')',
-            'meta_keyword_0' => Yii::t('cms', 'Seo Keywords') . '(' . $language0 . ')',
-            'meta_title_1' => Yii::t('cms', 'Seo Title') . '(' . $language1 . ')',
-            'meta_des_1' => Yii::t('cms', 'Seo Description') . '(' . $language1 . ')',
-            'meta_keyword_1' => Yii::t('cms', 'Seo Keywords') . '(' . $language1 . ')',
-            'meta_title_2' => Yii::t('cms', 'Seo Title') . '(' . $language2 . ')',
-            'meta_des_2' => Yii::t('cms', 'Seo Description') . '(' . $language2 . ')',
-            'meta_keyword_2' => Yii::t('cms', 'Seo Keywords') . '(' . $language2 . ')',
-            'meta_title_3' => Yii::t('cms', 'Seo Title') . '(' . $language3 . ')',
-            'meta_des_3' => Yii::t('cms', 'Seo Description') . '(' . $language3 . ')',
-            'meta_keyword_3' => Yii::t('cms', 'Seo Keywords') . '(' . $language3 . ')',
-            'meta_title_4' => Yii::t('cms', 'Seo Title') . '(' . $language4 . ')',
-            'meta_des_4' => Yii::t('cms', 'Seo Description') . '(' . $language4 . ')',
-            'meta_keyword_4' => Yii::t('cms', 'Seo Keywords') . '(' . $language4 . ')',
             'sort' => Yii::t('cms', 'Sort'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];
     }
 
+    #region Relations
 
     /**
      * Gets query for [[Collections]].
@@ -229,31 +258,15 @@ class Options extends ActiveRecord
         return $this->hasOne(Collections::class, ['id' => 'collection_id']);
     }
 
-    public function beforeSave($insert)
+    /**
+     * Gets query for [[Options]].
+     *
+     * @return ActiveQuery
+     */
+    public function getParent()
     {
-        if ($this->collection->use_seo)
-        $this->seo_values = [
-            'meta_title_0' =>$this->meta_title_0 ?? null,
-            'meta_title_1' =>$this->meta_title_1 ?? null,
-            'meta_title_2' =>$this->meta_title_2 ?? null,
-            'meta_title_3' =>$this->meta_title_3 ?? null,
-            'meta_title_4' =>$this->meta_title_4 ?? null,
-
-            'meta_des_0' => $this->meta_des_0 ?? null,
-            'meta_des_1' => $this->meta_des_1 ?? null,
-            'meta_des_2' => $this->meta_des_2 ?? null,
-            'meta_des_3' => $this->meta_des_3 ?? null,
-            'meta_des_4' => $this->meta_des_4 ?? null,
-
-            'meta_keyword_0' => $this->meta_keyword_0 ?? null,
-            'meta_keyword_1' => $this->meta_keyword_1 ?? null,
-            'meta_keyword_2' => $this->meta_keyword_2 ?? null,
-            'meta_keyword_3' => $this->meta_keyword_3 ?? null,
-            'meta_keyword_4' => $this->meta_keyword_4 ?? null
-
-        ];
-
-        return parent::beforeSave($insert); // TODO: Change the autogenerated stub
+        return $this->hasOne(self::class, ['id' => 'parent_id']);
     }
 
+    #endregion
 }
