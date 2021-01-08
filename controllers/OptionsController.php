@@ -90,8 +90,10 @@ class OptionsController extends Controller
 	public function actionCreate($slug)
 	{
 		$model = new Options();
+        $model->collection = \afzalroq\cms\entities\Collections::findOne(['slug' => $slug]);
 
-		if($model->load(Yii::$app->request->post()) && $model->save()) {
+
+        if($model->load(Yii::$app->request->post()) && $model->save()) {
 			return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
 		}
 
