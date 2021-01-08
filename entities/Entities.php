@@ -80,7 +80,13 @@ class Entities extends ActiveRecord
 	const USE_DATE_DISABLED = 0;
 	const USE_DATE_DATE = 1;
 	const USE_DATE_DATETIME = 2;
-
+    
+	#seo types
+    const SEO_DISABLED = 0;
+    const SEO_COMMON = 1;
+    const SEO_TRANSLATABLE = 2;
+    #end seo types
+    
 	public $file_1_mimeType;
 	public $file_1_dimensionW;
 	public $file_1_dimensionH;
@@ -142,6 +148,16 @@ class Entities extends ActiveRecord
 			self::TEXT_TRANSLATABLE_CKEDITOR => Yii::t('cms', 'Translatable ckeditor'),
 		];
 	}
+
+    public static function seoList()
+    {
+        return [
+            self::SEO_DISABLED => Yii::t('cms', 'Disabled'),
+            self::SEO_COMMON => Yii::t('cms', 'Common'),
+            self::SEO_TRANSLATABLE => Yii::t('cms', 'Translatable'),
+        ];
+    }
+	
 
 	public static function fileList()
 	{

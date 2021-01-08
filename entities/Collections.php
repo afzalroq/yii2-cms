@@ -53,6 +53,12 @@ class Collections extends ActiveRecord
 	const OPTION_FILE_COMMON = 1;
 	const OPTION_FILE_TRANSLATABLE = 2;
 
+    #seo types
+    const SEO_DISABLED = 0;
+    const SEO_COMMON = 1;
+    const SEO_TRANSLATABLE = 2;
+    #end seo types
+	
 	#endregion
 	#region UseMenu
 	const USE_IN_MENU_DISABLED = 0;
@@ -108,6 +114,15 @@ class Collections extends ActiveRecord
 		];
 	}
 
+    public static function seoList()
+    {
+        return [
+            self::SEO_DISABLED => Yii::t('cms', 'Disabled'),
+            self::SEO_COMMON => Yii::t('cms', 'Common'),
+            self::SEO_TRANSLATABLE => Yii::t('cms', 'Translatable'),
+        ];
+    }
+	
 	public static function optionUseInMenuList()
 	{
 		return [

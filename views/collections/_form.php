@@ -48,11 +48,11 @@ use yii\widgets\ActiveForm;
                 <div class="col-sm-4">
                     <?= $form->field($model, 'use_in_menu')->dropDownList(Collections::optionUseInMenuList()) ?>
                 </div>
-                <div class="col-sm-3" style="padding-top: 23px">
-                    <?= $form->field($model, 'use_parenting')->checkbox() ?>
+                <div class="col-sm-4">
+                    <?= $form->field($model, 'use_seo')->dropDownList(Collections::seoList()) ?>
                 </div>
                 <div class="col-sm-3" style="padding-top: 23px">
-                    <?= $form->field($model, 'use_seo')->checkbox() ?>
+                    <?= $form->field($model, 'use_parenting')->checkbox() ?>
                 </div>
             </div>
         </div>

@@ -91,13 +91,13 @@ $hasTranslatableAttrs = 0;
     <!--#endregion -->
 
     <!--#region Translatable Seo -->
-    <?php if ($entity->use_seo): ?>
+    <?php if ($entity->use_seo > 0): ?>
     <div class="row">
         <div class="col-md-12">
             <hr>
             <div class="box">
                 <div class="box-body">
-                    <?php if ($hasTranslatableAttrs): ?>
+                    <?php if ($entity->use_seo == Entities::SEO_TRANSLATABLE): ?>
                     <ul class="nav nav-tabs" role="tablist">
                         <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                             <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>

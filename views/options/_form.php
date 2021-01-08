@@ -227,13 +227,13 @@ $hasTranslatableAttrs = 0;
             </div>
         </div>
     </div>
-    <?php if ($collection->use_seo): ?>
+    <?php if ($collection->use_seo > 0): ?>
         <div class="row">
             <div class="col-md-12">
                 <hr>
                 <div class="box">
                     <div class="box-body">
-                        <?php if ($hasTranslatableAttrs): ?>
+                        <?php if ($collection->use_seo == Collections::SEO_TRANSLATABLE ): ?>
                             <ul class="nav nav-tabs" role="tablist">
                                 <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                                     <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>

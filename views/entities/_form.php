@@ -45,15 +45,15 @@ use yii\widgets\ActiveForm;
                 </div>
                 <div class="col-md-3">
                     <br>
+                    <?= $form->field($model, 'use_seo')->dropDownList(Entities::seoList()) ?>
+                </div>
+                <div class="col-md-3">
+                    <br>
                     <?= $form->field($model, 'use_status')->checkbox() ?>
                 </div>
                 <div class="col-md-3">
                     <br>
 	                <?= $form->field($model, 'use_in_menu')->checkbox() ?>
-                </div>
-                <div class="col-md-3">
-                    <br>
-                    <?= $form->field($model, 'use_seo')->checkbox() ?>
                 </div>
             </div>
         </div>
