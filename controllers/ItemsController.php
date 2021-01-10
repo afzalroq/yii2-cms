@@ -92,7 +92,7 @@ class ItemsController extends Controller
 	 */
 	public function actionCreate($slug)
 	{
-		$model = new Items();
+		$model = new Items($slug);
 
 		if(Yii::$app->request->isAjax) {
 			$model->load(Yii::$app->request->post());

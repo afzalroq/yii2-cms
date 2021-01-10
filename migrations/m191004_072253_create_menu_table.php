@@ -3,7 +3,7 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `abdualiym_cms_menu`.
+ * Handles the creation of table `cms_menu`.
  */
 class m191004_072253_create_menu_table extends Migration
 {
@@ -17,7 +17,7 @@ class m191004_072253_create_menu_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%abdualiym_cms_menu}}', [
+        $this->createTable('{{%cms_menu}}', [
             'id' => $this->primaryKey(),
             'parent_id' => $this->integer(),
             'title_0' => $this->string(),
@@ -37,6 +37,6 @@ class m191004_072253_create_menu_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('abdualiym_cms_menu');
+        $this->dropTable('cms_menu');
     }
 }

@@ -4,7 +4,6 @@
 namespace afzalroq\cms\components;
 
 
-
 class FileType
 {
     const MIME_TYPES = [
@@ -87,7 +86,6 @@ class FileType
             if ($returnType === self::TYPE_FILE)
                 return $returnType;
         }
-
         return $returnType;
     }
 

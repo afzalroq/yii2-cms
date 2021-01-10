@@ -125,7 +125,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'file_1')->dropDownList(Entities::fileList()) ?>
                     <?= $form->field($model, 'file_1_label')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'file_1_mimeType')->widget(ToggleButtonGroup::class, [
-                        'type' => 'radio',
+                        'type' => 'checkbox',
                         'items' => FileType::MIME_TYPES,
                         'labelOptions' => [
                             'class' => 'btn btn-default btn-sm tbg'
@@ -150,7 +150,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'file_2')->dropDownList(Entities::fileList()) ?>
                     <?= $form->field($model, 'file_2_label')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'file_2_mimeType')->widget(ToggleButtonGroup::class, [
-                        'type' => 'radio',
+                        'type' => 'checkbox',
                         'items' => FileType::MIME_TYPES,
                         'labelOptions' => [
                             'class' => 'btn btn-default btn-sm tbg'
@@ -175,7 +175,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'file_3')->dropDownList(Entities::fileList()) ?>
                     <?= $form->field($model, 'file_3_label')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'file_3_mimeType')->widget(ToggleButtonGroup::class, [
-                        'type' => 'radio',
+                        'type' => 'checkbox',
                         'items' => FileType::MIME_TYPES,
                         'labelOptions' => [
                             'class' => 'btn btn-default btn-sm tbg'

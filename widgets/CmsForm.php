@@ -267,13 +267,13 @@ class CmsForm
                 ],
                 'initialPreviewAsData' => true,
                 'initialPreview' => [
-                    Url::base(true) . $this->model->getImageUrl(
+                    $this->model->getImageUrl(
                         $attr,
                         $this->obj[$entityAttr . '_dimensionW'],
                         $this->obj[$entityAttr . '_dimensionH']
                     )
                 ],
-                'maxFileSize' => $this->obj[$entityAttr . '_maxSize'] . 1024
+                'maxFileSize' => $this->obj[$entityAttr . '_maxSize'] * 1024
             ],
         ], $options);
 
@@ -302,18 +302,14 @@ class CmsForm
                 ],
                 'initialPreviewFileType' => 'any',
                 'initialPreviewConfig' => [
-                    [
-                        'type' => 'pdf',
-                    ],
-                    [
-                        'type' => 'video'
-                    ]
+                    ['type' => 'pdf',],
+                    ['type' => 'video']
                 ],
                 'initialPreviewAsData' => true,
                 'initialPreview' => [
-                    'http://localhost:20082/data/'. strtolower(StringHelper::basename($this->model::className())) .'/' . $this->model->id . '/' . $this->model[$attr]
+                    'http://localhost:20082/data/' . strtolower(StringHelper::basename($this->model::className())) . '/' . $this->model->id . '/' . $this->model[$attr]
                 ],
-                'maxFileSize' => $this->obj[$entityAttr . '_maxSize'] . 1024
+                'maxFileSize' => $this->obj[$entityAttr . '_maxSize'] * 1024
             ],
         ], $options);
 

@@ -9,7 +9,8 @@ use yii\grid\GridView;
 /* @var $entity \afzalroq\cms\entities\Entities */
 
 $slugUrl = '&slug=' . $entity->slug;
-$this->title = Yii::t('cms', 'Items');
+$curLang = Yii::$app->params['cms']['languages2'][Yii::$app->params['cms']['languageIds'][Yii::$app->language]];
+$this->title = Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug));
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="items-index">
@@ -17,10 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('cms', 'Create Items'), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('cms', 'Create ' . $this->title), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,17 +29,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
 //            'entity_id',
             'slug',
-            'text_1_0:ntext',
+            [
+                'attribute' => 'text_1_0',
+                'label' => $entity->text_1_label . ' (' . $curLang . ')'
+            ],
             //'text_1_1:ntext',
             //'text_1_2:ntext',
             //'text_1_3:ntext',
             //'text_1_4:ntext',
-            'text_2_0:ntext',
+            [
+                'attribute' => 'text_2_0',
+                'label' => $entity->text_2_label . ' (' . $curLang . ')'
+            ],
             //'text_2_1:ntext',
             //'text_2_2:ntext',
             //'text_2_3:ntext',
             //'text_2_4:ntext',
-            'text_3_0:ntext',
+            [
+                'attribute' => 'text_3_0',
+                'label' => $entity->text_3_label . ' (' . $curLang . ')'
+            ],
+            [
+                'attribute' => 'text_4_0',
+                'label' => $entity->text_4_label . ' (' . $curLang . ')'
+            ],
             //'text_3_1:ntext',
             //'text_3_2:ntext',
             //'text_3_3:ntext',
@@ -65,7 +77,14 @@ $this->params['breadcrumbs'][] = $this->title;
             //'text_7_2:ntext',
             //'text_7_3:ntext',
             //'text_7_4:ntext',
-            //'file_1_0',
+            [
+                'attribute' => 'file_1_0',
+                'label' => $entity->file_1_label,
+                'format' => 'html',
+                'value' => function ($model) {
+                    return Html::img($model->getImageUrl('file_1_0', 300, 400));
+                }
+            ],
             //'file_1_1',
             //'file_1_2',
             //'file_1_3',
