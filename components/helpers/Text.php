@@ -7,40 +7,54 @@ use afzalroq\cms\entities\Items;
 use afzalroq\cms\entities\Options;
 use yii\db\ActiveRecord;
 
-class Text
+class Text extends BaseHelper
 {
-    public $obj;
     public $strip_tags;
-    public $languageId;
-
-    /**
-     * Text constructor.
-     * @param Options|Items $obj
-     */
-    public function __construct(ActiveRecord $obj)
-    {
-        $this->obj = $obj;
-    }
 
     public function addStripTags()
     {
         $this->strip_tags = true;
         return $this;
     }
-
-    public function getText($dependAttr, $langKey = 0)
+    public function removeStripTags()
     {
-        $text = $this->obj->{$dependAttr . "_" . "$langKey"};
-
-        if ($this->strip_tags)
-            return strip_tags($text);
-
-        return $text;
-
+        $this->strip_tags = false;
+        return $this;
     }
 
-    public function getPhoto($dependAttr, $langKey = 0, $width = null, $height = null)
+    public function getText1($langKey = 0)
     {
-        return $this->obj->getImageUrl($dependAttr . "_" . "$langKey", $width, $height);
+        return $this->obj->{"text_1_" . "$langKey"};
     }
+
+    public function getText2($langKey = 0)
+    {
+        return $this->obj->{"text_2_" . "$langKey"};
+    }
+
+    public function getText3($langKey = 0)
+    {
+        return $this->obj->{"text_3_" . "$langKey"};
+    }
+
+    public function getText4($langKey = 0)
+    {
+        return $this->obj->{"text_4_" . "$langKey"};
+    }
+
+    public function getText5($langKey = 0)
+    {
+        return $this->obj->{"text_5_" . "$langKey"};
+    }
+
+    public function getText6($langKey = 0)
+    {
+        return $this->obj->{"text_6_" . "$langKey"};
+    }
+
+    public function getText7($langKey = 0)
+    {
+        return $this->obj->{"text_7_" . "$langKey"};
+    }
+
 }
