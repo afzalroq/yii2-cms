@@ -81,6 +81,8 @@ class Items extends ActiveRecord
     /**
      * @var mixed|null
      */
+
+    #region Extra Attributes
     public $options;
     public $meta_title_0;
     public $meta_title_1;
@@ -98,11 +100,16 @@ class Items extends ActiveRecord
     public $meta_keyword_3;
     public $meta_keyword_4;
     public $dependEntity;
+    public $languageId;
+
+    #endregion
 
     public function __construct($slug = null)
     {
         if ($slug)
             $this->dependEntity = Entities::findOne(['slug' => $slug]);
+
+        $this->setCurrentLanguage();
     }
 
     /**
@@ -236,42 +243,6 @@ class Items extends ActiveRecord
         ];
     }
 
-    private function getImageUploadBehaviorConfig($attribute)
-    {
-        $module = Yii::$app->getModule('slider');
-
-        return [
-            'class' => ImageUploadBehavior::class,
-            'attribute' => $attribute,
-            'filePath' => $module->storageRoot . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => $module->storageHost . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
-        ];
-    }
-
-    public function getCurrentAttrs($entityAttr)
-    {
-        $attrs = [];
-        foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
-            $attrs[] = $entityAttr . '_' . $key;
-        return $attrs;
-    }
-
-    public function fileValidator($entityAttr)
-    {
-        return [$this->getCurrentAttrs($entityAttr),
-            'file',
-            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
-            'maxSize' => $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024
-        ];
-    }
-
-    public function requiredValidator($entityAttr)
-    {
-        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
-            return $model->requireValidator($model->dependEntity->{$entityAttr});
-        }];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -279,19 +250,8 @@ class Items extends ActiveRecord
     {
         if (empty($this->dependEntity))
             $this->dependEntity = $this->entity;
+
         $rules = [
-            $this->fileValidator('file_1'),
-            $this->fileValidator('file_2'),
-            $this->fileValidator('file_3'),
-
-            $this->requiredValidator('text_1'),
-            $this->requiredValidator('text_2'),
-            $this->requiredValidator('text_3'),
-            $this->requiredValidator('text_4'),
-            $this->requiredValidator('text_5'),
-            $this->requiredValidator('text_6'),
-            $this->requiredValidator('text_7'),
-
             ['options', 'safe'],
             [['entity_id'], 'required'],
             [['entity_id', 'date', 'status'], 'integer'],
@@ -312,6 +272,18 @@ class Items extends ActiveRecord
             [['slug'], 'unique'],
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Entities::class, 'targetAttribute' => ['entity_id' => 'id']],
         ];
+
+        list($text_attrs, $file_attrs) = $this->dependEntity->textAndFileAttrs();
+
+        foreach ($text_attrs as $attr => $value) {
+            if (!$this->isAttrDisabled($attr))
+                $rules[] = $this->requiredValidator($attr);
+        }
+
+        foreach ($file_attrs as $attr => $value) {
+            if (!$this->isAttrDisabled($attr))
+                $rules[] = $this->fileValidator($attr);
+        }
 
         return $rules;
     }
@@ -428,4 +400,173 @@ class Items extends ActiveRecord
     {
         return $this->hasOne(Entities::class, ['id' => 'entity_id']);
     }
+
+    #region Extra Methods
+    private function getImageUploadBehaviorConfig($attribute)
+    {
+        $module = Yii::$app->getModule('slider');
+
+        return [
+            'class' => ImageUploadBehavior::class,
+            'attribute' => $attribute,
+            'filePath' => $module->storageRoot . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
+            'fileUrl' => $module->storageHost . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
+        ];
+    }
+
+    private function setCurrentLanguage()
+    {
+        $this->languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        if (!$this->languageId)
+            $this->languageId = 0;
+    }
+
+    public function isAttrCommon($entityAttr)
+    {
+        switch ($this->dependEntity->{$entityAttr}) {
+            case Entities::FILE_COMMON:
+            case Entities::TEXT_COMMON_INPUT_STRING:
+            case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_INT:
+            case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_URL:
+            case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
+            case Entities::TEXT_COMMON_TEXTAREA:
+            case Entities::TEXT_COMMON_CKEDITOR:
+                return true;
+        }
+
+        return false;
+    }
+
+    public function isAttrTranslatable($entityAttr)
+    {
+        switch ($this->dependEntity->{$entityAttr}) {
+            case Entities::FILE_TRANSLATABLE:
+            case Entities::TEXT_TRANSLATABLE_INPUT_STRING:
+            case Entities::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_INT:
+            case Entities::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_URL:
+            case Entities::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_TEXTAREA:
+            case Entities::TEXT_TRANSLATABLE_CKEDITOR:
+                return true;
+        }
+        return false;
+    }
+
+    public function isAttrDisabled($entityAttr)
+    {
+        return !($this->isAttrCommon($entityAttr) || $this->isAttrTranslatable($entityAttr));
+    }
+
+    public function getCurrentAttrs($entityAttr)
+    {
+        $attrs = [];
+        if ($this->isAttrCommon($entityAttr))
+            $attrs = [$entityAttr . '_0'];
+
+        if ($this->isAttrTranslatable($entityAttr))
+            foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
+                $attrs[] = $entityAttr . '_' . $key;
+
+        return $attrs;
+    }
+
+    public function fileValidator($entityAttr)
+    {
+        $maxSize = $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024;
+
+        return [$this->getCurrentAttrs($entityAttr),
+            'file',
+            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
+            'maxSize' => ($maxSize) ? $maxSize : null
+        ];
+    }
+
+    public function requiredValidator($entityAttr)
+    {
+        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
+            return $model->requireValidator($model->dependEntity->{$entityAttr});
+        }];
+    }
+
+    #endregion
+
+
+    #region Get Text Attributes
+    public function getText1()
+    {
+        return $this['text_1_' . $this->languageId];
+    }
+
+    public function getText2()
+    {
+        return $this['text_2_' . $this->languageId];
+    }
+
+    public function getText3()
+    {
+        return $this['text_3_' . $this->languageId];
+    }
+
+    public function getText4()
+    {
+        return $this['text_4_' . $this->languageId];
+    }
+
+    public function getText5()
+    {
+        return $this['text_5_' . $this->languageId];
+    }
+
+    public function getText6()
+    {
+        return $this['text_6_' . $this->languageId];
+    }
+
+    public function getText7()
+    {
+        return $this['text_7_' . $this->languageId];
+    }
+    #endregion
+
+    #region Get Photo Attributes
+    public function getPhoto1($width = null, $height = null)
+    {
+        $imageUrl = $this->getImageUrl("file_1_" . "$this->languageId", $width, $height);
+
+        if (!$imageUrl)
+            return $this->getImageUrl('file_1_0', $width, $height);
+
+        return $imageUrl;
+    }
+
+    public function getPhoto2($width, $height)
+    {
+        $imageUrl = $this->getImageUrl("file_2_" . "$this->languageId", $width, $height);
+
+        if (!$imageUrl)
+            return $this->getImageUrl('file_1_0', $width, $height);
+
+        return $imageUrl;
+    }
+
+    public function getPhoto3($width, $height)
+    {
+        $imageUrl = $this->getImageUrl("file_3_" . "$this->languageId", $width, $height);
+
+        if (!$imageUrl)
+            return $this->getImageUrl('file_1_0', $width, $height);
+
+        return $imageUrl;
+    }
+
+    //    private function getPhoto()
+    //    {
+    //        return $this->getImageUrl($attr, $width, $height, $resize_type);
+    //    }
+
+    #endregion
 }
