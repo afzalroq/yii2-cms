@@ -39,6 +39,7 @@ use yii\db\ActiveRecord;
 class Collections extends ActiveRecord
 {
 
+    const DISABLED = -1;
 	#region OptionAttrs
 	const OPTION_NAME_DISABLED = 0;
 	const OPTION_NAME_COMMON = 1;
@@ -54,6 +55,12 @@ class Collections extends ActiveRecord
 	const OPTION_FILE_COMMON = 1;
 	const OPTION_FILE_TRANSLATABLE = 2;
 
+    #seo types
+    const SEO_DISABLED = 0;
+    const SEO_COMMON = 1;
+    const SEO_TRANSLATABLE = 2;
+    #end seo types
+	
 	#endregion
 	#region UseMenu
 	const USE_IN_MENU_DISABLED = 0;
@@ -79,49 +86,59 @@ class Collections extends ActiveRecord
 		return 'cms_collections';
 	}
 
-	#region ListOfConstants
-	public static function optionNameList()
-	{
-		return [
-			self::OPTION_NAME_DISABLED => Yii::t('cms', 'Disabled'),
-			self::OPTION_NAME_COMMON => Yii::t('cms', 'Common'),
-			self::OPTION_NAME_TRANSLATABLE => Yii::t('cms', 'Translatable'),
-		];
-	}
+    #region ListOfConstants
 
-	public static function optionContentList()
-	{
-		return [
-			self::OPTION_CONTENT_DISABLED => Yii::t('cms', 'Disabled'),
-			self::OPTION_CONTENT_COMMON_TEXTAREA => Yii::t('cms', 'Common textarea'),
-			self::OPTION_CONTENT_COMMON_CKEDITOR => Yii::t('cms', 'Common ckeditor'),
-			self::OPTION_CONTENT_TRANSLATABLE_TEXTAREA => Yii::t('cms', 'Translatable textarea'),
-			self::OPTION_CONTENT_TRANSLATABLE_CKEDITOR => Yii::t('cms', 'Translatable ckeditor'),
-		];
-	}
+    public static function seoList()
+    {
+        return [
+            self::SEO_DISABLED => Yii::t('cms', 'Disabled'),
+            self::SEO_COMMON => Yii::t('cms', 'Common'),
+            self::SEO_TRANSLATABLE => Yii::t('cms', 'Translatable'),
+        ];
+    }
 
-	public static function optionFileList()
-	{
-		return [
-			self::OPTION_FILE_DISABLED => Yii::t('cms', 'Disabled'),
-			self::OPTION_FILE_COMMON => Yii::t('cms', 'Common'),
-			self::OPTION_FILE_TRANSLATABLE => Yii::t('cms', 'Translatable'),
-		];
-	}
+    public static function optionNameList()
+    {
+        return [
+            self::OPTION_NAME_DISABLED => Yii::t('cms', 'Disabled'),
+            self::OPTION_NAME_COMMON => Yii::t('cms', 'Common'),
+            self::OPTION_NAME_TRANSLATABLE => Yii::t('cms', 'Translatable'),
+        ];
+    }
 
-	public static function optionUseInMenuList()
-	{
-		return [
-			self::USE_IN_MENU_DISABLED => Yii::t('cms', 'Disabled'),
-			self::USE_IN_MENU_OPTIONS => Yii::t('cms', 'Options'),
-			self::USE_IN_MENU_ITEMS => Yii::t('cms', 'Items'),
-			self::USE_IN_MENU_OPTIONS_ITEMS => Yii::t('cms', 'Options and items'),
-		];
-	}
+    public static function optionContentList()
+    {
+        return [
+            self::OPTION_CONTENT_DISABLED => Yii::t('cms', 'Disabled'),
+            self::OPTION_CONTENT_COMMON_TEXTAREA => Yii::t('cms', 'Common textarea'),
+            self::OPTION_CONTENT_COMMON_CKEDITOR => Yii::t('cms', 'Common ckeditor'),
+            self::OPTION_CONTENT_TRANSLATABLE_TEXTAREA => Yii::t('cms', 'Translatable textarea'),
+            self::OPTION_CONTENT_TRANSLATABLE_CKEDITOR => Yii::t('cms', 'Translatable ckeditor'),
+        ];
+    }
 
-	#endregion
+    public static function optionFileList()
+    {
+        return [
+            self::OPTION_FILE_DISABLED => Yii::t('cms', 'Disabled'),
+            self::OPTION_FILE_COMMON => Yii::t('cms', 'Common'),
+            self::OPTION_FILE_TRANSLATABLE => Yii::t('cms', 'Translatable'),
+        ];
+    }
 
-	public function beforeSave($insert)
+    public static function optionUseInMenuList()
+    {
+        return [
+            self::USE_IN_MENU_DISABLED => Yii::t('cms', 'Disabled'),
+            self::USE_IN_MENU_OPTIONS => Yii::t('cms', 'Option'),
+            self::USE_IN_MENU_ITEMS => Yii::t('cms', 'Item'),
+            self::USE_IN_MENU_OPTIONS_ITEMS => Yii::t('cms', 'Options and items'),
+        ];
+    }
+
+    #endregion
+
+    public function beforeSave($insert)
 	{
 		$this->option_file_1_validator = [
 			'mimeType' => $this->file_1_mimeType !== '' ? $this->file_1_mimeType : null,
@@ -179,6 +196,7 @@ class Collections extends ActiveRecord
 		];
 	}
 
+// <<<<<<< HEAD
 	public function attributeLabels()
 	{
 		$language0 = isset(Yii::$app->params['cms']['languages2'][0]) ? Yii::$app->params['cms']['languages2'][0] : '';
@@ -212,6 +230,50 @@ class Collections extends ActiveRecord
 		];
 	}
 
+// =======
+//     public function attributeLabels()
+//     {
+//         $language0 = isset(Yii::$app->params['cms']['languages2'][0]) ? Yii::$app->params['cms']['languages2'][0] : '';
+//         $language1 = isset(Yii::$app->params['cms']['languages2'][1]) ? Yii::$app->params['cms']['languages2'][1] : '';
+//         $language2 = isset(Yii::$app->params['cms']['languages2'][2]) ? Yii::$app->params['cms']['languages2'][2] : '';
+//         $language3 = isset(Yii::$app->params['cms']['languages2'][3]) ? Yii::$app->params['cms']['languages2'][3] : '';
+//         return [
+//             'id' => Yii::t('cms', 'ID'),
+//             'name_0' => Yii::t('cms', 'Name') . '(' . $language0 . ')',
+//             'name_1' => Yii::t('cms', 'Name') . '(' . $language1 . ')',
+//             'name_2' => Yii::t('cms', 'Name') . '(' . $language2 . ')',
+//             'name_3' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
+//             'name_4' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
+//             'slug' => Yii::t('cms', 'Slug'),
+//             'use_in_menu' => Yii::t('cms', 'Use in menu'),
+//             'use_parenting' => Yii::t('cms', 'Use parenting'),
+
+//             'option_file_1' => Yii::t('cms', 'Option File') . ' 1',
+//             'option_file_2' => Yii::t('cms', 'Option File') . ' 2',
+//             'option_file_1_label' => Yii::t('cms', 'Option File') . ' 1 ' . Yii::t('cms', 'Label'),
+//             'option_file_2_label' => Yii::t('cms', 'Option File') . ' 2 ' . Yii::t('cms', 'Label'),
+//             'option_file_1_validator' => Yii::t('cms', 'Option File') . ' 1 ' . Yii::t('cms', 'Validator'),
+//             'option_file_2_validator' => Yii::t('cms', 'Option File') . ' 2 ' . Yii::t('cms', 'Validator'),
+
+//             'option_name' => Yii::t('cms', 'Option') . ' ' . Yii::t('cms', 'Name'),
+//             'option_content' => Yii::t('cms', 'Option') . ' ' . Yii::t('cms', 'Content'),
+//             'option_default_id' => Yii::t('cms', 'Default option'),
+//             'created_at' => Yii::t('cms', 'Created At'),
+//             'updated_at' => Yii::t('cms', 'Updated At'),
+
+//             'file_1_mimeType' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Extension'),
+//             'file_1_dimensionW' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Width'),
+//             'file_1_dimensionH' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Height'),
+//             'file_1_maxSize' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Max size'),
+
+//             'file_2_mimeType' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Extension'),
+//             'file_2_dimensionW' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Width'),
+//             'file_2_dimensionH' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Height'),
+//             'file_2_maxSize' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Max size'),
+//         ];
+//     }
+
+// >>>>>>> 15c142903ed1fcc72f43d424d6a85e005ebd97a0
     public function nameAttrs()
     {
         $nameAttrs = [];
@@ -242,5 +304,4 @@ class Collections extends ActiveRecord
 	{
 		return $this->hasMany(Options::class, ['collection_id' => 'id']);
 	}
-
 }

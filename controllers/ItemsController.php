@@ -92,7 +92,7 @@ class ItemsController extends Controller
 	 */
 	public function actionCreate($slug)
 	{
-		$model = new Items();
+		$model = new Items($slug);
 
 		if(Yii::$app->request->isAjax) {
 			$model->load(Yii::$app->request->post());
@@ -121,6 +121,11 @@ class ItemsController extends Controller
 	public function actionUpdate($id, $slug)
 	{
 		$model = $this->findModel($id);
+
+        if(Yii::$app->request->isAjax) {
+            $model->load(Yii::$app->request->post());
+            return Json::encode(\yii\widgets\ActiveForm::validate($model));
+        }
 
 		if($model->load(Yii::$app->request->post()) && $model->save()) {
 			return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);

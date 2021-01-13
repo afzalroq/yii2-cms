@@ -1,4 +1,4 @@
-# yii2-cms extension
+# yii-2-cms extension
 
 The extension allows:
 - make html blocks of html contents, files, images.
@@ -75,23 +75,6 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 /cms/home/index
 ```
 
-
-###Frontend widgets integration
-
-Get all blocks by category slug:
-```php
-afzalroq\cms\entities\unit\Unit\Unit::getBySlug($slug)
-```
-
-get photo url:
-```php
-afzalroq\language\Language::getPhotoUrl($object, 'profile');
-```
-
-get attribute value by app language:
-```php
-afzalroq\language\Language::get($object, 'title');
-```
 
 ###Examples
 

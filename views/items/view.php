@@ -12,10 +12,10 @@ use yii\widgets\DetailView;
 /* @var $entity Entities */
 
 $this->title = $model->slug;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Items'), 'url' => ['index', 'slug' => $entity->slug]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug)), 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 
-[$entity_text_attrs, $entity_file_attrs] = $entity->textAFileAttrs();
+[$entity_text_attrs, $entity_file_attrs] = $entity->textAndFileAttrs();
 
 $text_attributes = [];
 $file_attributes = [];
@@ -28,7 +28,25 @@ $main_attributes = [
 
 $cmsForm = new CmsForm((new ActiveForm()), $model, $entity);
 
+foreach ($entity_file_attrs as $attr => $value)
+    foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
+        if ($entity[$attr])
+            $file_attributes[] = [
+                'attribute' => $attr . '_' . $key,
+                'format' => 'html',
+                'value' => function ($model) use ($attr, $key, $entity) {
+                    switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
+                        case FileType::TYPE_FILE:
+                            return $model[$attr . '_' . $key];
+                        case FileType::TYPE_IMAGE:
+                            return Html::img($model->getImageUrl($attr . '_' . $key, $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
+                        default:
+                            return null;
+                    }
+                }
+            ];
 
+// <<<<<<< HEAD
 foreach ($entity_file_attrs as $attr => $value)
     foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
         $file_attributes[] = [
@@ -56,6 +74,20 @@ foreach ($entity_text_attrs as $attr => $value)
 if ($entity->use_seo)
         foreach ($model->seo_values as $key => $value)
             if ($value !== null)
+// =======
+// foreach ($entity_text_attrs as $attr => $value)
+//     foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
+//         if ($entity[$attr])
+//             $text_attributes[] = [
+//                 'attribute' => $attr . '_' . $key,
+//                 'label' => $entity[$attr . '_label'] . ' (' . $language . ')',
+//                 'format' => 'html'
+//             ];
+
+// if ($entity->use_seo)
+//     foreach ($model->seo_values as $key => $value)
+//         if ($value !== null)
+// >>>>>>> 15c142903ed1fcc72f43d424d6a85e005ebd97a0
             $seo_values [] = [
                 'attribute' => $key,
                 'value' => $value
@@ -81,12 +113,14 @@ if ($entity->use_seo)
     <div class="row">
 
         <div class="col-sm-4">
+        <!-- <div class="col-sm-12"> -->
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => $text_attributes
             ]) ?>
         </div>
         <div class="col-sm-8">
+        <!-- <div class="col-sm-12"> -->
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => $file_attributes
@@ -95,9 +129,16 @@ if ($entity->use_seo)
 
     </div>
     <?php if ($entity->use_seo): ?>
+<!-- <<<<<<< HEAD -->
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => $seo_values
     ]) ?>
+<!-- ======= -->
+        <?php //= DetailView::widget([
+            // 'model' => $model,
+            // 'attributes' => $seo_values
+        //]) ?>
+<!-- >>>>>>> 15c142903ed1fcc72f43d424d6a85e005ebd97a0 -->
     <?php endif; ?>
 </div>
