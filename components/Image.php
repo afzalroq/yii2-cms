@@ -44,6 +44,6 @@ class Image
             ->guess();
 
 
-        return 'http://localhost:20082/' . str_replace('/app/storage/', '', $path) ;
+        return 'http://localhost:20082' . str_replace('/app/storage', '', $path) ;
     }
 }

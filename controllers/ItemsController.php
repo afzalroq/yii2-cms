@@ -122,6 +122,11 @@ class ItemsController extends Controller
 	{
 		$model = $this->findModel($id);
 
+        if(Yii::$app->request->isAjax) {
+            $model->load(Yii::$app->request->post());
+            return Json::encode(\yii\widgets\ActiveForm::validate($model));
+        }
+
 		if($model->load(Yii::$app->request->post()) && $model->save()) {
 			return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
 		}

@@ -39,6 +39,7 @@ use yii\db\ActiveRecord;
 class Collections extends ActiveRecord
 {
 
+    const DISABLED = -1;
 	#region OptionAttrs
 	const OPTION_NAME_DISABLED = 0;
 	const OPTION_NAME_COMMON = 1;
@@ -137,7 +138,6 @@ class Collections extends ActiveRecord
 
     #endregion
 
-
     public function beforeSave($insert)
 	{
 		$this->option_file_1_validator = [
@@ -176,7 +176,7 @@ class Collections extends ActiveRecord
 
     public function rules()
     {
-        return [
+        $rules = [
             [['file_1_dimensionW', 'file_1_dimensionH', 'file_2_dimensionW', 'file_2_dimensionH', 'file_1_maxSize', 'file_2_maxSize'], 'integer'],
 
             [['file_1_mimeType', 'file_2_mimeType'], 'each', 'rule' => ['in', 'range' => array_keys(FileType::MIME_TYPES)]],
@@ -187,6 +187,7 @@ class Collections extends ActiveRecord
             [['name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'slug', 'option_file_1_label', 'option_file_2_label'], 'string', 'max' => 255],
             [['slug'], 'unique'],
         ];
+        return $rules ;
     }
 
 	public function behaviors()
@@ -268,5 +269,4 @@ class Collections extends ActiveRecord
 	{
 		return $this->hasMany(Options::class, ['collection_id' => 'id']);
 	}
-
 }

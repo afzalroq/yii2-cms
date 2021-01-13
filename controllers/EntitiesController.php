@@ -59,7 +59,7 @@ class EntitiesController extends Controller
 		$cae = new CaE();
 
 		if(!$cae->getUnassignedCollections($model)) {
-			Yii::$app->session->setFlash('warning', 'There are not collections!');
+			Yii::$app->session->setFlash('warning', 'There are no collections!');
 			return $this->redirect(['view', 'id' => $id]);
 		}
 

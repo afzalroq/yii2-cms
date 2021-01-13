@@ -15,7 +15,7 @@ $this->title = $model->slug;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug)), 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 
-[$entity_text_attrs, $entity_file_attrs] = $entity->textAFileAttrs();
+[$entity_text_attrs, $entity_file_attrs] = $entity->textAndFileAttrs();
 
 $text_attributes = [];
 $file_attributes = [];
