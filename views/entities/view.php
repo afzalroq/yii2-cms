@@ -8,7 +8,7 @@ use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model abdualiym\cms\entities\Entities */
+/* @var $model afzalroq\cms\entities\Entities */
 
 $this->title = $model->slug;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Entities'), 'url' => ['index']];
@@ -48,6 +48,10 @@ YiiAsset::register($this);
 								'attribute' => 'use_in_menu',
 								'value' => $model->use_in_menu ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
 							],
+                            [
+                                'attribute' => 'use_seo',
+                                'value' => $model->use_seo ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
+                            ],
 							'created_at:datetime',
 							'updated_at:datetime',
 						],

@@ -40,6 +40,7 @@ class m201208_111804_create_options_table extends Migration
 			'file_2_2' => $this->string(),
 			'file_2_3' => $this->string(),
 			'file_2_4' => $this->string(),
+			'seo_values' => $this->json(),
 			'sort' => $this->integer()->notNull()->defaultValue(1),
 			'created_at' => $this->integer()->unsigned()->notNull(),
 			'updated_at' => $this->integer()->unsigned()->notNull(),

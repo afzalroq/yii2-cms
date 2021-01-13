@@ -26,6 +26,7 @@ class m201207_131825_create_collections_table extends Migration
             'name_4' => $this->string(),
             'slug' => $this->string()->notNull()->unique(),
 	        'use_in_menu' => $this->tinyInteger()->notNull(),
+	        'use_seo' => $this->tinyInteger(),
 	        'use_parenting' => $this->tinyInteger(),
 	        'option_name' => $this->tinyInteger(),
 	        'option_content' => $this->tinyInteger(),

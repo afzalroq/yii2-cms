@@ -7,10 +7,9 @@ use afzalroq\cms\components\Language;
 
 /**
  * Class Module
- * @package abdualiym\cms
+ * @package afzalroq\cms
  * @property string $storageRoot
  * @property string $storageHost
- * @property array $thumbs
  * @property array $languages
  * @property array $menuActions
  */
@@ -19,7 +18,6 @@ class Module extends \yii\base\Module
 
     public $storageRoot;
     public $storageHost;
-    public $thumbs;
     public $languages;
     public $menuActions;
 
@@ -31,7 +29,7 @@ class Module extends \yii\base\Module
     }
 
     private function registerAppParams()
-    {-
+    {
         $languageIds = [];
         foreach ($this->languages as $prefix => $language) {
             \Yii::$app->params['cms']['languageIds'][$prefix] = $language['id'];

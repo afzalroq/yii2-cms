@@ -18,5 +18,13 @@ class Bootstrap implements BootstrapInterface
                 'forceTranslation' => true,
             ];
         }
+        if (!isset($app->i18n->translations['unit']) && !isset($app->i18n->translations['unit*'])) {
+            $app->i18n->translations['unit'] = [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => __DIR__ . '/messages',
+                'sourceLanguage' => 'en',
+                'forceTranslation' => true,
+            ];
+        }
     }
 }

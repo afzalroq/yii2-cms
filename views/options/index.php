@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use afzalroq\cms\entities\Collections;
 
 /* @var $this yii\web\View */
-/* @var $searchModel abdualiym\cms\forms\CollectionsSearch */
+/* @var $searchModel afzalroq\cms\forms\CollectionsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $collection Collections */
 

@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel abdualiym\cms\entities\ItemsSearch */
+/* @var $searchModel afzalroq\cms\entities\ItemsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $entity \abdualiym\cms\entities\Entities */
+/* @var $entity \afzalroq\cms\entities\Entities */
 
 $slugUrl = '&slug=' . $entity->slug;
 $this->title = Yii::t('cms', 'Items');

@@ -1,8 +1,14 @@
-# yii2-block extension
+# yii2-cms extension
 
-The extension allows manage html content block.
+The extension allows:
+- make html blocks of html contents, files, images.
+- make collections for options like tags, categories
+- make entities for items like sliders, products, reviews, articles, pages
+- support up to 5 languages
+- support SEO meta tags
+- make multiple menu with parenting feature
 
-### Installation
+## Installation
 
 - Install with composer:
 
@@ -12,7 +18,7 @@ composer require afzalroq/yii2-cms "^1.0"
 
 - **After composer install** run console command for create tables:
 
-#### Add to console config for auto discover migrations
+### Add to console config for auto discover migrations
 
 ```php
 'controllerMap' => [
@@ -26,15 +32,15 @@ composer require afzalroq/yii2-cms "^1.0"
 ]
 ```
 
-
 ```bash
 php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ```
 
-- Setup in common config storage and language configurations.
-> language indexes related with database columns.
+### Setup in common config file
 
-> Admin panel tabs render by array values order 
+> CKEditor use Elfinder plugin for save files and images. Refer [Elfinder readme](https://github.com/MihailDev/yii2-elfinder) for proper configuration
+- Language indexes related with database columns.
+- Admin panel tabs render by array values order 
 
 ```php
 'modules' => [
@@ -42,17 +48,17 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
         'class' => '@afzalroq\cms\Module',
         'storageRoot' => $params['staticPath'],
         'storageHost' => $params['staticHostInfo'],
-        'thumbs' => [ // 'sm' and 'md' keys are reserved
-            'admin' => ['width' => 128, 'height' => 128],
-            'thumb' => ['width' => 320, 'height' => 320],
-        ],
         'languages' => [
             'ru' => [
-                'id' => 0,
+                'id' => 0, // must start from 0 up to 4
+                'name' => 'English',
+            ],
+            'en' => [
+                'id' => 1,
                 'name' => 'Русский',
             ],
             'uz' => [
-                'id' => 1,
+                'id' => 2,
                 'name' => 'O`zbek tili',
             ],
         ],
@@ -61,64 +67,33 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
             'site/contacts' => 'Contacts',
         ]
     ],
-],
+]
 ```
 
-- In admin panel add belove links for manage pages, article categories, articles and menu:
+- In admin panel open management via link:
 ```php
-/cms/collections/index
-/cms/entities/index
-/cms/menu/index
-???...
-/cms/articles/index
+/cms/home/index
 ```
 
-#TODO:
 
-###Examples
+###Frontend widgets integration
+
+Get all blocks by category slug:
+```php
+afzalroq\cms\entities\unit\Unit\Unit::getBySlug($slug)
+```
 
 get photo url:
 ```php
-abdualiym\language\Language::getPhotoUrl($object, 'profile');
+afzalroq\language\Language::getPhotoUrl($object, 'profile');
 ```
 
 get attribute value by app language:
 ```php
-abdualiym\language\Language::get($object, 'title');
+afzalroq\language\Language::get($object, 'title');
 ```
-
-
-> CKEditor use Elfinder plugin for save files and images. Refer [Elfinder readme](https://github.com/MihailDev/yii2-elfinder) for proper configuration
 
 ###Examples
 
-Extension registers next language arrays to Yii::$app->params[] for use in views:
-```php
-\Yii::$app->params['cms']['languageIds'][$prefix] = $language['id'];
-[
-    'en' => 2,
-    'ru' => 1,
-    ...
-]
-
-\Yii::$app->params['cms']['languages'][$prefix] = $language['name'];
-[
-    'en' => 'English',
-    ...
-]
-
-
-\Yii::$app->params['cms']['languages2'][$language['id']] = $language['name'];
-[
-    2 => 'English',
-    ...
-]
-```
-
-###Examples for use in frontend see [yii2-language](https://github.com/afzalroq/yii2-language) extension
-
-
----
-
-> TODO 
- - Copy from extension root directory example widgets for frontend integration  
+TODO 
+- Copy from extension root directory example widgets for frontend integration

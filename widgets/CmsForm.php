@@ -14,6 +14,7 @@ use mihaildev\elfinder\ElFinder;
 use sadovojav\ckeditor\CKEditor;
 use Yii;
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
@@ -35,31 +36,31 @@ class CmsForm
     public $entityTextAttrs;
     public $entityFileAttrs;
 
-    public function __construct($form, $model, $obj)
+    public function __construct($form, $model, $obj = null)
     {
         $this->form = $form;
         $this->model = $model;
         $this->obj = $obj;
 
-        if($obj instanceof Entities)
+        if ($obj instanceof Entities)
             [$this->entityTextAttrs, $this->entityFileAttrs] = $this->obj->textAFileAttrs();
     }
 
     public function oaIFields()
     {
         $caes = $this->obj->caes;
-        usort($caes, function($a, $b) {
-            if($a->sort == $b->sort)
+        usort($caes, function ($a, $b) {
+            if ($a->sort == $b->sort)
                 return 0;
             return ($a->sort < $b->sort) ? -1 : 1;
         });
 
 
-        foreach($caes as $cae) {
-            if(empty($cae->collection->options))
+        foreach ($caes as $cae) {
+            if (empty($cae->collection->options))
                 continue;
 
-            switch($cae->type) {
+            switch ($cae->type) {
                 case CaE::TYPE_CHECKBOX:
                     echo $this->oaiCheckboxList($cae);
                     break;
@@ -78,17 +79,17 @@ class CmsForm
 
     public function fileFieldsTranslatable($key, &$hasTranslatableAttrs)
     {
-        foreach($this->entityFileAttrs as $entityAttr => $value)
-            if($this->obj->{$entityAttr} === Entities::FILE_TRANSLATABLE) {
+        foreach ($this->entityFileAttrs as $entityAttr => $value)
+            if ($this->obj->{$entityAttr} === Entities::FILE_TRANSLATABLE) {
                 $attr = $entityAttr . '_' . $key;
-                switch(FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
+                switch (FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
                     case FileType::TYPE_FILE:
                         $hasTranslatableAttrs = 1;
-                        echo $this->file($attr, $entityAttr, []);
+                        echo $this->file($attr, $entityAttr, $this->obj[$entityAttr . '_label'], []);
                         break;
                     case FileType::TYPE_IMAGE:
                         $hasTranslatableAttrs = 1;
-                        echo $this->image($attr, $entityAttr, []);
+                        echo $this->image($attr, $entityAttr, $this->obj[$entityAttr . '_label'], []);
                         break;
                     default:
                         echo '';
@@ -99,9 +100,9 @@ class CmsForm
 
     public function textFieldsTranslatable($langKey, &$hasTranslatableAttrs)
     {
-        foreach($this->entityTextAttrs as $entityAttr => $value) {
+        foreach ($this->entityTextAttrs as $entityAttr => $value) {
             $attr = $entityAttr . '_' . $langKey;
-            switch($this->obj{$entityAttr}) {
+            switch ($this->obj{$entityAttr}) {
                 case Entities::TEXT_TRANSLATABLE_INPUT_STRING:
                     $hasTranslatableAttrs = 1;
                     echo $this->input($attr, $entityAttr, []);
@@ -132,7 +133,7 @@ class CmsForm
                     break;
                 case Entities::TEXT_TRANSLATABLE_CKEDITOR:
                     $hasTranslatableAttrs = 1;
-                    echo $this->ckeditor($attr, $entityAttr);
+                    echo $this->ckeditor($attr, $this->obj[$entityAttr . '_label']);
                     break;
                 default:
                     echo '';
@@ -144,15 +145,15 @@ class CmsForm
 
     public function fileFieldsCommon()
     {
-        foreach($this->entityFileAttrs as $entityAttr => $value)
-            if($this->obj->{$entityAttr} === Entities::FILE_COMMON) {
+        foreach ($this->entityFileAttrs as $entityAttr => $value)
+            if ($this->obj->{$entityAttr} === Entities::FILE_COMMON) {
                 $attr = $entityAttr . '_0';
-                switch(FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
+                switch (FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
                     case FileType::TYPE_FILE:
-                        echo $this->file($attr, $entityAttr, []);
+                        echo $this->file($attr, $entityAttr, $this->obj[$entityAttr . '_label'], []);
                         break;
                     case FileType::TYPE_IMAGE:
-                        echo $this->image($attr, $entityAttr, []);
+                        echo $this->image($attr, $entityAttr, $this->obj[$entityAttr . '_label'], []);
                         break;
                     default:
                         echo '';
@@ -163,9 +164,9 @@ class CmsForm
 
     public function textFieldsCommon()
     {
-        foreach($this->entityTextAttrs as $entityAttr => $value) {
+        foreach ($this->entityTextAttrs as $entityAttr => $value) {
             $attr = $entityAttr . '_0';
-            switch($this->obj{$entityAttr}) {
+            switch ($this->obj{$entityAttr}) {
                 case Entities::TEXT_COMMON_INPUT_STRING:
                     echo $this->input($attr, $entityAttr, []);
                     break;
@@ -188,7 +189,7 @@ class CmsForm
                     echo $this->textArea($attr, $entityAttr);
                     break;
                 case Entities::TEXT_COMMON_CKEDITOR:
-                    echo $this->ckeditor($attr, $entityAttr);
+                    echo $this->ckeditor($attr, $this->obj[$entityAttr . '_label']);
                     break;
                 default:
                     echo '';
@@ -200,7 +201,7 @@ class CmsForm
 
     #region Renders
 
-    public function ckeditor($attr, $entityAttr, $options = [])
+    public function ckeditor($attr, $label = null, $options = [])
     {
         $options['editorOptions'] = ElFinder::ckeditorOptions('elfinder', [
             'extraPlugins' => 'image2,widget,oembed,video',
@@ -210,7 +211,7 @@ class CmsForm
 
         return Html::tag(
             'div',
-            $this->form->field($this->model, $attr)->widget(CKEditor::class, $options)->label($this->obj[$entityAttr . '_label']),
+            $this->form->field($this->model, $attr)->widget(CKEditor::class, $options)->label($label),
             ['class' => 'col-sm-12']
         );
     }
@@ -237,7 +238,7 @@ class CmsForm
 
     public function date($attr, $attrType, $options = ['type' => DateControl::FORMAT_DATE])
     {
-        if(!$this->checkAttr($this->obj{$attr}, $attrType))
+        if (!$this->checkAttr($this->obj{$attr}, $attrType))
             return null;
 
         return Html::tag(
@@ -248,7 +249,7 @@ class CmsForm
 
     }
 
-    public function image($attr, $entityAttr, $options = [])
+    public function image($attr, $entityAttr, $label, $options = [])
     {
         $options = array_merge([
             'options' => [
@@ -278,13 +279,14 @@ class CmsForm
 
         return Html::tag(
             'div',
-            $this->form->field($this->model, $attr)->widget(FileInput::class, $options)->label($this->obj[$entityAttr . '_label']),
+            $this->form->field($this->model, $attr)->widget(FileInput::class, $options)->label($label),
             ['class' => 'col-sm-4']
         );
     }
 
-    public function file($attr, $entityAttr, $options)
+    public function file($attr, $entityAttr, $label, $options = [])
     {
+
         $options = array_merge([
             'options' => [
                 'accept' => FileType::fileAccepts($this->obj[$entityAttr . '_mimeType'])
@@ -309,7 +311,7 @@ class CmsForm
                 ],
                 'initialPreviewAsData' => true,
                 'initialPreview' => [
-                    'http://localhost:20082/data/items/' . $this->model->id . '/' . $this->model[$attr]
+                    'http://localhost:20082/data/'. strtolower(StringHelper::basename($this->model::className())) .'/' . $this->model->id . '/' . $this->model[$attr]
                 ],
                 'maxFileSize' => $this->obj[$entityAttr . '_maxSize'] . 1024
             ],
@@ -317,7 +319,7 @@ class CmsForm
 
         return Html::tag(
             'div',
-            $this->form->field($this->model, $attr)->widget(FileInput::class, $options)->label($this->obj[$entityAttr . '_label']),
+            $this->form->field($this->model, $attr)->widget(FileInput::class, $options)->label($label),
             ['class' => 'col-sm-4']
         );
     }

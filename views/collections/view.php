@@ -75,6 +75,10 @@ $this->params['breadcrumbs'][] = $this->title;
 								'attribute' => 'use_parenting',
 								'value' => $model->use_parenting ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
 							],
+                            [
+                                'attribute' => 'use_seo',
+                                'value' => $model->use_seo ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
+                            ],
 							[
 								'attribute' => 'option_name',
 								'value' => function(Collections $model) {

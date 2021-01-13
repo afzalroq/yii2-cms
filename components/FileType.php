@@ -4,7 +4,6 @@
 namespace afzalroq\cms\components;
 
 
-use yii\helpers\VarDumper;
 
 class FileType
 {
@@ -21,7 +20,48 @@ class FileType
     const TYPE_FILE = 0;
     const TYPE_IMAGE = 1;
 
-    public static function fileMimeTypes($array) : string
+    public static function fileExtensions($type)
+    {
+        if ($type === null)
+            return null;
+
+        $accepts = '';
+        foreach ($type as $item) {
+            switch (self::MIME_TYPES[$item]) {
+                case 'jpg':
+                    $accepts .= 'jpg, jpeg,';
+                    break;
+                case 'png':
+                    $accepts .= 'png,';
+                    break;
+                case 'gif':
+                    $accepts .= 'gif,';
+                    break;
+                case 'pdf':
+                    $accepts .= 'pdf,';
+                    break;
+                case 'word':
+                    $accepts .= 'doc, .docx,';
+                    break;
+                case 'excel':
+                    $accepts .= 'xls, xlsx,';
+                    break;
+                case 'mp4':
+                    $accepts .= 'mp4,';
+                    break;
+                case 'mp3':
+                    $accepts .= 'mp3,';
+                    break;
+            }
+        }
+
+        return substr($accepts, 0, -1);
+
+        throw new \Exception('mime type not Ok');
+    }
+
+
+    public static function fileMimeTypes($array): string
     {
         $types = [];
         foreach ($array as $mimetype) {
@@ -34,12 +74,21 @@ class FileType
     {
         if ($type === null)
             return null;
-        $type = (int)$type;
-        return (self::MIME_TYPES[$type] === 'jpg'
-            || self::MIME_TYPES[$type] === 'jpeg'
-            || self::MIME_TYPES[$type] === 'png')
-            ? self::TYPE_IMAGE
-            : self::TYPE_FILE;
+
+        $returnType = self::TYPE_IMAGE;
+
+        foreach ($type as $item) {
+            $returnType = (self::MIME_TYPES[$item] === 'jpg'
+                || self::MIME_TYPES[$item] === 'jpeg'
+                || self::MIME_TYPES[$item] === 'png')
+                ? self::TYPE_IMAGE
+                : self::TYPE_FILE;
+
+            if ($returnType === self::TYPE_FILE)
+                return $returnType;
+        }
+
+        return $returnType;
     }
 
     public static function fileAccepts($type)
@@ -47,26 +96,40 @@ class FileType
         if ($type === null)
             return null;
 
-        $type = (int)$type;
-        switch (self::MIME_TYPES[$type]) {
-            case 'jpg':
-                return '.jpg,.jpeg';
-            case 'png':
-                return '.png';
-            case 'gif':
-                return '.gif';
-            case 'pdf':
-                return '.pdf';
-            case 'word':
-                return '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-            case 'excel':
-                return '.xls,.xlsx';
-            case 'mp4':
-                return '.mp4';
-            case 'mp3':
-                return '.mp3';
+        $accepts = '';
+        foreach ($type as $item) {
+            switch (self::MIME_TYPES[$item]) {
+                case 'jpg':
+                    $accepts .= '.jpg,.jpeg,';
+                    break;
+                case 'png':
+                    $accepts .= '.png,';
+                    break;
+                case 'gif':
+                    $accepts .= '.gif,';
+                    break;
+                case 'pdf':
+                    $accepts .= '.pdf,';
+                    break;
+                case 'word':
+                    $accepts .= '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,';
+                    break;
+                case 'excel':
+                    $accepts .= '.xls,.xlsx,';
+                    break;
+                case 'mp4':
+                    $accepts .= '.mp4,';
+                    break;
+                case 'mp3':
+                    $accepts .= '.mp3,';
+                    break;
+            }
         }
+
+        return substr($accepts, 0, -1);
 
         throw new \Exception('mime type not Ok');
     }
+
+
 }

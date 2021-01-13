@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model abdualiym\cms\entities\Items */
+/* @var $model afzalroq\cms\entities\Items */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $entity Entities */
 
@@ -89,6 +89,49 @@ $hasTranslatableAttrs = 0;
         </div>
     </div>
     <!--#endregion -->
+
+    <!--#region Translatable Seo -->
+    <?php if ($entity->use_seo): ?>
+    <div class="row">
+        <div class="col-md-12">
+            <hr>
+            <div class="box">
+                <div class="box-body">
+                    <?php if ($hasTranslatableAttrs): ?>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                            <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                                <a href="#<?= $key ?>S" aria-controls="<?= $key ?>S" role="tab"
+                                   data-toggle="tab"><?= $language ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <div class="tab-content">
+                        <br>
+                        <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                            <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
+
+                                <?= $form->field($model,'meta_title_'.$key)->textInput() ?>
+                                <?= $form->field($model,'meta_keyword_'.$key)->textInput() ?>
+                                <?= $form->field($model,'meta_des_'.$key)->textInput() ?>
+
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php else:?>
+                        <?= $form->field($model,'meta_title_0')->textInput() ?>
+                        <?= $form->field($model,'meta_keyword_0')->textInput() ?>
+                        <?= $form->field($model,'meta_des_0')->textInput() ?>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+    <!--#endregion -->
+
+
+
 
     <div class="form-group">
 		<?= Html::submitButton(Yii::t('cms', 'Save'), ['class' => 'btn btn-success']) ?>

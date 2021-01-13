@@ -65,6 +65,7 @@ use yiidreamteam\upload\ImageUploadBehavior;
  * @property string|null $file_3_2
  * @property string|null $file_3_3
  * @property string|null $file_3_4
+ * @property string|null $seo_values
  * @property int|null $date
  * @property int|null $status
  * @property int $created_at
@@ -80,13 +81,22 @@ class Items extends ActiveRecord
      * @var mixed|null
      */
     public $options;
+    public $meta_title_0;
+    public $meta_title_1;
+    public $meta_title_2;
+    public $meta_title_3;
+    public $meta_title_4;
+    public $meta_des_0;
+    public $meta_des_1;
+    public $meta_des_2;
+    public $meta_des_3;
+    public $meta_des_4;
+    public $meta_keyword_0;
+    public $meta_keyword_1;
+    public $meta_keyword_2;
+    public $meta_keyword_3;
+    public $meta_keyword_4;
 
-    public function getOptionValue(CaE $cae)
-    {
-        return (isset($this->options[$cae->collection->slug]))
-            ? $this->options[$cae->collection->slug]
-            : (($cae->collection->optionDefault) ? $cae->collection->optionDefault->id : null);
-    }
 
     /**
      * {@inheritdoc}
@@ -96,6 +106,13 @@ class Items extends ActiveRecord
         return 'cms_items';
     }
 
+    public function getOptionValue(CaE $cae)
+    {
+        return (isset($this->options[$cae->collection->slug]))
+            ? $this->options[$cae->collection->slug]
+            : (($cae->collection->optionDefault) ? $cae->collection->optionDefault->id : null);
+    }
+
     public function getImageUrl($attr, $width = null, $height = null, $resizeType = null)
     {
         return Image::get($this, $attr, $width, $height, $resizeType);
@@ -103,6 +120,27 @@ class Items extends ActiveRecord
 
     public function beforeSave($insert)
     {
+        if ($this->entity->use_seo)
+            $this->seo_values = [
+                'meta_title_0' => $this->meta_title_0 ?? null,
+                'meta_title_1' => $this->meta_title_1 ?? null,
+                'meta_title_2' => $this->meta_title_2 ?? null,
+                'meta_title_3' => $this->meta_title_3 ?? null,
+                'meta_title_4' => $this->meta_title_4 ?? null,
+
+                'meta_des_0' => $this->meta_des_0 ?? null,
+                'meta_des_1' => $this->meta_des_1 ?? null,
+                'meta_des_2' => $this->meta_des_2 ?? null,
+                'meta_des_3' => $this->meta_des_3 ?? null,
+                'meta_des_4' => $this->meta_des_4 ?? null,
+
+                'meta_keyword_0' => $this->meta_keyword_0 ?? null,
+                'meta_keyword_1' => $this->meta_keyword_1 ?? null,
+                'meta_keyword_2' => $this->meta_keyword_2 ?? null,
+                'meta_keyword_3' => $this->meta_keyword_3 ?? null,
+                'meta_keyword_4' => $this->meta_keyword_4 ?? null
+
+            ];
         $entity = Entities::findOne($this->entity_id);
         if ($insert)
             if ($entity->use_status != null)
@@ -117,20 +155,22 @@ class Items extends ActiveRecord
 
         OaI::deleteAll(['item_id' => $this->id]);
 
-        foreach ($this->options as $collectionSlug => $optionIds)
-            if (is_array($optionIds))
-                foreach ($optionIds as $optionId) {
+        if ($this->options)
+            foreach ($this->options as $collectionSlug => $optionIds)
+                if (is_array($optionIds))
+                    foreach ($optionIds as $optionId) {
+                        $model = new OaI();
+                        $model->option_id = $optionId;
+                        $model->item_id = $this->id;
+                        $model->save();
+                    }
+                else {
                     $model = new OaI();
-                    $model->option_id = $optionId;
+                    $model->option_id = $optionIds;
                     $model->item_id = $this->id;
                     $model->save();
                 }
-            else {
-                $model = new OaI();
-                $model->option_id = $optionIds;
-                $model->item_id = $this->id;
-                $model->save();
-            }
+
         return true;
     }
 
@@ -210,28 +250,66 @@ class Items extends ActiveRecord
 
             [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
                 'file',
-                'mimeTypes' => (!$this->isNewRecord) ?? [FileType::fileAccepts($this->entity->file_1_mimeType)],
-                'maxSize' => (!$this->isNewRecord) ?? $this->entity->file_1_maxSize * 1024 * 1024
+                'extensions' => FileType::fileExtensions($this->entity->file_1_mimeType),
+                'maxSize' => $this->entity->file_1_maxSize * 1024 * 1024
             ],
             [['file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'],
                 'file',
-                'mimeTypes' => (!$this->isNewRecord) ?? [FileType::fileAccepts($this->entity->file_2_mimeType)],
-                'maxSize' => (!$this->isNewRecord) ?? $this->entity->file_2_maxSize * 1024 * 1024
+                'extensions' => FileType::fileExtensions($this->entity->file_2_mimeType),
+                'maxSize' => $this->entity->file_2_maxSize * 1024 * 1024
             ],
             [['file_3_0', 'file_3_1', 'file_3_2', 'file_3_3', 'file_3_4'],
                 'file',
-                'mimeTypes' => (!$this->isNewRecord) ?? [FileType::fileAccepts($this->entity->file_3_mimeType)],
-                'maxSize' => (!$this->isNewRecord) ?? $this->entity->file_3_maxSize * 1024 * 1024
+                'extensions' => FileType::fileExtensions($this->entity->file_3_mimeType),
+                'maxSize' => $this->entity->file_3_maxSize * 1024 * 1024
             ],
+
+            [['text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_1);
+            }],
+            [['text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_2);
+            }],
+            [['text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_3);
+            }],
+            [['text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_4);
+            }],
+            [['text_5_0', 'text_5_1', 'text_5_2', 'text_5_3', 'text_5_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_5);
+            }],
+            [['text_6_0', 'text_6_1', 'text_6_2', 'text_6_3', 'text_6_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_6);
+            }],
+            [['text_7_0', 'text_7_1', 'text_7_2', 'text_7_3', 'text_7_4'], 'required', 'when' => function ($model) {
+                return $model->requireValidator($model->entity->text_7);
+            }],
 
             ['options', 'safe'],
             [['entity_id'], 'required'],
             [['entity_id', 'date', 'status'], 'integer'],
-            [['text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4', 'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4', 'text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4', 'text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4', 'text_5_0', 'text_5_1', 'text_5_2', 'text_5_3', 'text_5_4', 'text_6_0', 'text_6_1', 'text_6_2', 'text_6_3', 'text_6_4', 'text_7_0', 'text_7_1', 'text_7_2', 'text_7_3', 'text_7_4'], 'string'],
+            [['text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4', 'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4', 'text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4', 'text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4', 'text_5_0', 'text_5_1', 'text_5_2', 'text_5_3', 'text_5_4', 'text_6_0', 'text_6_1', 'text_6_2', 'text_6_3', 'text_6_4', 'text_7_0', 'text_7_1', 'text_7_2', 'text_7_3', 'text_7_4',
+                'meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string'],
             ['slug', 'string', 'max' => 255],
             [['slug'], 'unique'],
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Entities::class, 'targetAttribute' => ['entity_id' => 'id']],
         ];
+    }
+
+    public function requireValidator($type)
+    {
+        switch ($type) {
+            case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -299,12 +377,28 @@ class Items extends ActiveRecord
             'file_3_2' => Yii::t('cms', 'File 3') . '(' . $language2 . ')',
             'file_3_3' => Yii::t('cms', 'File 3') . '(' . $language3 . ')',
             'file_3_4' => Yii::t('cms', 'File 3') . '(' . $language4 . ')',
+            'meta_title_0' => Yii::t('cms', 'Seo Title') . '(' . $language0 . ')',
+            'meta_des_0' => Yii::t('cms', 'Seo Description') . '(' . $language0 . ')',
+            'meta_keyword_0' => Yii::t('cms', 'Seo Keywords') . '(' . $language0 . ')',
+            'meta_title_1' => Yii::t('cms', 'Seo Title') . '(' . $language1 . ')',
+            'meta_des_1' => Yii::t('cms', 'Seo Description') . '(' . $language1 . ')',
+            'meta_keyword_1' => Yii::t('cms', 'Seo Keywords') . '(' . $language1 . ')',
+            'meta_title_2' => Yii::t('cms', 'Seo Title') . '(' . $language2 . ')',
+            'meta_des_2' => Yii::t('cms', 'Seo Description') . '(' . $language2 . ')',
+            'meta_keyword_2' => Yii::t('cms', 'Seo Keywords') . '(' . $language2 . ')',
+            'meta_title_3' => Yii::t('cms', 'Seo Title') . '(' . $language3 . ')',
+            'meta_des_3' => Yii::t('cms', 'Seo Description') . '(' . $language3 . ')',
+            'meta_keyword_3' => Yii::t('cms', 'Seo Keywords') . '(' . $language3 . ')',
+            'meta_title_4' => Yii::t('cms', 'Seo Title') . '(' . $language4 . ')',
+            'meta_des_4' => Yii::t('cms', 'Seo Description') . '(' . $language4 . ')',
+            'meta_keyword_4' => Yii::t('cms', 'Seo Keywords') . '(' . $language4 . ')',
             'date' => Yii::t('cms', 'Date'),
             'status' => Yii::t('cms', 'Status'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];
     }
+
 
     /**
      * Gets query for [[Entity]].
