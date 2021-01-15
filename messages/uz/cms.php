@@ -53,6 +53,14 @@ return [
 
     'Disabled' => '',
     'Common' => 'Umumiy',
-    'Translatable' => 'Tarjimali'
+    'Translatable' => 'Tarjimali',
+
+    //items
+
+    'Seo Title' => 'SEO sarlavha',
+    'Seo Description' => 'Seo izoh',
+    'Seo Keywords' => 'SEO keyword',
+    'Pictures' => 'Rasmlar',
+    'Galery main Photo' => 'Galeriya uchun bosh rasm'
 
 ];

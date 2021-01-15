@@ -44,7 +44,6 @@ use yii\widgets\ActiveForm;
                     ]) ?>
                 </div>
                 <div class="col-md-3">
-                    <br>
                     <?= $form->field($model, 'use_seo')->dropDownList(Entities::seoList()) ?>
                 </div>
                 <div class="col-md-3">
@@ -57,7 +56,7 @@ use yii\widgets\ActiveForm;
                 </div>
                 <div class="col-md-3">
                     <br>
-                    <?= $form->field($model, 'use_seo')->checkbox() ?>
+                    <?= $form->field($model, 'use_galery')->checkbox() ?>
                 </div>
             </div>
         </div>

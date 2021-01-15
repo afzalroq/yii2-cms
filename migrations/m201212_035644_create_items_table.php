@@ -71,8 +71,9 @@ class m201212_035644_create_items_table extends Migration
 			'file_3_3' => $this->string(),
 			'file_3_4' => $this->string(),
 			'seo_values' => $this->json(),
+            'main_photo_id' => $this->integer(),
 
-			'date' => $this->integer()->unsigned(),
+            'date' => $this->integer()->unsigned(),
 			'status' => $this->tinyInteger(),
 			'created_at' => $this->integer()->unsigned()->notNull(),
 			'updated_at' => $this->integer()->unsigned()->notNull(),

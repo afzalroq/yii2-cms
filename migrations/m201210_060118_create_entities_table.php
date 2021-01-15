@@ -50,6 +50,7 @@ class m201210_060118_create_entities_table extends Migration
             'file_3_validator' => $this->json(),
             'use_date' => $this->tinyInteger(),
             'use_status' => $this->tinyInteger(),
+            'use_galery' => $this->tinyInteger(),
             'use_in_menu' => $this->tinyInteger(),
             'use_seo' => $this->tinyInteger(),
             'created_at' => $this->integer()->unsigned()->notNull(),

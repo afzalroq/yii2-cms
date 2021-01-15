@@ -52,6 +52,10 @@ YiiAsset::register($this);
                                 'attribute' => 'use_seo',
                                 'value' => $model->use_seo ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
                             ],
+                            [
+                                'attribute' => 'use_galery',
+                                'value' => $model->use_galery ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
+                            ],
 							'created_at:datetime',
 							'updated_at:datetime',
 						],

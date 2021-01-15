@@ -6,10 +6,10 @@ use yii\helpers\Html;
 /* @var $model afzalroq\cms\entities\Items */
 /* @var $entity \afzalroq\cms\entities\Entities */
 
-$this->title = Yii::t('cms', 'Update ' . \yii\helpers\StringHelper::mb_ucfirst($entity->slug) . ': {name}', [
+$this->title = Yii::t('cms', 'Update Items: {name}', [
     'name' => $model->slug,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug)), 'url' => ['index', 'slug' => $entity->slug]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Items'), 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = ['label' => $model->slug, 'url' => ['view', 'id' => $model->id, 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = Yii::t('cms', 'Update');
 ?>

@@ -15,8 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="items-index">
 
+    <h1><?= Html::encode($this->title) ?></h1>
+
     <p>
-        <?= Html::a(Yii::t('cms', 'Create') . ' ' . $this->title, ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('cms', 'Create ' . $this->title), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

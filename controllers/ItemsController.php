@@ -100,7 +100,11 @@ class ItemsController extends Controller
 		}
 
 		if($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
+            foreach ($model->files as $file) {
+                    $model->addPhoto($file);
+                }
+
+            return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
 		}
 
 		return $this->render('create', [
@@ -122,12 +126,10 @@ class ItemsController extends Controller
 	{
 		$model = $this->findModel($id);
 
-        if(Yii::$app->request->isAjax) {
-            $model->load(Yii::$app->request->post());
-            return Json::encode(\yii\widgets\ActiveForm::validate($model));
-        }
-
 		if($model->load(Yii::$app->request->post()) && $model->save()) {
+            foreach ($model->files as $file) {
+                $model->addPhoto($file);
+            }
 			return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
 		}
 
@@ -152,4 +154,48 @@ class ItemsController extends Controller
 
 		return $this->redirect(['index']);
 	}
+
+    public function actionDeletePhoto($id, $photo_id,$slug)
+    {
+        try {
+            $this->removePhoto($id, $photo_id);
+        } catch (\DomainException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
+    }
+
+
+    public function actionMovePhotoUp($id, $photo_id, $slug)
+    {
+        $this->movePhotoUp($id, $photo_id);
+        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
+
+    }
+
+    public function actionMovePhotoDown($id, $photo_id, $slug)
+    {
+        $this->movePhotoDown($id, $photo_id);
+        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
+
+    }
+    public function movePhotoUp($id, $photoId): void
+    {
+        $model = $this->findModel($id);
+        $model->movePhotoUp($photoId);
+    }
+
+    public function movePhotoDown($id, $photoId): void
+    {
+        $model = $this->findModel($id);
+        $model->movePhotoDown($photoId);
+        $model->save();
+    }
+
+    public function removePhoto($id, $photoId): void
+    {
+        $model = $this->findModel($id);
+        $model->removePhoto($photoId);
+        $model->save();
+    }
 }

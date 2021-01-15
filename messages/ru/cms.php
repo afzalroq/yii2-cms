@@ -96,6 +96,12 @@ return [
     'Required' => 'Oбязательный',
     'Date' => 'Дата',
     'Datetime' => 'Дата и время',
-    'Keywords' => 'Ключевые слова',
 
+    //items
+
+    'Seo Title' => 'SEO заголовок',
+    'Seo Description' => 'Seo Описание',
+    'Seo Keywords' => 'SEO Ключевые слова',
+    'Pictures' => 'Фотографий',
+    'Galery main Photo' => 'Галерея главная Фото'
 ];

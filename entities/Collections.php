@@ -39,7 +39,6 @@ use yii\db\ActiveRecord;
 class Collections extends ActiveRecord
 {
 
-    const DISABLED = -1;
 	#region OptionAttrs
 	const OPTION_NAME_DISABLED = 0;
 	const OPTION_NAME_COMMON = 1;
@@ -138,6 +137,7 @@ class Collections extends ActiveRecord
 
     #endregion
 
+
     public function beforeSave($insert)
 	{
 		$this->option_file_1_validator = [
@@ -196,84 +196,48 @@ class Collections extends ActiveRecord
 		];
 	}
 
-// <<<<<<< HEAD
-	public function attributeLabels()
-	{
-		$language0 = isset(Yii::$app->params['cms']['languages2'][0]) ? Yii::$app->params['cms']['languages2'][0] : '';
-		$language1 = isset(Yii::$app->params['cms']['languages2'][1]) ? Yii::$app->params['cms']['languages2'][1] : '';
-		$language2 = isset(Yii::$app->params['cms']['languages2'][2]) ? Yii::$app->params['cms']['languages2'][2] : '';
-		$language3 = isset(Yii::$app->params['cms']['languages2'][3]) ? Yii::$app->params['cms']['languages2'][3] : '';
-		return [
-			'id' => Yii::t('cms', 'ID'),
-			'name_0' => Yii::t('cms', 'Name') . '(' . $language0 . ')',
-			'name_1' => Yii::t('cms', 'Name') . '(' . $language1 . ')',
-			'name_2' => Yii::t('cms', 'Name') . '(' . $language2 . ')',
-			'name_3' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
-			'name_4' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
-			'slug' => Yii::t('cms', 'Slug'),
-			'use_in_menu' => Yii::t('cms', 'Use in menu'),
-			'use_parenting' => Yii::t('cms', 'Use parenting'),
-			'use_seo' => Yii::t('cms', 'Use SEO'),
+    public function attributeLabels()
+    {
+        $language0 = isset(Yii::$app->params['cms']['languages2'][0]) ? Yii::$app->params['cms']['languages2'][0] : '';
+        $language1 = isset(Yii::$app->params['cms']['languages2'][1]) ? Yii::$app->params['cms']['languages2'][1] : '';
+        $language2 = isset(Yii::$app->params['cms']['languages2'][2]) ? Yii::$app->params['cms']['languages2'][2] : '';
+        $language3 = isset(Yii::$app->params['cms']['languages2'][3]) ? Yii::$app->params['cms']['languages2'][3] : '';
+        return [
+            'id' => Yii::t('cms', 'ID'),
+            'name_0' => Yii::t('cms', 'Name') . '(' . $language0 . ')',
+            'name_1' => Yii::t('cms', 'Name') . '(' . $language1 . ')',
+            'name_2' => Yii::t('cms', 'Name') . '(' . $language2 . ')',
+            'name_3' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
+            'name_4' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
+            'slug' => Yii::t('cms', 'Slug'),
+            'use_in_menu' => Yii::t('cms', 'Use in menu'),
+            'use_parenting' => Yii::t('cms', 'Use parenting'),
 
-			'option_file_1' => Yii::t('cms', 'Option File 1'),
-			'option_file_2' => Yii::t('cms', 'Option File 2'),
-			'option_file_1_label' => Yii::t('cms', 'Option File 1 Label'),
-			'option_file_2_label' => Yii::t('cms', 'Option File 2 Label'),
-			'option_file_1_validator' => Yii::t('cms', 'Option File 1 Validator'),
-			'option_file_2_validator' => Yii::t('cms', 'Option File 2 Validator'),
+            'option_file_1' => Yii::t('cms', 'Option File') . ' 1',
+            'option_file_2' => Yii::t('cms', 'Option File') . ' 2',
+            'option_file_1_label' => Yii::t('cms', 'Option File') . ' 1 ' . Yii::t('cms', 'Label'),
+            'option_file_2_label' => Yii::t('cms', 'Option File') . ' 2 ' . Yii::t('cms', 'Label'),
+            'option_file_1_validator' => Yii::t('cms', 'Option File') . ' 1 ' . Yii::t('cms', 'Validator'),
+            'option_file_2_validator' => Yii::t('cms', 'Option File') . ' 2 ' . Yii::t('cms', 'Validator'),
 
-			'option_name' => Yii::t('cms', 'Option name'),
-			'option_content' => Yii::t('cms', 'Option content'),
-			'option_default_id' => Yii::t('cms', 'Default option'),
-			'created_at' => Yii::t('cms', 'Created At'),
-			'updated_at' => Yii::t('cms', 'Updated At'),
-		];
-	}
+            'option_name' => Yii::t('cms', 'Option') . ' ' . Yii::t('cms', 'Name'),
+            'option_content' => Yii::t('cms', 'Option') . ' ' . Yii::t('cms', 'Content'),
+            'option_default_id' => Yii::t('cms', 'Default option'),
+            'created_at' => Yii::t('cms', 'Created At'),
+            'updated_at' => Yii::t('cms', 'Updated At'),
 
-// =======
-//     public function attributeLabels()
-//     {
-//         $language0 = isset(Yii::$app->params['cms']['languages2'][0]) ? Yii::$app->params['cms']['languages2'][0] : '';
-//         $language1 = isset(Yii::$app->params['cms']['languages2'][1]) ? Yii::$app->params['cms']['languages2'][1] : '';
-//         $language2 = isset(Yii::$app->params['cms']['languages2'][2]) ? Yii::$app->params['cms']['languages2'][2] : '';
-//         $language3 = isset(Yii::$app->params['cms']['languages2'][3]) ? Yii::$app->params['cms']['languages2'][3] : '';
-//         return [
-//             'id' => Yii::t('cms', 'ID'),
-//             'name_0' => Yii::t('cms', 'Name') . '(' . $language0 . ')',
-//             'name_1' => Yii::t('cms', 'Name') . '(' . $language1 . ')',
-//             'name_2' => Yii::t('cms', 'Name') . '(' . $language2 . ')',
-//             'name_3' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
-//             'name_4' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
-//             'slug' => Yii::t('cms', 'Slug'),
-//             'use_in_menu' => Yii::t('cms', 'Use in menu'),
-//             'use_parenting' => Yii::t('cms', 'Use parenting'),
+            'file_1_mimeType' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Extension'),
+            'file_1_dimensionW' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Width'),
+            'file_1_dimensionH' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Height'),
+            'file_1_maxSize' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Max size'),
 
-//             'option_file_1' => Yii::t('cms', 'Option File') . ' 1',
-//             'option_file_2' => Yii::t('cms', 'Option File') . ' 2',
-//             'option_file_1_label' => Yii::t('cms', 'Option File') . ' 1 ' . Yii::t('cms', 'Label'),
-//             'option_file_2_label' => Yii::t('cms', 'Option File') . ' 2 ' . Yii::t('cms', 'Label'),
-//             'option_file_1_validator' => Yii::t('cms', 'Option File') . ' 1 ' . Yii::t('cms', 'Validator'),
-//             'option_file_2_validator' => Yii::t('cms', 'Option File') . ' 2 ' . Yii::t('cms', 'Validator'),
+            'file_2_mimeType' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Extension'),
+            'file_2_dimensionW' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Width'),
+            'file_2_dimensionH' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Height'),
+            'file_2_maxSize' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Max size'),
+        ];
+    }
 
-//             'option_name' => Yii::t('cms', 'Option') . ' ' . Yii::t('cms', 'Name'),
-//             'option_content' => Yii::t('cms', 'Option') . ' ' . Yii::t('cms', 'Content'),
-//             'option_default_id' => Yii::t('cms', 'Default option'),
-//             'created_at' => Yii::t('cms', 'Created At'),
-//             'updated_at' => Yii::t('cms', 'Updated At'),
-
-//             'file_1_mimeType' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Extension'),
-//             'file_1_dimensionW' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Width'),
-//             'file_1_dimensionH' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Height'),
-//             'file_1_maxSize' => Yii::t('cms', 'File') . ' 1 ' . Yii::t('cms', 'Max size'),
-
-//             'file_2_mimeType' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Extension'),
-//             'file_2_dimensionW' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Width'),
-//             'file_2_dimensionH' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Height'),
-//             'file_2_maxSize' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Max size'),
-//         ];
-//     }
-
-// >>>>>>> 15c142903ed1fcc72f43d424d6a85e005ebd97a0
     public function nameAttrs()
     {
         $nameAttrs = [];
@@ -304,4 +268,5 @@ class Collections extends ActiveRecord
 	{
 		return $this->hasMany(Options::class, ['collection_id' => 'id']);
 	}
+
 }
