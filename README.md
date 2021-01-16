@@ -40,7 +40,7 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 
 > CKEditor use Elfinder plugin for save files and images. Refer [Elfinder readme](https://github.com/MihailDev/yii2-elfinder) for proper configuration
 - Language indexes related with database columns.
-- Admin panel tabs render by array values order 
+- Admin panel tabs render by array values order
 
 ```php
 'modules' => [
@@ -78,5 +78,5 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 
 ###Examples
 
-TODO 
+TODO
 - Copy from extension root directory example widgets for frontend integration

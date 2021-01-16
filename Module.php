@@ -10,7 +10,6 @@ use afzalroq\cms\components\Language;
  * @package afzalroq\cms
  * @property string $storageRoot
  * @property string $storageHost
- * @property array $thumbs
  * @property array $languages
  * @property array $menuActions
  */
@@ -19,7 +18,6 @@ class Module extends \yii\base\Module
 
     public $storageRoot;
     public $storageHost;
-    public $thumbs;
     public $languages;
     public $menuActions;
 
