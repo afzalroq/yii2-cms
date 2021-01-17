@@ -52,11 +52,11 @@ use yii\widgets\ActiveForm;
                 </div>
                 <div class="col-md-3">
                     <br>
-	                <?= $form->field($model, 'use_in_menu')->checkbox() ?>
+                    <?= $form->field($model, 'use_in_menu')->checkbox() ?>
                 </div>
                 <div class="col-md-3">
                     <br>
-                    <?= $form->field($model, 'use_galery')->checkbox() ?>
+                    <?= $form->field($model, 'use_gallery')->checkbox() ?>
                 </div>
             </div>
         </div>

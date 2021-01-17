@@ -4,14 +4,13 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
-use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\VarDumper;
-use yiidreamteam\upload\ImageUploadBehavior;
 use yii\web\UploadedFile;
+use yiidreamteam\upload\ImageUploadBehavior;
 
 
 /**
@@ -75,7 +74,7 @@ use yii\web\UploadedFile;
  * @property int|null $status
  * @property int $created_at
  * @property int $updated_at
- *  @property ItemPhotos[] $photos
+ * @property ItemPhotos[] $photos
  * @property Entities $entity
  */
 class Items extends ActiveRecord
@@ -211,6 +210,25 @@ class Items extends ActiveRecord
                                 $this->options[$cae->collection->slug] = $oai->option_id;
                                 break;
                         }
+
+
+        $this->meta_title_0 = $this->seo_values['meta_title_0'];
+        $this->meta_title_1 = $this->seo_values['meta_title_1'];
+        $this->meta_title_2 = $this->seo_values['meta_title_2'];
+        $this->meta_title_3 = $this->seo_values['meta_title_3'];
+        $this->meta_title_4 = $this->seo_values['meta_title_4'];
+
+        $this->meta_des_0 = $this->seo_values['meta_des_0'];
+        $this->meta_des_1 = $this->seo_values['meta_des_1'];
+        $this->meta_des_2 = $this->seo_values['meta_des_2'];
+        $this->meta_des_3 = $this->seo_values['meta_des_3'];
+        $this->meta_des_4 = $this->seo_values['meta_des_4'];
+
+        $this->meta_keyword_0 = $this->seo_values['meta_keyword_0'];
+        $this->meta_keyword_1 = $this->seo_values['meta_keyword_1'];
+        $this->meta_keyword_2 = $this->seo_values['meta_keyword_2'];
+        $this->meta_keyword_3 = $this->seo_values['meta_keyword_3'];
+        $this->meta_keyword_4 = $this->seo_values['meta_keyword_4'];
     }
 
     public function behaviors()
@@ -245,10 +263,7 @@ class Items extends ActiveRecord
             $this->getImageUploadBehaviorConfig('file_3_2'),
             $this->getImageUploadBehaviorConfig('file_3_3'),
             $this->getImageUploadBehaviorConfig('file_3_4'),
-            [
-                'class' => SaveRelationsBehavior::class,
-                'relations' => ['photos'],
-            ],
+
         ];
     }
 
@@ -330,6 +345,30 @@ class Items extends ActiveRecord
         ];
 
         return $rules;
+    }
+
+    public function fileValidator($entityAttr)
+    {
+        return [$this->getCurrentAttrs($entityAttr),
+            'file',
+            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
+            'maxSize' => $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024
+        ];
+    }
+
+    public function getCurrentAttrs($entityAttr)
+    {
+        $attrs = [];
+        foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
+            $attrs[] = $entityAttr . '_' . $key;
+        return $attrs;
+    }
+
+    public function requiredValidator($entityAttr)
+    {
+        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
+            return $model->requireValidator($model->dependEntity->{$entityAttr});
+        }];
     }
 
     public function requireValidator($type)
@@ -447,19 +486,8 @@ class Items extends ActiveRecord
     public function addPhoto(UploadedFile $file): void
     {
         $photos = $this->photos;
-        $photos[] = ItemPhotos::create($file,$this->id);
+        $photos[] = ItemPhotos::create($file, $this->id);
         $this->updatePhotos($photos);
-    }
-    public function setMainPhoto($photos){
-        if (!empty($photos)){
-            $model  = self::findOne($this->id);
-            $model->main_photo_id = $this->photos[0]['id'];
-            $model->save(false);
-        }
-    }
-    public function removePhotos(): void
-    {
-        $this->updatePhotos([]);
     }
 
     private function updatePhotos(array $photos): void
@@ -468,8 +496,21 @@ class Items extends ActiveRecord
             $photo->setSort($i);
             $photo->save();
         }
-        $this->photos = $photos;
         $this->setMainPhoto($photos);
+    }
+
+    public function setMainPhoto($photos)
+    {
+        if (!empty($photos)) {
+            $model = self::findOne($this->id);
+            $model->main_photo_id = $photos[0]['id'] ?? $photos[1]['id'];
+            $model->save(false);
+        }
+    }
+
+    public function removePhotos(): void
+    {
+        $this->updatePhotos([]);
     }
 
     public function movePhotoUp($id): void

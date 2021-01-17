@@ -61,20 +61,19 @@ if ($entity->use_seo)
         if ($value !== null)
             $seo_values [] = [
                 'attribute' => $key,
-                'value' => $value
+                'value' => $value,
             ];
-if ($entity->use_galery)
-    $seo_values [] = [
+if ($entity->use_gallery)
+    $main_photo [] = [
         'attribute' => 'main_photo_id',
         'value' => function ($model) {
             if ($model->mainPhoto)
-                return Html::a(
-                    Html::img($model->mainPhoto->getUploadedFileUrl('file')),
+                return Html::a(Html::img($model->mainPhoto->getUploadedFileUrl('file')),
                     $model->mainPhoto->getUploadedFileUrl('file'),
                     ['class' => 'thumbnail', 'target' => '_blank']
                 );
         },
-        'label' => Yii::t('cms', 'Galery main Photo'),
+        'label' => Yii::t('cms', 'Gallery main Photo'),
         'format' => 'raw'
     ];
 ?>
@@ -118,13 +117,13 @@ if ($entity->use_galery)
         ]) ?>
     <?php endif; ?>
 
-    <?php if ($entity->use_galery): ?>
+    <?php if ($entity->use_gallery): ?>
         <?= DetailView::widget([
             'model' => $model,
-            'attributes' => $seo_values
+            'attributes' => $main_photo
         ]) ?>
     <?php endif; ?>
-    <?php if ($entity->use_galery): ?>
+    <?php if ($entity->use_gallery): ?>
         <div class="box" id="<?= $model->id ?>T">
             <div class="box-body">
                 <div class="row">
