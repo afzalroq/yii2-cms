@@ -1,6 +1,6 @@
 <?php
 
-namespace afzalroq\cms\entities\unit\Unit;
+namespace afzalroq\cms\entities\unit;
 
 use Yii;
 use yii\base\Model;

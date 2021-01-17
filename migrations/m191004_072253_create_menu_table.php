@@ -7,9 +7,7 @@ use yii\db\Migration;
  */
 class m191004_072253_create_menu_table extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function safeUp()
     {
         $tableOptions = null;
@@ -32,9 +30,7 @@ class m191004_072253_create_menu_table extends Migration
         ], $tableOptions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function safeDown()
     {
         $this->dropTable('cms_menu');

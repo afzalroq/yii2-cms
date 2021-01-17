@@ -1,6 +1,6 @@
 <?php
 
-namespace afzalroq\cms\entities\unit\Unit;
+namespace afzalroq\cms\entities\unit;
 
 use yii\db\ActiveRecord;
 
@@ -13,7 +13,7 @@ abstract class UnitActiveRecord extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'afzalroq_unit_units';
+        return 'cms_unit_units';
     }
 
     abstract public function getData($key);

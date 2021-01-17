@@ -1,6 +1,6 @@
 <?php
 
-namespace afzalroq\cms\entities\unit\Unit;
+namespace afzalroq\cms\entities\unit;
 
 use kartik\file\FileInput;
 use Yii;

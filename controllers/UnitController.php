@@ -3,7 +3,7 @@
 namespace afzalroq\cms\controllers;
 
 use afzalroq\cms\entities\unit\Categories;
-use afzalroq\cms\entities\unit\Unit\Unit;
+use afzalroq\cms\entities\unit\Unit;
 use afzalroq\cms\forms\UnitSearch;
 use Yii;
 use yii\filters\VerbFilter;

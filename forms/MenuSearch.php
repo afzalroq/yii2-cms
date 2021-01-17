@@ -12,9 +12,7 @@ use afzalroq\cms\entities\Menu;
  */
 class MenuSearch extends Menu
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -23,9 +21,7 @@ class MenuSearch extends Menu
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class

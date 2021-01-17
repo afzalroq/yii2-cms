@@ -63,9 +63,7 @@ class Options extends ActiveRecord
     public $meta_keyword_3;
     public $meta_keyword_4;
 
-    /**
-     * {@inheritdoc}
-     */
+
     public static function tableName()
     {
         return 'cms_options';
@@ -139,9 +137,7 @@ class Options extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [

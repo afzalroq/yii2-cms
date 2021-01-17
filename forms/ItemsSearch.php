@@ -12,9 +12,7 @@ use afzalroq\cms\entities\Items;
  */
 class ItemsSearch extends Items
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -23,9 +21,7 @@ class ItemsSearch extends Items
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class

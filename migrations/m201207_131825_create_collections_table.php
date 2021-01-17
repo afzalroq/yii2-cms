@@ -7,9 +7,7 @@ use yii\db\Migration;
  */
 class m201207_131825_create_collections_table extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function safeUp()
     {
         $tableOptions = null;
@@ -54,9 +52,7 @@ class m201207_131825_create_collections_table extends Migration
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function safeDown()
     {
         $this->dropTable('{{%cms_collections}}');

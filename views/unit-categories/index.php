@@ -28,15 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'title',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return Html::a($model->title, ['view', 'id' => $model->id]);
+                                return Html::a($model->title, ['view', 'id' => $model->id], ['class' => 'btn btn-link']);
                             }
                         ],
             [
                 'attribute' => 'id',
                 'value' => function (Categories $model) {
-                    return Html::a(Yii::t('unit','Unit'), ['unit/index', 'slug' => $model->slug]);
+                    return Html::a(Yii::t('unit','Manage Units'), ['unit/index', 'slug' => $model->slug], ['class' => 'btn btn-default']);
                 },
-                'label' => Yii::t('unit', 'View'),
+                'label' => Yii::t('unit', 'Unit'),
                 'format' => 'raw'
             ],
             'created_at:datetime',

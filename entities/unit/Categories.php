@@ -1,6 +1,6 @@
 <?php
 
-namespace afzalroq\cms\entities\unit\Unit;
+namespace afzalroq\cms\entities\unit;
 
 use afzalroq\cms\validators\SlugValidator;
 use Yii;
@@ -18,7 +18,7 @@ class Categories extends \yii\db\ActiveRecord
 
     public static function tableName()
     {
-        return 'afzalroq_unit_categories';
+        return 'cms_unit_categories';
     }
 
     public function rules()

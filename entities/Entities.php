@@ -102,9 +102,7 @@ class Entities extends ActiveRecord
     public $file_3_dimensionH;
     public $file_3_maxSize;
 
-    /**
-     * {@inheritdoc}
-     */
+
     public static function tableName()
     {
         return 'cms_entities';
@@ -299,9 +297,7 @@ class Entities extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -316,9 +312,7 @@ class Entities extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function attributeLabels()
     {
         return [

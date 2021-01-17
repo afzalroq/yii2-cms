@@ -2,7 +2,6 @@
 
 namespace afzalroq\cms;
 
-use afzalroq\cms\entities\Menu;
 use afzalroq\cms\components\Language;
 
 /**
@@ -20,6 +19,11 @@ class Module extends \yii\base\Module
     public $storageHost;
     public $languages;
     public $menuActions;
+
+    private static function dataKeys()
+    {
+        return [0, 1, 2, 3, 4];
+    }
 
     public function init()
     {
@@ -40,8 +44,9 @@ class Module extends \yii\base\Module
 
     private function validateLanguages()
     {
-        if (count(array_diff(\Yii::$app->params['cms']['languageIds'], Language::dataKeys()))) {
-            throw new \RuntimeException('Language key is invalid. Current support keys range is ' . json_encode(Language::dataKeys()));
+        if (count(array_diff(\Yii::$app->params['cms']['languageIds'], self::dataKeys()))) {
+            throw new \RuntimeException('Language key is invalid. Current support keys range is ' . json_encode(self::dataKeys()));
         }
     }
+
 }

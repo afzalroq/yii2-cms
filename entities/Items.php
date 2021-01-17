@@ -110,9 +110,7 @@ class Items extends ActiveRecord
             $this->dependEntity = Entities::findOne(['slug' => $slug]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public static function tableName()
     {
         return 'cms_items';
@@ -290,9 +288,7 @@ class Items extends ActiveRecord
         }];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         if (empty($this->dependEntity))
@@ -351,9 +347,7 @@ class Items extends ActiveRecord
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function attributeLabels()
     {
         $language0 = isset(Yii::$app->params['cms']['languages2'][0]) ? Yii::$app->params['cms']['languages2'][0] : '';

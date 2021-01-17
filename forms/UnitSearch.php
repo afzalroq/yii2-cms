@@ -3,7 +3,7 @@
 namespace afzalroq\cms\forms;
 
 use afzalroq\cms\entities\unit\Categories;
-use afzalroq\cms\entities\unit\Unit\Unit;
+use afzalroq\cms\entities\unit\Unit;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
