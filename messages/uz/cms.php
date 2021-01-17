@@ -61,6 +61,6 @@ return [
     'Seo Description' => 'Seo izoh',
     'Seo Keywords' => 'SEO keyword',
     'Pictures' => 'Rasmlar',
-    'Galery main Photo' => 'Galeriya uchun bosh rasm'
+    'Gallery main Photo' => 'Galeriya uchun bosh rasm'
 
 ];

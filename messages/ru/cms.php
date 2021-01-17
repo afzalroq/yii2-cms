@@ -103,5 +103,5 @@ return [
     'Seo Description' => 'Seo Описание',
     'Seo Keywords' => 'SEO Ключевые слова',
     'Pictures' => 'Фотографий',
-    'Galery main Photo' => 'Галерея главная Фото'
+    'Gallery main Photo' => 'Галерея главная Фото'
 ];
