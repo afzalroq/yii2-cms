@@ -3,10 +3,7 @@
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Options;
-use kartik\file\FileInput;
-use kartik\form\ActiveForm;
-use mihaildev\elfinder\ElFinder;
-use sadovojav\ckeditor\CKEditor;
+use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -18,11 +15,9 @@ use yii\helpers\Html;
 /* @var $form ActiveForm */
 
 $hasTranslatableAttrs = 0;
-
-
 ?>
 
-<?php if(Yii::$app->session->hasFlash('success')): ?>
+<?php if (Yii::$app->session->hasFlash('success')): ?>
     <div style="margin:5px 0 0 0;" class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div>
 <?php endif; ?>
 <div class="pages-form">
@@ -31,10 +26,9 @@ $hasTranslatableAttrs = 0;
     $cmsForm = new \afzalroq\cms\widgets\CmsForm($form, $model, $collection)
     ?>
 
-	<?= $form->field($model, 'collection_id')->textInput(['value' => $collection->id, 'type' => 'hidden'])->label(false) ?>
+    <?= $form->field($model, 'collection_id')->textInput(['value' => $collection->id, 'type' => 'hidden'])->label(false) ?>
 
-	<?= $form->errorSummary($model) ?>
-
+    <?= $form->errorSummary($model) ?>
 
     <div class="box">
         <div class="box-body">
@@ -44,6 +38,7 @@ $hasTranslatableAttrs = 0;
                 </div>
                 <?php $optionIdList = ArrayHelper::map(Options::findAll(['collection_id' => $collection->id]), 'id', 'slug');
                 unset($optionIdList[$model->id]);
+
                 if ($optionIdList): ?>
                     <div class="col-md-4">
                         <?= $form->field($model, 'parent_id')->dropDownList($optionIdList, ['prompt' => 'Please select', 'options' => ['value' => 'none', 'class' => 'prompt', 'label' => 'Select']]) ?>
@@ -71,7 +66,6 @@ $hasTranslatableAttrs = 0;
                 ?>
 
                 <?php
-
                 if ($collection->option_file_1 == Collections::OPTION_FILE_COMMON) {
                     if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_IMAGE)
                         echo $cmsForm->image('file_1_0', 'file_1', $collection->option_file_1_label);
@@ -88,7 +82,6 @@ $hasTranslatableAttrs = 0;
                         echo $cmsForm->file('file_2_0', 'file_2', $collection->option_file_2_label);
                 }
                 ?>
-
             </div>
         </div>
     </div>
@@ -158,15 +151,16 @@ $hasTranslatableAttrs = 0;
             </div>
         </div>
     </div>
-    <?php if ($collection->use_seo > 0): ?>
+
+    <?php if ($collection->use_seo): ?>
         <div class="row">
             <div class="col-md-12">
                 <hr>
                 <div class="box">
                     <div class="box-body">
-                        <?php if ($collection->use_seo == Collections::SEO_TRANSLATABLE ): ?>
+                        <?php if ($collection->use_seo == Collections::SEO_TRANSLATABLE): ?>
                             <ul class="nav nav-tabs" role="tablist">
-                                <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                                <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                                     <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
                                         <a href="#<?= $key ?>S" aria-controls="<?= $key ?>S" role="tab"
                                            data-toggle="tab"><?= $language ?></a>
@@ -175,32 +169,35 @@ $hasTranslatableAttrs = 0;
                             </ul>
                             <div class="tab-content">
                                 <br>
-                                <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                                <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                                     <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
 
-                                        <?= $form->field($model,'meta_title_'.$key)->textInput() ?>
-                                        <?= $form->field($model,'meta_keyword_'.$key)->textInput() ?>
-                                        <?= $form->field($model,'meta_des_'.$key)->textInput() ?>
+                                        <?= $form->field($model, 'meta_title_' . $key)->textInput() ?>
+                                        <?= $form->field($model, 'meta_keyword_' . $key)->textInput() ?>
+                                        <?= $form->field($model, 'meta_des_' . $key)->textInput() ?>
 
                                     </div>
                                 <?php endforeach; ?>
                             </div>
-                        <?php else:?>
-                            <?= $form->field($model,'meta_title_0')->textInput() ?>
-                            <?= $form->field($model,'meta_keyword_0')->textInput() ?>
-                            <?= $form->field($model,'meta_des_0')->textInput() ?>
-                        <?php endif;?>
+                        <?php else: ?>
+                            <?= $form->field($model, 'meta_title_0')->textInput() ?>
+                            <?= $form->field($model, 'meta_keyword_0')->textInput() ?>
+                            <?= $form->field($model, 'meta_des_0')->textInput() ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     <?php endif; ?>
+
     <div class="form-group">
-		<?= Html::submitButton($model->isNewRecord ? Yii::t('cms', 'Create') : Yii::t('cms', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton(Yii::t('cms', $model->isNewRecord ? 'Create' : 'Update'), ['class' => 'btn btn-success']) ?>
     </div>
-	<?php \yii\widgets\ActiveForm::end(); ?>
+
+    <?php \yii\widgets\ActiveForm::end(); ?>
+
     <script>
-        if (!<?= $hasTranslatableAttrs?>)
+        if (!<?= $hasTranslatableAttrs ?>)
             document.querySelector('#translatable').innerHTML = ''
     </script>
 </div>

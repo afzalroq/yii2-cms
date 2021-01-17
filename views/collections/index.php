@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="collections-index">
 
     <p>
+        <?= Html::a("<i class='glyphicon glyphicon-home'></i> " . Yii::t('cms', 'Home'), ['/cms/home/index'], ['class' => 'btn btn-warning']) ?>
         <?= Html::a(Yii::t('cms', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
@@ -24,8 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
+                [
+                    'attribute' => 'slug',
+                    'value' => function ($model) {
+                        return Html::a($model->slug . ' <i class="fa fa-chevron-circle-right"></i>', ['collections/view', 'id' =>$model->id], ['class' => 'btn btn-default']);
+                    },
+                    'format' => 'html'
+                ],
                 'name_0',
-                'slug',
                 [
                     'attribute' => 'use_in_menu',
                     'value' => function ($model) {
@@ -50,8 +57,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'option_name',
                 'option_content',
                 'created_at:datetime',
-
-                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
     </div>

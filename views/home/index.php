@@ -1,7 +1,5 @@
 <?php
 
-use afzalroq\cms\entities\Entities;
-use afzalroq\cms\entities\Options;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -11,14 +9,14 @@ use yii\widgets\ListView;
 /* @var $collectionProvider ActiveDataProvider */
 /* @var $entityProvider ActiveDataProvider */
 
-$this->title = 'My Yii Application';
+$this->title = 'CMS Dashboard';
 
 ?>
 <div class="site-index">
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <p>
-                <?= Html::a('Collections', Url::to(['/cms/collections/index']), ['class' => 'btn btn-success']) ?>
+                <?= Html::a('Collections', Url::to(['/cms/collections/index']), ['class' => 'btn btn-block btn-lg btn-primary']) ?>
             </p>
             <?= ListView::widget([
                 'dataProvider' => $collectionProvider,
@@ -27,14 +25,7 @@ $this->title = 'My Yii Application';
                     'class' => 'list-group'
                 ],
                 'itemView' => function ($model) {
-                    return Html::tag(
-                            'span',
-                            count($model->options),
-                            ['class' => 'badge']
-                        ) . Html::a(
-                            $model->name_0,
-                            Url::to(['/cms/collections/view', 'id' => $model->id])
-                        );
+                    return Html::tag('span', count($model->options), ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/collections/view', 'id' => $model->id]));
                 },
                 'itemOptions' => [
                     'tag' => 'li',
@@ -43,9 +34,9 @@ $this->title = 'My Yii Application';
 
             ]) ?>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <p>
-                <?= Html::a('Entities', Url::to(['/cms/entities/index']), ['class' => 'btn btn-success']) ?>
+                <?= Html::a('Entities', Url::to(['/cms/entities/index']), ['class' => 'btn btn-block btn-lg btn-success']) ?>
             </p>
             <?= ListView::widget([
                 'dataProvider' => $entityProvider,
@@ -54,14 +45,26 @@ $this->title = 'My Yii Application';
                     'class' => 'list-group'
                 ],
                 'itemView' => function ($model) {
-                    return Html::tag(
-                            'span',
-                            count($model->items),
-                            ['class' => 'badge']
-                        ) . Html::a(
-                            $model->name_0,
-                            Url::to(['/cms/entities/view', 'id' => $model->id])
-                        );
+                    return Html::tag('span', count($model->items), ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/entities/view', 'id' => $model->id]));
+                },
+                'itemOptions' => [
+                    'tag' => 'li',
+                    'class' => 'list-group-item'
+                ]
+            ]) ?>
+        </div>
+        <div class="col-sm-4">
+            <p>
+                <?= Html::a('Unit Categories', Url::to(['/cms/unit-categories/index']), ['class' => 'btn btn-block btn-lg btn-warning']) ?>
+            </p>
+            <?= ListView::widget([
+                'dataProvider' => $unitCategoryProvider,
+                'options' => [
+                    'tag' => 'ul',
+                    'class' => 'list-group'
+                ],
+                'itemView' => function ($model) {
+                    return Html::tag('span') . Html::a($model->title, Url::to(['/cms/unit-categories/view', 'id' => $model->id]));
                 },
                 'itemOptions' => [
                     'tag' => 'li',

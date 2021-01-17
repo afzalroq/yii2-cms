@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\controllers;
 
+use afzalroq\cms\entities\unit\Categories;
 use Yii;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Entities;
@@ -18,10 +19,12 @@ class HomeController extends Controller
     {
         $collectionProvider = new ActiveDataProvider(['query' => Collections::find()]);
         $entityProvider = new ActiveDataProvider(['query' => Entities::find()]);
+        $unitCategoryProvider = new ActiveDataProvider(['query' => Categories::find()]);
 
         return $this->render('index', [
             'collectionProvider' => $collectionProvider,
-            'entityProvider' => $entityProvider
+            'entityProvider' => $entityProvider,
+            'unitCategoryProvider' => $unitCategoryProvider
         ]);
     }
 }

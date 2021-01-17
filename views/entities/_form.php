@@ -1,7 +1,8 @@
 <?php
 
-use afzalroq\cms\entities\Entities;
 use afzalroq\cms\components\FileType;
+use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Entities;
 use yii\bootstrap\ToggleButtonGroup;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -13,6 +14,7 @@ use yii\widgets\ActiveForm;
 
 <style>
     #entities-use_date,
+    #entities-use_seo,
     #entities-file_1_mimetype,
     #entities-file_2_mimetype,
     #entities-file_3_mimetype {
@@ -29,34 +31,37 @@ use yii\widgets\ActiveForm;
         <div class="box-body">
             <div class="row">
                 <div class="col-md-3">
+                    <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                        <?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]) ?>
+                    <?php endforeach; ?>
+                </div>
+                <div class="col-md-3">
                     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
                 </div>
-                <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
-                    <div class="col-md-3">
-                        <?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]) ?>
-                    </div>
-                <?php endforeach; ?>
                 <div class="col-md-3">
+                    <?php $model->use_date = $model->isNewRecord ? Entities::USE_DATE_DISABLED : $model->use_date ?>
                     <?= $form->field($model, 'use_date')->widget(ToggleButtonGroup::class, [
                         'type' => 'radio',
                         'items' => Entities::dateList(),
-                        'labelOptions' => ['class' => 'btn-default btn-sm tbg']
+                        'labelOptions' => ['class' => 'btn-info tbg']
                     ]) ?>
                 </div>
                 <div class="col-md-3">
-                    <?= $form->field($model, 'use_seo')->dropDownList(Entities::seoList()) ?>
+                    <?php $model->use_seo = $model->isNewRecord ? Collections::SEO_DISABLED : $model->use_seo ?>
+                    <?= $form->field($model, 'use_seo')->widget(ToggleButtonGroup::class, [
+                        'type' => 'radio',
+                        'items' => Collections::seoList(),
+                        'labelOptions' => [
+                            'class' => 'btn btn-info'
+                        ]
+                    ]) ?>
                 </div>
                 <div class="col-md-3">
-                    <br>
-                    <?= $form->field($model, 'use_status')->checkbox() ?>
-                </div>
-                <div class="col-md-3">
-                    <br>
+                    <?= $form->field($model, 'manual_slug')->checkbox() ?>
                     <?= $form->field($model, 'use_in_menu')->checkbox() ?>
-                </div>
-                <div class="col-md-3">
-                    <br>
                     <?= $form->field($model, 'use_gallery')->checkbox() ?>
+                    <?= $form->field($model, 'use_status')->checkbox() ?>
+                    <?= $form->field($model, 'use_views_count')->checkbox() ?>
                 </div>
             </div>
         </div>
@@ -131,7 +136,7 @@ use yii\widgets\ActiveForm;
                         'type' => 'checkbox',
                         'items' => FileType::MIME_TYPES,
                         'labelOptions' => [
-                            'class' => 'btn btn-default btn-sm tbg'
+                            'class' => 'btn btn-info btn-sm tbg'
                         ]
                     ]) ?>
                     <br>
@@ -156,7 +161,7 @@ use yii\widgets\ActiveForm;
                         'type' => 'checkbox',
                         'items' => FileType::MIME_TYPES,
                         'labelOptions' => [
-                            'class' => 'btn btn-default btn-sm tbg'
+                            'class' => 'btn btn-info btn-sm tbg'
                         ]
                     ]) ?>
                     <br>
@@ -181,7 +186,7 @@ use yii\widgets\ActiveForm;
                         'type' => 'checkbox',
                         'items' => FileType::MIME_TYPES,
                         'labelOptions' => [
-                            'class' => 'btn btn-default btn-sm tbg'
+                            'class' => 'btn btn-info btn-sm tbg'
                         ]
                     ]) ?>
                     <br>

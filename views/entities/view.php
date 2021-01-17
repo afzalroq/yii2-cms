@@ -3,6 +3,7 @@
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\CaE;
 use afzalroq\cms\entities\Entities;
+use afzalroq\cms\entities\Collections;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
@@ -15,12 +16,23 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Entities'), 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 
+$names = [];
+foreach (Yii::$app->params['cms']['languages2'] as $key => $language) {
+    $names[] = [
+        'attribute' => 'id',
+        'label' => 'Name ' . $language,
+        'value' => function ($model) use ($key) {
+            return $model->getName($key);
+        },
+    ];
+}
 ?>
 <div class="entities-view">
     <p>
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('cms', 'View items') . " <i class='fa fa-chevron-circle-right'></i>", ['/cms/items/index', 'slug' => $model->slug], ['class' => 'btn btn-warning']) ?>
         <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-danger pull-right',
             'data' => [
                 'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
@@ -33,32 +45,30 @@ YiiAsset::register($this);
                 <div class="box-body">
                     <?= DetailView::widget([
                         'model' => $model,
-                        'attributes' => [
-                            'id',
-                            'slug',
+                        'attributes' => array_merge(
                             [
-                                'attribute' => 'use_date',
-                                'value' => $model->use_date !== null ? Entities::dateList()[$model->use_date] : null
+                                'id',
+                                'slug'
                             ],
+                            $names,
                             [
-                                'attribute' => 'use_status',
-                                'value' => $model->use_status ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
-                            ],
-                            [
-                                'attribute' => 'use_in_menu',
-                                'value' => $model->use_in_menu ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
-                            ],
-                            [
-                                'attribute' => 'use_seo',
-                                'value' => $model->use_seo ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
-                            ],
-                            [
-                                'attribute' => 'use_galery',
-                                'value' => $model->use_gallery ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
-                            ],
-                            'created_at:datetime',
-                            'updated_at:datetime',
-                        ],
+                                [
+                                    'attribute' => 'use_date',
+                                    'value' => Entities::dateList()[$model->use_date]
+                                ],
+                                [
+                                    'attribute' => 'use_seo',
+                                    'value' => Collections::seoList()[$model->use_seo]
+                                ],
+                                'manual_slug:boolean',
+                                'use_in_menu:boolean',
+                                'use_galery:boolean',
+                                'use_status:boolean',
+                                'use_views_count:boolean',
+                                'created_at:datetime',
+                                'updated_at:datetime',
+                            ]
+                        )
                     ]) ?>
                 </div>
             </div>
@@ -73,43 +83,43 @@ YiiAsset::register($this);
                                 'attributes' => [
                                     [
                                         'attribute' => 'text_1',
-                                        'value' => function($model) {
+                                        'value' => function ($model) {
                                             return Entities::textList()[$model->text_1];
                                         }
                                     ],
                                     [
                                         'attribute' => 'text_2',
-                                        'value' => function($model) {
+                                        'value' => function ($model) {
                                             return Entities::textList()[$model->text_2];
                                         }
                                     ],
                                     [
                                         'attribute' => 'text_3',
-                                        'value' => function($model) {
+                                        'value' => function ($model) {
                                             return Entities::textList()[$model->text_3];
                                         }
                                     ],
                                     [
                                         'attribute' => 'text_4',
-                                        'value' => function($model) {
+                                        'value' => function ($model) {
                                             return Entities::textList()[$model->text_4];
                                         }
                                     ],
                                     [
                                         'attribute' => 'text_5',
-                                        'value' => function($model) {
+                                        'value' => function ($model) {
                                             return Entities::textList()[$model->text_5];
                                         }
                                     ],
                                     [
                                         'attribute' => 'text_6',
-                                        'value' => function($model) {
+                                        'value' => function ($model) {
                                             return Entities::textList()[$model->text_6];
                                         }
                                     ],
                                     [
                                         'attribute' => 'text_7',
-                                        'value' => function($model) {
+                                        'value' => function ($model) {
                                             return Entities::textList()[$model->text_7];
                                         }
                                     ],
@@ -144,7 +154,7 @@ YiiAsset::register($this);
                         'attributes' => [
                             [
                                 'attribute' => 'file_1',
-                                'value' => function(Entities $model) {
+                                'value' => function (Entities $model) {
                                     return Yii::t('cms', Entities::fileList()[$model->file_1]);
                                 }
                             ],
@@ -215,41 +225,43 @@ YiiAsset::register($this);
     <p>
         <?= Html::a(Yii::t('cms', 'Add collection'), ['add-collections', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
     </p>
-    <div class="box">
-        <div class="box-body">
-            <div class="row">
-                <?php foreach($model->caes as $cae): ?>
-                    <div class="col-sm-3">
-                        <p>
-                            <?= Html::a(Yii::t('cms', 'Update'), ['update-collections', 'id' => $model->id, 'caeId' => $cae->id], ['class' => 'btn btn-sm btn-primary']) ?>
-                            <?= Html::a(Yii::t('cms', 'Delete'), ['delete-collections', 'id' => $model->id, 'caeId' => $cae->id], [
-                                'class' => 'btn btn-sm btn-danger',
-                                'data' => [
-                                    'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
-                                    'method' => 'post',
-                                ],
+    <?php if (count($model->caes)): ?>
+        <div class="box">
+            <div class="box-body">
+                <div class="row">
+                    <?php foreach ($model->caes as $cae): ?>
+                        <div class="col-sm-3">
+                            <p>
+                                <?= Html::a(Yii::t('cms', 'Update'), ['update-collections', 'id' => $model->id, 'caeId' => $cae->id], ['class' => 'btn btn-sm btn-primary']) ?>
+                                <?= Html::a(Yii::t('cms', 'Delete'), ['delete-collections', 'id' => $model->id, 'caeId' => $cae->id], [
+                                    'class' => 'btn btn-sm btn-danger',
+                                    'data' => [
+                                        'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
+                                        'method' => 'post',
+                                    ],
+                                ]) ?>
+                            </p>
+                            <?= DetailView::widget([
+                                'model' => $cae,
+                                'attributes' => [
+                                    [
+                                        'attribute' => 'collection_id',
+                                        'label' => 'Collection',
+                                        'value' => $cae->collection->slug
+                                    ],
+                                    [
+                                        'attribute' => 'type',
+                                        'value' => CaE::typeList()[$cae->type]
+                                    ],
+                                    'sort',
+                                    'size'
+                                ]
                             ]) ?>
-                        </p>
-                        <?= DetailView::widget([
-                            'model' => $cae,
-                            'attributes' => [
-                                [
-                                    'attribute' => 'collection_id',
-                                    'label' => 'Collection',
-                                    'value' => $cae->collection->slug
-                                ],
-                                [
-                                    'attribute' => 'type',
-                                    'value' => CaE::typeList()[$cae->type]
-                                ],
-                                'sort',
-                                'size'
-                            ]
-                        ]) ?>
-                    </div>
-                <?php endforeach; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
 
 </div>

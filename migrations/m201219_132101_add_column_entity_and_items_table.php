@@ -14,6 +14,7 @@ class m201219_132101_add_column_entity_and_items_table extends Migration
 
 	public function safeDown()
 	{
-
+        $this->dropColumn('cms_entities', 'use_gallery');
+        $this->dropColumn('cms_items', 'main_photo_id');
 	}
 }

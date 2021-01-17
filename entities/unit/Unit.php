@@ -5,7 +5,6 @@ namespace afzalroq\cms\entities\unit;
 use afzalroq\cms\helpers\UnitType;
 use afzalroq\cms\validators\SlugValidator;
 use Yii;
-use yii\base\DynamicModel;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\helpers\ArrayHelper;
@@ -36,19 +35,6 @@ class Unit extends \yii\db\ActiveRecord
 
     }
 
-    public static function getBySlug($slug)
-    {
-        return self::find()
-            ->where(['category_id' => (Categories::findOne(['slug' => $slug]))->id])
-            ->orderBy('sort')
-            ->all();
-    }
-
-    public static function tableName()
-    {
-        return 'cms_unit_units';
-    }
-
     public function getModelByType()
     {
         switch ($this->type) {
@@ -67,6 +53,28 @@ class Unit extends \yii\db\ActiveRecord
             case UnitType::INPUT_COMMON:
                 return TextInput::findOne($this->id);
         }
+    }
+
+    public static function getPhotoUrl($object, $thumbProfile = null): string
+    {
+        $key = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+
+        if (!$object['photo_' . $key]) $key = 0;
+
+        return $thumbProfile ? $object->getThumbFileUrl('photo_' . $key, $thumbProfile) : $object->getImageFileUrl('photo_' . $key);
+    }
+
+    public static function getBySlug($slug)
+    {
+        return self::find()
+            ->where(['category_id' => (Categories::findOne(['slug' => $slug]))->id])
+            ->orderBy('sort')
+            ->all();
+    }
+
+    public static function tableName()
+    {
+        return 'cms_unit_units';
     }
 
     public function rules()

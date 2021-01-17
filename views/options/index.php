@@ -9,7 +9,6 @@ use afzalroq\cms\entities\Collections;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $collection Collections */
 
-$slugUrl = '&slug=' . $collection->slug;
 $this->title = Yii::t('cms', 'Options');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -25,23 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'id',
+                [
+                    'attribute' => 'slug',
+                    'value' => function ($model) use ($collection) {
+                        return Html::a($model->slug . ' <i class="fa fa-chevron-circle-right"></i>', ['options/view', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-default']);
+                    },
+                    'format' => 'html'
+                ],
                 'name_0',
                 'content_0',
-                'slug',
                 'created_at:datetime',
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update} {delete}',
-                    'buttons' => [
-                        'view' => function ($url, $model, $key) use ($slugUrl) {
-                            return Html::a(Html::tag('span', '', ['class' => "glyphicon glyphicon-eye-open"]), $url . $slugUrl);
-                        },
-                        'update' => function ($url, $model, $key) use ($slugUrl) {
-                            return Html::a(Html::tag('span', '', ['class' => "glyphicon glyphicon-pencil"]), $url . $slugUrl);
-                        },
-                    ],
-                ],
             ],
         ]); ?>
     </div>

@@ -6,18 +6,15 @@ return [
     'Updated at' => 'Время обновления',
     'Created At' => 'Время создания',
     'Updated At' => 'Время обновления',
-    'Category' => 'Категория',
+
     'Title' => 'Название',
     'Slug' => 'Слаг(ЧПУ)',
     'Description' => 'Описание',
     'Photo' => 'Картинка',
     'Date' => 'Дата',
     'Type' => 'Тип',
-    'Article' => 'Статья',
-    'Articles' => 'Статьи',
-    'Page' => 'Страница',
-    'Pages' => 'Страницы',
-    'Save' => 'Сохранить',
+
+    'Category' => 'Категория',
     'Categories' => 'Категории',
 
     'Status' => 'Статус',
@@ -28,8 +25,6 @@ return [
     'action' => 'действие',
     'Menu' => 'Меню',
 
-
-
     'No parent' => 'Нет парент ',
     'Parent ID' => 'Парент Ид',
     'ID' => 'Ид',
@@ -37,8 +32,9 @@ return [
     'Parent' => 'Парент',
 
     'Create' => 'Добавить',
-    'Update' => 'Обновление',
+    'Update' => 'Обновить',
     'Delete' => 'Удалить',
+    'Save' => 'Сохранить',
     'Choose' => 'Выберите',
     'Upload' => 'Загрузить',
 
@@ -46,11 +42,8 @@ return [
     'Search' => 'Поиск',
     'Мore info' => 'Больше информации',
 
-    'Article Categories' => 'Статья Категории',
     'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить этот элемент?Вы уверены, что хотите удалить этот элемент?',
     'The requested page does not exist.' => 'Запрашиваемая страница не существует.',
-    'Addresses of sales offices UZTELECOM' => 'Адреса офисов продаж УЗТЕЛЕКОМ',
-
 
     //collection
     'Collection' => 'Коллекция',
@@ -58,7 +51,7 @@ return [
     'Entity' => 'Cущность',
     'Item' => 'Вещь',
 
-    'Options and items' => 'Опции и Вещь',
+    'Options and items' => 'Опции и обьекты',
 
     'Disabled' => 'Отключено',
     'Common' => 'Общие',

@@ -1,7 +1,7 @@
 <?php
 
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel afzalroq\cms\forms\EntitiesSearch */
@@ -12,13 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="entities-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a(Yii::t('cms', 'Create Entities'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a("<i class='glyphicon glyphicon-home'></i> " . Yii::t('cms', 'Home'), ['/cms/home/index'], ['class' => 'btn btn-default']) ?>
+        <?= Html::a(Yii::t('cms', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -26,8 +23,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-//            'id',
-            'slug',
+            [
+                'attribute' => 'slug',
+                'value' => function ($model) {
+                    return Html::a($model->slug . ' <i class="fa fa-chevron-circle-right"></i>', ['entities/view', 'id' => $model->id], ['class' => 'btn btn-default']);
+                },
+                'format' => 'html'
+            ],
             [
                 'attribute' => 'text_1',
                 'value' => function ($model) {
@@ -46,17 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \afzalroq\cms\entities\Entities::textList()[$model->text_3];
                 }
             ],
-            //'text_4',
-            //'text_5',
-            //'text_6',
-            //'text_7',
-            //'text_label_1',
-            //'text_label_2',
-            //'text_label_3',
-            //'text_label_4',
-            //'text_label_5',
-            //'text_label_6',
-            //'text_label_7',
             [
                 'attribute' => 'file_1',
                 'value' => function ($model) {
@@ -75,17 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \afzalroq\cms\entities\Entities::fileList()[$model->file_3];
                 }
             ],
-            //'file_label_1',
-            //'file_label_2',
-            //'file_label_3',
-            //'use_date',
-            //'use_status',
             'created_at:datetime',
-            //'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
-
-
+    ]) ?>
 </div>

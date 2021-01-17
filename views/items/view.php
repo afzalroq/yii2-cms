@@ -94,8 +94,8 @@ if ($entity->use_gallery)
         'model' => $model,
         'attributes' => $main_attributes
     ]) ?>
-    <div class="row">
 
+    <div class="row">
         <div class="col-sm-12">
             <?= DetailView::widget([
                 'model' => $model,
@@ -108,12 +108,21 @@ if ($entity->use_gallery)
                 'attributes' => $file_attributes
             ]) ?>
         </div>
-
     </div>
+
     <?php if ($entity->use_seo): ?>
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => $seo_values
+        ]) ?>
+    <?php endif; ?>
+
+    <?php if ($entity->use_views_count): ?>
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'views_count'
+            ]
         ]) ?>
     <?php endif; ?>
 

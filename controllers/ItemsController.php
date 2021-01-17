@@ -8,18 +8,13 @@ use afzalroq\cms\forms\ItemsSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-/**
- * ItemsController implements the CRUD actions for Items model.
- */
+
 class ItemsController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function behaviors()
     {
         return [
@@ -77,7 +72,7 @@ class ItemsController extends Controller
      */
     protected function findModel($id)
     {
-        if(($model = Items::findOne($id)) !== null) {
+        if (($model = Items::findOne($id)) !== null) {
             return $model;
         }
 
@@ -94,15 +89,14 @@ class ItemsController extends Controller
     {
         $model = new Items($slug);
 
-        if(Yii::$app->request->isAjax) {
+
+        if (Yii::$app->request->isAjax) {
             $model->load(Yii::$app->request->post());
             return Json::encode(\yii\widgets\ActiveForm::validate($model));
         }
 
-        if($model->load(Yii::$app->request->post()) && $model->save()) {
-            foreach ($model->files as $file) {
-                $model->addPhoto($file);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            foreach ($model->files as $file) $model->addPhoto($file);
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
         }
 
@@ -125,11 +119,8 @@ class ItemsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if($model->load(Yii::$app->request->post()) && $model->save()) {
-            foreach ($model->files as $file) {
-                $model->addPhoto($file);
-            }
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            foreach ($model->files as $file) $model->addPhoto($file);
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
         }
 
@@ -151,11 +142,10 @@ class ItemsController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
-    public function actionDeletePhoto($id, $photo_id,$slug)
+    public function actionDeletePhoto($id, $photo_id, $slug)
     {
         try {
             $this->removePhoto($id, $photo_id);
@@ -179,6 +169,7 @@ class ItemsController extends Controller
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
 
     }
+
     public function movePhotoUp($id, $photoId): void
     {
         $model = $this->findModel($id);

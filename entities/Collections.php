@@ -11,79 +11,79 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "cms_collections".
  *
- * @property int         $id
+ * @property int $id
  * @property string|null $name_0
  * @property string|null $name_1
  * @property string|null $name_2
  * @property string|null $name_3
  * @property string|null $name_4
- * @property string      $slug
- * @property int         $use_in_menu
- * @property int|null    $use_parenting
- * @property int|null    $use_seo
- * @property int|null    $option_file_1
- * @property int|null    $option_file_2
+ * @property string $slug
+ * @property int $use_in_menu
+ * @property int|null $use_parenting
+ * @property int|null $use_seo
+ * @property int|null $option_file_1
+ * @property int|null $option_file_2
  * @property string|null $option_file_1_label
  * @property string|null $option_file_2_label
- * @property array|null  $option_file_1_validator
- * @property array|null  $option_file_2_validator
- * @property int|null    $option_name
- * @property int|null    $option_content
- * @property int|null    $option_default_id
- * @property int         $created_at
- * @property int         $updated_at
+ * @property array|null $option_file_1_validator
+ * @property array|null $option_file_2_validator
+ * @property int|null $option_name
+ * @property int|null $option_content
+ * @property int|null $option_default_id
+ * @property int $created_at
+ * @property int $updated_at
  *
- * @property Options     $optionDefault
- * @property Options[]   $options
+ * @property Options $optionDefault
+ * @property Options[] $options
  */
 class Collections extends ActiveRecord
 {
 
-	#region OptionAttrs
-	const OPTION_NAME_DISABLED = 0;
-	const OPTION_NAME_COMMON = 1;
-	const OPTION_NAME_TRANSLATABLE = 2;
+    #region OptionAttrs
+    const OPTION_NAME_DISABLED = 0;
+    const OPTION_NAME_COMMON = 1;
+    const OPTION_NAME_TRANSLATABLE = 2;
 
-	const OPTION_CONTENT_DISABLED = 0;
-	const OPTION_CONTENT_COMMON_TEXTAREA = 10;
-	const OPTION_CONTENT_COMMON_CKEDITOR = 11;
-	const OPTION_CONTENT_TRANSLATABLE_TEXTAREA = 20;
-	const OPTION_CONTENT_TRANSLATABLE_CKEDITOR = 21;
+    const OPTION_CONTENT_DISABLED = 0;
+    const OPTION_CONTENT_COMMON_TEXTAREA = 10;
+    const OPTION_CONTENT_COMMON_CKEDITOR = 11;
+    const OPTION_CONTENT_TRANSLATABLE_TEXTAREA = 20;
+    const OPTION_CONTENT_TRANSLATABLE_CKEDITOR = 21;
 
-	const OPTION_FILE_DISABLED = 0;
-	const OPTION_FILE_COMMON = 1;
-	const OPTION_FILE_TRANSLATABLE = 2;
+    const OPTION_FILE_DISABLED = 0;
+    const OPTION_FILE_COMMON = 1;
+    const OPTION_FILE_TRANSLATABLE = 2;
 
     #seo types
     const SEO_DISABLED = 0;
     const SEO_COMMON = 1;
     const SEO_TRANSLATABLE = 2;
     #end seo types
-	
-	#endregion
-	#region UseMenu
-	const USE_IN_MENU_DISABLED = 0;
-	const USE_IN_MENU_OPTIONS = 1;
-	const USE_IN_MENU_ITEMS = 2;
-	const USE_IN_MENU_OPTIONS_ITEMS = 12;
-	#endregion
-	#region FileAttrs
-	public $file_1_mimeType;
-	public $file_1_dimensionW;
-	public $file_1_dimensionH;
-	public $file_1_maxSize;
 
-	public $file_2_mimeType;
-	public $file_2_dimensionW;
-	public $file_2_dimensionH;
-	public $file_2_maxSize;
+    #endregion
+    #region UseMenu
+    const USE_IN_MENU_DISABLED = 0;
+    const USE_IN_MENU_OPTIONS = 1;
+    const USE_IN_MENU_ITEMS = 2;
+    const USE_IN_MENU_OPTIONS_ITEMS = 12;
+    #endregion
+    #region FileAttrs
+    public $file_1_mimeType;
+    public $file_1_dimensionW;
+    public $file_1_dimensionH;
+    public $file_1_maxSize;
 
-	#endregion
+    public $file_2_mimeType;
+    public $file_2_dimensionW;
+    public $file_2_dimensionH;
+    public $file_2_maxSize;
 
-	public static function tableName()
-	{
-		return 'cms_collections';
-	}
+    #endregion
+
+    public static function tableName()
+    {
+        return 'cms_collections';
+    }
 
     #region ListOfConstants
 
@@ -139,40 +139,40 @@ class Collections extends ActiveRecord
 
 
     public function beforeSave($insert)
-	{
-		$this->option_file_1_validator = [
-			'mimeType' => $this->file_1_mimeType !== '' ? $this->file_1_mimeType : null,
-			'dimensionW' => $this->file_1_dimensionW ? : null,
-			'dimensionH' => $this->file_1_dimensionH ? : null,
-			'maxSize' => $this->file_1_maxSize ? : null
-		];
+    {
+        $this->option_file_1_validator = [
+            'mimeType' => $this->file_1_mimeType !== '' ? $this->file_1_mimeType : null,
+            'dimensionW' => $this->file_1_dimensionW ?: null,
+            'dimensionH' => $this->file_1_dimensionH ?: null,
+            'maxSize' => $this->file_1_maxSize ?: null
+        ];
 
-		$this->option_file_2_validator = [
-			'mimeType' => $this->file_2_mimeType !== '' ? $this->file_2_mimeType : null,
-			'dimensionW' => $this->file_2_dimensionW ? : null,
-			'dimensionH' => $this->file_2_dimensionH ? : null,
-			'maxSize' => $this->file_2_maxSize ? : null
-		];
+        $this->option_file_2_validator = [
+            'mimeType' => $this->file_2_mimeType !== '' ? $this->file_2_mimeType : null,
+            'dimensionW' => $this->file_2_dimensionW ?: null,
+            'dimensionH' => $this->file_2_dimensionH ?: null,
+            'maxSize' => $this->file_2_maxSize ?: null
+        ];
 
-		return parent::beforeSave($insert);
-	}
+        return parent::beforeSave($insert);
+    }
 
-	public function afterFind()
-	{
-		if($this->option_file_1_validator) {
-			$this->file_1_mimeType = $this->option_file_1_validator['mimeType'];
-			$this->file_1_dimensionW = $this->option_file_1_validator['dimensionW'];
-			$this->file_1_dimensionH = $this->option_file_1_validator['dimensionH'];
-			$this->file_1_maxSize = $this->option_file_1_validator['maxSize'];
-		}
-		if($this->option_file_2_validator) {
-			$this->file_2_mimeType = $this->option_file_2_validator['mimeType'];
-			$this->file_2_dimensionW = $this->option_file_2_validator['dimensionW'];
-			$this->file_2_dimensionH = $this->option_file_2_validator['dimensionH'];
-			$this->file_2_maxSize = $this->option_file_2_validator['maxSize'];
-		}
-		parent::afterFind(); // TODO: Change the autogenerated stub
-	}
+    public function afterFind()
+    {
+        if ($this->option_file_1_validator) {
+            $this->file_1_mimeType = $this->option_file_1_validator['mimeType'];
+            $this->file_1_dimensionW = $this->option_file_1_validator['dimensionW'];
+            $this->file_1_dimensionH = $this->option_file_1_validator['dimensionH'];
+            $this->file_1_maxSize = $this->option_file_1_validator['maxSize'];
+        }
+        if ($this->option_file_2_validator) {
+            $this->file_2_mimeType = $this->option_file_2_validator['mimeType'];
+            $this->file_2_dimensionW = $this->option_file_2_validator['dimensionW'];
+            $this->file_2_dimensionH = $this->option_file_2_validator['dimensionH'];
+            $this->file_2_maxSize = $this->option_file_2_validator['maxSize'];
+        }
+        parent::afterFind(); // TODO: Change the autogenerated stub
+    }
 
     public function rules()
     {
@@ -181,20 +181,24 @@ class Collections extends ActiveRecord
 
             [['file_1_mimeType', 'file_2_mimeType'], 'each', 'rule' => ['in', 'range' => array_keys(FileType::MIME_TYPES)]],
 
-            [['slug', 'use_in_menu'], 'required'],
-            [['use_in_menu', 'use_parenting', 'option_file_1', 'option_file_2', 'option_name', 'option_content', 'option_default_id', 'created_at', 'updated_at'], 'integer'],
+            [['slug', 'use_in_menu', 'use_seo'], 'required'],
+
+            [['use_in_menu', 'use_seo','use_parenting', 'option_file_1', 'option_file_2', 'option_name', 'option_content', 'option_default_id', 'created_at', 'updated_at'], 'integer'],
+
             [['option_file_1_validator', 'option_file_2_validator'], 'safe'],
+
             [['name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'slug', 'option_file_1_label', 'option_file_2_label'], 'string', 'max' => 255],
+
             [['slug'], 'unique'],
         ];
     }
 
-	public function behaviors()
-	{
-		return [
-			TimestampBehavior::class,
-		];
-	}
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
 
     public function attributeLabels()
     {
@@ -202,13 +206,14 @@ class Collections extends ActiveRecord
         $language1 = isset(Yii::$app->params['cms']['languages2'][1]) ? Yii::$app->params['cms']['languages2'][1] : '';
         $language2 = isset(Yii::$app->params['cms']['languages2'][2]) ? Yii::$app->params['cms']['languages2'][2] : '';
         $language3 = isset(Yii::$app->params['cms']['languages2'][3]) ? Yii::$app->params['cms']['languages2'][3] : '';
+        $language4 = isset(Yii::$app->params['cms']['languages2'][4]) ? Yii::$app->params['cms']['languages2'][4] : '';
         return [
             'id' => Yii::t('cms', 'ID'),
             'name_0' => Yii::t('cms', 'Name') . '(' . $language0 . ')',
             'name_1' => Yii::t('cms', 'Name') . '(' . $language1 . ')',
             'name_2' => Yii::t('cms', 'Name') . '(' . $language2 . ')',
             'name_3' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
-            'name_4' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
+            'name_4' => Yii::t('cms', 'Name') . '(' . $language4 . ')',
             'slug' => Yii::t('cms', 'Slug'),
             'use_in_menu' => Yii::t('cms', 'Use in menu'),
             'use_parenting' => Yii::t('cms', 'Use parenting'),
@@ -241,32 +246,41 @@ class Collections extends ActiveRecord
     public function nameAttrs()
     {
         $nameAttrs = [];
-        foreach(Yii::$app->params['cms']['languages2'] as $key => $language) {
-            $nameAttrs[] =  'name_' . $key;
+        foreach (Yii::$app->params['cms']['languages2'] as $key => $language) {
+            $nameAttrs[] = 'name_' . $key;
         }
 
         return $nameAttrs;
     }
 
+    public function getName($key = null)
+    {
+        $key = isset($key) ? $key : \Yii::$app->language;
+
+        if (is_string($key)) {
+            $key = \Yii::$app->params['cms']['languageIds'][$key];
+        }
+        return $this['name_' . $key];
+    }
 
     /**
-	 * Gets query for [[OptionDefault]].
-	 *
-	 * @return ActiveQuery
-	 */
-	public function getOptionDefault()
-	{
-		return $this->hasOne(Options::class, ['id' => 'option_default_id']);
-	}
+     * Gets query for [[OptionDefault]].
+     *
+     * @return ActiveQuery
+     */
+    public function getOptionDefault()
+    {
+        return $this->hasOne(Options::class, ['id' => 'option_default_id']);
+    }
 
-	/**
-	 * Gets query for [[Options]].
-	 *
-	 * @return ActiveQuery
-	 */
-	public function getOptions()
-	{
-		return $this->hasMany(Options::class, ['collection_id' => 'id']);
-	}
+    /**
+     * Gets query for [[Options]].
+     *
+     * @return ActiveQuery
+     */
+    public function getOptions()
+    {
+        return $this->hasMany(Options::class, ['collection_id' => 'id']);
+    }
 
 }

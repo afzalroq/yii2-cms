@@ -72,6 +72,7 @@ use yiidreamteam\upload\ImageUploadBehavior;
  * @property string|null $seo_values
  * @property int|null $date
  * @property int|null $status
+ * @property int|null $views_count
  * @property int $created_at
  * @property int $updated_at
  * @property ItemPhotos[] $photos
@@ -105,8 +106,10 @@ class Items extends ActiveRecord
 
     public function __construct($slug = null)
     {
-        if ($slug)
+        if ($slug){
             $this->dependEntity = Entities::findOne(['slug' => $slug]);
+            if($this->dependEntity->manual_slug) $this->detachBehavior('slug');
+        }
     }
 
 
@@ -197,6 +200,10 @@ class Items extends ActiveRecord
     {
         parent::afterFind();
 
+        if($this->entity->manual_slug){
+            $this->detachBehavior('slug');
+        }
+
         foreach (OaI::findAll(['item_id' => $this->id]) as $oai)
             foreach ($this->entity->caes as $cae)
                 foreach ($cae->collection->options as $option)
@@ -269,8 +276,7 @@ class Items extends ActiveRecord
 
     private function getImageUploadBehaviorConfig($attribute)
     {
-        $module = Yii::$app->getModule('slider');
-
+        $module = Yii::$app->getModule('cms');
         return [
             'class' => ImageUploadBehavior::class,
             'attribute' => $attribute,
@@ -303,12 +309,10 @@ class Items extends ActiveRecord
         }];
     }
 
-
     public function rules()
     {
-        if (empty($this->dependEntity))
-            $this->dependEntity = $this->entity;
-        $rules = [
+        if (empty($this->dependEntity)) $this->dependEntity = $this->entity;
+        return [
             $this->fileValidator('file_1'),
             $this->fileValidator('file_2'),
             $this->fileValidator('file_3'),
@@ -343,33 +347,8 @@ class Items extends ActiveRecord
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Entities::class, 'targetAttribute' => ['entity_id' => 'id']],
             [['main_photo_id'], 'exist', 'skipOnError' => true, 'targetClass' => ItemPhotos::class, 'targetAttribute' => ['main_photo_id' => 'id']],
         ];
-
-        return $rules;
     }
 
-    public function fileValidator($entityAttr)
-    {
-        return [$this->getCurrentAttrs($entityAttr),
-            'file',
-            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
-            'maxSize' => $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024
-        ];
-    }
-
-    public function getCurrentAttrs($entityAttr)
-    {
-        $attrs = [];
-        foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
-            $attrs[] = $entityAttr . '_' . $key;
-        return $attrs;
-    }
-
-    public function requiredValidator($entityAttr)
-    {
-        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
-            return $model->requireValidator($model->dependEntity->{$entityAttr});
-        }];
-    }
 
     public function requireValidator($type)
     {

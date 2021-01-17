@@ -3,9 +3,9 @@
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\widgets\CmsForm;
 use kartik\datecontrol\DateControl;
+use kartik\widgets\FileInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\widgets\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model afzalroq\cms\entities\Items */
@@ -14,7 +14,7 @@ use kartik\widgets\FileInput;
 
 $hasTranslatableAttrs = 0;
 ?>
-<?php if(Yii::$app->session->hasFlash('success')): ?>
+<?php if (Yii::$app->session->hasFlash('success')): ?>
     <div style="margin:5px 0 0 0;" class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div>
 <?php endif; ?>
 
@@ -34,6 +34,9 @@ $hasTranslatableAttrs = 0;
     <div class="box">
         <div class="box-body">
             <div class="row">
+                <?php if ($entity->manual_slug): ?>
+                    <?= $form->field($model, 'slug')->textInput() ?>
+                <?php endif; ?>
                 <?= $cmsForm->oaIFields(); ?>
             </div>
         </div>
@@ -66,7 +69,7 @@ $hasTranslatableAttrs = 0;
             <div class="box">
                 <div class="box-body">
                     <ul class="nav nav-tabs" role="tablist">
-                        <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                        <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                             <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
                                 <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
                                    data-toggle="tab"><?= $language ?></a>
@@ -75,7 +78,7 @@ $hasTranslatableAttrs = 0;
                     </ul>
                     <div class="tab-content">
                         <br>
-                        <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                        <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                             <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
 
                                 <?= $cmsForm->textFieldsTranslatable($key, $hasTranslatableAttrs) ?>
@@ -99,7 +102,7 @@ $hasTranslatableAttrs = 0;
                     <div class="box-body">
                         <?php if ($entity->use_seo == Entities::SEO_TRANSLATABLE): ?>
                             <ul class="nav nav-tabs" role="tablist">
-                                <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                                <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                                     <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
                                         <a href="#<?= $key ?>S" aria-controls="<?= $key ?>S" role="tab"
                                            data-toggle="tab"><?= $language ?></a>
@@ -108,28 +111,29 @@ $hasTranslatableAttrs = 0;
                             </ul>
                             <div class="tab-content">
                                 <br>
-                                <?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                                <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
                                     <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
 
-                                        <?= $form->field($model,'meta_title_'.$key)->textInput() ?>
-                                        <?= $form->field($model,'meta_keyword_'.$key)->textInput() ?>
-                                        <?= $form->field($model,'meta_des_'.$key)->textInput() ?>
+                                        <?= $form->field($model, 'meta_title_' . $key)->textInput() ?>
+                                        <?= $form->field($model, 'meta_keyword_' . $key)->textarea() ?>
+                                        <?= $form->field($model, 'meta_des_' . $key)->textarea() ?>
 
                                     </div>
                                 <?php endforeach; ?>
                             </div>
-                        <?php else:?>
-                            <?= $form->field($model,'meta_title_0')->textInput() ?>
-                            <?= $form->field($model,'meta_keyword_0')->textInput() ?>
-                            <?= $form->field($model,'meta_des_0')->textInput() ?>
-                        <?php endif;?>
+                        <?php else: ?>
+                            <?= $form->field($model, 'meta_title_0')->textInput() ?>
+                            <?= $form->field($model, 'meta_keyword_0')->textarea() ?>
+                            <?= $form->field($model, 'meta_des_0')->textarea() ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     <?php endif; ?>
     <!--#endregion -->
-    <?php if($entity->use_gallery): ?>
+
+    <?php if ($entity->use_gallery): ?>
         <div class="box box-default">
             <div class="box-body">
                 <?= $form->field($model, 'files[]')->widget(FileInput::class, [

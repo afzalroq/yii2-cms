@@ -46,6 +46,8 @@ use yii\db\ActiveRecord;
  * @property int|null $use_seo
  * @property int|null $use_in_menu
  * @property int|null $use_gallery
+ * @property int|null $use_views_count
+ * @property int|null $manual_slug
  * @property int $created_at
  * @property int $updated_at
  *
@@ -198,15 +200,6 @@ class Entities extends ActiveRecord
         ];
     }
 
-    public static function seoList()
-    {
-        return [
-            self::SEO_DISABLED => Yii::t('cms', 'Disabled'),
-            self::SEO_COMMON => Yii::t('cms', 'Common'),
-            self::SEO_TRANSLATABLE => Yii::t('cms', 'Translatable'),
-        ];
-    }
-
     public static function fileList()
     {
         return [
@@ -297,17 +290,35 @@ class Entities extends ActiveRecord
         ];
     }
 
+    public function getName($key = null)
+    {
+        $key = isset($key) ? $key : \Yii::$app->language;
+
+        if (is_string($key)) {
+            $key = \Yii::$app->params['cms']['languageIds'][$key];
+        }
+        return $this['name_' . $key];
+    }
 
     public function rules()
     {
         return [
             [['name_0', 'name_1', 'name_2', 'name_3', 'name_4'], 'string'],
+
             [['file_1_dimensionW', 'file_1_dimensionH', 'file_1_maxSize', 'file_2_dimensionW', 'file_2_dimensionH', 'file_2_maxSize', 'file_3_dimensionW', 'file_3_dimensionH', 'file_3_maxSize'], 'integer'],
             [['file_1_mimeType', 'file_2_mimeType', 'file_3_mimeType'], 'each', 'rule' => ['in', 'range' => array_keys(FileType::MIME_TYPES)]],
-            [['slug'], 'required'],
+
+
             [['text_1', 'text_2', 'text_3', 'text_4', 'text_5', 'text_6', 'text_7', 'file_1', 'file_2', 'file_3', 'use_date', 'use_status', 'use_in_menu', 'use_seo', 'use_gallery'], 'integer'],
+
             [['file_1_validator', 'file_2_validator', 'file_3_validator'], 'safe'],
+
             [['slug', 'text_1_label', 'text_2_label', 'text_3_label', 'text_4_label', 'text_5_label', 'text_6_label', 'text_7_label', 'file_1_label', 'file_2_label', 'file_3_label'], 'string', 'max' => 255],
+
+            [['use_date', 'use_seo', 'use_gallery', 'use_in_menu', 'use_status', 'use_views_count', 'manual_slug'], 'required'],
+            [['use_date', 'use_seo', 'use_gallery', 'use_in_menu', 'use_status', 'use_views_count', 'manual_slug'], 'integer'],
+
+            [['slug'], 'required'],
             [['slug'], 'unique'],
         ];
     }
@@ -315,14 +326,19 @@ class Entities extends ActiveRecord
 
     public function attributeLabels()
     {
+        $language0 = isset(Yii::$app->params['cms']['languages2'][0]) ? Yii::$app->params['cms']['languages2'][0] : '';
+        $language1 = isset(Yii::$app->params['cms']['languages2'][1]) ? Yii::$app->params['cms']['languages2'][1] : '';
+        $language2 = isset(Yii::$app->params['cms']['languages2'][2]) ? Yii::$app->params['cms']['languages2'][2] : '';
+        $language3 = isset(Yii::$app->params['cms']['languages2'][3]) ? Yii::$app->params['cms']['languages2'][3] : '';
+        $language4 = isset(Yii::$app->params['cms']['languages2'][4]) ? Yii::$app->params['cms']['languages2'][4] : '';
         return [
             'id' => Yii::t('cms', 'ID'),
             'slug' => Yii::t('cms', 'Slug'),
-            'name_0' => Yii::t('cms', 'Name 0'),
-            'name_1' => Yii::t('cms', 'Name 1'),
-            'name_2' => Yii::t('cms', 'Name 2'),
-            'name_3' => Yii::t('cms', 'Name 3'),
-            'name_4' => Yii::t('cms', 'Name 4'),
+            'name_0' => Yii::t('cms', 'Name') . '(' . $language0 . ')',
+            'name_1' => Yii::t('cms', 'Name') . '(' . $language1 . ')',
+            'name_2' => Yii::t('cms', 'Name') . '(' . $language2 . ')',
+            'name_3' => Yii::t('cms', 'Name') . '(' . $language3 . ')',
+            'name_4' => Yii::t('cms', 'Name') . '(' . $language4 . ')',
             'text_1' => Yii::t('cms', 'Text 1'),
             'text_2' => Yii::t('cms', 'Text 2'),
             'text_3' => Yii::t('cms', 'Text 3'),
@@ -351,6 +367,8 @@ class Entities extends ActiveRecord
             'use_in_menu' => Yii::t('cms', 'Use in menu'),
             'use_seo' => Yii::t('cms', 'Use SEO'),
             'use_gallery' => Yii::t('cms', 'Use Gallery'),
+            'use_views_count' => Yii::t('cms', 'Use Views Count'),
+            'manual_slug' => Yii::t('cms', 'Manual Slug'),
             'created_at' => Yii::t('cms', 'Created at'),
             'updated_at' => Yii::t('cms', 'Updated at'),
         ];
