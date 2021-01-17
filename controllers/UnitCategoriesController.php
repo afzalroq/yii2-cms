@@ -3,7 +3,7 @@
 namespace afzalroq\cms\controllers;
 
 use afzalroq\cms\entities\unit\Categories;
-use afzalroq\cms\entities\unit\Unit\Unit;
+use afzalroq\cms\entities\unit\Unit;
 use afzalroq\cms\forms\UnitCategoriesSearch;
 use afzalroq\cms\helpers\UnitType;
 use Yii;

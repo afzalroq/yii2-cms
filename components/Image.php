@@ -7,8 +7,6 @@ use yii\helpers\StringHelper;
 use Gregwar\Image\Image as GregImage;
 
 /**
- * This is the model class for table "abdualiym_cms_articles".
- *
  * @property int $id
  * @property int $category_id
  * @property string $title_0

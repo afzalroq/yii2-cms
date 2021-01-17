@@ -1,11 +1,12 @@
 <?php
 
-use afzalroq\cms\forms\UnitSearch;
-use afzalroq\cms\entities\unit\Unit;
 use afzalroq\cms\entities\unit\Categories;
+use afzalroq\cms\entities\unit\TextInput;
+use afzalroq\cms\entities\unit\Unit;
+use afzalroq\cms\forms\UnitSearch;
+use afzalroq\cms\helpers\UnitType;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use afzalroq\cms\helpers\UnitType;
 
 /* @var $this yii\web\View */
 /* @var $searchModel UnitSearch */
@@ -19,7 +20,7 @@ $this->params['breadcrumbs'][] = ['label' => $category->title, 'url' => ['/unit/
 
     <p>
         <?= Html::a(Yii::t('unit', 'Create'), ['create', 'slug' => $category->slug], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('unit', 'Categories'), ['categories/index'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('unit', 'Categories'), ['unit-categories/index'], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= GridView::widget([
@@ -34,16 +35,27 @@ $this->params['breadcrumbs'][] = ['label' => $category->title, 'url' => ['/unit/
                 },
                 'format' => 'raw'
             ],
-            'slug',
+            [
+                'attribute' => 'type',
+                'format' => 'html',
+                'label' => (new Unit())->getAttributeLabel('slug'),
+                'value' => function ($model) {
+                    return Html::tag('code', $model->slug, ['class' => 'text-bold']);
+                }
+            ],
             [
                 'attribute' => 'type',
                 'value' => function ($model) {
                     return UnitType::name($model->type);
                 }
             ],
+            [
+                'attribute' => 'inputValidator',
+                'value' => function ($model) {
+                    return TextInput::validatorName($model->inputValidator);
+                }
+            ],
             'size',
-            'created_at:datetime',
-            'updated_at:datetime',
         ],
     ]); ?>
 </div>

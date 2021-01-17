@@ -7,9 +7,7 @@ use yii\db\Migration;
  */
 class m201210_060118_create_entities_table extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function safeUp()
     {
         $tableOptions = null;
@@ -65,9 +63,7 @@ class m201210_060118_create_entities_table extends Migration
 
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function safeDown()
     {
         $this->dropTable('{{%cms_entities}}');

@@ -15,7 +15,7 @@ class m200305_121443_create_unit_units_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%afzalroq_unit_units}}', [
+        $this->createTable('{{%cms_unit_units}}', [
             'id' => $this->primaryKey(),
             'category_id' => $this->integer()->notNull(),
             'sort' => $this->tinyInteger()->notNull(),
@@ -33,16 +33,16 @@ class m200305_121443_create_unit_units_table extends Migration
             'updated_at' => $this->integer()->unsigned()->notNull(),
         ], $tableOptions);
 
-        $this->createIndex('{{%index-afzalroq_unit_units-slug}}', '{{%afzalroq_unit_units}}', 'slug');
-        $this->createIndex('{{%index-afzalroq_unit_units-updated_at}}', '{{%afzalroq_unit_units}}', 'updated_at');
+        $this->createIndex('{{%index-cms_unit_units-slug}}', '{{%cms_unit_units}}', 'slug');
+        $this->createIndex('{{%index-cms_unit_units-updated_at}}', '{{%cms_unit_units}}', 'updated_at');
 
-        $this->createIndex('index-afzalroq_unit_units-category_id', 'afzalroq_unit_units', 'category_id');
-        $this->addForeignKey('fkey-afzalroq_unit_units-category_id', 'afzalroq_unit_units', 'category_id', 'afzalroq_unit_categories', 'id', 'RESTRICT', 'RESTRICT');
+        $this->createIndex('index-cms_unit_units-category_id', 'cms_unit_units', 'category_id');
+        $this->addForeignKey('fkey-cms_unit_units-category_id', 'cms_unit_units', 'category_id', 'cms_unit_categories', 'id', 'RESTRICT', 'RESTRICT');
     }
 
     public function safeDown()
     {
-        $this->dropTable('afzalroq_unit_units');
+        $this->dropTable('cms_unit_units');
     }
 
 }

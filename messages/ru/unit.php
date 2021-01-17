@@ -22,26 +22,29 @@ return [
 
     'Photo' => 'Картинка',
     'View' => 'Просмотр',
+    'Manage Units' => 'Управление блоков',
     'Unit' => 'Блоки',
     'Unit for moderator' => 'Блоки для модератора',
 
+    'Validator' => 'Валидатор',
+
     'Save' => 'Сохранить',
     'Create' => 'Добавить',
-    'Update' => 'Обновление',
+    'Update' => 'Обновить',
     'Delete' => 'Удалить',
     'Upload' => 'Загрузить',
 
 
-    'Translateable strings' => 'Переводимые ТЕКСТЫ',
-    'Common string' => 'Общий ТЕКСТ',
-    'Translateable texts' => 'Переводимые КОНТЕНТЫ',
-    'Common text' => 'Общий КОНТЕНТ',
+    'Translateable strings' => 'Переводимая TEXTAREA',
+    'Common string' => 'Общая TEXTAREA',
+    'Translateable texts' => 'Переводимый EDITOR',
+    'Common text' => 'Общий EDITOR',
     'Translateable images' => 'Переводимые РИСУНКИ',
     'Common image' => 'Общий РИСУНОК',
     'Translateable files' => 'Переводимые ФАЙЛЫ',
     'Common file' => 'Общий ФАЙЛ',
-    'Translateable inputs' => 'Переводимые ИНПУТЫ',
-    'Common input' => 'Общий ИНПУТ',
+    'Translateable inputs' => 'Переводимый INPUT',
+    'Common input' => 'Общий INPUT',
 
     'String' => 'Cтрока',
     'Email' => 'Электронная почта',

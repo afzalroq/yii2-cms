@@ -11,9 +11,7 @@ use afzalroq\cms\entities\Entities;
  */
 class EntitiesSearch extends Entities
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -22,9 +20,7 @@ class EntitiesSearch extends Entities
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class

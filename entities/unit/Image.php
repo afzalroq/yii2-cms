@@ -1,6 +1,6 @@
 <?php
 
-namespace afzalroq\cms\entities\unit\Unit;
+namespace afzalroq\cms\entities\unit;
 
 use kartik\file\FileInput;
 use Yii;
@@ -76,10 +76,6 @@ class Image extends UnitActiveRecord
             'fileUrl' => $module->storageHost . '/data/units/[[attribute_id]]/[[filename]].[[extension]]',
             'thumbPath' => $module->storageRoot . '/cache/units/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
             'thumbUrl' => $module->storageHost . '/cache/units/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-            'thumbs' => [
-                'sm' => ['width' => 106, 'height' => 60],
-                'md' => ['width' => 212, 'height' => 120],
-            ]
         ];
     }
 

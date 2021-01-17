@@ -109,9 +109,7 @@ class Items extends ActiveRecord
             $this->dependEntity = Entities::findOne(['slug' => $slug]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public static function tableName()
     {
         return 'cms_items';
@@ -281,9 +279,31 @@ class Items extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getCurrentAttrs($entityAttr)
+    {
+        $attrs = [];
+        foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
+            $attrs[] = $entityAttr . '_' . $key;
+        return $attrs;
+    }
+
+    public function fileValidator($entityAttr)
+    {
+        return [$this->getCurrentAttrs($entityAttr),
+            'file',
+            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
+            'maxSize' => $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024
+        ];
+    }
+
+    public function requiredValidator($entityAttr)
+    {
+        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
+            return $model->requireValidator($model->dependEntity->{$entityAttr});
+        }];
+    }
+
+
     public function rules()
     {
         if (empty($this->dependEntity))
@@ -366,9 +386,7 @@ class Items extends ActiveRecord
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function attributeLabels()
     {
         $language0 = isset(Yii::$app->params['cms']['languages2'][0]) ? Yii::$app->params['cms']['languages2'][0] : '';

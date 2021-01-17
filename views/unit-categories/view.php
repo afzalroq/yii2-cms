@@ -15,6 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('unit', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('unit', 'Manage Units'), ['unit/index', 'slug' => $model->slug], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('unit', 'Unit for moderator'), ['unit', 'slug' => $model->slug], ['class' => 'btn btn-default']) ?>
 
         <?= Html::a(Yii::t('unit', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger pull-right',
@@ -33,14 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                         'title',
                         'slug',
-                        [
-                            'attribute' => 'id',
-                            'label' => Yii::t('unit', 'View'),
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Html::a(Yii::t('unit', 'Unit for moderator'), ['unit', 'slug' => $model->slug]);
-                            }
-                        ]
                     ],
                 ]) ?>
             </div>
@@ -50,14 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                         'created_at:datetime',
                         'updated_at:datetime',
-                        [
-                            'attribute' => 'id',
-                            'label' => Yii::t('unit', 'View'),
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Html::a(Yii::t('unit', 'Unit'), ['unit/index', 'slug' => $model->slug]);
-                            }
-                        ]
                     ],
                 ]) ?>
             </div>
