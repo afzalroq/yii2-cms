@@ -35,7 +35,9 @@ $hasTranslatableAttrs = 0;
         <div class="box-body">
             <div class="row">
                 <?php if ($entity->manual_slug): ?>
-                    <?= $form->field($model, 'slug')->textInput() ?>
+                    <div class="col-sm-6">
+                        <?= $form->field($model, 'slug')->textInput() ?>
+                    </div>
                 <?php endif; ?>
                 <?= $cmsForm->oaIFields(); ?>
             </div>
@@ -46,17 +48,10 @@ $hasTranslatableAttrs = 0;
     <div class="box">
         <div class="box-body">
             <div class="row">
+                <?= $cmsForm->dateField('date') ?>
+
                 <?= $cmsForm->textFieldsCommon() ?>
                 <?= $cmsForm->fileFieldsCommon() ?>
-            </div>
-        </div>
-    </div>
-
-    <div class="box">
-        <div class="box-body">
-            <div class="row">
-                <?= $cmsForm->date('use_date', Entities::USE_DATE_DATE) ?>
-                <?= $cmsForm->date('use_date', Entities::USE_DATE_DATETIME, ['type' => DateControl::FORMAT_DATETIME]) ?>
             </div>
         </div>
     </div>

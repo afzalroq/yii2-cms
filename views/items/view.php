@@ -15,7 +15,7 @@ $this->title = $model->slug;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug)), 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 
-[$entity_text_attrs, $entity_file_attrs] = $entity->textAFileAttrs();
+[$entity_text_attrs, $entity_file_attrs] = $entity->textAndFileAttrs();
 
 $text_attributes = [];
 $file_attributes = [];
@@ -27,7 +27,13 @@ $main_attributes = [
     'slug',
 ];
 
-$cmsForm = new CmsForm((new ActiveForm()), $model, $entity);
+if ($model->entity->use_date === Entities::USE_DATE_DATE)
+    $main_attributes[] = 'date:date';
+if ($model->entity->use_date === Entities::USE_DATE_DATETIME)
+    $main_attributes[] = 'date:datetime';
+
+
+//$cmsForm = new CmsForm((new ActiveForm()), $model, $entity);
 
 foreach ($entity_file_attrs as $attr => $value)
     foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
@@ -63,6 +69,7 @@ if ($entity->use_seo)
                 'attribute' => $key,
                 'value' => $value,
             ];
+
 if ($entity->use_gallery)
     $main_photo [] = [
         'attribute' => 'main_photo_id',
@@ -116,7 +123,6 @@ if ($entity->use_gallery)
             'attributes' => $seo_values
         ]) ?>
     <?php endif; ?>
-
     <?php if ($entity->use_views_count): ?>
         <?= DetailView::widget([
             'model' => $model,
@@ -125,7 +131,6 @@ if ($entity->use_gallery)
             ]
         ]) ?>
     <?php endif; ?>
-
     <?php if ($entity->use_gallery): ?>
         <?= DetailView::widget([
             'model' => $model,

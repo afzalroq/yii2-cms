@@ -218,7 +218,7 @@ class Entities extends ActiveRecord
         ];
     }
 
-    public function textAFileAttrs()
+    public function textAndFileAttrs()
     {
         $entity_text_attrs = [];
         $entity_file_attrs = [];

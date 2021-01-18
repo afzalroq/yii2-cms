@@ -2,12 +2,13 @@
 
 namespace afzalroq\cms\entities;
 
-use afzalroq\cms\components\FileType;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
 use yiidreamteam\upload\FileUploadBehavior;
+use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
 
 /**
@@ -47,6 +48,7 @@ use afzalroq\cms\components\Image;
  */
 class Options extends ActiveRecord
 {
+    #region Extra Attributes
 
     public $parentCollection;
 
@@ -66,80 +68,13 @@ class Options extends ActiveRecord
     public $meta_keyword_3;
     public $meta_keyword_4;
 
+    #endregion
 
+    #region Overwrite Methods
     public static function tableName()
     {
         return 'cms_options';
     }
-
-    public function getCorT($justAttr)
-    {
-        if (!$this->collection)
-            return null;
-
-        $attrValue = $this->collection['option_' . $justAttr];
-        switch ($justAttr) {
-            case 'name':
-                if ($attrValue === Collections::OPTION_NAME_COMMON)
-                    return false;
-                elseif ($attrValue === Collections::OPTION_NAME_TRANSLATABLE)
-                    return true;
-                break;
-            case 'content':
-                if ($attrValue === Collections::OPTION_CONTENT_COMMON_TEXTAREA
-                    || $attrValue === Collections::OPTION_CONTENT_COMMON_CKEDITOR)
-                    return false;
-                elseif ($attrValue !== Collections::OPTION_CONTENT_DISABLED)
-                    return true;
-                break;
-            case 'file_1':
-            case 'file_2':
-                if ($attrValue === Collections::OPTION_FILE_COMMON)
-                    return false;
-                elseif ($attrValue === Collections::OPTION_FILE_TRANSLATABLE)
-                    return true;
-                break;
-            default:
-                return null;
-        }
-
-        return null;
-    }
-
-    public function getImageUrl($attr, $width = null, $height = null, $resizeType = 'resize')
-    {
-        return Image::get($this, $attr, $width, $height, $resizeType);
-    }
-
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-            $this->getFileUploadBehaviorConfig('file_1_0'),
-            $this->getFileUploadBehaviorConfig('file_1_1'),
-            $this->getFileUploadBehaviorConfig('file_1_2'),
-            $this->getFileUploadBehaviorConfig('file_1_3'),
-            $this->getFileUploadBehaviorConfig('file_1_4'),
-            $this->getFileUploadBehaviorConfig('file_2_0'),
-            $this->getFileUploadBehaviorConfig('file_2_1'),
-            $this->getFileUploadBehaviorConfig('file_2_2'),
-            $this->getFileUploadBehaviorConfig('file_2_3'),
-            $this->getFileUploadBehaviorConfig('file_2_4')
-        ];
-    }
-
-    private function getFileUploadBehaviorConfig($attribute)
-    {
-        $module = Yii::$app->getModule('cms');
-
-        return [
-            'class' => FileUploadBehavior::class,
-            'attribute' => $attribute,
-            'filePath' => $module->storageRoot . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => $module->storageHost . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
-        ];
-    }
-
 
     public function rules()
     {
@@ -159,10 +94,53 @@ class Options extends ActiveRecord
             [['collection_id', 'slug'], 'required'],
             [['collection_id', 'parent_id', 'sort', 'created_at', 'updated_at'], 'integer'],
             [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
-            [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4','meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],
+            [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],
             [['slug'], 'unique'],
             [['collection_id'], 'exist', 'skipOnError' => true, 'targetClass' => Collections::class, 'targetAttribute' => ['collection_id' => 'id']],
         ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            $this->getFileUploadBehaviorConfig('file_1_0'),
+            $this->getFileUploadBehaviorConfig('file_1_1'),
+            $this->getFileUploadBehaviorConfig('file_1_2'),
+            $this->getFileUploadBehaviorConfig('file_1_3'),
+            $this->getFileUploadBehaviorConfig('file_1_4'),
+            $this->getFileUploadBehaviorConfig('file_2_0'),
+            $this->getFileUploadBehaviorConfig('file_2_1'),
+            $this->getFileUploadBehaviorConfig('file_2_2'),
+            $this->getFileUploadBehaviorConfig('file_2_3'),
+            $this->getFileUploadBehaviorConfig('file_2_4')
+        ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($this->collection->use_seo)
+            $this->seo_values = [
+                'meta_title_0' => $this->meta_title_0 ?? null,
+                'meta_title_1' => $this->meta_title_1 ?? null,
+                'meta_title_2' => $this->meta_title_2 ?? null,
+                'meta_title_3' => $this->meta_title_3 ?? null,
+                'meta_title_4' => $this->meta_title_4 ?? null,
+
+                'meta_des_0' => $this->meta_des_0 ?? null,
+                'meta_des_1' => $this->meta_des_1 ?? null,
+                'meta_des_2' => $this->meta_des_2 ?? null,
+                'meta_des_3' => $this->meta_des_3 ?? null,
+                'meta_des_4' => $this->meta_des_4 ?? null,
+
+                'meta_keyword_0' => $this->meta_keyword_0 ?? null,
+                'meta_keyword_1' => $this->meta_keyword_1 ?? null,
+                'meta_keyword_2' => $this->meta_keyword_2 ?? null,
+                'meta_keyword_3' => $this->meta_keyword_3 ?? null,
+                'meta_keyword_4' => $this->meta_keyword_4 ?? null
+            ];
+
+        return parent::beforeSave($insert); // TODO: Change the autogenerated stub
     }
 
     public function attributeLabels()
@@ -216,42 +194,91 @@ class Options extends ActiveRecord
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];
     }
+    #endregion
 
+    #region Extra Methods
 
-    /**
-     * Gets query for [[Collections]].
-     *
-     * @return ActiveQuery
-     */
+    public function getParentValue()
+    {
+        return ($this->parent_id)
+            ? Html::a(
+                $this->parent->slug,
+                \yii\helpers\Url::to(['/cms/options/view', 'id' => $this->parent_id, 'slug' => $this->collection->slug])
+            )
+            : null;
+    }
+
+    public function getFileAttrValue($attr)
+    {
+        $entityAttr = substr($attr, 0, -2);
+        switch (FileType::fileMimeType($this->collection[$entityAttr . '_mimeType'])) {
+            case FileType::TYPE_FILE:
+                return $this->{$attr};
+            case FileType::TYPE_IMAGE:
+                return Html::img($this->getImageUrl(
+                    $attr,
+                    $this->collection[$entityAttr . '_dimensionW'],
+                    $this->collection[$entityAttr . '_dimensionH']
+                ));
+            default:
+                return null;
+        }
+    }
+
+    public function getCorT($justAttr)
+    {
+        if (!$this->collection)
+            return null;
+
+        $attrValue = $this->collection['option_' . $justAttr];
+        switch ($justAttr) {
+            case 'name':
+                if ($attrValue === Collections::OPTION_NAME_COMMON)
+                    return false;
+                elseif ($attrValue === Collections::OPTION_NAME_TRANSLATABLE)
+                    return true;
+                break;
+            case 'content':
+                if ($attrValue === Collections::OPTION_CONTENT_COMMON_TEXTAREA
+                    || $attrValue === Collections::OPTION_CONTENT_COMMON_CKEDITOR)
+                    return false;
+                elseif ($attrValue !== Collections::OPTION_CONTENT_DISABLED)
+                    return true;
+                break;
+            case 'file_1':
+            case 'file_2':
+                if ($attrValue === Collections::OPTION_FILE_COMMON)
+                    return false;
+                elseif ($attrValue === Collections::OPTION_FILE_TRANSLATABLE)
+                    return true;
+                break;
+            default:
+                return null;
+        }
+
+        return null;
+    }
+
+    private function getFileUploadBehaviorConfig($attribute)
+    {
+        $module = Yii::$app->getModule('cms');
+
+        return [
+            'class' => FileUploadBehavior::class,
+            'attribute' => $attribute,
+            'filePath' => $module->storageRoot . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
+            'fileUrl' => $module->storageHost . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
+        ];
+    }
+
+    public function getImageUrl($attr, $width = null, $height = null, $resizeType = 'resize')
+    {
+        return Image::get($this, $attr, $width, $height, $resizeType);
+    }
+
     public function getCollection()
     {
         return $this->hasOne(Collections::class, ['id' => 'collection_id']);
     }
-
-    public function beforeSave($insert)
-    {
-        if ($this->collection->use_seo)
-        $this->seo_values = [
-            'meta_title_0' =>$this->meta_title_0 ?? null,
-            'meta_title_1' =>$this->meta_title_1 ?? null,
-            'meta_title_2' =>$this->meta_title_2 ?? null,
-            'meta_title_3' =>$this->meta_title_3 ?? null,
-            'meta_title_4' =>$this->meta_title_4 ?? null,
-
-            'meta_des_0' => $this->meta_des_0 ?? null,
-            'meta_des_1' => $this->meta_des_1 ?? null,
-            'meta_des_2' => $this->meta_des_2 ?? null,
-            'meta_des_3' => $this->meta_des_3 ?? null,
-            'meta_des_4' => $this->meta_des_4 ?? null,
-
-            'meta_keyword_0' => $this->meta_keyword_0 ?? null,
-            'meta_keyword_1' => $this->meta_keyword_1 ?? null,
-            'meta_keyword_2' => $this->meta_keyword_2 ?? null,
-            'meta_keyword_3' => $this->meta_keyword_3 ?? null,
-            'meta_keyword_4' => $this->meta_keyword_4 ?? null
-        ];
-
-        return parent::beforeSave($insert); // TODO: Change the autogenerated stub
-    }
-
+    #endregion
 }

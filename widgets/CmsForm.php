@@ -43,7 +43,7 @@ class CmsForm
         $this->obj = $obj;
 
         if ($obj instanceof Entities)
-            [$this->entityTextAttrs, $this->entityFileAttrs] = $this->obj->textAFileAttrs();
+            [$this->entityTextAttrs, $this->entityFileAttrs] = $this->obj->textAndFileAttrs();
     }
 
     public function oaIFields()
@@ -199,6 +199,16 @@ class CmsForm
         return '';
     }
 
+    public function dateField($attr)
+    {
+        switch ($this->obj['use_' . $attr]) {
+            case Entities::USE_DATE_DATE:
+                return $this->date($attr);
+            case Entities::USE_DATE_DATETIME:
+                return $this->date($attr, ['type' => DateControl::FORMAT_DATETIME]);
+        }
+    }
+
     #region Renders
 
     public function ckeditor($attr, $label = null, $options = [])
@@ -236,17 +246,13 @@ class CmsForm
         );
     }
 
-    public function date($attr, $attrType, $options = ['type' => DateControl::FORMAT_DATE])
+    public function date($attr, $options = ['type' => DateControl::FORMAT_DATE])
     {
-        if (!$this->checkAttr($this->obj{$attr}, $attrType))
-            return null;
-
         return Html::tag(
             'div',
-            $this->form->field($this->model, 'date')->widget(DateControl::class, $options),
+            $this->form->field($this->model, $attr)->widget(DateControl::class, $options),
             ['class' => 'col-sm-4']
         );
-
     }
 
     public function image($attr, $entityAttr, $label, $options = [])
@@ -364,9 +370,4 @@ class CmsForm
     }
 
     #endregion
-
-    private function checkAttr($attr, $type)
-    {
-        return isset($attr) && $attr == $type;
-    }
 }

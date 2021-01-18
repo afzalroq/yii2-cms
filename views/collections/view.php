@@ -71,15 +71,11 @@ foreach (Yii::$app->params['cms']['languages2'] as $key => $language) {
                             ],
                             [
                                 'attribute' => 'option_name',
-                                'value' => function (Collections $model) {
-                                    return Yii::t('cms', Collections::optionNameList()[$model->option_name]);
-                                }
+                                'value' => Yii::t('cms', Collections::optionNameList()[$model->option_name])
                             ],
                             [
                                 'attribute' => 'option_content',
-                                'value' => function (Collections $model) {
-                                    return Yii::t('cms', Collections::optionContentList()[$model->option_content]);
-                                }
+                                'value' => Yii::t('cms', Collections::optionContentList()[$model->option_content])
                             ]
                         ]
                     ]) ?>
@@ -99,20 +95,18 @@ foreach (Yii::$app->params['cms']['languages2'] as $key => $language) {
                         'attributes' => [
                             [
                                 'attribute' => 'option_file_1',
-                                'value' => function (Collections $model) {
-                                    return Yii::t('cms', Collections::optionFileList()[$model->option_file_1]);
-                                }
+                                'value' => Yii::t('cms', Collections::optionFileList()[$model->option_file_1])
                             ],
                             'option_file_1_label',
                             [
                                 'attribute' => 'file_1_mimeType',
-                                'value' => $model->file_1_mimeType !== null ? FileType::MIME_TYPES[$model->file_1_mimeType] : null
+                                'value' => $model->getFile1MimeType()
                             ],
                             'file_1_dimensionW',
                             'file_1_dimensionH',
                             [
                                 'attribute' => 'file_1_maxSize',
-                                'value' => $model->file_1_maxSize . ' MB'
+                                'value' => $model->getFile1MaxSize()
                             ]
                         ]
                     ]) ?>
@@ -128,13 +122,13 @@ foreach (Yii::$app->params['cms']['languages2'] as $key => $language) {
                             'option_file_2_label',
                             [
                                 'attribute' => 'file_2_mimeType',
-                                'value' => $model->file_2_mimeType !== null ? FileType::MIME_TYPES[$model->file_2_mimeType] : null
+                                'value' => $model->getFile2MimeType()
                             ],
                             'file_2_dimensionW',
                             'file_2_dimensionH',
                             [
                                 'attribute' => 'file_2_maxSize',
-                                'value' => $model->file_2_maxSize . ' MB'
+                                'value' => $model->getFile2MaxSize()
                             ]
                         ]
                     ]) ?>

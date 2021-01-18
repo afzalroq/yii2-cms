@@ -82,6 +82,9 @@ class Items extends ActiveRecord
 {
     const STATUS_DRAFT = 0;
     const STATUS_ACTIVE = 1;
+
+    #region Extra Attributes
+
     /**
      * @var mixed|null
      */
@@ -104,40 +107,66 @@ class Items extends ActiveRecord
     public $meta_keyword_4;
     public $dependEntity;
 
+    #endregion
+
+    #region Overwrite Methods
+
     public function __construct($slug = null)
     {
-        if ($slug){
+        if ($slug) {
             $this->dependEntity = Entities::findOne(['slug' => $slug]);
-            if($this->dependEntity->manual_slug) $this->detachBehavior('slug');
+            if ($this->dependEntity->manual_slug) $this->detachBehavior('slug');
         }
     }
-
 
     public static function tableName()
     {
         return 'cms_items';
     }
 
-    public function getOptionValue(CaE $cae)
+    public function behaviors()
     {
-        return (isset($this->options[$cae->collection->slug]))
-            ? $this->options[$cae->collection->slug]
-            : (($cae->collection->optionDefault) ? $cae->collection->optionDefault->id : null);
+        return [
+            TimestampBehavior::class,
+            'slug' => [
+                'class' => 'Zelenin\yii\behaviors\Slug',
+                'slugAttribute' => 'slug',
+                'attribute' => 'text_1_0',
+                // optional params
+                'ensureUnique' => true,
+                'replacement' => '-',
+                'lowercase' => true,
+                // false = changes after every change for $attribute
+                'immutable' => false,
+                // If intl extension is enabled, see http://userguide.icu-project.org/transforms/general.
+                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
+            ],
+            $this->getImageUploadBehaviorConfig('file_1_0'),
+            $this->getImageUploadBehaviorConfig('file_1_1'),
+            $this->getImageUploadBehaviorConfig('file_1_2'),
+            $this->getImageUploadBehaviorConfig('file_1_3'),
+            $this->getImageUploadBehaviorConfig('file_1_4'),
+            $this->getImageUploadBehaviorConfig('file_2_0'),
+            $this->getImageUploadBehaviorConfig('file_2_1'),
+            $this->getImageUploadBehaviorConfig('file_2_2'),
+            $this->getImageUploadBehaviorConfig('file_2_3'),
+            $this->getImageUploadBehaviorConfig('file_2_4'),
+            $this->getImageUploadBehaviorConfig('file_3_0'),
+            $this->getImageUploadBehaviorConfig('file_3_1'),
+            $this->getImageUploadBehaviorConfig('file_3_2'),
+            $this->getImageUploadBehaviorConfig('file_3_3'),
+            $this->getImageUploadBehaviorConfig('file_3_4'),
+
+        ];
     }
 
-    public function getImageUrl($attr, $width, $height, $resizeType = null)
+    public function beforeValidate(): bool
     {
-        return Image::get($this, $attr, $width, $height, $resizeType);
-    }
-
-    public function getPhotos()
-    {
-        return $this->hasMany(ItemPhotos::class, ['cms_item_id' => 'id'])->orderBy('sort');
-    }
-
-    public function getMainPhoto()
-    {
-        return $this->hasOne(ItemPhotos::class, ['id' => 'main_photo_id']);
+        if (parent::beforeValidate()) {
+            $this->files = UploadedFile::getInstances($this, 'files');
+            return true;
+        }
+        return false;
     }
 
     public function beforeSave($insert)
@@ -200,7 +229,7 @@ class Items extends ActiveRecord
     {
         parent::afterFind();
 
-        if($this->entity->manual_slug){
+        if ($this->entity->manual_slug) {
             $this->detachBehavior('slug');
         }
 
@@ -236,77 +265,6 @@ class Items extends ActiveRecord
         $this->meta_keyword_2 = $this->seo_values['meta_keyword_2'];
         $this->meta_keyword_3 = $this->seo_values['meta_keyword_3'];
         $this->meta_keyword_4 = $this->seo_values['meta_keyword_4'];
-    }
-
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-            'slug' => [
-                'class' => 'Zelenin\yii\behaviors\Slug',
-                'slugAttribute' => 'slug',
-                'attribute' => 'text_1_0',
-                // optional params
-                'ensureUnique' => true,
-                'replacement' => '-',
-                'lowercase' => true,
-                // false = changes after every change for $attribute
-                'immutable' => false,
-                // If intl extension is enabled, see http://userguide.icu-project.org/transforms/general.
-                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
-            ],
-            $this->getImageUploadBehaviorConfig('file_1_0'),
-            $this->getImageUploadBehaviorConfig('file_1_1'),
-            $this->getImageUploadBehaviorConfig('file_1_2'),
-            $this->getImageUploadBehaviorConfig('file_1_3'),
-            $this->getImageUploadBehaviorConfig('file_1_4'),
-            $this->getImageUploadBehaviorConfig('file_2_0'),
-            $this->getImageUploadBehaviorConfig('file_2_1'),
-            $this->getImageUploadBehaviorConfig('file_2_2'),
-            $this->getImageUploadBehaviorConfig('file_2_3'),
-            $this->getImageUploadBehaviorConfig('file_2_4'),
-            $this->getImageUploadBehaviorConfig('file_3_0'),
-            $this->getImageUploadBehaviorConfig('file_3_1'),
-            $this->getImageUploadBehaviorConfig('file_3_2'),
-            $this->getImageUploadBehaviorConfig('file_3_3'),
-            $this->getImageUploadBehaviorConfig('file_3_4'),
-
-        ];
-    }
-
-    private function getImageUploadBehaviorConfig($attribute)
-    {
-        $module = Yii::$app->getModule('cms');
-        return [
-            'class' => ImageUploadBehavior::class,
-            'attribute' => $attribute,
-            'filePath' => $module->storageRoot . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => $module->storageHost . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
-        ];
-    }
-
-    public function getCurrentAttrs($entityAttr)
-    {
-        $attrs = [];
-        foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
-            $attrs[] = $entityAttr . '_' . $key;
-        return $attrs;
-    }
-
-    public function fileValidator($entityAttr)
-    {
-        return [$this->getCurrentAttrs($entityAttr),
-            'file',
-            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
-            'maxSize' => $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024
-        ];
-    }
-
-    public function requiredValidator($entityAttr)
-    {
-        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
-            return $model->requireValidator($model->dependEntity->{$entityAttr});
-        }];
     }
 
     public function rules()
@@ -348,23 +306,6 @@ class Items extends ActiveRecord
             [['main_photo_id'], 'exist', 'skipOnError' => true, 'targetClass' => ItemPhotos::class, 'targetAttribute' => ['main_photo_id' => 'id']],
         ];
     }
-
-
-    public function requireValidator($type)
-    {
-        switch ($type) {
-            case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
-            case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
-            case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
-            case Entities::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED:
-            case Entities::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED:
-            case Entities::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED:
-                return true;
-            default:
-                return false;
-        }
-    }
-
 
     public function attributeLabels()
     {
@@ -451,15 +392,87 @@ class Items extends ActiveRecord
         ];
     }
 
+    #endregion
 
-    /**
-     * Gets query for [[Entity]].
-     *
-     * @return ActiveQuery
-     */
+    #region Extra Methods
+
+    public function getOptionValue(CaE $cae)
+    {
+        return (isset($this->options[$cae->collection->slug]))
+            ? $this->options[$cae->collection->slug]
+            : (($cae->collection->optionDefault) ? $cae->collection->optionDefault->id : null);
+    }
+
+    public function getImageUrl($attr, $width, $height, $resizeType = null)
+    {
+        return Image::get($this, $attr, $width, $height, $resizeType);
+    }
+
+    public function getCurrentAttrs($entityAttr)
+    {
+        $attrs = [];
+        foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
+            $attrs[] = $entityAttr . '_' . $key;
+        return $attrs;
+    }
+
+    public function fileValidator($entityAttr)
+    {
+        return [$this->getCurrentAttrs($entityAttr),
+            'file',
+            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
+            'maxSize' => $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024
+        ];
+    }
+
+    public function requiredValidator($entityAttr)
+    {
+        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
+            return $model->requireValidator($model->dependEntity->{$entityAttr});
+        }];
+    }
+
+    public function requireValidator($type)
+    {
+        switch ($type) {
+            case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private function getImageUploadBehaviorConfig($attribute)
+    {
+        $module = Yii::$app->getModule('cms');
+        return [
+            'class' => ImageUploadBehavior::class,
+            'attribute' => $attribute,
+            'filePath' => $module->storageRoot . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
+            'fileUrl' => $module->storageHost . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
+        ];
+    }
+
     public function getEntity()
     {
         return $this->hasOne(Entities::class, ['id' => 'entity_id']);
+    }
+
+    #region Photo Methods
+
+    public function getPhotos()
+    {
+        return $this->hasMany(ItemPhotos::class, ['cms_item_id' => 'id'])->orderBy('sort');
+    }
+
+    public function getMainPhoto()
+    {
+        return $this->hasOne(ItemPhotos::class, ['id' => 'main_photo_id']);
     }
 
     public function addPhoto(UploadedFile $file): void
@@ -538,12 +551,7 @@ class Items extends ActiveRecord
         throw new \DomainException(\Yii::t('app', 'Photo is not found.'));
     }
 
-    public function beforeValidate(): bool
-    {
-        if (parent::beforeValidate()) {
-            $this->files = UploadedFile::getInstances($this, 'files');
-            return true;
-        }
-        return false;
-    }
+    #endregion
+
+    #endregion
 }

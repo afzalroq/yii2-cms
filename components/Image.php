@@ -28,20 +28,21 @@ class Image
 {
     public static function get($obj, $attr, $width, $height, $operation)
     {
-
         if ($obj->{$attr} === null)
             return null;
+
         if (!$operation)
             $operation = 'cropResize';
 
+        $file = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($obj::className())) . '/')
+            . $obj->id . '/'
+            . $obj[$attr];
 
-        $file = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($obj::className())) . '/') . $obj->id . '/' . $obj[$attr];
-        $path  = GregImage::open($file)->setCacheDir(Yii::getAlias('@storage/cache'))
+        $path = GregImage::open($file)->setCacheDir(Yii::getAlias('@storage/cache'))
             ->{$operation}($width, $height)
             ->setFallback(Yii::getAlias('@storage') . '/data/images/fallback.jpg')
             ->guess();
 
-
-        return 'http://localhost:20082/' . str_replace('/app/storage/', '', $path) ;
+        return 'http://localhost:20082/' . str_replace('/app/storage/', '', $path);
     }
 }

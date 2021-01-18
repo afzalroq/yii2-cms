@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Options'), 'url' => 
 $this->params['breadcrumbs'][] = $this->title;
 
 $hasTranslatableAttrs = 0;
+
+
 ?>
 <div class="menu-view">
 
@@ -106,6 +108,7 @@ $hasTranslatableAttrs = 0;
                             ],
                             [
                                 'attribute' => 'parent_id',
+                                'label' => 'Parent',
                                 'format' => 'html',
                                 'value' => $model->getParentValue()
                             ],

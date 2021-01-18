@@ -38,6 +38,7 @@ use yii\db\ActiveRecord;
  */
 class Collections extends ActiveRecord
 {
+    #region Constants
 
     #region OptionAttrs
     const OPTION_NAME_DISABLED = 0;
@@ -67,7 +68,10 @@ class Collections extends ActiveRecord
     const USE_IN_MENU_ITEMS = 2;
     const USE_IN_MENU_OPTIONS_ITEMS = 12;
     #endregion
+    #endregion
+
     #region FileAttrs
+
     public $file_1_mimeType;
     public $file_1_dimensionW;
     public $file_1_dimensionH;
@@ -79,11 +83,6 @@ class Collections extends ActiveRecord
     public $file_2_maxSize;
 
     #endregion
-
-    public static function tableName()
-    {
-        return 'cms_collections';
-    }
 
     #region ListOfConstants
 
@@ -137,6 +136,12 @@ class Collections extends ActiveRecord
 
     #endregion
 
+    #region Override methods
+
+    public static function tableName()
+    {
+        return 'cms_collections';
+    }
 
     public function beforeSave($insert)
     {
@@ -183,7 +188,7 @@ class Collections extends ActiveRecord
 
             [['slug', 'use_in_menu', 'use_seo'], 'required'],
 
-            [['use_in_menu', 'use_seo','use_parenting', 'option_file_1', 'option_file_2', 'option_name', 'option_content', 'option_default_id', 'created_at', 'updated_at'], 'integer'],
+            [['use_in_menu', 'use_seo', 'use_parenting', 'option_file_1', 'option_file_2', 'option_name', 'option_content', 'option_default_id', 'created_at', 'updated_at'], 'integer'],
 
             [['option_file_1_validator', 'option_file_2_validator'], 'safe'],
 
@@ -242,6 +247,25 @@ class Collections extends ActiveRecord
             'file_2_maxSize' => Yii::t('cms', 'File') . ' 2 ' . Yii::t('cms', 'Max size'),
         ];
     }
+    #endregion
+
+    #region Extra methods
+
+    private function getFileMaxSize($number)
+    {
+        if ($this['file_' . $number . '_maxSize'])
+            return $this['file_' . $number . '_maxSize'] . ' MB';
+
+        return null;
+    }
+
+    private function getFileMimeType($number)
+    {
+        if ($this['file_' . $number . '_mimeType'])
+            return FileType::fileMimeTypes($this['file_' . $number . '_mimeType']);
+
+        return null;
+    }
 
     public function nameAttrs()
     {
@@ -263,24 +287,38 @@ class Collections extends ActiveRecord
         return $this['name_' . $key];
     }
 
-    /**
-     * Gets query for [[OptionDefault]].
-     *
-     * @return ActiveQuery
-     */
     public function getOptionDefault()
     {
         return $this->hasOne(Options::class, ['id' => 'option_default_id']);
     }
 
-    /**
-     * Gets query for [[Options]].
-     *
-     * @return ActiveQuery
-     */
     public function getOptions()
     {
         return $this->hasMany(Options::class, ['collection_id' => 'id']);
     }
+
+    #region Aliases
+    public function getFile1MaxSize()
+    {
+        return $this->getFileMaxSize('1');
+    }
+
+    public function getFile2MaxSize()
+    {
+        return $this->getFileMaxSize('2');
+    }
+
+    public function getFile1MimeType()
+    {
+        return $this->getFileMimeType('1');
+    }
+
+    public function getFile2MimeType()
+    {
+        return $this->getFileMimeType('2');
+    }
+    #endregion
+
+    #endregion
 
 }
