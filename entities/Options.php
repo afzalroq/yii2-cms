@@ -67,10 +67,18 @@ class Options extends ActiveRecord
     public $meta_keyword_2;
     public $meta_keyword_3;
     public $meta_keyword_4;
+    public $languageId;
 
     #endregion
 
     #region Overwrite Methods
+
+    public function __construct($config = [])
+    {
+        $this->setCurrentLanguage();
+        parent::__construct($config);
+    }
+
     public static function tableName()
     {
         return 'cms_options';
@@ -274,6 +282,60 @@ class Options extends ActiveRecord
     public function getImageUrl($attr, $width = null, $height = null, $resizeType = 'resize')
     {
         return Image::get($this, $attr, $width, $height, $resizeType);
+    }
+
+    private function setCurrentLanguage()
+    {
+        $this->languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        if (!$this->languageId)
+            $this->languageId = 0;
+    }
+
+    public function isAttrCommon($collectionAttr)
+    {
+        if (!$this->parentCollection)
+            $this->parentCollection = $this->collection;
+
+        switch ($this->parentCollection['option_' . $collectionAttr]) {
+            case Collections::SEO_COMMON:
+            case Collections::OPTION_FILE_COMMON:
+            case Collections::OPTION_NAME_COMMON:
+            case Collections::OPTION_CONTENT_COMMON_TEXTAREA:
+            case Collections::OPTION_CONTENT_COMMON_CKEDITOR:
+                return true;
+            case Collections::SEO_DISABLED:
+            case Collections::OPTION_FILE_DISABLED:
+            case Collections::OPTION_NAME_DISABLED:
+            case Collections::OPTION_CONTENT_DISABLED:
+                return Collections::DISABLED;
+        }
+        return false;
+    }
+
+    public function isAttrTranslatable($collectionAttr)
+    {
+        if (!$this->parentCollection)
+            $this->parentCollection = $this->collection;
+
+        switch ($this->parentCollection['option_' . $collectionAttr]) {
+            case Collections::SEO_COMMON:
+            case Collections::OPTION_FILE_TRANSLATABLE:
+            case Collections::OPTION_NAME_TRANSLATABLE:
+            case Collections::OPTION_CONTENT_TRANSLATABLE_TEXTAREA:
+            case Collections::OPTION_CONTENT_TRANSLATABLE_CKEDITOR:
+                return true;
+            case Collections::SEO_DISABLED:
+            case Collections::OPTION_FILE_DISABLED:
+            case Collections::OPTION_NAME_DISABLED:
+            case Collections::OPTION_CONTENT_DISABLED:
+                return Collections::DISABLED;
+        }
+        return false;
+    }
+
+    public function isAttrDisabled($collectionAttr)
+    {
+        return !($this->isAttrCommon($collectionAttr) || $this->isAttrTranslatable($collectionAttr));
     }
 
     public function getCollection()

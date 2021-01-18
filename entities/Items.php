@@ -8,6 +8,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\StringHelper;
 use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 use yiidreamteam\upload\ImageUploadBehavior;
@@ -106,17 +107,23 @@ class Items extends ActiveRecord
     public $meta_keyword_3;
     public $meta_keyword_4;
     public $dependEntity;
+    public $languageId;
 
     #endregion
 
     #region Overwrite Methods
 
-    public function __construct($slug = null)
+    public function __construct($slug = null, $config = [])
     {
         if ($slug) {
             $this->dependEntity = Entities::findOne(['slug' => $slug]);
             if ($this->dependEntity->manual_slug) $this->detachBehavior('slug');
+        } else {
+            $this->dependEntity = $this->entity;
         }
+        $this->setCurrentLanguage();
+        
+        parent::__construct($config);
     }
 
     public static function tableName()
@@ -392,6 +399,21 @@ class Items extends ActiveRecord
         ];
     }
 
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete())
+            return false;
+
+        foreach (Menu::find()->all() as $menu) {
+            if ($item_id = StringHelper::explode($menu->type_helper, ',')[1])
+                if ($this->id == $item_id)
+                    if (!$menu->delete())
+                        return false;
+        }
+
+        return true;
+    }
+
     #endregion
 
     #region Extra Methods
@@ -416,12 +438,72 @@ class Items extends ActiveRecord
         return $attrs;
     }
 
+    private function setCurrentLanguage()
+    {
+        $this->languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        if (!$this->languageId)
+            $this->languageId = 0;
+    }
+
+    public function isAttrCommon($entityAttr)
+    {
+        if (!$this->dependEntity)
+            $this->dependEntity = $this->entity;
+
+        switch ($this->dependEntity->{$entityAttr}) {
+            case Entities::FILE_COMMON:
+            case Entities::TEXT_COMMON_INPUT_STRING:
+            case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_INT:
+            case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_URL:
+            case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
+            case Entities::TEXT_COMMON_TEXTAREA:
+            case Entities::TEXT_COMMON_CKEDITOR:
+                return true;
+            case Entities::FILE_DISABLED:
+            case Entities::TEXT_DISABLED:
+                return Entities::DISABLED;
+        }
+        return false;
+    }
+
+    public function isAttrTranslatable($entityAttr)
+    {
+        if (!$this->dependEntity)
+            $this->dependEntity = $this->entity;
+
+        switch ($this->dependEntity->{$entityAttr}) {
+            case Entities::FILE_TRANSLATABLE:
+            case Entities::TEXT_TRANSLATABLE_INPUT_STRING:
+            case Entities::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_INT:
+            case Entities::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_URL:
+            case Entities::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_TEXTAREA:
+            case Entities::TEXT_TRANSLATABLE_CKEDITOR:
+                return true;
+            case Entities::FILE_DISABLED:
+            case Entities::TEXT_DISABLED:
+                return Entities::DISABLED;
+        }
+        return false;
+    }
+
+    public function isAttrDisabled($entityAttr)
+    {
+        return !($this->isAttrCommon($entityAttr) || $this->isAttrTranslatable($entityAttr));
+    }
+
     public function fileValidator($entityAttr)
     {
+        $maxSize = $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024;
+
         return [$this->getCurrentAttrs($entityAttr),
             'file',
             'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
-            'maxSize' => $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024
+            'maxSize' => ($maxSize) ? $maxSize : null
         ];
     }
 

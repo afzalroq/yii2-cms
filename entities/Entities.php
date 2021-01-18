@@ -57,6 +57,8 @@ use yii\db\ActiveRecord;
 class Entities extends ActiveRecord
 {
     #region TEXT types
+    const DISABLED = -1;
+
     const TEXT_DISABLED = 0;
     const TEXT_COMMON_INPUT_STRING = 10;
     const TEXT_COMMON_INPUT_STRING_REQUIRED = 11;
