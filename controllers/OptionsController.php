@@ -111,6 +111,7 @@ class OptionsController extends Controller
     public function actionUpdate($id, $slug)
     {
         $model = $this->findModel($id);
+        $model->parentCollection = Collections::findOne(['slug' => $slug]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
