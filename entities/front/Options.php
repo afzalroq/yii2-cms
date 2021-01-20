@@ -4,28 +4,11 @@ namespace afzalroq\cms\entities\front;
 
 use afzalroq\cms\entities\Collections;
 use yii\caching\TagDependency;
+use yii\helpers\StringHelper;
 
 class Options extends \afzalroq\cms\entities\Options
 {
-    #region Get Text Attributes
-
-    public function getName()
-    {
-        if ($this->isAttrCommon('name'))
-            return $this['name_0'];
-
-        return $this['name_' . $this->languageId];
-    }
-
-    public function getContent()
-    {
-        if ($this->isAttrCommon('content'))
-            return $this['content_0'];
-
-        return $this['content_' . $this->languageId];
-    }
-
-    #endregion
+    #region Method Aliases
 
     #region Get Photo Attributes
 
@@ -41,16 +24,61 @@ class Options extends \afzalroq\cms\entities\Options
 
     #endregion
 
-    public function getPhoto($collectionAttr, $width, $height)
+    #region Get File Attributes
+
+    public function getFile1()
     {
-        if ($this->isAttrDisabled($collectionAttr))
+        return $this->getFile('file_1');
+    }
+
+    public function getFile2()
+    {
+        return $this->getFile('file_2');
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Base Methods
+
+    public function getName()
+    {
+        if (!($attr = $this->getAttr('name')))
             return null;
 
-        if ($this->isAttrCommon($collectionAttr))
-            return $this->getImageUrl($collectionAttr . '_0', $width, $height);
-
-        return $this->getImageUrl($collectionAttr . "_" . "$this->languageId", $width, $height);
+        return $this[$attr];
     }
+
+    public function getContent()
+    {
+        if (!($attr = $this->getAttr('content')))
+            return null;
+
+        return $this[$attr];
+    }
+
+    public function getPhoto($collectionAttr, $width, $height)
+    {
+        if (!($attr = $this->getAttr($collectionAttr)))
+            return null;
+
+        return $this->getImageUrl($attr, $width, $height);
+    }
+
+    public function getFile($collectionAttr)
+    {
+        if (!($attr = $this->getAttr($collectionAttr)))
+            return null;
+
+        $filePath = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/')
+            . $this->id . '/'
+            . $this[$attr];
+
+        return 'http://localhost:20082' . str_replace('/app/storage', '', $filePath);
+    }
+
+    #endregion
 
     #region GetOrSet Cached Items
 
@@ -70,6 +98,23 @@ class Options extends \afzalroq\cms\entities\Options
             return self::findOne(['collection_id' => Collections::findOne(['slug' => $slug])->id]);
 
         }, 0, new TagDependency(['tags' => ['options-' . $slug]]));
+    }
+
+    #endregion
+
+    #region Extra Methods
+
+    private function getAttr($collectionAttr)
+    {
+        if ($this->isAttrDisabled($collectionAttr))
+            return null;
+
+        if ($this->isAttrCommon($collectionAttr))
+            $attr = $collectionAttr . '_0';
+        else
+            $attr = $collectionAttr . "_" . "$this->languageId";
+
+        return $attr;
     }
 
     #endregion

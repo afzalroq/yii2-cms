@@ -1,14 +1,15 @@
 <?php
 
-
 namespace afzalroq\cms\entities\front;
-
 
 use afzalroq\cms\entities\Entities;
 use yii\caching\TagDependency;
+use yii\helpers\StringHelper;
 
 class Items extends \afzalroq\cms\entities\Items
 {
+    #region Method Aliases
+
     #region Get Text Attributes
 
     public function getText1()
@@ -53,15 +54,35 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getPhoto('file_1', $width, $height);
     }
 
-    public function getPhoto2($width, $height)
+    public function getPhoto2($width = null, $height = null)
     {
         return $this->getPhoto('file_2', $width, $height);
     }
 
-    public function getPhoto3($width, $height)
+    public function getPhoto3($width = null, $height = null)
     {
         return $this->getPhoto('file_3', $width, $height);
     }
+
+    #endregion
+
+    #region Get File Attributes
+    public function getFile1()
+    {
+        return $this->getFile('file_1');
+    }
+
+    public function getFile2()
+    {
+        return $this->getFile('file_2');
+    }
+
+    public function getFile3()
+    {
+        return $this->getFile('file_3');
+    }
+
+    #endregion
 
     #endregion
 
@@ -69,28 +90,41 @@ class Items extends \afzalroq\cms\entities\Items
 
     public function getText($entityAttr)
     {
+        if (!($attr = $this->getAttr($entityAttr)))
+            return null;
 
-        if ($this->isAttrCommon($entityAttr))
-            return $this[$entityAttr . '_0'];
-
-        return $this[$entityAttr . '_' . $this->languageId];
-
+        return $this[$attr];
     }
 
     public function getPhoto($entityAttr, $width, $height)
     {
-        if ($this->isAttrDisabled($entityAttr))
+        if (!($attr = $this->getAttr($entityAttr)))
             return null;
 
-        if ($this->isAttrCommon($entityAttr))
-            return $this->getImageUrl($entityAttr . '_0', $width, $height);
-
-        return $this->getImageUrl($entityAttr . "_" . "$this->languageId", $width, $height);
+        return $this->getImageUrl($attr, $width, $height);
     }
-    
+
+    public function getFile($entityAttr)
+    {
+        if (!($attr = $this->getAttr($entityAttr)))
+            return null;
+
+        $filePath = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/')
+            . $this->id . '/'
+            . $this[$attr];
+
+        return 'http://localhost:20082' . str_replace('/app/storage', '', $filePath);
+    }
+
+    public function getDate($format)
+    {
+        return date($format, $this->date);
+    }
+
     #endregion
 
     #region GetOrSet Cached Items
+
     public static function getAll($slug)
     {
         return \Yii::$app->cmsCache->getOrSet('items_' . $slug, function () use ($slug) {
@@ -108,5 +142,23 @@ class Items extends \afzalroq\cms\entities\Items
 
         }, 0, new TagDependency(['tags' => ['items-' . $slug]]));
     }
+
+    #endregion
+
+    #region Extra Methods
+
+    private function getAttr($entityAttr)
+    {
+        if ($this->isAttrDisabled($entityAttr))
+            return null;
+
+        if ($this->isAttrCommon($entityAttr))
+            $attr = $entityAttr . '_0';
+        else
+            $attr = $entityAttr . "_" . "$this->languageId";
+
+        return $attr;
+    }
+
     #endregion
 }

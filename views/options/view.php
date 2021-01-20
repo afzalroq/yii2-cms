@@ -23,7 +23,7 @@ $hasTranslatableAttrs = 0;
 
     <p>
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $collection->slug], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),

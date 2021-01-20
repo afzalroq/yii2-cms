@@ -139,10 +139,10 @@ class ItemsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $slug)
     {
         $this->findModel($id)->delete();
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'slug' => $slug]);
     }
 
     public function actionDeletePhoto($id, $photo_id, $slug)

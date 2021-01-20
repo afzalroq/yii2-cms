@@ -8,6 +8,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
 use yii\helpers\StringHelper;
 use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
@@ -108,6 +109,7 @@ class Items extends ActiveRecord
     public $meta_keyword_4;
     public $dependEntity;
     public $languageId;
+    private $cpId;
 
     #endregion
 
@@ -122,7 +124,7 @@ class Items extends ActiveRecord
             $this->dependEntity = $this->entity;
         }
         $this->setCurrentLanguage();
-        
+
         parent::__construct($config);
     }
 
@@ -274,6 +276,32 @@ class Items extends ActiveRecord
         $this->meta_keyword_4 = $this->seo_values['meta_keyword_4'];
     }
 
+    public function beforeDelete()
+    {
+        $this->cpId = $this->id;
+        return parent::beforeDelete();
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        foreach (Menu::find()->all() as $menu) {
+            $shouldDelete = false;
+
+            if ($menu->type === Menu::TYPE_ENTITY_ITEM)
+                if ($menu->type_helper == $this->cpId)
+                    $shouldDelete = true;
+
+            if ($menu->type === Menu::TYPE_ITEM)
+                if (explode(',', $menu->type_helper)[1] == $this->cpId)
+                    $shouldDelete = true;
+
+            if ($shouldDelete)
+                if (!$menu->delete())
+                    throw new Exception("Cannot delete id: {$menu->id} of menu");
+        }
+    }
+
     public function rules()
     {
         if (empty($this->dependEntity)) $this->dependEntity = $this->entity;
@@ -397,21 +425,6 @@ class Items extends ActiveRecord
             'updated_at' => Yii::t('cms', 'Updated At'),
             'files' => Yii::t('cms', 'Pictures')
         ];
-    }
-
-    public function beforeDelete()
-    {
-        if (!parent::beforeDelete())
-            return false;
-
-        foreach (Menu::find()->all() as $menu) {
-            if ($item_id = StringHelper::explode($menu->type_helper, ',')[1])
-                if ($this->id == $item_id)
-                    if (!$menu->delete())
-                        return false;
-        }
-
-        return true;
     }
 
     #endregion

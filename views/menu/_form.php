@@ -198,7 +198,6 @@ $(document).ready(function () {
     })
     //endregion
 
-    
     function initEntityOptionItem() {
         types.val(typesValue)
         helperForm.slideDown()
