@@ -1,6 +1,7 @@
 # yii-2-cms extension
 
 The extension allows:
+
 - make html blocks of html contents, files, images.
 - make collections for options like tags, categories
 - make entities for items like sliders, products, reviews, articles, pages
@@ -39,6 +40,7 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ### Setup in common config file
 
 > CKEditor use Elfinder plugin for save files and images. Refer [Elfinder readme](https://github.com/MihailDev/yii2-elfinder) for proper configuration
+
 - Language indexes related with database columns.
 - Admin panel tabs render by array values order
 
@@ -71,12 +73,55 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ```
 
 - In admin panel open management via link:
+
 ```php
 /cms/home/index
 ```
 
-
-###Examples
+### Examples
 
 TODO
+
 - Copy from extension root directory example widgets for frontend integration
+
+## Usage
+
+### Item helper
+
+### Getters
+
+```php
+ $item->getText1(); // for get Text 1
+ $item->getText2(); // for get Text 2
+ $item->getText3(); // for get Text 3
+ $item->getText4(); // for get Text 4
+ $item->getText5(); // for get Text 5
+ $item->getText6(); // for get Text 6
+ $item->getText7(); // for get Text 7
+ 
+ $item->getPhoto1(); // for get Photo 1
+ $item->getPhoto2(); // for get Photo 2
+ $item->getPhoto3(); // for get Photo 3
+ 
+ $item->getFile1(); // for get File 1
+ $item->getFile2(); // for get File 2
+ $item->getFile3(); // for get File 3
+ 
+ $item->getDate($format); // for get date with format
+```
+
+### Option helper
+
+### Getters
+
+```php
+ $option->getName(); // for get Name
+
+ $option->getContent(); // for get Content
+
+ $option->getPhoto1(); // for get Photo 1
+ $option->getPhoto2(); // for get Photo 2
+
+ $option->getFile1(); // for get File 1
+ $option->getFile2(); // for get File 2
+```
