@@ -72,6 +72,8 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ]
 ```
 
+> By default uses for caching component with name "cache"
+
 - In admin panel open management via link:
 
 ```php

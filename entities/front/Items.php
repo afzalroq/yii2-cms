@@ -8,13 +8,38 @@ use yii\helpers\StringHelper;
 
 class Items extends \afzalroq\cms\entities\Items
 {
-    #region Method Aliases
 
-    #region Get Text Attributes
+    public static function getAll($slug)
+    {
+        return \Yii::$app->cache->getOrSet('items_' . $slug, function () use ($slug) {
+
+            return self::findAll(['entity_id' => Entities::findOne(['slug' => $slug])->id]);
+
+        }, 3600, new TagDependency(['tags' => ['items_' . $slug]]));
+    }
+
+    public static function get($slug)
+    {
+        return \Yii::$app->cache->getOrSet('items_' . $slug, function () use ($slug) {
+
+            return self::findOne(['entity_id' => Entities::findOne(['slug' => $slug])->id]);
+
+        }, 3600, new TagDependency(['tags' => ['items_' . $slug]]));
+    }
 
     public function getText1()
     {
         return $this->getText('text_1');
+    }
+
+    private function getText($entityAttr)
+    {
+        return $this[$this->getAttr($entityAttr)];
+    }
+
+    private function getAttr($entityAttr)
+    {
+        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $this->languageId);
     }
 
     public function getText2()
@@ -46,12 +71,15 @@ class Items extends \afzalroq\cms\entities\Items
     {
         return $this->getText('text_7');
     }
-    #endregion
 
-    #region Get Photo Attributes
     public function getPhoto1($width = null, $height = null)
     {
         return $this->getPhoto('file_1', $width, $height);
+    }
+
+    private function getPhoto($entityAttr, $width, $height)
+    {
+        return $this->getImageUrl($this->getAttr($entityAttr), $width, $height);
     }
 
     public function getPhoto2($width = null, $height = null)
@@ -64,12 +92,15 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getPhoto('file_3', $width, $height);
     }
 
-    #endregion
-
-    #region Get File Attributes
     public function getFile1()
     {
         return $this->getFile('file_1');
+    }
+
+    private function getFile($entityAttr)
+    {
+        $filePath = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className()))) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
+        return 'http://localhost:20082' . str_replace('/app/storage', '', $filePath);
     }
 
     public function getFile2()
@@ -82,83 +113,8 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getFile('file_3');
     }
 
-    #endregion
-
-    #endregion
-
-    #region Base Methods
-
-    public function getText($entityAttr)
-    {
-        if (!($attr = $this->getAttr($entityAttr)))
-            return null;
-
-        return $this[$attr];
-    }
-
-    public function getPhoto($entityAttr, $width, $height)
-    {
-        if (!($attr = $this->getAttr($entityAttr)))
-            return null;
-
-        return $this->getImageUrl($attr, $width, $height);
-    }
-
-    public function getFile($entityAttr)
-    {
-        if (!($attr = $this->getAttr($entityAttr)))
-            return null;
-
-        $filePath = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/')
-            . $this->id . '/'
-            . $this[$attr];
-
-        return 'http://localhost:20082' . str_replace('/app/storage', '', $filePath);
-    }
-
     public function getDate($format)
     {
         return date($format, $this->date);
     }
-
-    #endregion
-
-    #region GetOrSet Cached Items
-
-    public static function getAll($slug)
-    {
-        return \Yii::$app->cmsCache->getOrSet('items_' . $slug, function () use ($slug) {
-
-            return self::findAll(['entity_id' => Entities::findOne(['slug' => $slug])->id]);
-
-        }, 0, new TagDependency(['tags' => ['items-' . $slug]]));
-    }
-
-    public static function get($slug)
-    {
-        return \Yii::$app->cmsCache->getOrSet('items_' . $slug, function () use ($slug) {
-
-            return self::findOne(['entity_id' => Entities::findOne(['slug' => $slug])->id]);
-
-        }, 0, new TagDependency(['tags' => ['items-' . $slug]]));
-    }
-
-    #endregion
-
-    #region Extra Methods
-
-    private function getAttr($entityAttr)
-    {
-        if ($this->isAttrDisabled($entityAttr))
-            return null;
-
-        if ($this->isAttrCommon($entityAttr))
-            $attr = $entityAttr . '_0';
-        else
-            $attr = $entityAttr . "_" . "$this->languageId";
-
-        return $attr;
-    }
-
-    #endregion
 }

@@ -2,15 +2,15 @@
 
 namespace afzalroq\cms\entities;
 
+use afzalroq\cms\components\FileType;
+use afzalroq\cms\components\Image;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveQuery;
+use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
 use yii\helpers\Html;
 use yiidreamteam\upload\FileUploadBehavior;
-use afzalroq\cms\components\FileType;
-use afzalroq\cms\components\Image;
 
 /**
  * This is the model class for table "cms_options".
@@ -128,6 +128,13 @@ class Options extends ActiveRecord
         ];
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        TagDependency::invalidate(Yii::$app->cache, 'options_' . $this->parentCollection->slug);
+        return true;
+    }
+
     public function beforeSave($insert)
     {
         if ($this->collection->use_seo)
@@ -163,6 +170,9 @@ class Options extends ActiveRecord
     public function afterDelete()
     {
         parent::afterDelete();
+
+        TagDependency::invalidate(Yii::$app->cache, 'options_' . (Collections::findOne($this->collection_id))->slug);
+
         foreach (Menu::find()->all() as $menu) {
             if ($menu->type !== Menu::TYPE_OPTION)
                 continue;
