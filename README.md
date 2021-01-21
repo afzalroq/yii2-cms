@@ -72,6 +72,16 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ]
 ```
 
+> By default uses for caching component with name "cache". Config as belove:
+```php
+'components' => [
+    'cache' => [
+        'class' => 'yii\caching\FileCache',
+        'cachePath' => Yii::getAlias('@frontend') . '/runtime/cache'
+    ],
+]
+```
+
 - In admin panel open management via link:
 
 ```php
@@ -107,7 +117,7 @@ TODO
  $item->getFile2(); // for get File 2
  $item->getFile3(); // for get File 3
  
- $item->getDate($format); // for get date with format
+ $item->getDate($format); // for get date with format like "d.m.Y H:i:s"
 ```
 
 ### Option helper

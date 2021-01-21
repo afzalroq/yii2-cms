@@ -13,6 +13,7 @@ use yii\helpers\StringHelper;
 use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 use yiidreamteam\upload\ImageUploadBehavior;
+use yii\caching\TagDependency;
 
 
 /**
@@ -213,6 +214,8 @@ class Items extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
+        TagDependency::invalidate(Yii::$app->cache, 'items_' . $this->entity->slug);
+
         OaI::deleteAll(['item_id' => $this->id]);
 
         if ($this->options)
@@ -285,6 +288,9 @@ class Items extends ActiveRecord
     public function afterDelete()
     {
         parent::afterDelete();
+
+        TagDependency::invalidate(Yii::$app->cache, 'items_' . $this->entity->slug);
+
         foreach (Menu::find()->all() as $menu) {
             $shouldDelete = false;
 

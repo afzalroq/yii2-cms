@@ -18,10 +18,6 @@ use yii\db\ActiveRecord;
  * @property string $title_3
  * @property int $type
  * @property string $type_helper
- * @property string $action
- * @property string $link
- * @property int $page_id
- * @property int $articles_category_id
  * @property int $sort
  * @property int $created_at
  * @property int $updated_at
@@ -231,16 +227,6 @@ class Menu extends ActiveRecord
     public function getParents()
     {
         return $this->hasOne(self::class, ['id' => 'parent_id'])->from('menu' . ' m');
-    }
-
-    public function getPage()
-    {
-        return $this->hasOne(Pages::class, ['id' => 'page_id']);
-    }
-
-    public function getArticlesCategory()
-    {
-        return $this->hasOne(ArticleCategories::class, ['id' => 'articles_category_id']);
     }
 
     public function getParent()
