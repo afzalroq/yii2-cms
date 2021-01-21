@@ -55,7 +55,7 @@ class File extends UnitActiveRecord
 
     private function getBehaviorConfig($attribute)
     {
-        $module = Yii::$app->getModule('unit');
+        $module = Yii::$app->getmodule('cms');
 
         return [
             'class' => FileUploadBehavior::class,
