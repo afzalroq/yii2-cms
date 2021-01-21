@@ -66,7 +66,7 @@ class Image extends UnitActiveRecord
 
     private function getBehaviorConfig($attribute)
     {
-        $module = Yii::$app->getModule('unit');
+        $module = Yii::$app->getmodule('cms');
 
         return [
             'class' => ImageUploadBehavior::class,
