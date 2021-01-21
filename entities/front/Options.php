@@ -51,8 +51,9 @@ class Options extends \afzalroq\cms\entities\Options
 
     private function getFile($collectionAttr)
     {
-        $filePath = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className()))) . '/' . $this->id . '/' . $this[$this->getAttr($collectionAttr)];
-        return 'http://localhost:20082' . str_replace('/app/storage', '', $filePath);
+        $module = Yii::$app->getModule('cms');
+        $filePath = \Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className()))) . '/' . $this->id . '/' . $this[$this->getAttr($collectionAttr)];
+        return $module->storageHost . str_replace('/app/storage', '', str_replace('/var/www/html/www.itpuz.uz/storage', '', $filePath));
     }
 
     public function getFile2()

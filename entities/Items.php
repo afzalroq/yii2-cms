@@ -6,14 +6,11 @@ use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveQuery;
+use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
-use yii\helpers\StringHelper;
-use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 use yiidreamteam\upload\ImageUploadBehavior;
-use yii\caching\TagDependency;
 
 
 /**
@@ -259,24 +256,25 @@ class Items extends ActiveRecord
                                 break;
                         }
 
+        if ($this->entity->use_seo) {
+            $this->meta_title_0 = $this->seo_values['meta_title_0'];
+            $this->meta_title_1 = $this->seo_values['meta_title_1'];
+            $this->meta_title_2 = $this->seo_values['meta_title_2'];
+            $this->meta_title_3 = $this->seo_values['meta_title_3'];
+            $this->meta_title_4 = $this->seo_values['meta_title_4'];
 
-        $this->meta_title_0 = $this->seo_values['meta_title_0'];
-        $this->meta_title_1 = $this->seo_values['meta_title_1'];
-        $this->meta_title_2 = $this->seo_values['meta_title_2'];
-        $this->meta_title_3 = $this->seo_values['meta_title_3'];
-        $this->meta_title_4 = $this->seo_values['meta_title_4'];
+            $this->meta_des_0 = $this->seo_values['meta_des_0'];
+            $this->meta_des_1 = $this->seo_values['meta_des_1'];
+            $this->meta_des_2 = $this->seo_values['meta_des_2'];
+            $this->meta_des_3 = $this->seo_values['meta_des_3'];
+            $this->meta_des_4 = $this->seo_values['meta_des_4'];
 
-        $this->meta_des_0 = $this->seo_values['meta_des_0'];
-        $this->meta_des_1 = $this->seo_values['meta_des_1'];
-        $this->meta_des_2 = $this->seo_values['meta_des_2'];
-        $this->meta_des_3 = $this->seo_values['meta_des_3'];
-        $this->meta_des_4 = $this->seo_values['meta_des_4'];
-
-        $this->meta_keyword_0 = $this->seo_values['meta_keyword_0'];
-        $this->meta_keyword_1 = $this->seo_values['meta_keyword_1'];
-        $this->meta_keyword_2 = $this->seo_values['meta_keyword_2'];
-        $this->meta_keyword_3 = $this->seo_values['meta_keyword_3'];
-        $this->meta_keyword_4 = $this->seo_values['meta_keyword_4'];
+            $this->meta_keyword_0 = $this->seo_values['meta_keyword_0'];
+            $this->meta_keyword_1 = $this->seo_values['meta_keyword_1'];
+            $this->meta_keyword_2 = $this->seo_values['meta_keyword_2'];
+            $this->meta_keyword_3 = $this->seo_values['meta_keyword_3'];
+            $this->meta_keyword_4 = $this->seo_values['meta_keyword_4'];
+        }
     }
 
     public function beforeDelete()

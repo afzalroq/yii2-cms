@@ -99,8 +99,9 @@ class Items extends \afzalroq\cms\entities\Items
 
     private function getFile($entityAttr)
     {
-        $filePath = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className()))) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
-        return 'http://localhost:20082' . str_replace('/app/storage', '', $filePath);
+        $module = Yii::$app->getModule('cms');
+        $filePath = \Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className()))) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
+        return $module->storageHost . str_replace('/app/storage', '', str_replace('/var/www/html/www.itpuz.uz/storage', '', $filePath));
     }
 
     public function getFile2()
