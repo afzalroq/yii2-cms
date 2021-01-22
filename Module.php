@@ -7,16 +7,20 @@ use afzalroq\cms\components\Language;
 /**
  * Class Module
  * @package afzalroq\cms
- * @property string $storageRoot
- * @property string $storageHost
+ * @property string $path
+ * @property string $host
+ * @property string $fallback
+ * @property string $fullPath
  * @property array $languages
  * @property array $menuActions
  */
 class Module extends \yii\base\Module
 {
 
-    public $storageRoot;
-    public $storageHost;
+    public $path;
+    public $host;
+    public $fullPath = '/app/storage';
+    public $fallback;
     public $languages;
     public $menuActions;
 
@@ -37,8 +41,7 @@ class Module extends \yii\base\Module
         $languageIds = [];
         foreach ($this->languages as $prefix => $language) {
             \Yii::$app->params['cms']['languageIds'][$prefix] = $language['id'];
-            \Yii::$app->params['cms']['languages'][$prefix] = $language['name'];
-            \Yii::$app->params['cms']['languages2'][$language['id']] = $language['name'];
+            \Yii::$app->params['cms']['languages'][$language['id']] = $language['name'];
         }
     }
 

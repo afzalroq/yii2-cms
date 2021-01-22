@@ -37,11 +37,11 @@ class Image extends UnitActiveRecord
 
     public function attributeLabels()
     {
-        $language0 = Yii::$app->params['cms']['languages2'][0] ?? '';
-        $language1 = Yii::$app->params['cms']['languages2'][1] ?? '';
-        $language2 = Yii::$app->params['cms']['languages2'][2] ?? '';
-        $language3 = Yii::$app->params['cms']['languages2'][3] ?? '';
-        $language4 = Yii::$app->params['cms']['languages2'][4] ?? '';
+        $language0 = Yii::$app->params['cms']['languages'][0] ?? '';
+        $language1 = Yii::$app->params['cms']['languages'][1] ?? '';
+        $language2 = Yii::$app->params['cms']['languages'][2] ?? '';
+        $language3 = Yii::$app->params['cms']['languages'][3] ?? '';
+        $language4 = Yii::$app->params['cms']['languages'][4] ?? '';
 
         return [
             'data_0' => Yii::t('unit', 'Photo') . '(' . $language0 . ')',
@@ -72,10 +72,14 @@ class Image extends UnitActiveRecord
             'class' => ImageUploadBehavior::class,
             'attribute' => $attribute,
             'createThumbsOnRequest' => true,
-            'filePath' => $module->storageRoot . '/data/units/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => $module->storageHost . '/data/units/[[attribute_id]]/[[filename]].[[extension]]',
-            'thumbPath' => $module->storageRoot . '/cache/units/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-            'thumbUrl' => $module->storageHost . '/cache/units/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+            'filePath' => $module->path . '/data/units/[[attribute_id]]/[[filename]].[[extension]]',
+            'fileUrl' => $module->host . '/data/units/[[attribute_id]]/[[filename]].[[extension]]',
+            'thumbPath' => $module->path . '/cache/units/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+            'thumbUrl' => $module->host . '/cache/units/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+            'thumbs' => [
+                'sm' => ['width' => 120, 'height' => 120],
+                'md' => ['width' => 240, 'height' => 240],
+            ]
         ];
     }
 

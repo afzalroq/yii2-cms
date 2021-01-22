@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
         <div class="box-body">
             <div class="row">
                 <div class="col-md-3">
-                    <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                    <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
                         <?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]) ?>
                     <?php endforeach; ?>
                 </div>

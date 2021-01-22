@@ -2,9 +2,9 @@
 
 namespace afzalroq\cms\components;
 
+use Gregwar\Image\Image as GregImage;
 use Yii;
 use yii\helpers\StringHelper;
-use Gregwar\Image\Image as GregImage;
 
 /**
  * @property int $id
@@ -34,15 +34,13 @@ class Image
         if (!$operation)
             $operation = 'cropResize';
 
-        $file = Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($obj::className())) . '/')
-            . $obj->id . '/'
-            . $obj[$attr];
-
-        $path = GregImage::open($file)->setCacheDir(Yii::getAlias('@storage/cache'))
+        $module = Yii::$app->getModule('cms');
+        $file = $module->path . '/data/' . mb_strtolower(StringHelper::basename($obj::className())) . '/' . $obj->id . '/' . $obj[$attr];
+        $path = GregImage::open($file)->setCacheDir($module->path . '/cache')
             ->{$operation}($width, $height)
-            ->setFallback(Yii::getAlias('@storage') . '/data/images/fallback.jpg')
+            ->setFallback($module->fallback)
             ->guess();
 
-        return 'http://localhost:20082/' . str_replace('/app/storage/', '', $path);
+        return $module->host . str_replace($module->fullPath, '', $path);
     }
 }

@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-sm-6">
 					<?php $nameAttrs = [];
-					foreach(Yii::$app->params['cms']['languages2'] as $key => $language)
+					foreach(Yii::$app->params['cms']['languages'] as $key => $language)
                         $nameAttrs[] = 'title_' . $key;
 
                     echo DetailView::widget([

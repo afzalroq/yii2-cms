@@ -36,7 +36,7 @@ if ($model->entity->use_date === Entities::USE_DATE_DATETIME)
 //$cmsForm = new CmsForm((new ActiveForm()), $model, $entity);
 
 foreach ($entity_file_attrs as $attr => $value)
-    foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
+    foreach (Yii::$app->params['cms']['languages'] as $key => $language)
         if ($entity[$attr])
             $file_attributes[] = [
                 'attribute' => $attr . '_' . $key,
@@ -54,7 +54,7 @@ foreach ($entity_file_attrs as $attr => $value)
             ];
 
 foreach ($entity_text_attrs as $attr => $value)
-    foreach (Yii::$app->params['cms']['languages2'] as $key => $language)
+    foreach (Yii::$app->params['cms']['languages'] as $key => $language)
         if ($entity[$attr])
             $text_attributes[] = [
                 'attribute' => $attr . '_' . $key,

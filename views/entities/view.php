@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 
 $names = [];
-foreach (Yii::$app->params['cms']['languages2'] as $key => $language) {
+foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
     $names[] = [
         'attribute' => 'id',
         'label' => 'Name ' . $language,

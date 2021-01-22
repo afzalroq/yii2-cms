@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Collection'), 'url' 
 $this->params['breadcrumbs'][] = $this->title;
 
 $names = [];
-foreach (Yii::$app->params['cms']['languages2'] as $key => $language) {
+foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
     $names[] = [
         'attribute' => 'id',
         'label' => 'Name ' . $language,

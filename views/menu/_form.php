@@ -87,7 +87,7 @@ foreach(Entities::find()->all() as $entity)
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-md-12">
-						<?php foreach(Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+						<?php foreach(Yii::$app->params['cms']['languages'] as $key => $language) : ?>
 							<?= $form->field($model, 'title_' . $key)->textInput(['maxlength' => true, 'data-type' => 'titles']) ?>
 						<?php endforeach; ?>
                     </div>

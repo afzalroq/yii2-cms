@@ -26,11 +26,11 @@ class File extends UnitActiveRecord
 
     public function attributeLabels()
     {
-        $language0 = Yii::$app->params['cms']['languages2'][0] ?? '';
-        $language1 = Yii::$app->params['cms']['languages2'][1] ?? '';
-        $language2 = Yii::$app->params['cms']['languages2'][2] ?? '';
-        $language3 = Yii::$app->params['cms']['languages2'][3] ?? '';
-        $language4 = Yii::$app->params['cms']['languages2'][4] ?? '';
+        $language0 = Yii::$app->params['cms']['languages'][0] ?? '';
+        $language1 = Yii::$app->params['cms']['languages'][1] ?? '';
+        $language2 = Yii::$app->params['cms']['languages'][2] ?? '';
+        $language3 = Yii::$app->params['cms']['languages'][3] ?? '';
+        $language4 = Yii::$app->params['cms']['languages'][4] ?? '';
 
         return [
             'data_0' => Yii::t('unit', 'File') . '(' . $language0 . ')',
@@ -60,8 +60,8 @@ class File extends UnitActiveRecord
         return [
             'class' => FileUploadBehavior::class,
             'attribute' => $attribute,
-            'filePath' => $module->storageRoot . '/data/units/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => $module->storageHost . '/data/units/[[attribute_id]]/[[filename]].[[extension]]'
+            'filePath' => $module->path . '/data/units/[[attribute_id]]/[[filename]].[[extension]]',
+            'fileUrl' => $module->host . '/data/units/[[attribute_id]]/[[filename]].[[extension]]'
         ];
     }
 

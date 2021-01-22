@@ -34,7 +34,7 @@ use afzalroq\cms\entities\Options;
             <div class="row">
 
                 <div class="col-sm-4">
-                    <?php foreach (Yii::$app->params['cms']['languages2'] as $key => $language) : ?>
+                    <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
                         <?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]) ?>
                     <?php endforeach; ?>
                 </div>

@@ -3,9 +3,9 @@
 namespace afzalroq\cms\entities\front;
 
 use afzalroq\cms\entities\Entities;
+use Yii;
 use yii\caching\TagDependency;
 use yii\helpers\StringHelper;
-use Yii;
 
 class Items extends \afzalroq\cms\entities\Items
 {
@@ -101,8 +101,8 @@ class Items extends \afzalroq\cms\entities\Items
     private function getFile($entityAttr)
     {
         $module = Yii::$app->getModule('cms');
-        $filePath = \Yii::getAlias('@storage/data/' . mb_strtolower(StringHelper::basename($this::className()))) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
-        return $module->storageHost . str_replace('/app/storage', '', str_replace('/var/www/html/www.itpuz.uz/storage', '', $filePath));
+        $filePath = $module->path . '/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
+        return $module->host . str_replace($module->fullPath, '', $filePath);
     }
 
     public function getFile2()

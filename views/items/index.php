@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $entity \afzalroq\cms\entities\Entities */
 
-$curLang = Yii::$app->params['cms']['languages2'][Yii::$app->params['cms']['languageIds'][Yii::$app->language]];
+$curLang = Yii::$app->params['cms']['languages'][Yii::$app->params['cms']['languageIds'][Yii::$app->language]];
 $this->title = Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug));
 $this->params['breadcrumbs'][] = $this->title;
 ?>

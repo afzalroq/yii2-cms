@@ -128,6 +128,4 @@ class FileType
 
         throw new \Exception('mime type not Ok');
     }
-
-
 }
