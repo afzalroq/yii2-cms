@@ -96,11 +96,17 @@ TODO
 
 - Copy from extension root directory example widgets for frontend integration
 
-## Usage
+# Usage
 
-### Item helper
+### Unit getter
 
-### Getters
+```php
+Unit::get('slug'); // will return data using cache
+```
+
+---
+
+### Item Getters
 
 ```php
  $item->getText1(); // for get Text 1
@@ -122,9 +128,9 @@ TODO
  $item->getDate($format); // for get date with format like "d.m.Y H:i:s"
 ```
 
-### Option helper
+---
 
-### Getters
+### Option Getters
 
 ```php
  $option->getName(); // for get Name

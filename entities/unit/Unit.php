@@ -32,7 +32,6 @@ class Unit extends \yii\db\ActiveRecord
         return Yii::$app->cache->getOrSet('unit' . $slug . Yii::$app->language, function () use ($slug) {
             return self::findOne(['slug' => $slug])->getModelByType()->get();
         }, 0, $dependency);
-
     }
 
     public function getModelByType()

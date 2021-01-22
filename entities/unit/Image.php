@@ -17,17 +17,6 @@ use yiidreamteam\upload\ImageUploadBehavior;
 class Image extends UnitActiveRecord
 {
 
-    public static function getFileUrl($object): string
-    {
-        $key = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
-
-        if (!$object['photo_' . $key]) {
-            $key = 0;
-        }
-
-        return $object->getUploadedFileUrl('data_' . $key);
-    }
-
     public function rules()
     {
         return [
