@@ -312,7 +312,7 @@ class Options extends ActiveRecord
         ];
     }
 
-    public function getImageUrl($attr, $width = null, $height = null, $resizeType = 'resize')
+    public function getImageUrl($attr, $width, $height, $resizeType)
     {
         return Image::get($this, $attr, $width, $height, $resizeType);
     }

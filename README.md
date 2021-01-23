@@ -50,7 +50,6 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
         'class' => '@afzalroq\cms\Module',
         'path' => $params['storageRoot'], // dirname(__DIR__, 2) . '/storage'
         'host' => $params['storageHostInfo'], // 'https://site.example'
-        'fullPath' => $params['storageBasePath'], // default '/app/storage'
         'fallback' => $params['storageRoot'] . '/fallback.jpg',
         'languages' => [
             'ru' => [

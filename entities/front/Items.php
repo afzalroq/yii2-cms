@@ -73,22 +73,22 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getText('text_7');
     }
 
-    public function getPhoto1($width = null, $height = null)
+    public function getPhoto1($width = null, $height = null, $resizeType = null)
     {
         return $this->getPhoto('file_1', $width, $height);
     }
 
     private function getPhoto($entityAttr, $width, $height)
     {
-        return $this->getImageUrl($this->getAttr($entityAttr), $width, $height);
+        return $this->getImageUrl($this->getAttr($entityAttr), $width, $height, $resizeType);
     }
 
-    public function getPhoto2($width = null, $height = null)
+    public function getPhoto2($width = null, $height = null, $resizeType = null)
     {
         return $this->getPhoto('file_2', $width, $height);
     }
 
-    public function getPhoto3($width = null, $height = null)
+    public function getPhoto3($width = null, $height = null, $resizeType = null)
     {
         return $this->getPhoto('file_3', $width, $height);
     }
@@ -102,7 +102,7 @@ class Items extends \afzalroq\cms\entities\Items
     {
         $module = Yii::$app->getModule('cms');
         $filePath = $module->path . '/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
-        return $module->host . str_replace($module->fullPath, '', $filePath);
+        return $module->host . str_replace($module->path, '', $filePath);
     }
 
     public function getFile2()

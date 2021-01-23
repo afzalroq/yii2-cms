@@ -26,14 +26,8 @@ use yii\helpers\StringHelper;
  */
 class Image
 {
-    public static function get($obj, $attr, $width, $height, $operation)
+    public static function get($obj, $attr, $width, $height, $operation = 'cropResize')
     {
-        if ($obj->{$attr} === null)
-            return null;
-
-        if (!$operation)
-            $operation = 'cropResize';
-
         $module = Yii::$app->getModule('cms');
         $file = $module->path . '/data/' . mb_strtolower(StringHelper::basename($obj::className())) . '/' . $obj->id . '/' . $obj[$attr];
         $path = GregImage::open($file)->setCacheDir($module->path . '/cache')
@@ -41,6 +35,6 @@ class Image
             ->setFallback($module->fallback)
             ->guess();
 
-        return $module->host . str_replace($module->fullPath, '', $path);
+        return $module->host . str_replace($module->path, '', $path);
     }
 }

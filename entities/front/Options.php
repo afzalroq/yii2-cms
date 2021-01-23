@@ -25,14 +25,14 @@ class Options extends \afzalroq\cms\entities\Options
     }
 
 
-    public function getPhoto1($width = null, $height = null)
+    public function getPhoto1($width = null, $height = null, $resizeType = null)
     {
         return $this->getPhoto('file_1', $width, $height);
     }
 
     private function getPhoto($collectionAttr, $width, $height)
     {
-        return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height);
+        return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $resizeType);
     }
 
     private function getAttr($entityAttr)
@@ -40,7 +40,7 @@ class Options extends \afzalroq\cms\entities\Options
         return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $this->languageId);
     }
 
-    public function getPhoto2($width, $height)
+    public function getPhoto2($width = null, $height = null, $resizeType = null)
     {
         return $this->getPhoto('file_2', $width, $height);
     }
@@ -54,7 +54,7 @@ class Options extends \afzalroq\cms\entities\Options
     {
         $module = Yii::$app->getModule('cms');
         $filePath = $module->path . '/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($collectionAttr)];
-        return $module->host . str_replace($module->fullPath, '', $filePath);
+        return $module->host . str_replace($module->path, '', $filePath);
     }
 
     public function getFile2()

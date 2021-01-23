@@ -10,7 +10,6 @@ use afzalroq\cms\components\Language;
  * @property string $path
  * @property string $host
  * @property string $fallback
- * @property string $fullPath
  * @property array $languages
  * @property array $menuActions
  */
@@ -19,7 +18,6 @@ class Module extends \yii\base\Module
 
     public $path;
     public $host;
-    public $fullPath = '/app/storage';
     public $fallback;
     public $languages;
     public $menuActions;
