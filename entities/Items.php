@@ -442,7 +442,7 @@ class Items extends ActiveRecord
             : (($cae->collection->optionDefault) ? $cae->collection->optionDefault->id : null);
     }
 
-    public function getImageUrl($attr, $width, $height, $resizeType)
+    public function getImageUrl($attr, $width, $height, $resizeType = null)
     {
         return Image::get($this, $attr, $width, $height, $resizeType);
     }
