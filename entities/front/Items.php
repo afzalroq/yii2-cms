@@ -75,17 +75,17 @@ class Items extends \afzalroq\cms\entities\Items
 
     public function getPhoto1($width = null, $height = null, $resizeType = null)
     {
-        return $this->getPhoto('file_1', $width, $height);
+        return $this->getPhoto('file_1', $width, $height, $resizeType);
     }
 
-    private function getPhoto($entityAttr, $width, $height)
+    private function getPhoto($entityAttr, $width, $height, $resizeType)
     {
         return $this->getImageUrl($this->getAttr($entityAttr), $width, $height, $resizeType);
     }
 
     public function getPhoto2($width = null, $height = null, $resizeType = null)
     {
-        return $this->getPhoto('file_2', $width, $height);
+        return $this->getPhoto('file_2', $width, $height, $resizeType);
     }
 
     public function getPhoto3($width = null, $height = null, $resizeType = null)
