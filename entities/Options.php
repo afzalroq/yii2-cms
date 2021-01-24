@@ -312,9 +312,9 @@ class Options extends ActiveRecord
         ];
     }
 
-    public function getImageUrl($attr, $width, $height, $resizeType = null)
+    public function getImageUrl($attr, $width, $height, $operation = null, $background = null, $xPos = null, $yPos = null)
     {
-        return Image::get($this, $attr, $width, $height, $resizeType);
+        return Image::get($this, $attr, $width, $height, $operation, $background, $xPos, $yPos);
     }
 
     private function setCurrentLanguage()

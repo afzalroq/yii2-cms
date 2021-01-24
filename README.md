@@ -115,16 +115,27 @@ Unit::get('slug'); // will return data using cache
  $item->getText5(); // for get Text 5
  $item->getText6(); // for get Text 6
  $item->getText7(); // for get Text 7
- 
- $item->getPhoto1(); // for get Photo 1
- $item->getPhoto2(); // for get Photo 2
- $item->getPhoto3(); // for get Photo 3
- 
+```
+
+###Return File URI
+```php
  $item->getFile1(); // for get File 1
  $item->getFile2(); // for get File 2
- $item->getFile3(); // for get File 3
- 
+ $item->getFile3(); // for get File 3 
+```
+
+###Return Datetime with specified format
+```php
  $item->getDate($format); // for get date with format like "d.m.Y H:i:s"
+ ```
+
+###Return image URI by specified operation(default `cropResize`)
+###[View all image operations & examples from documentation](https://github.com/Gregwar/Image#usage)
+
+```php
+ $item->getPhoto1(width, height, operation, background, xPos, yPos); // for get Photo 1
+ $item->getPhoto2(width, height, operation, background, xPos, yPos); // for get Photo 2
+ $item->getPhoto3(width, height, operation, background, xPos, yPos); // for get Photo 3
 ```
 
 ---

@@ -3,9 +3,9 @@
 namespace afzalroq\cms\entities\front;
 
 use afzalroq\cms\entities\Collections;
+use Yii;
 use yii\caching\TagDependency;
 use yii\helpers\StringHelper;
-use Yii;
 
 class Options extends \afzalroq\cms\entities\Options
 {
@@ -24,25 +24,25 @@ class Options extends \afzalroq\cms\entities\Options
         }, 3600, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
-
-    public function getPhoto1($width = null, $height = null, $resizeType = null)
+    /**
+     * https://github.com/Gregwar/Image#usage
+     */
+    public function getPhoto1($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
     {
-        return $this->getPhoto('file_1', $width, $height);
+        return $this->getPhoto('file_1', $width, $height, $operation, $background, $xPos, $yPos);
     }
 
-    private function getPhoto($collectionAttr, $width, $height)
+    private function getPhoto($collectionAttr, $width, $height, $operation, $background, $xPos, $yPos)
     {
-        return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $resizeType);
+        return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $operation, $background, $xPos, $yPos);
     }
 
-    private function getAttr($entityAttr)
+    /**
+     * https://github.com/Gregwar/Image#usage
+     */
+    public function getPhoto2($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
     {
-        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $this->languageId);
-    }
-
-    public function getPhoto2($width = null, $height = null, $resizeType = null)
-    {
-        return $this->getPhoto('file_2', $width, $height);
+        return $this->getPhoto('file_2', $width, $height, $operation, $background, $xPos, $yPos);
     }
 
     public function getFile1()
@@ -55,6 +55,11 @@ class Options extends \afzalroq\cms\entities\Options
         $module = Yii::$app->getModule('cms');
         $filePath = $module->path . '/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($collectionAttr)];
         return $module->host . str_replace($module->path, '', $filePath);
+    }
+
+    private function getAttr($entityAttr)
+    {
+        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $this->languageId);
     }
 
     public function getFile2()

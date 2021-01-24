@@ -73,24 +73,33 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getText('text_7');
     }
 
-    public function getPhoto1($width = null, $height = null, $resizeType = null)
+    /**
+     * https://github.com/Gregwar/Image#usage
+     */
+    public function getPhoto1($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
     {
-        return $this->getPhoto('file_1', $width, $height, $resizeType);
+        return $this->getPhoto('file_1', $width, $height, $operation, $background, $xPos, $yPos);
     }
 
-    private function getPhoto($entityAttr, $width, $height, $resizeType)
+    private function getPhoto($entityAttr, $width, $height, $operation, $background, $xPos, $yPos)
     {
-        return $this->getImageUrl($this->getAttr($entityAttr), $width, $height, $resizeType);
+        return $this->getImageUrl($this->getAttr($entityAttr), $width, $height, $operation, $background, $xPos, $yPos);
     }
 
-    public function getPhoto2($width = null, $height = null, $resizeType = null)
+    /**
+     * https://github.com/Gregwar/Image#usage
+     */
+    public function getPhoto2($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
     {
-        return $this->getPhoto('file_2', $width, $height, $resizeType);
+        return $this->getPhoto('file_2', $width, $height, $operation, $background, $xPos, $yPos);
     }
 
-    public function getPhoto3($width = null, $height = null, $resizeType = null)
+    /**
+     * https://github.com/Gregwar/Image#usage
+     */
+    public function getPhoto3($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
     {
-        return $this->getPhoto('file_3', $width, $height);
+        return $this->getPhoto('file_3', $width, $height, $operation, $background, $xPos, $yPos);
     }
 
     public function getFile1()
