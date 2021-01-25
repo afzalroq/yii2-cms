@@ -1,11 +1,12 @@
 <?php
 
-namespace frontend\widgets;
+namespace afzalroq\cms\widgets\menu;
 
-use abdualiym\cms\entities\ArticleCategories;
-use abdualiym\cms\entities\Menu;
-use abdualiym\cms\entities\Pages;
+use afzalroq\cms\entities\ArticleCategories;
+use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\Pages;
 use yii\bootstrap\Widget;
+use yii\helpers\VarDumper;
 
 class MenuWidget extends Widget
 {
@@ -47,6 +48,7 @@ class MenuWidget extends Widget
 
         return $tree;
     }
+
 
     private function convertToArray($menuModels)
     {

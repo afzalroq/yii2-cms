@@ -126,11 +126,12 @@ $script = <<< JS
 $(document).ready(function () {
     const titles = document.querySelectorAll('[data-type="titles"]'),
         helperForm = $('.field-menu-types_helper'),
+        linkForm = $('.field-menu-link'),
         typeHelper = $('#menu-type_helper'),
         helper = $('#menu-types_helper'),
         types = $('#menu-types'),
         type = $('#menu-type'),
-        linkForm = $('.field-menu-link')
+        link = $('#menu-link')
     let options = '', key, value
 
     //region init
@@ -164,6 +165,10 @@ $(document).ready(function () {
     //endregion
 
     //region bindings
+    link.on('change', function () {
+        setNames(this.value)
+        typeHelper.val(this.value)
+    })
     helper.on('change', function () {
         let optionText = $('#menu-types_helper').find(":selected").text()
         setNames(optionText)
@@ -181,6 +186,7 @@ $(document).ready(function () {
             case 'action':
                 type.val(constAction)
                 typeHelper.val(value)
+                console.log(constAction)
                 setNames(types.find(":selected").text())
                 break
             case 'collection':
