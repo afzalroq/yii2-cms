@@ -1,9 +1,9 @@
 <?php
 
+use afzalroq\cms\entities\Menu;
 use afzalroq\cms\forms\MenuSearch;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use afzalroq\cms\entities\Menu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel MenuSearch */
@@ -13,7 +13,6 @@ $this->title = Yii::t('cms', 'Menu');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-index">
-
     <p>
         <?= Html::a(Yii::t('cms', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -23,8 +22,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'title_0',
+            [
+                'attribute' => 'title_0',
+                'value' => function ($model) {
+                    return Html::a($model->title_0 . ' <i class="fa fa-chevron-circle-right"></i>', ['menu/view', 'id' => $model->id], ['class' => 'btn btn-default']);
+                },
+                'format' => 'html'
+            ],
             [
                 'attribute' => 'parent_id',
                 'value' => function (Menu $model) {
@@ -46,8 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'sort',
             'created_at:datetime',
-
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

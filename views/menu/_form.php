@@ -186,6 +186,7 @@ $(document).ready(function () {
             case 'action':
                 type.val(constAction)
                 typeHelper.val(value)
+                console.log(constAction)
                 setNames(types.find(":selected").text())
                 break
             case 'collection':
