@@ -211,7 +211,9 @@ class Items extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        TagDependency::invalidate(Yii::$app->cache, 'items_' . $this->entity->slug);
+        $cache = Yii::$app->getModule('cms')->cache;
+
+        TagDependency::invalidate(Yii::$app->{$cache}, 'items_' . $this->entity->slug);
 
         OaI::deleteAll(['item_id' => $this->id]);
 
@@ -287,7 +289,7 @@ class Items extends ActiveRecord
     {
         parent::afterDelete();
 
-        TagDependency::invalidate(Yii::$app->cache, 'items_' . $this->entity->slug);
+        TagDependency::invalidate(Yii::$app->{$cache}, 'items_' . $this->entity->slug);
 
         foreach (Menu::find()->all() as $menu) {
             $shouldDelete = false;

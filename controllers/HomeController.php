@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\controllers;
 
+use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\unit\Categories;
 use Yii;
 use afzalroq\cms\entities\Collections;
@@ -17,14 +18,11 @@ class HomeController extends Controller
 {
     public function actionIndex()
     {
-        $collectionProvider = new ActiveDataProvider(['query' => Collections::find()]);
-        $entityProvider = new ActiveDataProvider(['query' => Entities::find()]);
-        $unitCategoryProvider = new ActiveDataProvider(['query' => Categories::find()]);
-
         return $this->render('index', [
-            'collectionProvider' => $collectionProvider,
-            'entityProvider' => $entityProvider,
-            'unitCategoryProvider' => $unitCategoryProvider
+            'collectionProvider' => new ActiveDataProvider(['query' => Collections::find()]),
+            'entityProvider' => new ActiveDataProvider(['query' => Entities::find()]),
+            'unitCategoryProvider' => new ActiveDataProvider(['query' => Categories::find()]),
+            'menuProvider' => new ActiveDataProvider(['query' => Menu::find()])
         ]);
     }
 }

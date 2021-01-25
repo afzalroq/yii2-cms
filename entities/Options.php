@@ -131,7 +131,7 @@ class Options extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        TagDependency::invalidate(Yii::$app->cache, 'options_' . $this->parentCollection->slug);
+        TagDependency::invalidate(Yii::$app->{$cache}, 'options_' . $this->parentCollection->slug);
         return true;
     }
 
@@ -171,7 +171,7 @@ class Options extends ActiveRecord
     {
         parent::afterDelete();
 
-        TagDependency::invalidate(Yii::$app->cache, 'options_' . (Collections::findOne($this->collection_id))->slug);
+        TagDependency::invalidate(Yii::$app->{$cache}, 'options_' . (Collections::findOne($this->collection_id))->slug);
 
         foreach (Menu::find()->all() as $menu) {
             if ($menu->type !== Menu::TYPE_OPTION)

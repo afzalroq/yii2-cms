@@ -10,93 +10,94 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\ActiveForm;
 
-
 /* @var $this yii\web\View */
 /* @var $model Menu */
 /* @var $form yii\widgets\ActiveForm */
-
 
 $entities = [];
 $collections = [];
 $options = [];
 
 /** @var Collections $collection */
-foreach(Collections::find()->all() as $collection)
-	switch($collection->use_in_menu) {
-		case Collections::USE_IN_MENU_OPTIONS:
-			$collections[] = [
-				'id' => $collection->id,
-				'name' => $collection->name_0
-			];
-			break;
-		case Collections::USE_IN_MENU_ITEMS:
-			foreach(Options::findAll(['collection_id' => $collection->id]) as $option)
-				$options[] = [
-					'id' => $option->id,
-					'name' => $option->name_0
-				];
-			break;
-		default:
-			break;
-	}
+foreach (Collections::find()->all() as $collection)
+    switch ($collection->use_in_menu) {
+        case Collections::USE_IN_MENU_OPTIONS:
+            $collections[] = [
+                'id' => $collection->id,
+                'name' => $collection->name_0
+            ];
+            break;
+        case Collections::USE_IN_MENU_ITEMS:
+            foreach (Options::findAll(['collection_id' => $collection->id]) as $option)
+                $options[] = [
+                    'id' => $option->id,
+                    'name' => $option->name_0
+                ];
+            break;
+        default:
+            break;
+    }
 
 /** @var Entities $entity */
-foreach(Entities::find()->all() as $entity)
-	if($entity->use_in_menu)
-		$entities[] = [
-			'id' => $entity->id,
-			'name' => $entity->name_0
-		];
+foreach (Entities::find()->all() as $entity)
+    if ($entity->use_in_menu)
+        $entities[] = [
+            'id' => $entity->id,
+            'name' => $entity->name_0
+        ];
 ?>
-    <style>
-        .field-menu-types_helper, .field-menu-link {
-            display: none;
-        }
-    </style>
-<?php if(Yii::$app->session->hasFlash('success')): ?>
+
+<style>
+    .field-menu-types_helper, .field-menu-link {
+        display: none;
+    }
+</style>
+
+
+<?php if (Yii::$app->session->hasFlash('success')): ?>
     <div style="margin:5px 0 0 0;"
          class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div><?php endif; ?>
     <div class="pages-form">
-		<?php $form = ActiveForm::begin(); ?>
-		<?= $form->field($model, 'type')->hiddenInput()->label(false) ?>
-		<?= $form->field($model, 'type_helper')->hiddenInput()->label(false) ?>
-		<?= $form->errorSummary($model) ?>
+        <?php $form = ActiveForm::begin(); ?>
+        <?= $form->field($model, 'type')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'type_helper')->hiddenInput()->label(false) ?>
+        <?= $form->errorSummary($model) ?>
 
         <div class="row">
             <div class="col-sm-6">
-				<?= $form->field($model, 'types')->dropDownList([], [
-					'prompt' => Yii::t('cms', 'Choose')
-				]) ?>
+                <?= $form->field($model, 'types')->dropDownList([], [
+                    'prompt' => Yii::t('cms', 'Choose')
+                ]) ?>
                 <div class="row">
-					<?php if(!$model->isNewRecord): ?>
+                    <?php if (!$model->isNewRecord): ?>
                         <div class="col-sm-6">
-							<?= $form->field($model, 'parent_id')->dropDownList([0 => Yii::t('cms', 'No parent')] + ArrayHelper::map(Menu::find()->all(), 'id', 'title_0')) ?>
+                            <?= $form->field($model, 'parent_id')->dropDownList([0 => Yii::t('cms', 'No parent')] + ArrayHelper::map(Menu::find()->all(), 'id', 'title_0')) ?>
                         </div>
-					<?php endif; ?>
+                    <?php endif; ?>
                     <div class="col-sm-6">
-						<?= $form->field($model, 'sort')->dropDownList([1 => 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [
-							'value' => $model->isNewRecord ? $model->getMaxSort() : $model->sort
-						]) ?>
+                        <?= $form->field($model, 'sort')->dropDownList([1 => 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [
+                            'value' => $model->isNewRecord ? $model->getMaxSort() : $model->sort
+                        ]) ?>
                     </div>
                     <div class="col-sm-<?= ($model->isNewRecord) ? 6 : 12 ?>">
-						<?= $form->field($model, 'types_helper')->dropDownList([]) ?>
+                        <?= $form->field($model, 'types_helper')->dropDownList([]) ?>
                     </div>
                 </div>
-				<?= $form->field($model, 'link')->textInput(['placeholder' => 'http://']) ?>
+                <?= $form->field($model, 'link')->textInput(['placeholder' => 'http://']) ?>
             </div>
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-md-12">
-						<?php foreach(Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-							<?= $form->field($model, 'title_' . $key)->textInput(['maxlength' => true, 'data-type' => 'titles']) ?>
-						<?php endforeach; ?>
+                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
+                            <?= $form->field($model, 'title_' . $key)->textInput(['maxlength' => true, 'data-type' => 'titles']) ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="form-group">
-		<?= Html::submitButton($model->isNewRecord ? Yii::t('cms', 'Create') : Yii::t('cms', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('cms', 'Create') : Yii::t('cms', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 <?php ActiveForm::end(); ?>
 

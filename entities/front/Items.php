@@ -12,20 +12,24 @@ class Items extends \afzalroq\cms\entities\Items
 
     public static function getAll($slug)
     {
-        return \Yii::$app->cache->getOrSet('items_' . $slug, function () use ($slug) {
+        $cache = Yii::$app->getModule('cms')->cache;
+        $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
+        return \Yii::$app->{$cache}->getOrSet('items_' . $slug, function () use ($slug) {
 
             return self::findAll(['entity_id' => Entities::findOne(['slug' => $slug])->id]);
 
-        }, 3600, new TagDependency(['tags' => ['items_' . $slug]]));
+        }, $cacheDuration, new TagDependency(['tags' => ['items_' . $slug]]));
     }
 
     public static function get($slug)
     {
-        return \Yii::$app->cache->getOrSet('items_' . $slug, function () use ($slug) {
+        $cache = Yii::$app->getModule('cms')->cache;
+        $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
+        return \Yii::$app->{$cache}->getOrSet('items_' . $slug, function () use ($slug) {
 
             return self::findOne(['entity_id' => Entities::findOne(['slug' => $slug])->id]);
 
-        }, 3600, new TagDependency(['tags' => ['items_' . $slug]]));
+        }, $cacheDuration, new TagDependency(['tags' => ['items_' . $slug]]));
     }
 
     public function getText1()

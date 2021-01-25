@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="menu-view">
 
     <p>
+		<?= Html::a(Yii::t('yii', 'Home'), ['index'], ['class' => 'btn btn-warning']) ?>
 		<?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 		<?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id], [
 			'class' => 'btn btn-danger',

@@ -12,16 +12,20 @@ class Options extends \afzalroq\cms\entities\Options
 
     public static function getAll($slug)
     {
-        return \Yii::$app->cache->getOrSet('options_' . $slug, function () use ($slug) {
+        $cache = Yii::$app->getModule('cms')->cache;
+        $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
+        return \Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
             return self::findAll(['collection_id' => Collections::findOne(['slug' => $slug])->id]);
-        }, 3600, new TagDependency(['tags' => ['options_' . $slug]]));
+        }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
     public static function get($slug)
     {
-        return \Yii::$app->cache->getOrSet('options_' . $slug, function () use ($slug) {
+        $cache = Yii::$app->getModule('cms')->cache;
+        $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
+        return \Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
             return self::findOne(['collection_id' => Collections::findOne(['slug' => $slug])->id]);
-        }, 3600, new TagDependency(['tags' => ['options_' . $slug]]));
+        }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
     /**

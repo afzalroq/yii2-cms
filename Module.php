@@ -18,6 +18,8 @@ class Module extends \yii\base\Module
 
     public $path;
     public $host;
+    public $cache = 'cache';
+    public $cacheDuration = 3600;
     public $fallback;
     public $languages;
     public $menuActions;
