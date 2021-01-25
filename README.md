@@ -91,6 +91,13 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 /cms/home/index
 ```
 
+
+###Added Laravels dd() (dump and die) method
+```php
+$array = ['a', 'b'];
+dd($array);
+```
+
 ### Examples
 
 TODO
