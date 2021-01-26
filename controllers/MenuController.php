@@ -8,6 +8,7 @@ use afzalroq\cms\entities\OaI;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\forms\MenuAddChildForm;
 use afzalroq\cms\forms\MenuSearch;
+use richardfan\sortable\SortableAction;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
@@ -33,6 +34,23 @@ class MenuController extends Controller
                     'type' => ['POST']
                 ],
             ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'nodeMove' => [
+                'class' => 'slatiusa\nestable\NodeMoveAction',
+                'modelName' => Menu::className(),
+            ],
+            'sortItem' => [
+                'class' => SortableAction::className(),
+                'activeRecordClassName' => Menu::className(),
+                'orderColumn' => 'sort',
+                'startPosition' => 1, // optional, default is 0
+            ],
+            // your other actions
         ];
     }
 
@@ -150,7 +168,7 @@ class MenuController extends Controller
     {
         $model = new Menu();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Menu::findOne(1))) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

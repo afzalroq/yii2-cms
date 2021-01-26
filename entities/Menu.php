@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\entities;
 
+use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
@@ -42,7 +43,20 @@ class Menu extends ActiveRecord
     public $link;
 
     private $CMSModule;
+
     #endregion
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
+    public static function find()
+    {
+        return new MenuQuery(get_called_class());
+    }
 
     #region Overrides
     public function __construct($config = [])
@@ -54,6 +68,20 @@ class Menu extends ActiveRecord
     public static function tableName()
     {
         return 'cms_menu';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            'tree' => [
+                'class' => NestedSetsBehavior::className(),
+                 'treeAttribute' => 'tree',
+                // 'leftAttribute' => 'lft',
+                // 'rightAttribute' => 'rgt',
+                // 'depthAttribute' => 'depth',
+            ],
+        ];
     }
 
     public function beforeSave($insert)
@@ -121,13 +149,6 @@ class Menu extends ActiveRecord
                 $this->type_helper = '';
         }
         parent::afterFind();
-    }
-
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-        ];
     }
 
     public function rules()
