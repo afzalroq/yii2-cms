@@ -13,15 +13,11 @@ class CmsNestable extends \slatiusa\nestable\Nestable
     private function getItemLink($item)
     {
         $text = ArrayHelper::getValue($item, 'content', '');
-        $url = Url::to(['/cms/menu/view', 'id' => ArrayHelper::getValue($item, 'id')]);
-        return Html::a($text, $url);
+        $url_view = Url::to(['/cms/menu/view', 'id' => ArrayHelper::getValue($item, 'id')]);
+        $url_update = Url::to(['/cms/menu/update', 'id' => ArrayHelper::getValue($item, 'id')]);
+        return Html::a($text, $url_view) . Html::a('<i class="fa fa-pencil"></i>', $url_update, ['class' => 'pull-right']);
     }
 
-    /**
-     * Render the list items for the sortable widget
-     *
-     * @return string
-     */
     protected function renderItems($_items = NULL)
     {
         $_items = is_null($_items) ? $this->items : $_items;
@@ -50,12 +46,6 @@ class CmsNestable extends \slatiusa\nestable\Nestable
         return $items;
     }
 
-    /**
-     * put your comment there...
-     *
-     * @param $activeQuery \yii\db\ActiveQuery
-     * @return array
-     */
     protected function prepareItems($activeQuery)
     {
         $items = [];

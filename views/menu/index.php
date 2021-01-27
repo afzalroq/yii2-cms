@@ -16,8 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('cms', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <!---->
-    <!--    --><?php //= SortableGridView::widget([
+
+    <?php
+    //echo SortableGridView::widget([
     //        'dataProvider' => $dataProvider,
     //        'sortUrl' => Url::to(['sortItem']),
     //        'sortingPromptText' => 'Loading...',
@@ -32,13 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
     //                'format' => 'html'
     //            ],
     //            [
-    //                'attribute' => 'parent_id',
-    //                'value' => function (Menu $model) {
-    //                    return isset($model->parent) ? $model->parent->title_0 : null;
-    //                },
-    //                'label' => Yii::t('cms', 'Parent'),
-    //            ],
-    //            [
     //                'attribute' => 'type',
     //                'value' => function (Menu $model) {
     //                    return $model->typesLists($model->type);
@@ -50,13 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
     //                    return $model->getTypeValue();
     //                },
     //            ],
-    //            'sort',
     //            'created_at:datetime',
     //        ],
-    //    ]); ?>
+    //    ]);
+    // ?>
 
     <div class="row">
-        <div class="o col-sm-6 col-sm-offset-3">
+        <div class="col-sm-4">
             <?= \afzalroq\cms\widgets\menu\CmsNestable::widget([
                 'type' => Nestable::TYPE_LIST,
                 'query' => Menu::find(),

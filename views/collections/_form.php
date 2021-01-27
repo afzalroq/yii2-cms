@@ -2,11 +2,11 @@
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Options;
 use yii\bootstrap\ToggleButtonGroup;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
-use afzalroq\cms\entities\Options;
 
 /* @var $this yii\web\View */
 /* @var $model Collections */
@@ -42,7 +42,6 @@ use afzalroq\cms\entities\Options;
                 <div class="col-sm-4">
                     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'use_parenting')->checkbox() ?>
-<!--                    --><?//= $form->field($model, 'slug')->checkbox() ?>
                 </div>
 
                 <div class="col-sm-4">

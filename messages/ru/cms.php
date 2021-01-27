@@ -65,7 +65,7 @@ return [
     'File' => 'Файл',
     'Validator' => 'Bалидатор',
     'Use in menu' => 'Использовать в меню',
-    'Use parenting' => 'Воспользуйтесь воспитанием',
+    'Use parenting' => 'Использовать вложение',
     'Option File' => 'Файл опций',
     'Option File' => 'Файл опций',
     'Extension' => 'Расширение',

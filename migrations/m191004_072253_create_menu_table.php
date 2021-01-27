@@ -17,14 +17,12 @@ class m191004_072253_create_menu_table extends Migration
 
         $this->createTable('{{%cms_menu}}', [
             'id' => $this->primaryKey(),
-            'parent_id' => $this->integer(),
             'title_0' => $this->string(),
             'title_1' => $this->string(),
             'title_2' => $this->string(),
             'title_3' => $this->string(),
             'type' => $this->tinyInteger()->notNull(),
             'type_helper' => $this->string(),
-            'sort' => $this->integer()->notNull()->defaultValue(1),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'updated_at' => $this->integer()->unsigned()->notNull(),
         ], $tableOptions);

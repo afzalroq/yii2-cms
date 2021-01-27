@@ -2,10 +2,9 @@
 
 namespace afzalroq\cms\forms;
 
-use Yii;
+use afzalroq\cms\entities\Menu;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use afzalroq\cms\entities\Menu;
 
 /**
  * MenuSearch represents the model behind the search form of `Menu`.
@@ -16,7 +15,7 @@ class MenuSearch extends Menu
     public function rules()
     {
         return [
-            [['id', 'parent_id', 'type', 'type_helper','created_at', 'sort'], 'integer'],
+            [['id', 'type', 'type_helper', 'created_at',], 'integer'],
             [['title_0'], 'safe'],
         ];
     }
@@ -56,7 +55,6 @@ class MenuSearch extends Menu
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'parent_id' => $this->parent_id,
             'type' => $this->type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

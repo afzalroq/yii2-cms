@@ -4,6 +4,7 @@ use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\Options;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
@@ -46,18 +47,20 @@ foreach (Entities::find()->all() as $entity)
         ];
 ?>
 
-    <style>
-        .field-menu-types_helper, .field-menu-link {
-            display: none;
-        }
-    </style>
+<style>
+    .field-menu-types_helper, .field-menu-link {
+        display: none;
+    }
+</style>
 
 
 <?php if (Yii::$app->session->hasFlash('success')): ?>
     <div style="margin:5px 0 0 0;"
          class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div><?php endif; ?>
     <div class="pages-form">
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin([
+                'action' => Url::to(['menu/create-child', 'root_id' => $root_id])
+        ]); ?>
         <?= $form->field($model, 'type')->hiddenInput()->label(false) ?>
         <?= $form->field($model, 'type_helper')->hiddenInput()->label(false) ?>
         <?= $form->errorSummary($model) ?>

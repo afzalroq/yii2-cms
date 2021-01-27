@@ -5,21 +5,18 @@ namespace afzalroq\cms\entities;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "menu".
  *
  * @property int $id
- * @property int $parent_id
  * @property string $title_0
  * @property string $title_1
  * @property string $title_2
  * @property string $title_3
  * @property int $type
  * @property string $type_helper
- * @property int $sort
  * @property int $created_at
  * @property int $updated_at
  */
@@ -43,6 +40,8 @@ class Menu extends ActiveRecord
     public $link;
 
     private $CMSModule;
+
+    public $treeAttribute = 'tree';
 
     #endregion
 
@@ -76,7 +75,7 @@ class Menu extends ActiveRecord
             TimestampBehavior::class,
             'tree' => [
                 'class' => NestedSetsBehavior::className(),
-                 'treeAttribute' => 'tree',
+                'treeAttribute' => $this->treeAttribute,
                 // 'leftAttribute' => 'lft',
                 // 'rightAttribute' => 'rgt',
                 // 'depthAttribute' => 'depth',
@@ -89,15 +88,12 @@ class Menu extends ActiveRecord
         if (!parent::beforeSave($insert))
             return false;
 
-        if (!$this->type_helper) {
-            $this->addError('types_helper', Yii::t('cms', 'Type helper required'));
-            return false;
-        }
         switch ($this->type) {
             case self::TYPE_ITEM:
                 $this->type_helper = explode('_', $this->types)[1] . ',' . $this->type_helper;
                 break;
         }
+
         return true;
     }
 
@@ -174,8 +170,6 @@ class Menu extends ActiveRecord
             ['type_helper', 'string'],
             ['types_helper', 'string'],
 
-            [['parent_id', 'sort'], 'integer'],
-
             ['action', 'in', 'range' => self::actionsList(true), 'allowArray' => true, 'when' => function ($model) {
                 return $model->type == self::TYPE_ACTION;
             }, 'enableClientValidation' => false],
@@ -199,7 +193,6 @@ class Menu extends ActiveRecord
 
         return [
             'id' => Yii::t('cms', 'ID'),
-            'parent_id' => Yii::t('cms', 'Parent ID'),
             'title_0' => Yii::t('cms', 'Title') . '(' . $language0 . ')',
             'title_1' => Yii::t('cms', 'Title') . '(' . $language1 . ')',
             'title_2' => Yii::t('cms', 'Title') . '(' . $language2 . ')',
@@ -211,7 +204,6 @@ class Menu extends ActiveRecord
             'link' => Yii::t('cms', 'link'),
             'page_id' => Yii::t('cms', 'Page'),
             'articles_category_id' => Yii::t('cms', 'Articles'),
-            'sort' => Yii::t('cms', 'Sort'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];
@@ -219,11 +211,10 @@ class Menu extends ActiveRecord
     #endregion
 
     #region Extra Methods
-    public function getMaxSort()
+
+    public function setTreeAttributeValue()
     {
-        return ((new ActiveQuery(self::class))
-                ->from(self::tableName())
-                ->max('sort')) + 1;
+        $this->setAttribute($this->treeAttribute, Menu::find()->roots()->max('tree') + 1);
     }
 
     public function actionsList($flip = false)
@@ -277,14 +268,12 @@ class Menu extends ActiveRecord
         }
     }
 
-    public function getParents()
-    {
-        return $this->hasOne(self::class, ['id' => 'parent_id'])->from('menu' . ' m');
-    }
+    //    public function getMaxSort()
+    //    {
+    //        return ((new ActiveQuery(self::class))
+    //                ->from(self::tableName())
+    //                ->max('sort')) + 1;
+    //    }
 
-    public function getParent()
-    {
-        return $this->hasOne(self::class, ['id' => 'parent_id']);
-    }
     #endregion
 }

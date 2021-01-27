@@ -6,11 +6,9 @@ use afzalroq\cms\entities\Items;
 use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\OaI;
 use afzalroq\cms\entities\Options;
-use afzalroq\cms\forms\MenuAddChildForm;
 use afzalroq\cms\forms\MenuSearch;
 use richardfan\sortable\SortableAction;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -125,17 +123,8 @@ class MenuController extends Controller
      */
     public function actionView($id)
     {
-        $childForm = new MenuAddChildForm();
-
-        if ($childForm->load(Yii::$app->request->post()) && $childForm->saveChild($id)) {
-            Yii::$app->session->setFlash('success', 'Child added successfully!');
-            return $this->redirect(['view', 'id' => $id]);
-        }
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'childForm' => $childForm,
-            'childProvider' => new ActiveDataProvider(['query' => Menu::find()->where(['parent_id' => $id])])
         ]);
     }
 
@@ -168,14 +157,35 @@ class MenuController extends Controller
     {
         $model = new Menu();
 
-        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Menu::findOne(1))) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->setTreeAttributeValue();
+            if ($model->makeRoot())
+                return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
 
+    /**
+     * Creates a new Menu model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     *
+     * @return mixed
+     */
+    public function actionCreateChild($root_id)
+    {
+        $model = new Menu();
+
+        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Menu::findOne($root_id))) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('childs/create', [
+            'model' => $model,
+            'root_id' => $root_id
+        ]);
     }
 
     /**
