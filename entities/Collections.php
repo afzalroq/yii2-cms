@@ -5,7 +5,6 @@ namespace afzalroq\cms\entities;
 use afzalroq\cms\components\FileType;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -85,58 +84,6 @@ class Collections extends ActiveRecord
     public $file_2_dimensionW;
     public $file_2_dimensionH;
     public $file_2_maxSize;
-
-    #endregion
-
-    #region ListOfConstants
-
-    public static function seoList()
-    {
-        return [
-            self::SEO_DISABLED => Yii::t('cms', 'Disabled'),
-            self::SEO_COMMON => Yii::t('cms', 'Common'),
-            self::SEO_TRANSLATABLE => Yii::t('cms', 'Translatable'),
-        ];
-    }
-
-    public static function optionNameList()
-    {
-        return [
-            self::OPTION_NAME_DISABLED => Yii::t('cms', 'Disabled'),
-            self::OPTION_NAME_COMMON => Yii::t('cms', 'Common'),
-            self::OPTION_NAME_TRANSLATABLE => Yii::t('cms', 'Translatable'),
-        ];
-    }
-
-    public static function optionContentList()
-    {
-        return [
-            self::OPTION_CONTENT_DISABLED => Yii::t('cms', 'Disabled'),
-            self::OPTION_CONTENT_COMMON_TEXTAREA => Yii::t('cms', 'Common textarea'),
-            self::OPTION_CONTENT_COMMON_CKEDITOR => Yii::t('cms', 'Common ckeditor'),
-            self::OPTION_CONTENT_TRANSLATABLE_TEXTAREA => Yii::t('cms', 'Translatable textarea'),
-            self::OPTION_CONTENT_TRANSLATABLE_CKEDITOR => Yii::t('cms', 'Translatable ckeditor'),
-        ];
-    }
-
-    public static function optionFileList()
-    {
-        return [
-            self::OPTION_FILE_DISABLED => Yii::t('cms', 'Disabled'),
-            self::OPTION_FILE_COMMON => Yii::t('cms', 'Common'),
-            self::OPTION_FILE_TRANSLATABLE => Yii::t('cms', 'Translatable'),
-        ];
-    }
-
-    public static function optionUseInMenuList()
-    {
-        return [
-            self::USE_IN_MENU_DISABLED => Yii::t('cms', 'Disabled'),
-            self::USE_IN_MENU_OPTIONS => Yii::t('cms', 'Option'),
-            self::USE_IN_MENU_ITEMS => Yii::t('cms', 'Item'),
-            self::USE_IN_MENU_OPTIONS_ITEMS => Yii::t('cms', 'Options and items'),
-        ];
-    }
 
     #endregion
 
@@ -255,6 +202,58 @@ class Collections extends ActiveRecord
 
     #region Extra methods
 
+    #region ListOfConstants
+
+    public static function seoList()
+    {
+        return [
+            self::SEO_DISABLED => Yii::t('cms', 'Disabled'),
+            self::SEO_COMMON => Yii::t('cms', 'Common'),
+            self::SEO_TRANSLATABLE => Yii::t('cms', 'Translatable'),
+        ];
+    }
+
+    public static function optionNameList()
+    {
+        return [
+            self::OPTION_NAME_DISABLED => Yii::t('cms', 'Disabled'),
+            self::OPTION_NAME_COMMON => Yii::t('cms', 'Common'),
+            self::OPTION_NAME_TRANSLATABLE => Yii::t('cms', 'Translatable'),
+        ];
+    }
+
+    public static function optionContentList()
+    {
+        return [
+            self::OPTION_CONTENT_DISABLED => Yii::t('cms', 'Disabled'),
+            self::OPTION_CONTENT_COMMON_TEXTAREA => Yii::t('cms', 'Common textarea'),
+            self::OPTION_CONTENT_COMMON_CKEDITOR => Yii::t('cms', 'Common ckeditor'),
+            self::OPTION_CONTENT_TRANSLATABLE_TEXTAREA => Yii::t('cms', 'Translatable textarea'),
+            self::OPTION_CONTENT_TRANSLATABLE_CKEDITOR => Yii::t('cms', 'Translatable ckeditor'),
+        ];
+    }
+
+    public static function optionFileList()
+    {
+        return [
+            self::OPTION_FILE_DISABLED => Yii::t('cms', 'Disabled'),
+            self::OPTION_FILE_COMMON => Yii::t('cms', 'Common'),
+            self::OPTION_FILE_TRANSLATABLE => Yii::t('cms', 'Translatable'),
+        ];
+    }
+
+    public static function optionUseInMenuList()
+    {
+        return [
+            self::USE_IN_MENU_DISABLED => Yii::t('cms', 'Disabled'),
+            self::USE_IN_MENU_OPTIONS => Yii::t('cms', 'Option'),
+            self::USE_IN_MENU_ITEMS => Yii::t('cms', 'Item'),
+            self::USE_IN_MENU_OPTIONS_ITEMS => Yii::t('cms', 'Options and items'),
+        ];
+    }
+
+    #endregion
+
     private function getFileMaxSize($number)
     {
         if ($this['file_' . $number . '_maxSize'])
@@ -324,5 +323,4 @@ class Collections extends ActiveRecord
     #endregion
 
     #endregion
-
 }

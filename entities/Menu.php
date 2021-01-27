@@ -45,6 +45,8 @@ class Menu extends ActiveRecord
 
     #endregion
 
+    #region Overrides
+
     public function transactions()
     {
         return [
@@ -57,7 +59,6 @@ class Menu extends ActiveRecord
         return new MenuQuery(get_called_class());
     }
 
-    #region Overrides
     public function __construct($config = [])
     {
         $this->CMSModule = Yii::$app->getModule('cms');

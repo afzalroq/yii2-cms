@@ -211,9 +211,7 @@ class Items extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        $cache = Yii::$app->getModule('cms')->cache;
-
-        TagDependency::invalidate(Yii::$app->{$cache}, 'items_' . $this->entity->slug);
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'items_' . $this->entity->slug);
 
         OaI::deleteAll(['item_id' => $this->id]);
 
