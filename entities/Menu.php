@@ -95,8 +95,6 @@ class Menu extends ActiveRecord
                 break;
         }
 
-        $this->tree = Menu::find()->max('tree') + 1;
-
         return true;
     }
 
