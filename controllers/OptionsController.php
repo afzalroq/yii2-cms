@@ -49,6 +49,7 @@ class OptionsController extends Controller
      * Displays a single Options model.
      *
      * @param integer $id
+     * @param string $slug
      *
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found

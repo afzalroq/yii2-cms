@@ -3,6 +3,7 @@
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\MenuType;
 use afzalroq\cms\entities\Options;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -11,7 +12,9 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model Menu */
+/* @var $menuType MenuType */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $action string */
 
 $entities = [];
 $collections = [];
@@ -52,14 +55,11 @@ foreach (Entities::find()->all() as $entity)
         }
     </style>
 
-
-<?php if (Yii::$app->session->hasFlash('success')): ?>
-    <div style="margin:5px 0 0 0;"
-         class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div><?php endif; ?>
     <div class="pages-form">
         <?php $form = ActiveForm::begin([
             'action' => $action
         ]); ?>
+
         <?= $form->field($model, 'type')->hiddenInput()->label(false) ?>
         <?= $form->field($model, 'type_helper')->hiddenInput()->label(false) ?>
         <?= $form->errorSummary($model) ?>
@@ -86,11 +86,12 @@ foreach (Entities::find()->all() as $entity)
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('cms', 'Create') : Yii::t('cms', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+        <?php ActiveForm::end(); ?>
     </div>
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('cms', 'Create') : Yii::t('cms', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-<?php ActiveForm::end(); ?>
 
     <script>
         const constEmpty = '<?= Menu::TYPE_EMPTY ?>',

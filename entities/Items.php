@@ -287,7 +287,7 @@ class Items extends ActiveRecord
     {
         parent::afterDelete();
 
-        TagDependency::invalidate(Yii::$app->{$cache}, 'items_' . $this->entity->slug);
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'items_' . $this->entity->slug);
 
         foreach (Menu::find()->all() as $menu) {
             $shouldDelete = false;

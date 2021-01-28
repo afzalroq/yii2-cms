@@ -14,10 +14,6 @@ use yii\widgets\ActiveForm;
 
 
 ?>
-
-<?php if (Yii::$app->session->hasFlash('success')): ?>
-    <div style="margin:5px 0 0 0;" class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div>
-<?php endif; ?>
 <style>
     #collections-file_1_mimetype, #collections-file_2_mimetype, #collections-option_name, #collections-option_content, #collections-use_seo, #collections-use_in_menu {
         border-color: transparent;

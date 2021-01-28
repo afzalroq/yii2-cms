@@ -2,17 +2,12 @@
 
 namespace afzalroq\cms\controllers;
 
-use afzalroq\cms\entities\Menu;
-use afzalroq\cms\entities\unit\Categories;
-use Yii;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Entities;
-use afzalroq\cms\entities\Pages;
-use afzalroq\cms\forms\PagesSearch;
+use afzalroq\cms\entities\MenuType;
+use afzalroq\cms\entities\unit\Categories;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 class HomeController extends Controller
 {
@@ -22,7 +17,7 @@ class HomeController extends Controller
             'collectionProvider' => new ActiveDataProvider(['query' => Collections::find()]),
             'entityProvider' => new ActiveDataProvider(['query' => Entities::find()]),
             'unitCategoryProvider' => new ActiveDataProvider(['query' => Categories::find()]),
-            'menuProvider' => new ActiveDataProvider(['query' => Menu::find()])
+            'menuTypeProvider' => new ActiveDataProvider(['query' => MenuType::find()])
         ]);
     }
 }

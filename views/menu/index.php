@@ -1,22 +1,24 @@
 <?php
 
 use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\MenuType;
 use afzalroq\cms\forms\MenuSearch;
 use afzalroq\cms\widgets\menu\CmsNestable;
 use slatiusa\nestable\Nestable;
 use yii\helpers\Html;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $searchModel MenuSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $menuType MenuType */
 
 $this->title = Yii::t('cms', 'Menu');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-index">
     <p>
-        <?= Html::a("<i class='glyphicon glyphicon-home'></i> " . Yii::t('cms', 'Home'), ['/cms/home/index'], ['class' => 'btn btn-warning']) ?>
-        <?= Html::a(Yii::t('cms', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('cms', 'Create'), ['create', 'slug' => $menuType->slug], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php
@@ -54,8 +56,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-sm-4">
             <?= CmsNestable::widget([
-                'type' => Nestable::TYPE_LIST,
-                'query' => Menu::find(),
+                'type' => Nestable::TYPE_WITH_HANDLE,
+                'query' => Menu::find()->where(['menu_type_id' => $menuType->id]),
+                'menu_type_slug' => $menuType->slug,
                 'modelOptions' => [
                     'name' => 'title_0'
                 ],
@@ -68,5 +71,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ]); ?>
         </div>
     </div>
-
 </div>
+<?php
+$script = <<< JS
+    $(document).ready(function () {
+        const root = $('._root_')
+        root.hide()
+    })
+JS;
+$this->registerJs($script, View::POS_READY);
+?>

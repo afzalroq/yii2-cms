@@ -9,14 +9,18 @@ use yii\helpers\Url;
 
 class CmsNestable extends Nestable
 {
+    public $menu_type_slug;
     private $_uniqueItems = [];
+    private $is_root = true;
 
     private function getItemLink($item): string
     {
         $text = ArrayHelper::getValue($item, 'content', '');
-        $url_view = Url::to(['/cms/menu/view', 'id' => ArrayHelper::getValue($item, 'id')]);
-        $url_update = Url::to(['/cms/menu/update', 'id' => ArrayHelper::getValue($item, 'id')]);
-        $url_add_child = Url::to(['/cms/menu/add-child', 'root_id' => ArrayHelper::getValue($item, 'id')]);
+        $id = ArrayHelper::getValue($item, 'id');
+
+        $url_view = Url::to(['menu/view', 'id' => $id, 'slug' => $this->menu_type_slug]);
+        $url_update = Url::to(['menu/update', 'id' => $id, 'slug' => $this->menu_type_slug]);
+        $url_add_child = Url::to(['menu/add-child', 'root_id' => $id, 'slug' => $this->menu_type_slug]);
 
         $return_text = Html::a($text, $url_view);
         $return_text .= Html::a('<i class="fa fa-plus"></i>', $url_add_child, ['class' => 'pull-right', 'style' => 'margin-left: 15px']);
@@ -30,7 +34,8 @@ class CmsNestable extends Nestable
         $_items = is_null($_items) ? $this->items : $_items;
         $items = '';
         $data_id = 0;
-        foreach ($_items as $item) {
+        foreach ($_items as $key => $item) {
+
             $options = ArrayHelper::getValue($item, 'options', ['class' => 'dd-item dd3-item']);
             $options = ArrayHelper::merge($this->itemOptions, $options);
             $dataId = ArrayHelper::getValue($item, 'id', $data_id++);
@@ -39,6 +44,12 @@ class CmsNestable extends Nestable
             $contentOptions = ArrayHelper::getValue($item, 'contentOptions', ['class' => 'dd3-content']);
             $content = $this->handleLabel;
             $content .= Html::tag('div', $this->getItemLink($item), $contentOptions);
+
+            if ($this->is_root) {
+                $content = Html::tag('div', $content, ['class' => '_root_']);
+                $this->is_root = false;
+            }
+
 
             $children = ArrayHelper::getValue($item, 'children', []);
             if (!empty($children)) {

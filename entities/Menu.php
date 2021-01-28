@@ -19,8 +19,10 @@ use yii\helpers\Url;
  * @property string $title_3
  * @property int $type
  * @property string $type_helper
+ * @property int $menu_type_id
  * @property int $created_at
  * @property int $updated_at
+ * @property MenuType $menuType
  */
 class Menu extends ActiveRecord
 {
@@ -42,26 +44,12 @@ class Menu extends ActiveRecord
 
     public $action;
     public $link;
-
+    public $treeAttribute = 'menu_type_id';
     private $CMSModule;
-
-    public $treeAttribute = 'tree';
 
     #endregion
 
     #region Overrides
-
-    public function transactions()
-    {
-        return [
-            self::SCENARIO_DEFAULT => self::OP_ALL,
-        ];
-    }
-
-    public static function find()
-    {
-        return new MenuQuery(get_called_class());
-    }
 
     public function __construct($config = [])
     {
@@ -72,6 +60,13 @@ class Menu extends ActiveRecord
     public static function tableName()
     {
         return 'cms_menu';
+    }
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
     }
 
     public function behaviors()
@@ -177,7 +172,7 @@ class Menu extends ActiveRecord
             }],
             [['title_0', 'title_1', 'title_2', 'title_3'], 'string', 'max' => 255],
 
-            [['type'], 'required'],
+            ['type', 'required'],
             ['type', 'integer'],
             ['types', 'string'],
             ['type_helper', 'string'],
@@ -195,6 +190,11 @@ class Menu extends ActiveRecord
             }, 'enableClientValidation' => false],
 
         ];
+    }
+
+    public static function find()
+    {
+        return new MenuQuery(get_called_class());
     }
 
     public function attributeLabels()
@@ -225,9 +225,9 @@ class Menu extends ActiveRecord
 
     #region Extra Methods
 
-    public function setTreeAttributeValue()
+    public function getMenuType()
     {
-        $this->setAttribute($this->treeAttribute, Menu::find()->roots()->max('tree') + 1);
+        $this->hasOne(MenuType::class, ['id' => 'menu_typ_id']);
     }
 
     public function actionsList($flip = false)

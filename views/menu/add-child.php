@@ -1,11 +1,13 @@
 <?php
 
 use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\MenuType;
 use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
 /* @var $model Menu */
+/* @var $menuType MenuType */
 /* @var $root_id integer */
 
 $this->title = Yii::t('cms', 'Create');
@@ -16,7 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'action' => Url::to(['menu/add-child', 'root_id' => $root_id])
+        'menuType' => $menuType,
+        'action' => Url::to(['menu/add-child', 'root_id' => $root_id, 'slug' => $menuType->slug])
     ]) ?>
 
 </div>

@@ -3,6 +3,7 @@
 namespace afzalroq\cms\forms;
 
 use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\MenuType;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -34,9 +35,9 @@ class MenuSearch extends Menu
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $slug)
     {
-        $query = Menu::find();
+        $query = Menu::find()->where(['menu_type_id' => MenuType::findOne(['slug' => $slug])->id]);
 
         // add conditions that should always apply here
 

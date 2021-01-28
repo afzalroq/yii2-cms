@@ -8,6 +8,8 @@ use yii\widgets\ListView;
 /* @var $this yii\web\View */
 /* @var $collectionProvider ActiveDataProvider */
 /* @var $entityProvider ActiveDataProvider */
+/* @var $unitCategoryProvider ActiveDataProvider */
+/* @var $menuTypeProvider ActiveDataProvider */
 
 $this->title = 'CMS Dashboard';
 
@@ -76,16 +78,16 @@ $this->title = 'CMS Dashboard';
         </div>
         <div class="col-sm-3">
             <p>
-                <?= Html::a('Menu', Url::to(['/cms/menu/index']), ['class' => 'btn btn-block btn-lg btn-danger']) ?>
+                <?= Html::a('Menu Types', Url::to(['/cms/menu-type/index']), ['class' => 'btn btn-block btn-lg btn-danger']) ?>
             </p>
             <?= ListView::widget([
-                'dataProvider' => $menuProvider,
+                'dataProvider' => $menuTypeProvider,
                 'options' => [
                     'tag' => 'ul',
                     'class' => 'list-group'
                 ],
                 'itemView' => function ($model) {
-                    return Html::tag('span') . Html::a($model->title_0, Url::to(['/cms/menu/view', 'id' => $model->id]));
+                    return Html::tag('span', count($model->menus), ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/menu-type/view', 'id' => $model->id]));
                 },
                 'itemOptions' => [
                     'tag' => 'li',

@@ -4,6 +4,7 @@ namespace afzalroq\cms\controllers;
 
 use afzalroq\cms\entities\Items;
 use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\MenuType;
 use afzalroq\cms\entities\OaI;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\forms\MenuSearch;
@@ -47,7 +48,6 @@ class MenuController extends Controller
             // your other actions
         ];
     }
-
 
 
     public function actionType()
@@ -94,21 +94,23 @@ class MenuController extends Controller
         return false;
     }
 
-    public function actionIndex()
+    public function actionIndex($slug)
     {
         $searchModel = new MenuSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $slug);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'menuType' => MenuType::findOne(['slug' => $slug])
         ]);
     }
 
-    public function actionView($id)
+    public function actionView($id, $slug)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'menuType' => MenuType::findOne(['slug' => $slug])
         ]);
     }
 
@@ -121,51 +123,50 @@ class MenuController extends Controller
         throw new NotFoundHttpException(Yii::t('cms', 'The requested page does not exist.'));
     }
 
-    public function actionCreate()
+    public function actionCreate($slug)
     {
         $model = new Menu();
+        $menuType = MenuType::findOne(['slug' => $slug]);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->setTreeAttributeValue();
-            if ($model->makeRoot())
-                return $this->redirect(['view', 'id' => $model->id]);
-        }
+        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Menu::findOne(['menu_type_id' => $menuType->id, 'depth' => 0])))
+            return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
 
         return $this->render('create', [
             'model' => $model,
+            'menuType' => $menuType
         ]);
     }
 
-    public function actionAddChild($root_id)
+    public function actionAddChild($root_id, $slug)
     {
         $model = new Menu();
 
-        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Menu::findOne($root_id))) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Menu::findOne($root_id)))
+            return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
 
         return $this->render('add-child', [
             'model' => $model,
-            'root_id' => $root_id
+            'root_id' => $root_id,
+            'menuType' => MenuType::findOne(['slug' => $slug])
         ]);
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate($id, $slug)
     {
         $model = $this->findModel($id);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+            return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
 
 
         return $this->render('update', [
             'model' => $model,
+            'menuType' => MenuType::findOne(['slug' => $slug])
         ]);
     }
 
-    public function actionDelete($id)
+    public function actionDelete($id, $slug)
     {
         $this->findModel($id)->delete();
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'slug' => $slug]);
     }
 }
