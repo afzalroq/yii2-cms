@@ -375,5 +375,10 @@ class Options extends ActiveRecord
     {
         return $this->hasOne(Collections::class, ['id' => 'collection_id']);
     }
+
+    public function getParent()
+    {
+        return $this->hasOne(self::class, ['id' => 'parent_id']);
+    }
     #endregion
 }

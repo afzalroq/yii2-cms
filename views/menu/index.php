@@ -2,6 +2,7 @@
 
 use afzalroq\cms\entities\Menu;
 use afzalroq\cms\forms\MenuSearch;
+use afzalroq\cms\widgets\menu\CmsNestable;
 use slatiusa\nestable\Nestable;
 use yii\helpers\Html;
 
@@ -14,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-index">
     <p>
+        <?= Html::a("<i class='glyphicon glyphicon-home'></i> " . Yii::t('cms', 'Home'), ['/cms/home/index'], ['class' => 'btn btn-warning']) ?>
         <?= Html::a(Yii::t('cms', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
@@ -51,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-sm-4">
-            <?= \afzalroq\cms\widgets\menu\CmsNestable::widget([
+            <?= CmsNestable::widget([
                 'type' => Nestable::TYPE_LIST,
                 'query' => Menu::find(),
                 'modelOptions' => [

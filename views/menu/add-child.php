@@ -2,19 +2,21 @@
 
 use yii\helpers\Html;
 use afzalroq\cms\entities\Menu;
+use yii\helpers\Url;
+
 
 /* @var $this yii\web\View */
 /* @var $model Menu */
 
-$this->title = Yii::t('cms', 'Create Child');
+$this->title = Yii::t('cms', 'Create');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Menu'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-create">
 
-    <?= $this->render('_formChild', [
+    <?= $this->render('_form', [
         'model' => $model,
-        'root_id' => $root_id
+        'action' => Url::to(['menu/create-child', 'root_id' => $root_id])
     ]) ?>
 
 </div>

@@ -30,7 +30,7 @@ foreach (Collections::find()->all() as $collection)
             foreach (Options::findAll(['collection_id' => $collection->id]) as $option)
                 $options[] = [
                     'id' => $option->id,
-                    'name' => $option->name_0
+                    'name' => $option->slug
                 ];
             break;
         default:
@@ -57,7 +57,9 @@ foreach (Entities::find()->all() as $entity)
     <div style="margin:5px 0 0 0;"
          class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div><?php endif; ?>
     <div class="pages-form">
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin([
+            'action' => $action
+        ]); ?>
         <?= $form->field($model, 'type')->hiddenInput()->label(false) ?>
         <?= $form->field($model, 'type_helper')->hiddenInput()->label(false) ?>
         <?= $form->errorSummary($model) ?>
@@ -96,6 +98,8 @@ foreach (Entities::find()->all() as $entity)
             constLink = '<?= Menu::TYPE_LINK ?>',
             constOption = '<?= Menu::TYPE_OPTION ?>',
             constItem = '<?= Menu::TYPE_ITEM ?>',
+            constCollection = '<?= Menu::TYPE_COLLECTION ?>',
+            constEntity = '<?= Menu::TYPE_ENTITY ?>',
             constEntityItem = '<?= Menu::TYPE_ENTITY_ITEM ?>',
 
             typeValue = '<?= $model->type ?>',
@@ -107,8 +111,9 @@ foreach (Entities::find()->all() as $entity)
             optionList = JSON.parse('<?= JSON_encode($options) ?>'),
             typeList = Object.entries(JSON.parse('<?= JSON_encode($model->typesList()) ?>')),
             actionList = Object.entries(JSON.parse('<?= JSON_encode($model->actionsList()) ?>')),
-
             ajaxUrl = '<?= Url::to(['menu/type']) ?>'
+
+        console.log(actionList)
     </script>
 <?php
 $script = <<< JS
@@ -144,7 +149,9 @@ $(document).ready(function () {
         case constOption:
         case constItem:
         case constEntityItem:
-            initEntityOptionItem()
+        case constCollection:
+        case constEntity:
+            initCEOI()
             break
         default:
             types.val('type_' + constEmpty)
@@ -194,7 +201,7 @@ $(document).ready(function () {
     })
     //endregion
 
-    function initEntityOptionItem() {
+    function initCEOI() {
         types.val(typesValue)
         helperForm.slideDown()
         helper.html(helperValue)
@@ -208,13 +215,9 @@ $(document).ready(function () {
             },
             method: 'POST',
             success: function (data) {
-                console.log('success')
-                console.log(data)
-
                 if (data.status && data.data.length !== 0) {
                     options = '';
                     data.data.forEach((item) => options += '<option value=' + item.id + '>' + item.name + '</option>')
-                    console.log(options)
                     
                     //init type_helper and names
                     setNames(data.data[0].name)

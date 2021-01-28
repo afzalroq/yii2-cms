@@ -15,6 +15,7 @@ class CmsNestable extends \slatiusa\nestable\Nestable
         $text = ArrayHelper::getValue($item, 'content', '');
         $url_view = Url::to(['/cms/menu/view', 'id' => ArrayHelper::getValue($item, 'id')]);
         $url_update = Url::to(['/cms/menu/update', 'id' => ArrayHelper::getValue($item, 'id')]);
+        $return_text = '';
         return Html::a($text, $url_view) . Html::a('<i class="fa fa-pencil"></i>', $url_update, ['class' => 'pull-right']);
     }
 

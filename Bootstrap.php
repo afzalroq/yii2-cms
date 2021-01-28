@@ -60,8 +60,8 @@ class Bootstrap implements BootstrapInterface
 
                 // default settings for each widget from kartik\widgets used when autoWidget is true
                 'autoWidgetSettings' => [
-                    Module::FORMAT_DATE => ['type' => 2, 'pluginOptions' => ['autoclose' => true]], // example
-                    Module::FORMAT_DATETIME => [], // setup if needed
+                    Module::FORMAT_DATE => ['type' => 2, 'pluginOptions' => ['autoclose' => true, 'todayBtn' => true]], // example
+                    Module::FORMAT_DATETIME => ['pluginOptions' => ['autoclose' => true, 'todayBtn' => true]], // setup if needed
                     Module::FORMAT_TIME => [], // setup if needed
                 ],
 

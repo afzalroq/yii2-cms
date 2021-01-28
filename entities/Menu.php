@@ -6,6 +6,8 @@ use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "menu".
@@ -28,6 +30,8 @@ class Menu extends ActiveRecord
     const TYPE_LINK = 3;
     const TYPE_OPTION = 4;
     const TYPE_ITEM = 5;
+    const TYPE_COLLECTION = 6;
+    const TYPE_ENTITY = 7;
     const TYPE_ENTITY_ITEM = 10;
     #endregion
 
@@ -105,22 +109,25 @@ class Menu extends ActiveRecord
             case self::TYPE_EMPTY:
                 $this->types = 'type_' . $this->type;
                 break;
+
             case self::TYPE_ACTION:
                 $this->types = 'action_' . $this->type_helper;
                 break;
+
             case self::TYPE_LINK:
                 $this->types = 'type_' . $this->type;
                 $this->link = $this->type_helper;
                 break;
+
             case self::TYPE_OPTION:
-                if ($dependOption = Options::findOne($this->type_helper)) {
+                if ($dependOption = Options::findOne($this->type_helper))
                     foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
                         $options .= '<option ' . (($this->type_helper == $option->id) ? 'selected' : '') . ' value=' . $option->id . '>' . $option->name_0 . '</option>';
 
-                }
                 $this->types = 'collection_' . $dependOption->collection->id;
                 $this->types_helper = $options;
                 break;
+
             case self::TYPE_ITEM:
                 $option_id = explode(',', $this->type_helper)[0];
                 $item_id = explode(',', $this->type_helper)[1];
@@ -132,6 +139,7 @@ class Menu extends ActiveRecord
                 $this->option_id = $option_id;
                 $this->type_helper = $item_id;
                 break;
+
             case self::TYPE_ENTITY_ITEM:
                 if ($dependItem = Items::findOne($this->type_helper)) {
                     $entity_id = $dependItem->entity->id;
@@ -142,6 +150,10 @@ class Menu extends ActiveRecord
 
                 $this->types_helper = $options;
                 break;
+
+            case self::TYPE_COLLECTION:
+            case self::TYPE_ENTITY:
+
             default:
                 $this->type_helper = '';
         }
@@ -263,7 +275,8 @@ class Menu extends ActiveRecord
             case self::TYPE_ITEM:
                 return Options::findOne($this->option_id)->name_0 . ', ' . Items::findOne($this->type_helper)->text_1_0;
             case self::TYPE_ENTITY_ITEM:
-                return Items::findOne($this->type_helper)->text_1_0;
+                $item = Items::findOne($this->type_helper);
+                return Html::a($item->text_1_0, Url::to(['items/view', 'id' => $this->type_helper, 'slug' => $item->entity->slug]));
             default:
                 return $this->type_helper;
         }

@@ -1,6 +1,7 @@
 <?php
 
 use afzalroq\cms\entities\Menu;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model Menu */
@@ -14,6 +15,7 @@ $this->params['breadcrumbs'][] = Yii::t('cms', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'action' => Url::to(['menu/update'])
     ]) ?>
 
 </div>

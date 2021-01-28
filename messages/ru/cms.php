@@ -49,7 +49,7 @@ return [
     'Collection' => 'Коллекция',
     'Option' => 'Опция',
     'Entity' => 'Cущность',
-    'Item' => 'Вещь',
+    'Item' => 'Oбьекты',
 
     'Options and items' => 'Опции и обьекты',
 

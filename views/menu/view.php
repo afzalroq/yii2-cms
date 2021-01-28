@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a(Yii::t('cms', 'Add Child'), ['create-child', 'root_id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('cms', 'Add Child'), ['add-child', 'root_id' => $model->id], ['class' => 'btn btn-success']) ?>
     </p>
     <div class="box">
         <div class="box-body">
@@ -42,12 +42,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="col-sm-6">
                     <?= DetailView::widget(['model' => $model,
-                        'attributes' => ['created_at:datetime',
+                        'attributes' => [
+                            [
+                                'attribute' => 'type',
+                                'value' => $model->typesLists($model->type)
+                            ],
+                            [
+                                'attribute' => 'type_helper',
+                                'format' => 'html',
+                                'value' => $model->getTypeValue()
+                            ],
+                            'created_at:datetime',
                             'updated_at:datetime',
-                            ['attribute' => 'type',
-                                'value' => $model->typesLists($model->type)],
-                            ['attribute' => 'type_helper',
-                                'value' => $model->getTypeValue()],],]) ?>
+                        ]
+                    ]) ?>
                 </div>
             </div>
         </div>

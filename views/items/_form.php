@@ -2,7 +2,6 @@
 
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\widgets\CmsForm;
-use kartik\datecontrol\DateControl;
 use kartik\widgets\FileInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -22,8 +21,12 @@ $hasTranslatableAttrs = 0;
     <?php
     $form = ActiveForm::begin([
         'fieldConfig' => [
-            'options' => ['enableClientValidation' => false, 'enableAjaxValidation' => true]
-        ]]);
+            'options' => [
+                'enableClientValidation' => false,
+                'enableAjaxValidation' => true
+            ]
+        ]
+    ]);
 
     $cmsForm = new CmsForm($form, $model, $entity)
     ?>

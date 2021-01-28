@@ -247,7 +247,7 @@ class Collections extends ActiveRecord
         return [
             self::USE_IN_MENU_DISABLED => Yii::t('cms', 'Disabled'),
             self::USE_IN_MENU_OPTIONS => Yii::t('cms', 'Option'),
-            self::USE_IN_MENU_ITEMS => Yii::t('cms', 'Item'),
+//            self::USE_IN_MENU_ITEMS => Yii::t('cms', 'Item'),
             self::USE_IN_MENU_OPTIONS_ITEMS => Yii::t('cms', 'Options and items'),
         ];
     }

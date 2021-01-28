@@ -7,7 +7,6 @@ use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\OaI;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\forms\MenuSearch;
-use richardfan\sortable\SortableAction;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -19,9 +18,6 @@ use yii\web\Response;
  */
 class MenuController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [
@@ -42,15 +38,17 @@ class MenuController extends Controller
                 'class' => 'slatiusa\nestable\NodeMoveAction',
                 'modelName' => Menu::className(),
             ],
-            'sortItem' => [
-                'class' => SortableAction::className(),
-                'activeRecordClassName' => Menu::className(),
-                'orderColumn' => 'sort',
-                'startPosition' => 1, // optional, default is 0
-            ],
+//            'sortItem' => [
+//                'class' => SortableAction::className(),
+//                'activeRecordClassName' => Menu::className(),
+//                'orderColumn' => 'sort',
+//                'startPosition' => 1, // optional, default is 0
+//            ],
             // your other actions
         ];
     }
+
+
 
     public function actionType()
     {
@@ -96,12 +94,6 @@ class MenuController extends Controller
         return false;
     }
 
-
-    /**
-     * Lists all Menu models.
-     *
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new MenuSearch();
@@ -113,14 +105,6 @@ class MenuController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Menu model.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -128,16 +112,6 @@ class MenuController extends Controller
         ]);
     }
 
-
-    /**
-     * Finds the Menu model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     *
-     * @param integer $id
-     *
-     * @return Menu the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Menu::findOne($id)) !== null) {
@@ -147,12 +121,6 @@ class MenuController extends Controller
         throw new NotFoundHttpException(Yii::t('cms', 'The requested page does not exist.'));
     }
 
-    /**
-     * Creates a new Menu model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     *
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Menu();
@@ -168,13 +136,7 @@ class MenuController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Menu model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     *
-     * @return mixed
-     */
-    public function actionCreateChild($root_id)
+    public function actionAddChild($root_id)
     {
         $model = new Menu();
 
@@ -182,21 +144,12 @@ class MenuController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('childs/create', [
+        return $this->render('add-child', [
             'model' => $model,
             'root_id' => $root_id
         ]);
     }
 
-    /**
-     * Updates an existing Menu model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -210,15 +163,6 @@ class MenuController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Menu model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();

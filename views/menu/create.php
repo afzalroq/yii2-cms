@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use afzalroq\cms\entities\Menu;
+use yii\helpers\Url;
+
 
 /* @var $this yii\web\View */
 /* @var $model Menu */
@@ -14,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'action' => Url::to(['menu/create'])
     ]) ?>
 
 </div>
