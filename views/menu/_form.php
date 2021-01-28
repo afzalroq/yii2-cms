@@ -60,6 +60,7 @@ foreach (Entities::find()->all() as $entity)
             'action' => $action
         ]); ?>
 
+        <?= $form->field($model, 'menu_type_id')->hiddenInput(['value' => $menuType->id])->label(false) ?>
         <?= $form->field($model, 'type')->hiddenInput()->label(false) ?>
         <?= $form->field($model, 'type_helper')->hiddenInput()->label(false) ?>
         <?= $form->errorSummary($model) ?>

@@ -38,13 +38,14 @@ class Menu extends ActiveRecord
     #endregion
 
     #region Extra Attributes
+
     public $types;
     public $types_helper;
     public $option_id;
 
     public $action;
     public $link;
-    public $treeAttribute = 'menu_type_id';
+    public $treeAttribute = 'tree';
     private $CMSModule;
 
     #endregion
@@ -79,7 +80,7 @@ class Menu extends ActiveRecord
                 // 'leftAttribute' => 'lft',
                 // 'rightAttribute' => 'rgt',
                 // 'depthAttribute' => 'depth',
-            ],
+            ]
         ];
     }
 
@@ -93,6 +94,8 @@ class Menu extends ActiveRecord
                 $this->type_helper = explode('_', $this->types)[1] . ',' . $this->type_helper;
                 break;
         }
+
+        $this->tree = Menu::find()->max('tree') + 1;
 
         return true;
     }
@@ -172,8 +175,8 @@ class Menu extends ActiveRecord
             }],
             [['title_0', 'title_1', 'title_2', 'title_3'], 'string', 'max' => 255],
 
-            ['type', 'required'],
-            ['type', 'integer'],
+            [['type', 'menu_type_id'], 'required'],
+            [['type', 'menu_type_id'], 'integer'],
             ['types', 'string'],
             ['type_helper', 'string'],
             ['types_helper', 'string'],
@@ -221,6 +224,7 @@ class Menu extends ActiveRecord
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];
     }
+
     #endregion
 
     #region Extra Methods

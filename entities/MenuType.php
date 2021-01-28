@@ -4,7 +4,7 @@ namespace afzalroq\cms\entities;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 use yii\helpers\StringHelper;
 
 /**
@@ -20,13 +20,12 @@ use yii\helpers\StringHelper;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property Menu[] $cmsMenus
+ * @property Menu[] $menus
  */
-class MenuType extends \yii\db\ActiveRecord
+class MenuType extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
+    #region Overrides
+
     public static function tableName()
     {
         return 'cms_menu_type';
@@ -39,20 +38,6 @@ class MenuType extends \yii\db\ActiveRecord
         ];
     }
 
-    public function beforeSave($insert)
-    {
-        if (!parent::beforeSave($insert))
-            return false;
-
-        if ($insert)
-            return $this->addRootMenu();
-
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -63,9 +48,6 @@ class MenuType extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -81,11 +63,8 @@ class MenuType extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Menus]].
-     *
-     * @return ActiveQuery
-     */
+    #endregion
+
     public function getMenus()
     {
         return $this->hasMany(Menu::class, ['menu_type_id' => 'id']);
@@ -93,10 +72,11 @@ class MenuType extends \yii\db\ActiveRecord
 
     public function add()
     {
-        $connection = Yii::$app->db;
-        $transaction = $connection->beginTransaction();
+        $transaction = Yii::$app->db->beginTransaction();
         try {
-            if ($this->save() || $this->addRootMenu())
+            $this->save();
+
+            if (!$this->addRootMenu())
                 $transaction->rollBack();
 
             $transaction->commit();
@@ -114,12 +94,11 @@ class MenuType extends \yii\db\ActiveRecord
     {
         $menu = new Menu();
         $menu->menu_type_id = $this->id;
+        $menu->tree = Menu::find()->roots()->max('tree') + 1;
         $menu->type = Menu::TYPE_EMPTY;
         $menu->title_0 = StringHelper::mb_ucfirst($this->slug) . ' menu';
         $menu->title_1 = StringHelper::mb_ucfirst($this->slug) . ' menu';
         $menu->title_2 = StringHelper::mb_ucfirst($this->slug) . ' menu';
         return $menu->makeRoot();
     }
-
-
 }
