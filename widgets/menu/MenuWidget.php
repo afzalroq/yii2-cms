@@ -2,11 +2,8 @@
 
 namespace afzalroq\cms\widgets\menu;
 
-use afzalroq\cms\entities\ArticleCategories;
 use afzalroq\cms\entities\Menu;
-use afzalroq\cms\entities\Pages;
 use yii\bootstrap\Widget;
-use yii\helpers\VarDumper;
 
 class MenuWidget extends Widget
 {
@@ -18,7 +15,8 @@ class MenuWidget extends Widget
         ]);
     }
 
-    public function getMenuList(){
+    public function getMenuList()
+    {
         return $this->mapTree($this->convertToArray(Menu::find()->orderBy('sort')->indexBy('id')->all()));
     }
 

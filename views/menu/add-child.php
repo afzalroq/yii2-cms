@@ -1,12 +1,12 @@
 <?php
 
-use yii\helpers\Html;
 use afzalroq\cms\entities\Menu;
 use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
 /* @var $model Menu */
+/* @var $root_id integer */
 
 $this->title = Yii::t('cms', 'Create');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Menu'), 'url' => ['index']];
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'action' => Url::to(['menu/create-child', 'root_id' => $root_id])
+        'action' => Url::to(['menu/add-child', 'root_id' => $root_id])
     ]) ?>
 
 </div>

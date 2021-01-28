@@ -29,7 +29,7 @@ class Unit extends \yii\db\ActiveRecord
     public static function get($slug)
     {
         $dependency = new TagDependency(['tags' => ['unit']]);
-        return Yii::$app->{$cache}->getOrSet('unit' . $slug . Yii::$app->language, function () use ($slug) {
+        return Yii::$app->{Yii::$app->getModule('cms')->cache}->getOrSet('unit' . $slug . Yii::$app->language, function () use ($slug) {
             return self::findOne(['slug' => $slug])->getModelByType()->get();
         }, Yii::$app->getModule('cms')->cacheDuration, $dependency);
     }
