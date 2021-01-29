@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $script = <<< JS
     $(document).ready(function () {
         const root = $('._root_')
-        root.hide()
+        // root.hide()
     })
 JS;
 $this->registerJs($script, View::POS_READY);
