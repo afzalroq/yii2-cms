@@ -49,7 +49,6 @@ class MenuController extends Controller
         ];
     }
 
-
     public function actionType()
     {
         if (Yii::$app->request->isAjax) {

@@ -24,6 +24,7 @@
     "kartik-v/yii2-widget-fileinput": "@dev",
     "yii-dream-team/yii2-upload-behavior": "^1.2.3",
     "mihaildev/yii2-elfinder": "*",
+    "ext-json": "*",
     "sadovojav/yii2-ckeditor": "dev-master",
     "gregwar/image": "2.*",
     "kartik-v/yii2-datecontrol": "dev-master",
