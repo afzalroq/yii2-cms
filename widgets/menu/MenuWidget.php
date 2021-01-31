@@ -3,6 +3,7 @@
 namespace afzalroq\cms\widgets\menu;
 
 use afzalroq\cms\entities\Menu;
+use afzalroq\cms\entities\Options;
 use yii\bootstrap\Widget;
 
 class MenuWidget extends Widget
@@ -10,11 +11,20 @@ class MenuWidget extends Widget
 
     public function run()
     {
+        $this->generate();
+        return ;
         return $this->render('_menu', [
             'menu' => $this->mapTree($this->convertToArray(Menu::find()->orderBy('sort')->indexBy('id')->all()))
         ]);
     }
-
+//    const TYPE_EMPTY = 1;
+//    const TYPE_ACTION = 2;
+//    const TYPE_LINK = 3;
+//    const TYPE_OPTION = 4;
+//    const TYPE_ITEM = 5;
+//    const TYPE_COLLECTION = 6;
+//    const TYPE_ENTITY = 7;
+//    const TYPE_ENTITY_ITEM = 10;
 
     private function generate()
     {
@@ -28,7 +38,8 @@ class MenuWidget extends Widget
                 case Menu::TYPE_LINK:
                     continue;
                 case Menu::TYPE_OPTION:
-
+                    $option = Options::findOne($menu->type_helper);
+                    $prettyUrls[] = 'c/' . $option->collection->slug . '/' . $option->slug;
             }
         }
     }

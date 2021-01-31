@@ -8,6 +8,7 @@ use afzalroq\cms\entities\MenuType;
 use afzalroq\cms\entities\OaI;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\forms\MenuSearch;
+use afzalroq\cms\widgets\menu\MenuWidget;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -95,6 +96,7 @@ class MenuController extends Controller
 
     public function actionIndex($slug)
     {
+        MenuWidget::widget();
         $searchModel = new MenuSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $slug);
 

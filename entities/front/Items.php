@@ -32,11 +32,6 @@ class Items extends \afzalroq\cms\entities\Items
         }, $cacheDuration, new TagDependency(['tags' => ['items_' . $slug]]));
     }
 
-    public function getText1()
-    {
-        return $this->getText('text_1');
-    }
-
     private function getText($entityAttr)
     {
         return $this[$this->getAttr($entityAttr)];
@@ -44,7 +39,15 @@ class Items extends \afzalroq\cms\entities\Items
 
     private function getAttr($entityAttr)
     {
-        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $this->languageId);
+        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+            $languageId = 0;
+
+        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $languageId);
+    }
+
+    public function getText1()
+    {
+        return $this->getText('text_1');
     }
 
     public function getText2()

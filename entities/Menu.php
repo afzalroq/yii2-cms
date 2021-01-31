@@ -116,9 +116,11 @@ class Menu extends ActiveRecord
                 break;
 
             case self::TYPE_OPTION:
-                if ($dependOption = Options::findOne($this->type_helper))
+                if ($dependOption = Options::findOne($this->type_helper)) {
+                    $options .= '<option value=' . $dependOption->collection_id . '_collection>self</option>';
                     foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
                         $options .= '<option ' . (($this->type_helper == $option->id) ? 'selected' : '') . ' value=' . $option->id . '>' . $option->name_0 . '</option>';
+                }
 
                 $this->types = 'collection_' . $dependOption->collection->id;
                 $this->types_helper = $options;
@@ -140,6 +142,8 @@ class Menu extends ActiveRecord
                 if ($dependItem = Items::findOne($this->type_helper)) {
                     $entity_id = $dependItem->entity->id;
                     $this->types = 'entity_' . $entity_id;
+
+                    $options .= '<option value=' . $dependItem->entity_id . '_entity>self</option>';
                     foreach (Items::findAll(['entity_id' => $entity_id]) as $item)
                         $options .= '<option ' . (($item->id == $this->type_helper) ? 'selected' : '') . ' value=' . $item->id . '>' . $item->text_1_0 . '</option>';
                 }
@@ -148,8 +152,27 @@ class Menu extends ActiveRecord
                 break;
 
             case self::TYPE_COLLECTION:
-            case self::TYPE_ENTITY:
+                if ($dependOption = Options::findOne($this->type_helper)) {
+                    $options .= '<option selected value=' . $dependOption->collection_id . '_collection>self</option>';
+                    foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
+                        $options .= '<option value=' . $option->id . '>' . $option->name_0 . '</option>';
+                }
 
+                $this->types = 'collection_' . $dependOption->collection_id;
+                $this->types_helper = $options;
+                break;
+
+            case self::TYPE_ENTITY:
+                if ($dependItem = Items::findOne($this->type_helper)) {
+                    $options .= '<option selected value=' . $dependItem->entity_id . '_entity>self</option>';
+                    $entity_id = $dependItem->entity->id;
+                    $this->types = 'entity_' . $entity_id;
+                    foreach (Items::findAll(['entity_id' => $entity_id]) as $item)
+                        $options .= '<option  value=' . $item->id . '>' . $item->text_1_0 . '</option>';
+                }
+                $this->types = 'entity_' . $dependItem->entity_id;
+                $this->types_helper = $options;
+                break;
             default:
                 $this->type_helper = '';
         }
@@ -272,8 +295,10 @@ class Menu extends ActiveRecord
         $a[self::TYPE_LINK] = 'Ссылка';
         $a[self::TYPE_ACTION] = 'Action';
         $a[self::TYPE_OPTION] = 'Option';
-        $a[self::TYPE_ITEM] = 'Item';
-        $a[self::TYPE_ENTITY_ITEM] = 'Entity Item';
+        $a[self::TYPE_ITEM] = 'Option Item';
+        $a[self::TYPE_COLLECTION] = 'Collection';
+        $a[self::TYPE_ENTITY] = 'Entity';
+        $a[self::TYPE_ENTITY_ITEM] = 'Item';
 
         if ($key && isset($a[$key])) {
             return $a[$key];
@@ -287,13 +312,25 @@ class Menu extends ActiveRecord
         switch ($this->type) {
             case self::TYPE_ACTION:
                 return $this->CMSModule->menuActions[$this->type_helper];
+
             case self::TYPE_OPTION:
-                return Options::findOne($this->type_helper)->name_0;
+                $option = Options::findOne($this->type_helper);
+                return Html::a($option->name_0, Url::to(['options/view', 'id' => $option->id, 'slug' => $option->collection->slug]));
+
             case self::TYPE_ITEM:
                 return Options::findOne($this->option_id)->name_0 . ', ' . Items::findOne($this->type_helper)->text_1_0;
+
             case self::TYPE_ENTITY_ITEM:
                 $item = Items::findOne($this->type_helper);
                 return Html::a($item->text_1_0, Url::to(['items/view', 'id' => $this->type_helper, 'slug' => $item->entity->slug]));
+
+            case self::TYPE_COLLECTION:
+                $collection = Collections::findOne($this->type_helper);
+                return Html::a($collection->name_0, Url::to(['collections/view', 'id' => $this->type_helper]));
+
+            case self::TYPE_ENTITY:
+                $entity = Entities::findOne($this->type_helper);
+                return Html::a($entity->name_0, Url::to(['entities/view', 'id' => $this->type_helper]));
             default:
                 return $this->type_helper;
         }

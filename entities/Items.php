@@ -4,6 +4,7 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
+use DomainException;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
@@ -457,7 +458,7 @@ class Items extends ActiveRecord
 
     private function setCurrentLanguage()
     {
-        $this->languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        $this->languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
         if (!$this->languageId)
             $this->languageId = 0;
     }
@@ -617,7 +618,7 @@ class Items extends ActiveRecord
                 return;
             }
         }
-        throw new \DomainException(\Yii::t('app', 'Photo is not found.'));
+        throw new DomainException(Yii::t('app', 'Photo is not found.'));
     }
 
     public function movePhotoDown($id): void
@@ -633,7 +634,7 @@ class Items extends ActiveRecord
                 return;
             }
         }
-        throw new \DomainException(\Yii::t('app', 'Photo is not found.'));
+        throw new DomainException(Yii::t('app', 'Photo is not found.'));
     }
 
     public function removePhoto($id): void
@@ -647,7 +648,7 @@ class Items extends ActiveRecord
                 return;
             }
         }
-        throw new \DomainException(\Yii::t('app', 'Photo is not found.'));
+        throw new DomainException(Yii::t('app', 'Photo is not found.'));
     }
 
     #endregion

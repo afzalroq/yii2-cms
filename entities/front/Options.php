@@ -63,7 +63,10 @@ class Options extends \afzalroq\cms\entities\Options
 
     private function getAttr($entityAttr)
     {
-        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $this->languageId);
+        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+            $languageId = 0;
+
+        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $languageId);
     }
 
     public function getFile2()
