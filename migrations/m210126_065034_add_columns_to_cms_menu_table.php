@@ -14,7 +14,6 @@ class m210126_065034_add_columns_to_cms_menu_table extends Migration
         $this->addColumn('cms_menu', 'lft', $this->integer()->notNull());
         $this->addColumn('cms_menu', 'rgt', $this->integer()->notNull());
         $this->addColumn('cms_menu', 'depth', $this->integer()->notNull());
-        $this->addColumn('cms_menu', 'name', $this->string());
 //        $this->insert('cms_menu', [
 //            'id' => 1,
 //            'title_0' => 'Root',
@@ -38,6 +37,5 @@ class m210126_065034_add_columns_to_cms_menu_table extends Migration
         $this->dropColumn('cms_menu', 'lft');
         $this->dropColumn('cms_menu', 'rgt');
         $this->dropColumn('cms_menu', 'depth');
-        $this->dropColumn('cms_menu', 'name');
     }
 }

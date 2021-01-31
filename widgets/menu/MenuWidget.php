@@ -15,6 +15,25 @@ class MenuWidget extends Widget
         ]);
     }
 
+
+    private function generate()
+    {
+        $menus = Menu::find()->all();
+        $prettyUrls = [];
+        /** @var Menu $menu */
+        foreach ($menus as $menu) {
+            switch ($menu->type) {
+                case Menu::TYPE_EMPTY:
+                case Menu::TYPE_ACTION:
+                case Menu::TYPE_LINK:
+                    continue;
+                case Menu::TYPE_OPTION:
+
+            }
+        }
+    }
+
+
     public function getMenuList()
     {
         return $this->mapTree($this->convertToArray(Menu::find()->orderBy('sort')->indexBy('id')->all()));
@@ -46,7 +65,6 @@ class MenuWidget extends Widget
 
         return $tree;
     }
-
 
     private function convertToArray($menuModels)
     {

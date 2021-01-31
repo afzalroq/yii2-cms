@@ -95,14 +95,14 @@ foreach (Entities::find()->all() as $entity)
     </div>
 
     <script>
-        const constEmpty = '<?= Menu::TYPE_EMPTY ?>',
-            constAction = '<?= Menu::TYPE_ACTION ?>',
-            constLink = '<?= Menu::TYPE_LINK ?>',
-            constOption = '<?= Menu::TYPE_OPTION ?>',
-            constItem = '<?= Menu::TYPE_ITEM ?>',
-            constCollection = '<?= Menu::TYPE_COLLECTION ?>',
-            constEntity = '<?= Menu::TYPE_ENTITY ?>',
-            constEntityItem = '<?= Menu::TYPE_ENTITY_ITEM ?>',
+        const [constEmpty,
+                constAction,
+                constLink,
+                constOption,
+                constItem,
+                constCollection,
+                constEntity,
+                constEntityItem] = JSON.parse('<?= JSON_encode(Menu::getTypes()) ?>'),
 
             typeValue = '<?= $model->type ?>',
             typesValue = '<?= $model->types ?>',
@@ -114,77 +114,93 @@ foreach (Entities::find()->all() as $entity)
             typeList = Object.entries(JSON.parse('<?= JSON_encode($model->typesList()) ?>')),
             actionList = Object.entries(JSON.parse('<?= JSON_encode($model->actionsList()) ?>')),
             ajaxUrl = '<?= Url::to(['menu/type']) ?>'
-
-        console.log(actionList)
     </script>
 <?php
 $script = <<< JS
 $(document).ready(function () {
-    const titles = document.querySelectorAll('[data-type="titles"]'),
+    
+    let options = '', key, value
+    const
+        self = 'self',
+        titles = document.querySelectorAll('[data-type="titles"]'),
         helperForm = $('.field-menu-types_helper'),
         linkForm = $('.field-menu-link'),
         typeHelper = $('#menu-type_helper'),
         helper = $('#menu-types_helper'),
         types = $('#menu-types'),
         type = $('#menu-type'),
-        link = $('#menu-link')
-    let options = '', key, value
+        link = $('#menu-link');
 
     //region init
-    typeList.forEach((type) => options += '<option value=type_' + type[0] + '>' + type[1] + '</option>')
-    actionList.forEach((action) => options += '<option value=action_' + action[0] + '>' + action[1] + '</option>')
-    collectionList.forEach((collection) => options += '<option value=collection_' + collection.id + '>' + collection.name + '</option>')
-    optionList.forEach((option) => options += '<option value=option_' + option.id + '>' + option.name + '</option>')
-    entityList.forEach((entity) => options += '<option value=entity_' + entity.id + '>' + entity.name + '</option>')
-    types.html(options)
-
-    hideAll()
-    switch (typeValue) {
-        case constEmpty:
-        case constAction:
-            types.val(typesValue)
-            break
-        case constLink:
-            types.val(typesValue)
-            linkForm.slideDown()
-            break
-        case constOption:
-        case constItem:
-        case constEntityItem:
-        case constCollection:
-        case constEntity:
-            initCEOI()
-            break
-        default:
-            types.val('type_' + constEmpty)
-            type.val(constEmpty)
-            typeHelper.val(null)
-    }
+     (function init() {
+        typeList.forEach((type) => options += '<option value=type_' + type[0] + '>' + type[1] + '</option>')
+        actionList.forEach((action) => options += '<option value=action_' + action[0] + '>' + action[1] + '</option>')
+        collectionList.forEach((collection) => options += '<option value=collection_' + collection.id + '>' + collection.name + '</option>')
+        optionList.forEach((option) => options += '<option value=option_' + option.id + '>' + option.name + '</option>')
+        entityList.forEach((entity) => options += '<option value=entity_' + entity.id + '>' + entity.name + '</option>')
+        types.html(options)
+    
+        hideAll()
+        switch (typeValue) {
+            case constEmpty:
+            case constAction:
+                types.val(typesValue)
+                break
+            case constLink:
+                types.val(typesValue)
+                linkForm.slideDown()
+                break
+            case constCollection:
+            case constEntity:
+            case constOption:
+            case constItem:
+            case constEntityItem:
+                initCEOI()
+                break
+            default:
+                types.val('type_' + constEmpty)
+                type.val(constEmpty)
+                typeHelper.val(null)
+        }
+    })()
     //endregion
 
     //region bindings
+    
     link.on('change', function () {
         setNames(this.value)
         typeHelper.val(this.value)
     })
+    
     helper.on('change', function () {
-        let optionText = $('#menu-types_helper').find(":selected").text()
-        setNames(optionText)
-        typeHelper.val(this.value)
+        let text = helper.find(":selected").text()
+        let value = this.value
+        let [id, _type] = value.split('_')
+        
+        // console.log('text: ',text)
+        // console.log('_type: ',_type)
+        
+        if (_type) {
+            initSelf(id, _type)
+            return
+        }
+        if ((_type = localStorage.getItem('type')))
+            type.val(_type)
+        setNames(text)
+        typeHelper.val(id)
     })
+    
     types.on('change', function () {
+        [key, value] = this.value.split('_')
         hideAll()
-        key = this.value.split('_')[0]
-        value = this.value.split('_')[1]
 
         switch (key) {
             case 'type':
-                typeControl(value, key);
+                typeControl(Number(value));
                 break
             case 'action':
                 type.val(constAction)
                 typeHelper.val(value)
-                console.log(constAction)
                 setNames(types.find(":selected").text())
                 break
             case 'collection':
@@ -201,14 +217,12 @@ $(document).ready(function () {
                 break
         }
     })
+    
     //endregion
 
-    function initCEOI() {
-        types.val(typesValue)
-        helperForm.slideDown()
-        helper.html(helperValue)
-    }
+    //region methods
     
+    // init Collection, Entity, Option, Item    
     function postAjax(id, type) {
         $.ajax(ajaxUrl, {
             data: {
@@ -218,14 +232,12 @@ $(document).ready(function () {
             method: 'POST',
             success: function (data) {
                 if (data.status && data.data.length !== 0) {
-                    options = '';
+                    options = '<option value=' + id + '_'+ type +'>' + self + '</option>';
                     data.data.forEach((item) => options += '<option value=' + item.id + '>' + item.name + '</option>')
                     
-                    //init type_helper and names
-                    setNames(data.data[0].name)
-                    typeHelper.val(data.data[0].id)
-                    //
-
+                    //init type_helper and names 
+                    initSelf(id, type)
+                    
                     helper.html(options)
                     helperForm.slideDown()
                 } else {
@@ -237,13 +249,31 @@ $(document).ready(function () {
             }
         })
     }
-
+    
+    function initSelf(id, _type) {
+        setNames(self)
+        typeHelper.val(id)  
+        localStorage.setItem('type', type.val())
+        switch (_type) {
+            case 'collection':
+                type.val(constCollection)
+                break
+            case 'entity':
+                type.val(constEntity)
+                break
+        }
+    }
+    
+    function initCEOI() {
+        types.val(typesValue)
+        helperForm.slideDown()
+        helper.html(helperValue)
+    }
+    
     function typeControl(_type) {
         type.val(_type)
         setNames('')
         typeHelper.val('')
-        if (!_type || _type === constEmpty)
-            hideAll();
 
         if (_type === constLink) {
             hideAll();
@@ -261,8 +291,9 @@ $(document).ready(function () {
             title.value = text
         }
     }
-
-    
+   
+    //endregion
+   
 });
 JS;
 $this->registerJs($script, View::POS_READY);

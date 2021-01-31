@@ -227,6 +227,20 @@ class Menu extends ActiveRecord
 
     #region Extra Methods
 
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_EMPTY,
+            self::TYPE_ACTION,
+            self::TYPE_LINK,
+            self::TYPE_OPTION,
+            self::TYPE_ITEM,
+            self::TYPE_COLLECTION,
+            self::TYPE_ENTITY,
+            self::TYPE_ENTITY_ITEM
+        ];
+    }
+
     public function getMenuType()
     {
         $this->hasOne(MenuType::class, ['id' => 'menu_typ_id']);
@@ -234,6 +248,7 @@ class Menu extends ActiveRecord
 
     public function actionsList($flip = false)
     {
+
         $array = [];
         if (is_string($flip) && array_key_exists($flip, $this->CMSModule->menuActions))
             return $array[$flip];
