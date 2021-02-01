@@ -63,6 +63,11 @@ class Menu extends ActiveRecord
         return 'cms_menu';
     }
 
+    public static function find()
+    {
+        return new MenuQuery(get_called_class());
+    }
+
     public function transactions()
     {
         return [
@@ -75,7 +80,7 @@ class Menu extends ActiveRecord
         return [
             TimestampBehavior::class,
             'tree' => [
-                'class' => NestedSetsBehavior::className(),
+                'class' => NestedSetsBehavior::class,
                 'treeAttribute' => $this->treeAttribute,
                 // 'leftAttribute' => 'lft',
                 // 'rightAttribute' => 'rgt',
@@ -96,87 +101,6 @@ class Menu extends ActiveRecord
         }
 
         return true;
-    }
-
-    public function afterFind()
-    {
-        $options = '';
-        switch ($this->type) {
-            case self::TYPE_EMPTY:
-                $this->types = 'type_' . $this->type;
-                break;
-
-            case self::TYPE_ACTION:
-                $this->types = 'action_' . $this->type_helper;
-                break;
-
-            case self::TYPE_LINK:
-                $this->types = 'type_' . $this->type;
-                $this->link = $this->type_helper;
-                break;
-
-            case self::TYPE_OPTION:
-                if ($dependOption = Options::findOne($this->type_helper)) {
-                    $options .= '<option value=' . $dependOption->collection_id . '_collection>self</option>';
-                    foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
-                        $options .= '<option ' . (($this->type_helper == $option->id) ? 'selected' : '') . ' value=' . $option->id . '>' . $option->name_0 . '</option>';
-                }
-
-                $this->types = 'collection_' . $dependOption->collection->id;
-                $this->types_helper = $options;
-                break;
-
-            case self::TYPE_ITEM:
-                $option_id = explode(',', $this->type_helper)[0];
-                $item_id = explode(',', $this->type_helper)[1];
-                foreach (OaI::findAll(['option_id' => $option_id]) as $oai)
-                    $options .= '<option ' . (($oai->item_id == $item_id) ? 'selected' : '') . ' value=' . $oai->item_id . '>' . $oai->item->text_1_0 . '</option>';
-
-                $this->types = 'option_' . $option_id;
-                $this->types_helper = $options;
-                $this->option_id = $option_id;
-                $this->type_helper = $item_id;
-                break;
-
-            case self::TYPE_ENTITY_ITEM:
-                if ($dependItem = Items::findOne($this->type_helper)) {
-                    $entity_id = $dependItem->entity->id;
-                    $this->types = 'entity_' . $entity_id;
-
-                    $options .= '<option value=' . $dependItem->entity_id . '_entity>self</option>';
-                    foreach (Items::findAll(['entity_id' => $entity_id]) as $item)
-                        $options .= '<option ' . (($item->id == $this->type_helper) ? 'selected' : '') . ' value=' . $item->id . '>' . $item->text_1_0 . '</option>';
-                }
-
-                $this->types_helper = $options;
-                break;
-
-            case self::TYPE_COLLECTION:
-                if ($dependOption = Options::findOne($this->type_helper)) {
-                    $options .= '<option selected value=' . $dependOption->collection_id . '_collection>self</option>';
-                    foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
-                        $options .= '<option value=' . $option->id . '>' . $option->name_0 . '</option>';
-                }
-
-                $this->types = 'collection_' . $dependOption->collection_id;
-                $this->types_helper = $options;
-                break;
-
-            case self::TYPE_ENTITY:
-                if ($dependItem = Items::findOne($this->type_helper)) {
-                    $options .= '<option selected value=' . $dependItem->entity_id . '_entity>self</option>';
-                    $entity_id = $dependItem->entity->id;
-                    $this->types = 'entity_' . $entity_id;
-                    foreach (Items::findAll(['entity_id' => $entity_id]) as $item)
-                        $options .= '<option  value=' . $item->id . '>' . $item->text_1_0 . '</option>';
-                }
-                $this->types = 'entity_' . $dependItem->entity_id;
-                $this->types_helper = $options;
-                break;
-            default:
-                $this->type_helper = '';
-        }
-        parent::afterFind();
     }
 
     public function rules()
@@ -216,11 +140,6 @@ class Menu extends ActiveRecord
         ];
     }
 
-    public static function find()
-    {
-        return new MenuQuery(get_called_class());
-    }
-
     public function attributeLabels()
     {
         $language0 = isset(Yii::$app->params['cms']['languages'][0]) ? Yii::$app->params['cms']['languages'][0] : '';
@@ -250,34 +169,134 @@ class Menu extends ActiveRecord
 
     #region Extra Methods
 
-    public static function getTypes()
+    // Collections, Options and Entities List for use in menu
+    public function COEList()
     {
-        return [
-            self::TYPE_EMPTY,
-            self::TYPE_ACTION,
-            self::TYPE_LINK,
-            self::TYPE_OPTION,
-            self::TYPE_ITEM,
-            self::TYPE_COLLECTION,
-            self::TYPE_ENTITY,
-            self::TYPE_ENTITY_ITEM
-        ];
-    }
+        $entities = [];
+        $collections = [];
+        $options = [];
 
-    public function getMenuType()
-    {
-        $this->hasOne(MenuType::class, ['id' => 'menu_typ_id']);
+        /** @var Collections $collection */
+        foreach (Collections::find()->all() as $collection)
+            switch ($collection->use_in_menu) {
+                case Collections::USE_IN_MENU_OPTIONS:
+                    $collections[] = [
+                        'id' => $collection->id,
+                        'name' => $collection->name_0
+                    ];
+                    break;
+                case Collections::USE_IN_MENU_ITEMS:
+                    foreach (Options::findAll(['collection_id' => $collection->id]) as $option)
+                        $options[] = [
+                            'id' => $option->id,
+                            'name' => $option->slug
+                        ];
+                    break;
+                default:
+                    break;
+            }
+
+
+        /** @var Entities $entity */
+        foreach (Entities::find()->all() as $entity)
+            if ($entity->use_in_menu)
+                $entities[] = [
+                    'id' => $entity->id,
+                    'name' => $entity->name_0
+                ];
+
+        return [$collections, $entities, $options];
     }
 
     public function actionsList($flip = false)
     {
-
         $array = [];
         if (is_string($flip) && array_key_exists($flip, $this->CMSModule->menuActions))
             return $array[$flip];
         elseif ($flip)
             return array_flip($this->CMSModule->menuActions);
         return $this->CMSModule->menuActions;
+    }
+
+    public function initForUpdate()
+    {
+        $options = '';
+        switch ($this->type) {
+            case self::TYPE_EMPTY:
+                $this->types = 'type_' . $this->type;
+                break;
+
+            case self::TYPE_ACTION:
+                $this->types = 'action_' . $this->type_helper;
+                break;
+
+            case self::TYPE_LINK:
+                $this->types = 'type_' . $this->type;
+                $this->link = $this->type_helper;
+                break;
+
+            case self::TYPE_OPTION:
+                $dependOption = Options::findOne($this->type_helper);
+                $options .= '<option value=' . $dependOption->collection_id . '_collection>self</option>';
+
+                foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
+                    $options .= '<option ' . (($this->type_helper == $option->id) ? 'selected' : '') . ' value=' . $option->id . '>' . $option->name_0 . '</option>';
+
+                $this->types = 'collection_' . $dependOption->collection_id;
+                $this->types_helper = $options;
+                break;
+
+            case self::TYPE_ITEM:
+                [$option_id, $item_id] = explode(',', $this->type_helper);
+
+                foreach (OaI::findAll(['option_id' => $option_id]) as $oai)
+                    $options .= '<option ' . (($oai->item_id == $item_id) ? 'selected' : '') . ' value=' . $oai->item_id . '>' . $oai->item->text_1_0 . '</option>';
+
+                $this->types = 'option_' . $option_id;
+                $this->types_helper = $options;
+                $this->option_id = $option_id;
+                $this->type_helper = $item_id;
+                break;
+
+            case self::TYPE_ENTITY_ITEM:
+                if ($dependItem = Items::findOne($this->type_helper)) {
+                    $this->types = 'entity_' . $dependItem->entity_id;
+                    $options .= '<option value=' . $dependItem->entity_id . '_entity>self</option>';
+                    foreach (Items::findAll(['entity_id' => $dependItem->entity_id]) as $item)
+                        $options .= '<option ' . (($item->id == $this->type_helper) ? 'selected' : '') . ' value=' . $item->id . '>' . $item->text_1_0 . '</option>';
+                }
+
+                $this->types_helper = $options;
+                break;
+
+            case self::TYPE_COLLECTION:
+                $dependOption = Options::findOne($this->type_helper);
+                $options .= '<option selected value=' . $dependOption->collection_id . '_collection>self</option>';
+                foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
+                    $options .= '<option value=' . $option->id . '>' . $option->name_0 . '</option>';
+
+                $this->types = 'collection_' . $dependOption->collection_id;
+                $this->types_helper = $options;
+                break;
+
+            case self::TYPE_ENTITY:
+                $dependItem = Items::findOne($this->type_helper);
+                $options .= '<option selected value=' . $dependItem->entity_id . '_entity>self</option>';
+
+                foreach (Items::findAll(['entity_id' => $dependItem->entity_id]) as $item)
+                    $options .= '<option  value=' . $item->id . '>' . $item->text_1_0 . '</option>';
+
+                $this->types = 'entity_' . $dependItem->entity_id;
+                $this->types_helper = $options;
+                break;
+            default:
+                $this->type_helper = '';
+        }
+    }
+
+    public function getMenuType()
+    {
+        $this->hasOne(MenuType::class, ['id' => 'menu_typ_id']);
     }
 
     public function typesList($key = null)
@@ -334,6 +353,20 @@ class Menu extends ActiveRecord
             default:
                 return $this->type_helper;
         }
+    }
+
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_EMPTY,
+            self::TYPE_ACTION,
+            self::TYPE_LINK,
+            self::TYPE_OPTION,
+            self::TYPE_ITEM,
+            self::TYPE_COLLECTION,
+            self::TYPE_ENTITY,
+            self::TYPE_ENTITY_ITEM
+        ];
     }
 
     //    public function getMaxSort()

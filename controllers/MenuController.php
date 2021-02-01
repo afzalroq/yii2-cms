@@ -115,15 +115,6 @@ class MenuController extends Controller
         ]);
     }
 
-    protected function findModel($id)
-    {
-        if (($model = Menu::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException(Yii::t('cms', 'The requested page does not exist.'));
-    }
-
     public function actionCreate($slug)
     {
         $model = new Menu();
@@ -155,9 +146,11 @@ class MenuController extends Controller
     public function actionUpdate($id, $slug)
     {
         $model = $this->findModel($id);
+
+        $model->initForUpdate();
+
         if ($model->load(Yii::$app->request->post()) && $model->save())
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
-
 
         return $this->render('update', [
             'model' => $model,
@@ -169,5 +162,14 @@ class MenuController extends Controller
     {
         $this->findModel($id)->delete();
         return $this->redirect(['index', 'slug' => $slug]);
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Menu::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('cms', 'The requested page does not exist.'));
     }
 }

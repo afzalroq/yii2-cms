@@ -1,11 +1,8 @@
 <?php
 
 use afzalroq\cms\assets\MenuAsset;
-use afzalroq\cms\entities\Collections;
-use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\MenuType;
-use afzalroq\cms\entities\Options;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -18,38 +15,6 @@ MenuAsset::register($this);
 /* @var $form yii\widgets\ActiveForm */
 /* @var $action string */
 
-
-$entities = [];
-$collections = [];
-$options = [];
-
-/** @var Collections $collection */
-foreach (Collections::find()->all() as $collection)
-    switch ($collection->use_in_menu) {
-        case Collections::USE_IN_MENU_OPTIONS:
-            $collections[] = [
-                'id' => $collection->id,
-                'name' => $collection->name_0
-            ];
-            break;
-        case Collections::USE_IN_MENU_ITEMS:
-            foreach (Options::findAll(['collection_id' => $collection->id]) as $option)
-                $options[] = [
-                    'id' => $option->id,
-                    'name' => $option->slug
-                ];
-            break;
-        default:
-            break;
-    }
-
-/** @var Entities $entity */
-foreach (Entities::find()->all() as $entity)
-    if ($entity->use_in_menu)
-        $entities[] = [
-            'id' => $entity->id,
-            'name' => $entity->name_0
-        ];
 ?>
 
 <style>
@@ -108,14 +73,12 @@ foreach (Entities::find()->all() as $entity)
             constEntityItem
         ] = JSON.parse('<?= JSON_encode(Menu::getTypes()) ?>'),
 
+        [collectionList, entityList, optionList] = JSON.parse('<?= JSON_encode($model->COEList()) ?>'),
+        typeList = Object.entries(JSON.parse('<?= JSON_encode($model->typesList()) ?>')),
+        actionList = Object.entries(JSON.parse('<?= JSON_encode($model->actionsList()) ?>')),
         typeValue = '<?= $model->type ?>',
         typesValue = '<?= $model->types ?>',
         helperValue = '<?= $model->types_helper ?>',
-
-        collectionList = JSON.parse('<?= JSON_encode($collections) ?>'),
-        entityList = JSON.parse('<?= JSON_encode($entities) ?>'),
-        optionList = JSON.parse('<?= JSON_encode($options) ?>'),
-        typeList = Object.entries(JSON.parse('<?= JSON_encode($model->typesList()) ?>')),
-        actionList = Object.entries(JSON.parse('<?= JSON_encode($model->actionsList()) ?>')),
         ajaxUrl = '<?= Url::to(['menu/type']) ?>'
+
 </script>
