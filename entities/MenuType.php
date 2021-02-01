@@ -38,6 +38,17 @@ class MenuType extends ActiveRecord
         ];
     }
 
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        Menu::deleteAll(['menu_type_id' => $this->id]);
+        // ...custom code here...
+        return true;
+    }
+
     public function rules()
     {
         return [
