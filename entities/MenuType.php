@@ -40,12 +40,11 @@ class MenuType extends ActiveRecord
 
     public function beforeDelete()
     {
-        if (!parent::beforeDelete()) {
+        if (!parent::beforeDelete())
             return false;
-        }
 
         Menu::deleteAll(['menu_type_id' => $this->id]);
-        // ...custom code here...
+
         return true;
     }
 
@@ -101,7 +100,7 @@ class MenuType extends ActiveRecord
         }
     }
 
-    public function addRootMenu()
+    private function addRootMenu()
     {
         $menu = new Menu();
         $menu->menu_type_id = $this->id;

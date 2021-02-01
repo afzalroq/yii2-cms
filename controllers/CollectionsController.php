@@ -64,7 +64,7 @@ class CollectionsController extends Controller
     {
         $model = new Collections();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->add()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

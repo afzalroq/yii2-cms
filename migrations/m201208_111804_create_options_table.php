@@ -18,7 +18,6 @@ class m201208_111804_create_options_table extends Migration
 		$this->createTable('{{%cms_options}}', [
 			'id' => $this->primaryKey(),
 			'collection_id' => $this->integer()->notNull(),
-			'parent_id' => $this->integer(),
 			'slug' => $this->string()->notNull()->unique(),
 			'name_0' => $this->string(),
 			'name_1' => $this->string(),
@@ -59,12 +58,6 @@ class m201208_111804_create_options_table extends Migration
 			'collection_id'
 		);
 
-		$this->createIndex(
-			'index-cms_options-parent_id',
-			'cms_options',
-			'parent_id'
-		);
-
 		$this->addForeignKey(
 			'fkey-cms_options-collection_id',
 			'cms_options',
@@ -80,7 +73,6 @@ class m201208_111804_create_options_table extends Migration
 			'cms_options',
 			'id'
 		);
-
 	}
 
 	/**

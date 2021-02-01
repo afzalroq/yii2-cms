@@ -13,6 +13,13 @@ use yii\web\View;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $menuType MenuType */
 
+$script = <<< JS
+    $(document).ready(function () {
+        $('._root_').hide().siblings('[data-action="collapse"]').hide()
+    })
+JS;
+$this->registerJs($script, View::POS_READY);
+
 $this->title = Yii::t('cms', 'Menu');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -58,7 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= CmsNestable::widget([
                 'type' => Nestable::TYPE_WITH_HANDLE,
                 'query' => Menu::find()->where(['menu_type_id' => $menuType->id]),
-                'menu_type_slug' => $menuType->slug,
+                'slug' => $menuType->slug,
+                'entity' => 'menu',
                 'modelOptions' => [
                     'name' => 'title_0'
                 ],
@@ -72,11 +80,3 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-<?php
-$script = <<< JS
-    $(document).ready(function () {
-        $('._root_').hide().siblings('[data-action="collapse"]').hide()
-    })
-JS;
-$this->registerJs($script, View::POS_READY);
-?>

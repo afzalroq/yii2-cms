@@ -4,7 +4,6 @@ use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Options;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use afzalroq\cms\components\FileType;
 
 
 /* @var $this yii\web\View */
@@ -22,14 +21,17 @@ $hasTranslatableAttrs = 0;
 <div class="menu-view">
 
     <p>
+        <?= Html::a(Yii::t('yii', 'Home'), ['index', 'slug' => $collection->slug], ['class' => 'btn btn-warning']) ?>
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $collection->slug], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-danger pull-right',
             'data' => [
                 'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a(Yii::t('cms', 'Add Child'), ['add-child', 'root_id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-success']) ?>
+
     </p>
 
 
@@ -105,12 +107,6 @@ $hasTranslatableAttrs = 0;
                                 'attribute' => 'collection_id',
                                 'label' => 'Collection',
                                 'value' => $model->collection->name_0
-                            ],
-                            [
-                                'attribute' => 'parent_id',
-                                'label' => 'Parent',
-                                'format' => 'html',
-                                'value' => $model->getParentValue()
                             ],
                             'sort',
                             'created_at:datetime',

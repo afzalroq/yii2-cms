@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\controllers;
 
+use afzalroq\cms\controllers\actions\CmsNodeMoveAction;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\forms\OptionsSearch;
@@ -25,6 +26,23 @@ class OptionsController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'nodeMove' => [
+                'class' => CmsNodeMoveAction::class,
+                'modelName' => Options::class,
+            ],
+//            'sortItem' => [
+//                'class' => SortableAction::className(),
+//                'activeRecordClassName' => Menu::className(),
+//                'orderColumn' => 'sort',
+//                'startPosition' => 1, // optional, default is 0
+//            ],
+            // your other actions
         ];
     }
 
@@ -89,13 +107,30 @@ class OptionsController extends Controller
     public function actionCreate($slug)
     {
         $model = new Options();
-        $model->parentCollection = Collections::findOne(['slug' => $slug]);
+        $collection = Collections::findOne(['slug' => $slug]);
+        $model->parentCollection = $collection;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save())
+        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Options::findOne(['collection_id' => $collection->id, 'depth' => 0])))
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
 
         return $this->render('create', [
             'model' => $model,
+            'collection' => $collection
+        ]);
+    }
+
+    public function actionAddChild($root_id, $slug)
+    {
+        $model = new Options();
+        $collection = Collections::findOne(['slug' => $slug]);
+        $model->parentCollection = $collection;
+
+        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Options::findOne($root_id)))
+            return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
+
+        return $this->render('add-child', [
+            'model' => $model,
+            'root_id' => $root_id,
             'collection' => Collections::findOne(['slug' => $slug])
         ]);
     }

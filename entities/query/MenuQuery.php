@@ -1,7 +1,7 @@
 <?php
 
 
-namespace afzalroq\cms\entities;
+namespace afzalroq\cms\entities\query;
 
 use creocoder\nestedsets\NestedSetsQueryBehavior;
 

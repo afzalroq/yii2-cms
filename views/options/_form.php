@@ -3,16 +3,17 @@
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Options;
-use yii\widgets\ActiveForm;
+use afzalroq\cms\widgets\CmsForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-
-//use yii\widgets\ActiveForm;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model Options */
 /* @var $collection Collections */
 /* @var $form ActiveForm */
+/* @var $action string */
+
 
 $hasTranslatableAttrs = 0;
 ?>
@@ -22,11 +23,13 @@ $hasTranslatableAttrs = 0;
 <?php endif; ?>
 <div class="pages-form">
 
-    <?php $form = ActiveForm::begin();
-    $cmsForm = new \afzalroq\cms\widgets\CmsForm($form, $model, $collection)
+    <?php $form = ActiveForm::begin([
+        'action' => $action
+    ]);
+    $cmsForm = new CmsForm($form, $model, $collection)
     ?>
 
-    <?= $form->field($model, 'collection_id')->textInput(['value' => $collection->id, 'type' => 'hidden'])->label(false) ?>
+    <?= $form->field($model, 'collection_id')->hiddenInput(['value' => $collection->id])->label(false) ?>
 
     <?= $form->errorSummary($model) ?>
 
@@ -36,14 +39,6 @@ $hasTranslatableAttrs = 0;
                 <div class="col-md-4">
                     <?= $form->field($model, 'slug')->textInput() ?>
                 </div>
-                <?php $optionIdList = ArrayHelper::map(Options::findAll(['collection_id' => $collection->id]), 'id', 'slug');
-                unset($optionIdList[$model->id]);
-
-                if ($optionIdList): ?>
-                    <div class="col-md-4">
-                        <?= $form->field($model, 'parent_id')->dropDownList($optionIdList, ['prompt' => 'Please select', 'options' => ['value' => 'none', 'class' => 'prompt', 'label' => 'Select']]) ?>
-                    </div>
-                <?php endif; ?>
                 <div class="col-md-4">
                     <?= $form->field($model, 'sort')->textInput(['type' => 'number']) ?>
                 </div>

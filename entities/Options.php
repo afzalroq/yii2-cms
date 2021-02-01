@@ -4,6 +4,8 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
+use afzalroq\cms\entities\query\OptionsQuery;
+use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
@@ -17,7 +19,6 @@ use yiidreamteam\upload\FileUploadBehavior;
  *
  * @property int $id
  * @property int $collection_id
- * @property int|null $parent_id
  * @property string $slug
  * @property string|null $name_0
  * @property string|null $name_1
@@ -72,6 +73,8 @@ class Options extends ActiveRecord
 
     private $cpId;
 
+    public $treeAttribute = 'tree';
+
     #endregion
 
     #region Overwrite Methods
@@ -87,30 +90,6 @@ class Options extends ActiveRecord
         return 'cms_options';
     }
 
-    public function rules()
-    {
-        return [
-            [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
-                'file',
-                'extensions' => FileType::fileExtensions($this->parentCollection->file_1_mimeType),
-                'maxSize' => $this->parentCollection->file_1_maxSize * 1024 * 1024
-            ],
-
-            [['file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'],
-                'file',
-                'extensions' => FileType::fileExtensions($this->parentCollection->file_2_mimeType),
-                'maxSize' => $this->parentCollection->file_2_maxSize * 1024 * 1024
-            ],
-
-            [['collection_id', 'slug', 'sort'], 'required'],
-            [['collection_id', 'parent_id', 'sort', 'created_at', 'updated_at'], 'integer'],
-            [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
-            [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],
-            [['slug'], 'unique'],
-            [['collection_id'], 'exist', 'skipOnError' => true, 'targetClass' => Collections::class, 'targetAttribute' => ['collection_id' => 'id']],
-        ];
-    }
-
     public function behaviors()
     {
         return [
@@ -124,7 +103,26 @@ class Options extends ActiveRecord
             $this->getFileUploadBehaviorConfig('file_2_1'),
             $this->getFileUploadBehaviorConfig('file_2_2'),
             $this->getFileUploadBehaviorConfig('file_2_3'),
-            $this->getFileUploadBehaviorConfig('file_2_4')
+            $this->getFileUploadBehaviorConfig('file_2_4'),
+            'tree' => [
+                'class' => NestedSetsBehavior::class,
+                'treeAttribute' => $this->treeAttribute,
+                // 'leftAttribute' => 'lft',
+                // 'rightAttribute' => 'rgt',
+                // 'depthAttribute' => 'depth',
+            ]
+        ];
+    }
+
+    public static function find()
+    {
+        return new OptionsQuery(get_called_class());
+    }
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
 
@@ -171,7 +169,7 @@ class Options extends ActiveRecord
     {
         parent::afterDelete();
 
-        TagDependency::invalidate(Yii::$app->{$cache}, 'options_' . (Collections::findOne($this->collection_id))->slug);
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'options_' . (Collections::findOne($this->collection_id))->slug);
 
         foreach (Menu::find()->all() as $menu) {
             if ($menu->type !== Menu::TYPE_OPTION)
@@ -182,6 +180,30 @@ class Options extends ActiveRecord
             if (!$menu->delete())
                 throw new Exception("Cannot delete id: {$menu->id} of menu");
         }
+    }
+
+    public function rules()
+    {
+        return [
+            [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
+                'file',
+                'extensions' => FileType::fileExtensions($this->parentCollection->file_1_mimeType),
+                'maxSize' => $this->parentCollection->file_1_maxSize * 1024 * 1024
+            ],
+
+            [['file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'],
+                'file',
+                'extensions' => FileType::fileExtensions($this->parentCollection->file_2_mimeType),
+                'maxSize' => $this->parentCollection->file_2_maxSize * 1024 * 1024
+            ],
+
+            [['collection_id', 'slug', 'sort'], 'required'],
+            [['collection_id', 'sort', 'created_at', 'updated_at'], 'integer'],
+            [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
+            [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],
+            [['slug'], 'unique'],
+            [['collection_id'], 'exist', 'skipOnError' => true, 'targetClass' => Collections::class, 'targetAttribute' => ['collection_id' => 'id']],
+        ];
     }
 
     public function attributeLabels()
@@ -235,19 +257,11 @@ class Options extends ActiveRecord
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];
     }
+
     #endregion
 
     #region Extra Methods
 
-    public function getParentValue()
-    {
-        return ($this->parent_id)
-            ? Html::a(
-                $this->parent->slug,
-                \yii\helpers\Url::to(['/cms/options/view', 'id' => $this->parent_id, 'slug' => $this->collection->slug])
-            )
-            : null;
-    }
 
     public function getFileAttrValue($attr)
     {
@@ -376,9 +390,5 @@ class Options extends ActiveRecord
         return $this->hasOne(Collections::class, ['id' => 'collection_id']);
     }
 
-    public function getParent()
-    {
-        return $this->hasOne(self::class, ['id' => 'parent_id']);
-    }
     #endregion
 }

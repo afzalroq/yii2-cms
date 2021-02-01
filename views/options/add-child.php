@@ -7,6 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model Options */
 /* @var $collection Collections */
+/* @var $root_id integer */
 
 $this->title = Yii::t('cms', 'Create');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Options'), 'url' => ['index', 'slug' => $collection->slug]];
@@ -17,6 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'collection' => $collection,
-        'action' => Url::to(['options/create', 'slug' => $collection->slug])
+        'action' => Url::to(['options/add-child', 'root_id' => $root_id, 'slug' => $collection->slug])
     ]) ?>
 </div>

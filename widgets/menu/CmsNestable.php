@@ -3,6 +3,7 @@
 namespace afzalroq\cms\widgets\menu;
 
 use afzalroq\cms\assets\CmsNestableAsset;
+use afzalroq\cms\assets\OptionsNestableAsset;
 use slatiusa\nestable\Nestable;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -10,7 +11,9 @@ use yii\helpers\Url;
 
 class CmsNestable extends Nestable
 {
-    public $menu_type_slug;
+    public $slug;
+    public $entity;
+
     private $_uniqueItems = [];
     private $is_root = true;
 
@@ -19,9 +22,9 @@ class CmsNestable extends Nestable
         $text = ArrayHelper::getValue($item, 'content', '');
         $id = ArrayHelper::getValue($item, 'id');
 
-        $url_view = Url::to(['menu/view', 'id' => $id, 'slug' => $this->menu_type_slug]);
-        $url_update = Url::to(['menu/update', 'id' => $id, 'slug' => $this->menu_type_slug]);
-        $url_add_child = Url::to(['menu/add-child', 'root_id' => $id, 'slug' => $this->menu_type_slug]);
+        $url_view = Url::to(["{$this->entity}/view", 'id' => $id, 'slug' => $this->slug]);
+        $url_update = Url::to(["{$this->entity}/update", 'id' => $id, 'slug' => $this->slug]);
+        $url_add_child = Url::to(["{$this->entity}/add-child", 'root_id' => $id, 'slug' => $this->slug]);
 
         $return_text = Html::a($text, $url_view);
         $return_text .= Html::a('<i class="fa fa-plus"></i>', $url_add_child, ['class' => 'pull-right', 'style' => 'margin-left: 15px']);
@@ -87,7 +90,10 @@ class CmsNestable extends Nestable
     public function registerAssets()
     {
         $view = $this->getView();
-        CmsNestableAsset::register($view);
+        if ($this->entity === 'options')
+            OptionsNestableAsset::register($view);
+        else
+            CmsNestableAsset::register($view);
         $this->registerPlugin('nestable');
     }
 }

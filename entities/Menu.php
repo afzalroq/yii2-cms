@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\entities;
 
+use afzalroq\cms\entities\query\MenuQuery;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -63,18 +64,6 @@ class Menu extends ActiveRecord
         return 'cms_menu';
     }
 
-    public static function find()
-    {
-        return new MenuQuery(get_called_class());
-    }
-
-    public function transactions()
-    {
-        return [
-            self::SCENARIO_DEFAULT => self::OP_ALL,
-        ];
-    }
-
     public function behaviors()
     {
         return [
@@ -86,6 +75,18 @@ class Menu extends ActiveRecord
                 // 'rightAttribute' => 'rgt',
                 // 'depthAttribute' => 'depth',
             ]
+        ];
+    }
+
+    public static function find()
+    {
+        return new MenuQuery(get_called_class());
+    }
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
 

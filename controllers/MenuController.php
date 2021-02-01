@@ -96,7 +96,6 @@ class MenuController extends Controller
 
     public function actionIndex($slug)
     {
-        MenuWidget::widget();
         $searchModel = new MenuSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $slug);
 
