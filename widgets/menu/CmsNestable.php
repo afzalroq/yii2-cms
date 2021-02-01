@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\widgets\menu;
 
+use afzalroq\cms\assets\CmsNestableAsset;
 use slatiusa\nestable\Nestable;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -81,5 +82,12 @@ class CmsNestable extends Nestable
             }
         }
         return $items;
+    }
+
+    public function registerAssets()
+    {
+        $view = $this->getView();
+        CmsNestableAsset::register($view);
+        $this->registerPlugin('nestable');
     }
 }

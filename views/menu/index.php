@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
     // ?>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-8">
             <?= CmsNestable::widget([
                 'type' => Nestable::TYPE_WITH_HANDLE,
                 'query' => Menu::find()->where(['menu_type_id' => $menuType->id]),
@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'change' => 'function(e) {}',
                 ],
                 'pluginOptions' => [
-                    'maxDepth' => 7,
+                    'maxDepth' => 10,
                 ],
             ]); ?>
         </div>
@@ -75,8 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $script = <<< JS
     $(document).ready(function () {
-        const root = $('._root_')
-        // root.hide()
+        $('._root_').hide().siblings('[data-action="collapse"]').hide()
     })
 JS;
 $this->registerJs($script, View::POS_READY);
