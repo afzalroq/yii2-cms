@@ -13,16 +13,19 @@ use yii\web\View;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $menuType MenuType */
 
-$script = <<< JS
-    $(document).ready(function () {
-        $('._root_').hide().siblings('[data-action="collapse"]').hide()
-    })
-JS;
-$this->registerJs($script, View::POS_READY);
-
 $this->title = Yii::t('cms', 'Menu');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+    ._root_ {
+        display: none;
+    }
+
+    ._root_ [data-action="collapse"] {
+        display: none;
+    }
+</style>
+
 <div class="menu-index">
     <p>
         <?= Html::a(Yii::t('cms', 'Create'), ['create', 'slug' => $menuType->slug], ['class' => 'btn btn-success']) ?>

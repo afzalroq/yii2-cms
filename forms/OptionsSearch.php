@@ -42,7 +42,7 @@ class OptionsSearch extends Options
      */
     public function search($params, $slug)
     {
-        $query = Options::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id]);
+        $query = Options::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere(['>', 'depth', 0]);
 
         // add conditions that should always apply here
 
@@ -50,7 +50,7 @@ class OptionsSearch extends Options
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'sort' => SORT_DESC
+                    'sort' => SORT_ASC
                 ]
             ],
         ]);

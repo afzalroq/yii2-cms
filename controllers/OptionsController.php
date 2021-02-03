@@ -4,8 +4,10 @@ namespace afzalroq\cms\controllers;
 
 use afzalroq\cms\controllers\actions\CmsNodeMoveAction;
 use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\forms\OptionsSearch;
+use richardfan\sortable\SortableAction;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -21,7 +23,7 @@ class OptionsController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -36,12 +38,12 @@ class OptionsController extends Controller
                 'class' => CmsNodeMoveAction::class,
                 'modelName' => Options::class,
             ],
-//            'sortItem' => [
-//                'class' => SortableAction::className(),
-//                'activeRecordClassName' => Menu::className(),
-//                'orderColumn' => 'sort',
-//                'startPosition' => 1, // optional, default is 0
-//            ],
+            'sortItem' => [
+                'class' => SortableAction::class,
+                'activeRecordClassName' => Options::class,
+                'orderColumn' => 'sort',
+                'startPosition' => 1, // optional, default is 0
+            ],
             // your other actions
         ];
     }
@@ -49,17 +51,25 @@ class OptionsController extends Controller
     /**
      * Lists all Options models.
      *
+     * @param string $slug
      * @return mixed
      */
     public function actionIndex($slug)
     {
+        $collection = Collections::findOne(['slug' => $slug]);
+
+        if ($collection->use_parenting)
+            return $this->render('index_nestable', [
+                'collection' => $collection
+            ]);
+
         $searchModel = new OptionsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $slug);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'collection' => Collections::findOne(['slug' => $slug])
+            'collection' => $collection
         ]);
     }
 

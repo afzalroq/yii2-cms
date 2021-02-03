@@ -37,6 +37,7 @@ use yii\helpers\StringHelper;
  * @property Options $optionDefault
  * @property Options[] $options
  */
+
 class Collections extends ActiveRecord
 {
     #region Constants
@@ -44,6 +45,7 @@ class Collections extends ActiveRecord
     const DISABLED = -1;
 
     #region OptionAttrs
+
     const OPTION_NAME_DISABLED = 0;
     const OPTION_NAME_COMMON = 1;
     const OPTION_NAME_TRANSLATABLE = 2;
@@ -58,19 +60,23 @@ class Collections extends ActiveRecord
     const OPTION_FILE_COMMON = 1;
     const OPTION_FILE_TRANSLATABLE = 2;
 
-    #seo types
+    #region seo types
+
     const SEO_DISABLED = 0;
     const SEO_COMMON = 1;
     const SEO_TRANSLATABLE = 2;
-    #end seo types
+
+    #endregion
 
     #endregion
 
     #region UseMenu
+
     const USE_IN_MENU_DISABLED = 0;
     const USE_IN_MENU_OPTIONS = 1;
     const USE_IN_MENU_ITEMS = 2;
     const USE_IN_MENU_OPTIONS_ITEMS = 12;
+
     #endregion
 
     #endregion
@@ -351,6 +357,7 @@ class Collections extends ActiveRecord
     }
 
     #region Aliases
+
     public function getFile1MaxSize()
     {
         return $this->getFileMaxSize('1');
@@ -370,6 +377,7 @@ class Collections extends ActiveRecord
     {
         return $this->getFileMimeType('2');
     }
+
     #endregion
 
     #endregion

@@ -14,7 +14,7 @@ class Options extends \afzalroq\cms\entities\Options
     {
         $cache = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
-        return \Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
+        return Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
             return self::findAll(['collection_id' => Collections::findOne(['slug' => $slug])->id]);
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
@@ -23,7 +23,7 @@ class Options extends \afzalroq\cms\entities\Options
     {
         $cache = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
-        return \Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
+        return Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
             return self::findOne(['collection_id' => Collections::findOne(['slug' => $slug])->id]);
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
@@ -63,7 +63,7 @@ class Options extends \afzalroq\cms\entities\Options
 
     private function getAttr($entityAttr)
     {
-        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language]))
             $languageId = 0;
 
         return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $languageId);
