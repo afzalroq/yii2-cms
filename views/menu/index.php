@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'type' => Nestable::TYPE_WITH_HANDLE,
                 'query' => Menu::find()->where(['menu_type_id' => $menuType->id]),
                 'slug' => $menuType->slug,
-                'entity' => 'menu',
+                'entity' => CmsNestable::ENTITY_MENU,
                 'modelOptions' => [
                     'name' => 'title_0'
                 ],

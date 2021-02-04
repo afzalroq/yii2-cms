@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'type' => Nestable::TYPE_WITH_HANDLE,
                 'query' => Options::find()->where(['collection_id' => $collection->id]),
                 'slug' => $collection->slug,
-                'entity' => 'options',
+                'entity' => CmsNestable::ENTITY_OPTIONS,
                 'modelOptions' => [
                     'name' => 'name_0'
                 ],

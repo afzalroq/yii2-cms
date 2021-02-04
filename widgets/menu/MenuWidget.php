@@ -8,29 +8,31 @@ use yii\bootstrap\Widget;
 
 class MenuWidget extends Widget
 {
-
     public function run()
     {
         $this->generate();
-        return ;
+        return;
         return $this->render('_menu', [
             'menu' => $this->mapTree($this->convertToArray(Menu::find()->orderBy('sort')->indexBy('id')->all()))
         ]);
     }
-//    const TYPE_EMPTY = 1;
-//    const TYPE_ACTION = 2;
-//    const TYPE_LINK = 3;
-//    const TYPE_OPTION = 4;
-//    const TYPE_ITEM = 5;
-//    const TYPE_COLLECTION = 6;
-//    const TYPE_ENTITY = 7;
-//    const TYPE_ENTITY_ITEM = 10;
+
+    //    const TYPE_EMPTY = 1;
+    //    const TYPE_ACTION = 2;
+    //    const TYPE_LINK = 3;
+    //    const TYPE_OPTION = 4;
+    //    const TYPE_ITEM = 5;
+    //    const TYPE_COLLECTION = 6;
+    //    const TYPE_ENTITY = 7;
+    //    const TYPE_ENTITY_ITEM = 10;
 
     private function generate()
     {
-        $menus = Menu::find()->all();
+        $menus = Menu::find()->where(['>', 'depth', 0])->all();
         $prettyUrls = [];
+
         /** @var Menu $menu */
+
         foreach ($menus as $menu) {
             switch ($menu->type) {
                 case Menu::TYPE_EMPTY:
@@ -39,11 +41,18 @@ class MenuWidget extends Widget
                     continue;
                 case Menu::TYPE_OPTION:
                     $option = Options::findOne($menu->type_helper);
+                        $prettyUrl = 'c/' . $option->collection->slug;
+                    if ($option->collection->use_parenting)
+                        $prettyUrl .= '/' . $this->nestedOptions($option);
                     $prettyUrls[] = 'c/' . $option->collection->slug . '/' . $option->slug;
             }
         }
     }
 
+    private function nestedOptions($option)
+    {
+
+    }
 
     public function getMenuList()
     {

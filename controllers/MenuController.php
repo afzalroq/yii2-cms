@@ -38,7 +38,7 @@ class MenuController extends Controller
         return [
             'nodeMove' => [
                 'class' => 'slatiusa\nestable\NodeMoveAction',
-                'modelName' => Menu::className(),
+                'modelName' => Menu::class,
             ],
 //            'sortItem' => [
 //                'class' => SortableAction::className(),

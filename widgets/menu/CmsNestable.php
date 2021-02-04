@@ -11,6 +11,10 @@ use yii\helpers\Url;
 
 class CmsNestable extends Nestable
 {
+    // use it in menu and options view for entity attribute value
+    const ENTITY_MENU = 0;
+    const ENTITY_OPTIONS = 1;
+
     public $slug;
     public $entity;
 
@@ -54,7 +58,6 @@ class CmsNestable extends Nestable
                 $this->is_root = false;
             }
 
-
             $children = ArrayHelper::getValue($item, 'children', []);
             if (!empty($children)) {
                 // recursive rendering children items
@@ -90,10 +93,13 @@ class CmsNestable extends Nestable
     public function registerAssets()
     {
         $view = $this->getView();
-        if ($this->entity === 'options')
+
+        if ($this->entity === self::ENTITY_OPTIONS)
             OptionsNestableAsset::register($view);
-        else
+
+        if ($this->entity === self::ENTITY_MENU)
             CmsNestableAsset::register($view);
+
         $this->registerPlugin('nestable');
     }
 }

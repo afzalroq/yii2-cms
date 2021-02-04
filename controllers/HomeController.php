@@ -6,6 +6,7 @@ use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\MenuType;
 use afzalroq\cms\entities\unit\Categories;
+use afzalroq\cms\widgets\menu\MenuWidget;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 

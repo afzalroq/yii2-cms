@@ -15,7 +15,7 @@ class Options extends \afzalroq\cms\entities\Options
         $cache = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
         return Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
-            return self::findAll(['collection_id' => Collections::findOne(['slug' => $slug])->id]);
+            return self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere(['>', 'depth', 0])->all();
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
@@ -24,7 +24,7 @@ class Options extends \afzalroq\cms\entities\Options
         $cache = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
         return Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
-            return self::findOne(['collection_id' => Collections::findOne(['slug' => $slug])->id]);
+            return self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere(['>', 'depth', 0])->one();
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 

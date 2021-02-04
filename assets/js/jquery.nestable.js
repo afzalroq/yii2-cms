@@ -387,7 +387,7 @@
                         //inject
                         let parentOl = this.placeEl.closest(opt.itemNodeName).parent()
                         if (parentOl)
-                            if (parentOl.get(0).parentElement.classList.value === 'dd')
+                            if (parentOl.get(0).parentElement.classList.value === opt.rootClass)
                                 return;
                         //
                         this.placeEl.closest(opt.itemNodeName).after(this.placeEl);
@@ -445,7 +445,7 @@
                     //injected
                     let _paret = this.pointEl.parent()
                     if (_paret)
-                        if (_paret.parent().get(0).classList.value === 'dd')
+                        if (_paret.parent().get(0).classList.value === opt.rootClass)
                             return;
                     //
                     this.pointEl.before(this.placeEl);

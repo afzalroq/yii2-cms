@@ -2,13 +2,13 @@
 
 namespace afzalroq\cms\controllers;
 
-use afzalroq\cms\controllers\actions\CmsNodeMoveAction;
+use afzalroq\cms\controllers\actions\OptionsNodeMoveAction;
 use afzalroq\cms\entities\Collections;
-use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\forms\OptionsSearch;
 use richardfan\sortable\SortableAction;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -35,7 +35,7 @@ class OptionsController extends Controller
     {
         return [
             'nodeMove' => [
-                'class' => CmsNodeMoveAction::class,
+                'class' => OptionsNodeMoveAction::class,
                 'modelName' => Options::class,
             ],
             'sortItem' => [
@@ -112,6 +112,7 @@ class OptionsController extends Controller
      * Creates a new Options model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
+     * @param $slug
      * @return mixed
      */
     public function actionCreate($slug)
@@ -150,7 +151,7 @@ class OptionsController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
-     *
+     * @param $slug
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -174,9 +175,11 @@ class OptionsController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
-     *
+     * @param $slug
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws StaleObjectException
+     * @throws \Throwable
      */
     public function actionDelete($id, $slug)
     {

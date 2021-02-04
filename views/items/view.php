@@ -88,7 +88,7 @@ if ($entity->use_gallery)
 <div class="items-view">
     <p>
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $entity->slug], [
+        <?= Html::a(Yii::t( 'cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $entity->slug], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),

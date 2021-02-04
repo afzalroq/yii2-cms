@@ -12,7 +12,7 @@ use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 
-class CmsNodeMoveAction extends Action
+class OptionsNodeMoveAction extends Action
 {
     /** @var string class to use to locate the supplied data ids */
     public $modelName;
