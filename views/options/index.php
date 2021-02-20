@@ -41,10 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'html'
                 ],
                 'name_0',
-                'content_0',
+//                'content_0',
                 'created_at:datetime',
             ],
         ]); ?>
     </div>
-
 </div>

@@ -44,10 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => $entity->text_3_label . ' (' . $curLang . ')'
             ],
             [
-                'attribute' => 'text_4_0',
-                'label' => $entity->text_4_label . ' (' . $curLang . ')'
-            ],
-            [
                 'attribute' => 'file_1_0',
                 'label' => $entity->file_1_label,
                 'format' => 'html',

@@ -20,8 +20,8 @@ $file_attributes = [];
 $seo_values = [];
 $main_photo = [];
 $main_attributes = [
-    'id',
-    'entity_id',
+//    'id',
+//    'entity_id',
     'slug',
 ];
 

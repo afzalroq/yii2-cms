@@ -15,25 +15,24 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Options'), 'url' => 
 $this->params['breadcrumbs'][] = $this->title;
 
 $hasTranslatableAttrs = 0;
-
-
 ?>
 <div class="menu-view">
-
     <p>
-        <?= Html::a(Yii::t('yii', 'Home'), ['index', 'slug' => $collection->slug], ['class' => 'btn btn-warning']) ?>
-        <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $collection->slug], [
+        <?php
+        echo Html::a(Yii::t('yii', 'Home'), ['index', 'slug' => $collection->slug], ['class' => 'btn btn-warning']) . "&nbsp;" .
+            Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-primary']);
+        if ($collection->use_parenting) {
+            echo Html::a(Yii::t('cms', 'Add Child'), ['add-child', 'root_id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-success']);
+        }
+        echo Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $collection->slug], [
             'class' => 'btn btn-danger pull-right',
             'data' => [
                 'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
-        ]) ?>
-        <?= Html::a(Yii::t('cms', 'Add Child'), ['add-child', 'root_id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-success']) ?>
-
+        ]);
+        ?>
     </p>
-
 
     <div class="row" id="translatable">
         <div class="col-sm-12">
@@ -126,14 +125,16 @@ $hasTranslatableAttrs = 0;
                         $attributes[] = [
                             'attribute' => 'file_1_0',
                             'format' => 'html',
-                            'value' => $model->getFileAttrValue('file_1_0')
+                            'value' => $model->getFileAttrValue('file_1_0'),
+                            'label' => $collection->option_file_1_label
                         ];
 
                     if ($model->getCorT('file_2') !== null && !$model->getCorT('file_2'))
                         $attributes[] = [
                             'attribute' => 'file_2_0',
                             'format' => 'html',
-                            'value' => $model->getFileAttrValue('file_2_0')
+                            'value' => $model->getFileAttrValue('file_2_0'),
+                            'label' => $collection->option_file_1_label
                         ];
                     echo DetailView::widget([
                         'model' => $model,
