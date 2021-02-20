@@ -1,7 +1,7 @@
 <?php
 
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel afzalroq\cms\entities\ItemsSearch */
@@ -51,8 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'file_1_0',
                 'label' => $entity->file_1_label,
                 'format' => 'html',
-                'value' => function ($model) {
-                    return Html::img($model->getImageUrl('file_1_0', 300, 400));
+                'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
+                    return Html::img($model->getImageUrl('file_1_0', $entity->file_1_dimensionW, $entity->file_1_dimensionW));
                 }
             ],
             'created_at:datetime',

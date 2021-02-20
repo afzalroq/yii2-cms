@@ -2,9 +2,7 @@
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Entities;
-use afzalroq\cms\widgets\CmsForm;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -37,7 +35,7 @@ if ($model->entity->use_date === Entities::USE_DATE_DATETIME)
 
 foreach ($entity_file_attrs as $attr => $value)
     foreach (Yii::$app->params['cms']['languages'] as $key => $language)
-        if ($entity[$attr])
+        if ($entity[$attr]) {
             $file_attributes[] = [
                 'attribute' => $attr . '_' . $key,
                 'format' => 'html',
@@ -50,8 +48,11 @@ foreach ($entity_file_attrs as $attr => $value)
                         default:
                             return null;
                     }
-                }
+                },
+                'label' => $model->entity[$attr . '_label']
             ];
+            if ($model->isAttrCommon($attr)) break;
+        }
 
 foreach ($entity_text_attrs as $attr => $value)
     foreach (Yii::$app->params['cms']['languages'] as $key => $language)
@@ -88,7 +89,7 @@ if ($entity->use_gallery)
 <div class="items-view">
     <p>
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t( 'cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $entity->slug], [
+        <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $entity->slug], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),

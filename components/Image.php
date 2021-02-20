@@ -17,7 +17,10 @@ class Image
             ->setCacheDir($module->path . '/cache')
             ->setFallback($module->fallback);
 
-        $operation = $operation ?: 'cropResize';
+        $operation = $operation ?: $module->imageOperation;
+        $background = $background ?: $module->imageBackground;
+        $xPos = $xPos ?: $module->imageXPos;
+        $yPos = $yPos ?: $module->imageYPos;
         if ($operation === 'zoomCrop') {
             $path->{$operation}($width, $height, $background, $xPos, $yPos);
         } else {

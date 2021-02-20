@@ -9,7 +9,13 @@ use afzalroq\cms\components\Language;
  * @package afzalroq\cms
  * @property string $path
  * @property string $host
+ * @property string $cache
+ * @property integer $cacheDuration
  * @property string $fallback
+ * @property string $imageOperation
+ * @property string $imageBackground
+ * @property string $imageXPos
+ * @property string $imageYPos
  * @property array $languages
  * @property array $menuActions
  */
@@ -21,6 +27,10 @@ class Module extends \yii\base\Module
     public $cache = 'cache';
     public $cacheDuration = 3600;
     public $fallback;
+    public $imageOperation = 'cropResize';
+    public $imageBackground = 'transparent';
+    public $imageXPos = 'center';
+    public $imageYPos = 'center';
     public $languages;
     public $menuActions;
 

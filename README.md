@@ -48,11 +48,18 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 'modules' => [
     'cms' => [ // don`t change module key
         'class' => '@afzalroq\cms\Module',
+        // storage
         'path' => $params['storageRoot'], // dirname(__DIR__, 2) . '/storage'
-        'host' => $params['storageHostInfo'], // 'https://site.example'
+        'host' => $params['storageHostInfo'], // 'https://site.example'    
         'cache' => 'cache', // default cache component name
         'cacheDuration' => 3600, // default cache duration 3600 second
+        // images
+        'imageOperation' => 'cropResize',
+        'imageBackground' => 'transparent',
+        'imageXPos' => 'center',
+        'imageYPos' => 'center',
         'fallback' => $params['storageRoot'] . '/fallback.png',
+        // i18n
         'languages' => [
             'ru' => [
                 'id' => 0, // must start from 0 up to 4
@@ -67,7 +74,8 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
                 'name' => 'O`zbek tili',
             ],
         ],
-        'menuActions' => [ // for add to menu controller actions
+        // for add to menu controller actions
+        'menuActions' => [
             '' => 'Home',
             'site/contacts' => 'Contacts',
         ]
@@ -76,6 +84,7 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 ```
 
 > By default uses for caching component with name "cache". Config as belove:
+
 ```php
 'components' => [
     'cache' => [
@@ -91,8 +100,8 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 /cms/home/index
 ```
 
+### Added Laravels dd() (dump and die) method
 
-###Added Laravels dd() (dump and die) method
 ```php
 $array = ['a', 'b'];
 dd($array);
@@ -126,20 +135,23 @@ Unit::get('slug'); // will return data using cache
  $item->getText7(); // for get Text 7
 ```
 
-###Return File URI
+### Return File URI
+
 ```php
  $item->getFile1(); // for get File 1
  $item->getFile2(); // for get File 2
  $item->getFile3(); // for get File 3 
 ```
 
-###Return Datetime with specified format
+### Return Datetime with specified format
+
 ```php
  $item->getDate($format); // for get date with format like "d.m.Y H:i:s"
  ```
 
-###Return image URI by specified operation(default `cropResize`)
-###[View all image operations & examples from documentation](https://github.com/Gregwar/Image#usage)
+### Return image URI by specified operation(default `cropResize`)
+
+### [View all image operations & examples from documentation](https://github.com/Gregwar/Image#usage)
 
 ```php
  $item->getPhoto1(width, height, operation, background, xPos, yPos); // for get Photo 1
