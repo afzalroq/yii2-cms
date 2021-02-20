@@ -529,7 +529,7 @@ class Items extends ActiveRecord
     {
         return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
             return $model->requireValidator($model->dependEntity->{$entityAttr});
-        }];
+        }, 'enableClientValidation' => false];
     }
 
     public function requireValidator($type)

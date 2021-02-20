@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="collections-index">
 
     <p>
-        <?= Html::a("<i class='glyphicon glyphicon-home'></i> " . Yii::t('cms', 'Home'), ['/cms/home/index'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a("<i class='glyphicon glyphicon-home'></i> " . Yii::t('yii', 'Home'), ['/cms/home/index'], ['class' => 'btn btn-warning']) ?>
         <?= Html::a(Yii::t('cms', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

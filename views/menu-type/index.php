@@ -11,9 +11,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-type-index">
     <p>
-        <?= Html::a(Yii::t('cms', 'Create') . ' ' . Yii::t('cms', 'Menu Type'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a("<i class='glyphicon glyphicon-home'></i> " . Yii::t('yii', 'Home'), ['/cms/home/index'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a(Yii::t('cms', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
