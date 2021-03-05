@@ -13,7 +13,7 @@ class CmsNestable extends Nestable
 {
     // use it in menu and options view for entity attribute value
     const ENTITY_MENU = 0;
-    const ENTITY_OPTIONS = 1;
+    const ENTITY_OPTIONS = 'options';
 
     public $slug;
     public $entity;
