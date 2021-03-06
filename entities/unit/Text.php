@@ -75,7 +75,7 @@ class Text extends UnitActiveRecord
             case UnitType::TEXT_COMMON:
                 return $form->field($this, '['.$this->id.']data_' . $key)->widget(CKEditor::class, [
                     'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
-                        'preset' => 'standard',
+                        'preset' => 'full',
                         'extraPlugins' => 'image2,widget,oembed,video',
                         'language' => Yii::$app->language,
                         'height' => 300,
