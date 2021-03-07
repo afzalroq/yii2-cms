@@ -64,12 +64,13 @@ foreach ($entity_text_attrs as $attr => $value)
             ];
 
 if ($entity->use_seo)
-    foreach ($model->seo_values as $key => $value)
-        if ($value !== null)
-            $seo_values [] = [
-                'attribute' => $key,
-                'value' => $value,
-            ];
+    if ($model->seo_values)
+        foreach ($model->seo_values as $key => $value)
+            if ($value !== null)
+                $seo_values [] = [
+                    'attribute' => $key,
+                    'value' => $value,
+                ];
 
 if ($entity->use_gallery)
     $main_photo [] = [
