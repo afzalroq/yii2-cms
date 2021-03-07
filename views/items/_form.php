@@ -2,7 +2,7 @@
 
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\widgets\CmsForm;
-use kartik\widgets\FileInput;
+use kartik\file\FileInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
