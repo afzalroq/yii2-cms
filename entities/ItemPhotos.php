@@ -70,11 +70,11 @@ class ItemPhotos extends \yii\db\ActiveRecord
                 'class' => ImageUploadBehavior::class,
                 'attribute' => 'file',
                 'createThumbsOnRequest' => true,
-                'filePath' => '@frontend/web/app-images/store/itemPhotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
-                'fileUrl' => '@url/app-images/store/itemPhotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
+                'filePath' => '@storageRoot/data/itemPhotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
+                'fileUrl' => '@storageHostInfo/data/itemPhotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
 
-                'thumbPath' => '@frontend/web/app-images/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
-                'thumbUrl' => '@url/app-images/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbPath' => '@storageRoot/web/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbUrl' => '@storageHostInfo/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
 
                 'thumbs' => [
                     'admin' => ['width' => 100, 'height' => 70],
