@@ -73,7 +73,7 @@ class ItemPhotos extends \yii\db\ActiveRecord
                 'filePath' => '@storageRoot/data/itemPhotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
                 'fileUrl' => '@storageHostInfo/data/itemPhotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
 
-                'thumbPath' => '@storageRoot/web/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbPath' => '@storageRoot/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
                 'thumbUrl' => '@storageHostInfo/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
 
                 'thumbs' => [
