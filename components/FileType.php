@@ -9,6 +9,7 @@ class FileType
     const MIME_TYPES = [
         'jpg',
         'png',
+        'svg',
         'gif',
         'pdf',
         'word',
@@ -35,6 +36,9 @@ class FileType
                     break;
                 case 'gif':
                     $accepts .= 'gif,';
+                    break;
+                case 'svg':
+                    $accepts .= 'svg,';
                     break;
                 case 'pdf':
                     $accepts .= 'pdf,';
@@ -79,7 +83,8 @@ class FileType
         foreach ($type as $item) {
             $returnType = (self::MIME_TYPES[$item] === 'jpg'
                 || self::MIME_TYPES[$item] === 'jpeg'
-                || self::MIME_TYPES[$item] === 'png')
+                || self::MIME_TYPES[$item] === 'png'
+                || self::MIME_TYPES[$item] === 'svg')
                 ? self::TYPE_IMAGE
                 : self::TYPE_FILE;
 
@@ -102,6 +107,9 @@ class FileType
                     break;
                 case 'png':
                     $accepts .= '.png,';
+                    break;
+                case 'svg':
+                    $accepts .= '.svg,';
                     break;
                 case 'gif':
                     $accepts .= '.gif,';
