@@ -2,8 +2,8 @@
 
 namespace afzalroq\cms\entities;
 
+use afzalroq\cms\components\Image;
 use Yii;
-use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\web\UploadedFile;
 use yiidreamteam\upload\ImageUploadBehavior;
@@ -70,23 +70,28 @@ class ItemPhotos extends \yii\db\ActiveRecord
                 'class' => ImageUploadBehavior::class,
                 'attribute' => 'file',
                 'createThumbsOnRequest' => true,
-                'filePath' => '@storageRoot/data/itemPhotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
-                'fileUrl' => '@storageHostInfo/data/itemPhotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
+                'filePath' => '@storageRoot/data/itemphotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
+                'fileUrl' => '@storageHostInfo/data/itemphotos/[[attribute_cms_item_id]]/[[filename]].[[extension]]',
 
-                'thumbPath' => '@storageRoot/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
-                'thumbUrl' => '@storageHostInfo/cache/itemPhotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbPath' => '@storageRoot/cache/itemphotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbUrl' => '@storageHostInfo/cache/itemphotos/[[attribute_cms_item_id]]/[[profile]]_[[filename]].[[extension]]',
 
                 'thumbs' => [
                     'admin' => ['width' => 100, 'height' => 70],
                     'thumb' => ['width' => 640, 'height' => 480],
-//                    'cart_list' => ['width' => 150, 'height' => 150],
-//                    'cart_widget_list' => ['width' => 57, 'height' => 57],
-//                    'catalog_list' => ['width' => 228, 'height' => 228],
-//                    'catalog_product_main' => ['processor' => [new WaterMarker(750, 1000, '@frontend/web/image/logo.png'), 'process']],
-//                    'catalog_product_additional' => ['width' => 66, 'height' => 66],
-//                    'catalog_origin' => ['processor' => [new WaterMarker(1024, 768, '@frontend/web/image/logo.png'), 'process']],
                 ],
             ],
         ];
     }
+
+    public function getItem()
+    {
+        return $this->hasOne(Items::class, ['id' => 'cms_item_id']);
+    }
+
+    public function getPhoto($width, $height, $operation = null, $background = null, $xPos = null, $yPos = null)
+    {
+        return Image::get($this->item, 'file', $width, $height, $operation, $background, $xPos, $yPos, $this);
+    }
+
 }

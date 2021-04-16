@@ -8,10 +8,11 @@ use yii\helpers\StringHelper;
 
 class Image
 {
-    public static function get($obj, $attr, $width, $height, $operation, $background, $xPos, $yPos)
+    public static function  get($obj, $attr, $width, $height, $operation, $background, $xPos, $yPos, $itemPhotos = null)
     {
+        $file = $itemPhotos ? $itemPhotos[$attr] : $obj[$attr];
         $module = Yii::$app->getModule('cms');
-        $file = $module->path . '/data/' . mb_strtolower(StringHelper::basename($obj::className())) . '/' . $obj->id . '/' . $obj[$attr];
+        $file = $module->path . '/data/' . mb_strtolower(StringHelper::basename($itemPhotos ? $itemPhotos::className() : $obj::className())) . '/' . $obj->id . '/' . $file;
 
         $path = GregImage::open($file)
             ->setCacheDir($module->path . '/cache')
@@ -29,4 +30,5 @@ class Image
 
         return $module->host . str_replace($module->path, '', $path->guess());
     }
+
 }
