@@ -167,6 +167,7 @@ class Collections extends ActiveRecord
             [['file_1_dimensionW', 'file_1_dimensionH', 'file_2_dimensionW', 'file_2_dimensionH', 'file_1_maxSize', 'file_2_maxSize'], 'integer'],
 
             [['file_1_mimeType', 'file_2_mimeType'], 'each', 'rule' => ['in', 'range' => array_keys(FileType::MIME_TYPES)]],
+            [['file_1_mimeType', 'file_2_mimeType'], 'checkMimeType'],
 
             [['slug', 'use_in_menu', 'use_seo'], 'required'],
 
@@ -226,6 +227,16 @@ class Collections extends ActiveRecord
     #endregion
 
     #region Extra methods
+
+    public function checkMimeType($attribute, $params)
+    {
+        if (($attribute == 'file_1_mimeType') && !empty($this->file_1_mimeType) && (count($this->file_1_mimeType) > 1 && in_array(2, $this->file_1_mimeType))) {
+            $this->addError($attribute, $attribute . ' ' . Yii::t('cms', 'If the SVG format is used in the file, no other format can be used'));
+        }
+        if (($attribute == 'file_2_mimeType') && !empty($this->file_2_mimeType) && (count($this->file_2_mimeType) > 1 && in_array(2, $this->file_2_mimeType))) {
+            $this->addError($attribute, $attribute . ' ' . Yii::t('cms', 'If the SVG format is used in the file, no other format can be used'));
+        }
+    }
 
     public function add()
     {
