@@ -517,7 +517,6 @@ class Items extends ActiveRecord
     public function fileValidator($entityAttr)
     {
         $maxSize = $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024;
-
         return [$this->getCurrentAttrs($entityAttr),
             'file',
             'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),

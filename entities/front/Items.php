@@ -80,6 +80,12 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getText('text_7');
     }
 
+    public function checkFileExtension($fileName)
+    {
+      $elem =  $this->getFile($fileName);
+        dd($elem);
+    }
+
     /**
      * https://github.com/Gregwar/Image#usage
      */
