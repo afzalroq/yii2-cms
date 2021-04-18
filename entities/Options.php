@@ -70,10 +70,8 @@ class Options extends ActiveRecord
     public $meta_keyword_3;
     public $meta_keyword_4;
     public $languageId;
-
-    private $cpId;
-
     public $treeAttribute = 'tree';
+    private $cpId;
 
     #endregion
 
@@ -85,9 +83,21 @@ class Options extends ActiveRecord
         parent::__construct($config);
     }
 
+    private function setCurrentLanguage()
+    {
+        $this->languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        if (!$this->languageId)
+            $this->languageId = 0;
+    }
+
     public static function tableName()
     {
         return 'cms_options';
+    }
+
+    public static function find()
+    {
+        return new OptionsQuery(get_called_class());
     }
 
     public function behaviors()
@@ -114,9 +124,16 @@ class Options extends ActiveRecord
         ];
     }
 
-    public static function find()
+    private function getFileUploadBehaviorConfig($attribute)
     {
-        return new OptionsQuery(get_called_class());
+        $module = Yii::$app->getModule('cms');
+
+        return [
+            'class' => FileUploadBehavior::class,
+            'attribute' => $attribute,
+            'filePath' => $module->path . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
+            'fileUrl' => $module->host . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
+        ];
     }
 
     public function transactions()
@@ -181,6 +198,10 @@ class Options extends ActiveRecord
                 throw new Exception("Cannot delete id: {$menu->id} of menu");
         }
     }
+
+    #endregion
+
+    #region Extra Methods
 
     public function rules()
     {
@@ -258,11 +279,6 @@ class Options extends ActiveRecord
         ];
     }
 
-    #endregion
-
-    #region Extra Methods
-
-
     public function getFileAttrValue($attr)
     {
         $entityAttr = substr($attr, 0, -2);
@@ -278,6 +294,11 @@ class Options extends ActiveRecord
             default:
                 return null;
         }
+    }
+
+    public function getImageUrl($attr, $width, $height, $operation = null, $background = null, $xPos = null, $yPos = null)
+    {
+        return Image::get($this, $attr, $width, $height, $operation, $background, $xPos, $yPos);
     }
 
     public function getCorT($justAttr)
@@ -314,28 +335,9 @@ class Options extends ActiveRecord
         return null;
     }
 
-    private function getFileUploadBehaviorConfig($attribute)
+    public function isAttrDisabled($collectionAttr)
     {
-        $module = Yii::$app->getModule('cms');
-
-        return [
-            'class' => FileUploadBehavior::class,
-            'attribute' => $attribute,
-            'filePath' => $module->path . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => $module->host . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
-        ];
-    }
-
-    public function getImageUrl($attr, $width, $height, $operation = null, $background = null, $xPos = null, $yPos = null)
-    {
-        return Image::get($this, $attr, $width, $height, $operation, $background, $xPos, $yPos);
-    }
-
-    private function setCurrentLanguage()
-    {
-        $this->languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
-        if (!$this->languageId)
-            $this->languageId = 0;
+        return !($this->isAttrCommon($collectionAttr) || $this->isAttrTranslatable($collectionAttr));
     }
 
     public function isAttrCommon($collectionAttr)
@@ -380,14 +382,14 @@ class Options extends ActiveRecord
         return false;
     }
 
-    public function isAttrDisabled($collectionAttr)
-    {
-        return !($this->isAttrCommon($collectionAttr) || $this->isAttrTranslatable($collectionAttr));
-    }
-
     public function getCollection()
     {
         return $this->hasOne(Collections::class, ['id' => 'collection_id']);
+    }
+
+    public function getItems()
+    {
+        return $this->hasMany(OaI::class, ['option_id' => 'id']);
     }
 
     #endregion
