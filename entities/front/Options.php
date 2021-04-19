@@ -83,4 +83,41 @@ class Options extends \afzalroq\cms\entities\Options
     {
         return $this[$this->getAttr('content')];
     }
+
+    private function getMetaKeyword()
+    {
+        return $this->getSeo('meta_keyword');
+    }
+
+    private function getMetaTitle()
+    {
+        return $this->getSeo('meta_title');
+    }
+
+    private function getMetaDescription()
+    {
+        return $this->getSeo('meta_des');
+    }
+
+    private function getSeo($seoAttr)
+    {
+        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+            $languageId = 0;
+        if (empty($this->seo_values))
+            return null;
+        return $this->seo_values[$seoAttr . '_' . $this->languageId];
+    }
+
+    public function getMeta()
+    {
+        \Yii::$app->view->registerMetaTag([
+            'name' => 'description',
+            'content' => $this->getMetaDescription()
+        ]);
+
+        \Yii::$app->view->registerMetaTag([
+            'name' => 'keywords',
+            'content' => $this->getMetaKeyword()
+        ]);
+    }
 }

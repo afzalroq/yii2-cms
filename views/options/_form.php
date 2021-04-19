@@ -4,7 +4,6 @@ use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\widgets\CmsForm;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -166,8 +165,7 @@ $hasTranslatableAttrs = 0;
                                 <br>
                                 <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
                                     <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
-
-                                        <?= $form->field($model, 'meta_title_' . $key)->textInput() ?>
+                                        <?php $form->field($model, 'meta_title_' . $key)->hiddenInput()->label(false) ?>
                                         <?= $form->field($model, 'meta_keyword_' . $key)->textInput() ?>
                                         <?= $form->field($model, 'meta_des_' . $key)->textInput() ?>
 
@@ -175,7 +173,7 @@ $hasTranslatableAttrs = 0;
                                 <?php endforeach; ?>
                             </div>
                         <?php else: ?>
-                            <?= $form->field($model, 'meta_title_0')->textInput() ?>
+                            <?php $form->field($model, 'meta_title_0')->hiddenInput()->label(false) ?>
                             <?= $form->field($model, 'meta_keyword_0')->textInput() ?>
                             <?= $form->field($model, 'meta_des_0')->textInput() ?>
                         <?php endif; ?>

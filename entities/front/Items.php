@@ -32,6 +32,11 @@ class Items extends \afzalroq\cms\entities\Items
         }, $cacheDuration, new TagDependency(['tags' => ['items_' . $slug]]));
     }
 
+    public function getText1()
+    {
+        return $this->getText('text_1');
+    }
+
     private function getText($entityAttr)
     {
         return $this[$this->getAttr($entityAttr)];
@@ -43,11 +48,6 @@ class Items extends \afzalroq\cms\entities\Items
             $languageId = 0;
 
         return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $languageId);
-    }
-
-    public function getText1()
-    {
-        return $this->getText('text_1');
     }
 
     public function getText2()
@@ -80,10 +80,27 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getText('text_7');
     }
 
-    public function checkFileExtension($fileName)
+    public function getMeta()
     {
-      $elem =  $this->getFile($fileName);
-        dd($elem);
+        \Yii::$app->view->registerMetaTag([
+            'name' => 'description',
+            'content' => $this->getMetaDescription()
+        ]);
+
+        \Yii::$app->view->registerMetaTag([
+            'name' => 'keywords',
+            'content' => $this->getMetaKeyword()
+        ]);
+    }
+
+    private function getMetaDescription()
+    {
+        return $this->getSeo('meta_des');
+    }
+
+    private function getMetaKeyword()
+    {
+        return $this->getSeo('meta_keyword');
     }
 
     /**
@@ -140,5 +157,19 @@ class Items extends \afzalroq\cms\entities\Items
     public function getDate($format)
     {
         return date($format, $this->date);
+    }
+
+    private function getMetaTitle()
+    {
+        return $this->getSeo('meta_title');
+    }
+
+    private function getSeo($seoAttr)
+    {
+        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+            $languageId = 0;
+        if (empty($this->seo_values))
+            return null;
+        return $this->seo_values[$seoAttr . '_' . $this->languageId];
     }
 }

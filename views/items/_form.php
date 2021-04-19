@@ -112,7 +112,7 @@ $hasTranslatableAttrs = 0;
                                 <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
                                     <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
 
-                                        <?= $form->field($model, 'meta_title_' . $key)->textInput() ?>
+                                        <?php $form->field($model, 'meta_title_' . $key)->textInput() ?>
                                         <?= $form->field($model, 'meta_keyword_' . $key)->textarea() ?>
                                         <?= $form->field($model, 'meta_des_' . $key)->textarea() ?>
 
@@ -120,7 +120,7 @@ $hasTranslatableAttrs = 0;
                                 <?php endforeach; ?>
                             </div>
                         <?php else: ?>
-                            <?= $form->field($model, 'meta_title_0')->textInput() ?>
+                            <?php $form->field($model, 'meta_title_0')->textInput() ?>
                             <?= $form->field($model, 'meta_keyword_0')->textarea() ?>
                             <?= $form->field($model, 'meta_des_0')->textarea() ?>
                         <?php endif; ?>
