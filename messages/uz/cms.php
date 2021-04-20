@@ -62,6 +62,7 @@ return [
     'Seo Keywords' => 'SEO keyword',
     'Pictures' => 'Rasmlar',
     'Gallery main Photo' => 'Galeriya uchun bosh rasm',
-    'If the SVG format is used in the file, no other format can be used' => 'Agar faylda SVG format ishlatilgan bo\'lsa boshqa formatlarni ishlatish mumkin emas'
+    'If the SVG format is used in the file, no other format can be used' => 'Agar faylda SVG format ishlatilgan bo\'lsa boshqa formatlarni ishlatish mumkin emas',
+    'View' => 'Ko\'rish'
 
 ];

@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 /* @var $model afzalroq\cms\entities\Items */
 /* @var $entity Entities */
 
-$this->title = $model->slug;
+$this->title = \yii\helpers\StringHelper::truncate($model->text_1_0,40,'...');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug)), 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 

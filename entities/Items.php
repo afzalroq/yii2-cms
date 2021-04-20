@@ -127,6 +127,13 @@ class Items extends ActiveRecord
         parent::__construct($config);
     }
 
+    private function setCurrentLanguage()
+    {
+        $this->languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
+        if (!$this->languageId)
+            $this->languageId = 0;
+    }
+
     public static function tableName()
     {
         return 'cms_items';
@@ -165,6 +172,17 @@ class Items extends ActiveRecord
             $this->getImageUploadBehaviorConfig('file_3_3'),
             $this->getImageUploadBehaviorConfig('file_3_4'),
 
+        ];
+    }
+
+    private function getImageUploadBehaviorConfig($attribute)
+    {
+        $module = Yii::$app->getModule('cms');
+        return [
+            'class' => ImageUploadBehavior::class,
+            'attribute' => $attribute,
+            'filePath' => $module->path . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
+            'fileUrl' => $module->host . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
         ];
     }
 
@@ -278,11 +296,6 @@ class Items extends ActiveRecord
         }
     }
 
-    public function beforeDelete()
-    {
-        $this->cpId = $this->id;
-        return parent::beforeDelete();
-    }
 
     public function afterDelete()
     {
@@ -306,6 +319,10 @@ class Items extends ActiveRecord
                     throw new Exception("Cannot delete id: {$menu->id} of menu");
         }
     }
+
+    #endregion
+
+    #region Extra Methods
 
     public function rules()
     {
@@ -345,6 +362,31 @@ class Items extends ActiveRecord
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Entities::class, 'targetAttribute' => ['entity_id' => 'id']],
             [['main_photo_id'], 'exist', 'skipOnError' => true, 'targetClass' => ItemPhotos::class, 'targetAttribute' => ['main_photo_id' => 'id']],
         ];
+    }
+
+    public function fileValidator($entityAttr)
+    {
+        $maxSize = $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024;
+        return [$this->getCurrentAttrs($entityAttr),
+            'file',
+            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
+            'maxSize' => ($maxSize) ? $maxSize : null
+        ];
+    }
+
+    public function getCurrentAttrs($entityAttr)
+    {
+        $attrs = [];
+        foreach (Yii::$app->params['cms']['languages'] as $key => $language)
+            $attrs[] = $entityAttr . '_' . $key;
+        return $attrs;
+    }
+
+    public function requiredValidator($entityAttr)
+    {
+        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
+            return $model->requireValidator($model->dependEntity->{$entityAttr});
+        }, 'enableClientValidation' => false];
     }
 
     public function attributeLabels()
@@ -432,10 +474,6 @@ class Items extends ActiveRecord
         ];
     }
 
-    #endregion
-
-    #region Extra Methods
-
     public function getOptionValue(CaE $cae)
     {
         return (isset($this->options[$cae->collection->slug]))
@@ -448,19 +486,9 @@ class Items extends ActiveRecord
         return Image::get($this, $attr, $width, $height, $operation, $background, $xPos, $yPos);
     }
 
-    public function getCurrentAttrs($entityAttr)
+    public function isAttrDisabled($entityAttr)
     {
-        $attrs = [];
-        foreach (Yii::$app->params['cms']['languages'] as $key => $language)
-            $attrs[] = $entityAttr . '_' . $key;
-        return $attrs;
-    }
-
-    private function setCurrentLanguage()
-    {
-        $this->languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
-        if (!$this->languageId)
-            $this->languageId = 0;
+        return !($this->isAttrCommon($entityAttr) || $this->isAttrTranslatable($entityAttr));
     }
 
     public function isAttrCommon($entityAttr)
@@ -509,28 +537,6 @@ class Items extends ActiveRecord
         return false;
     }
 
-    public function isAttrDisabled($entityAttr)
-    {
-        return !($this->isAttrCommon($entityAttr) || $this->isAttrTranslatable($entityAttr));
-    }
-
-    public function fileValidator($entityAttr)
-    {
-        $maxSize = $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024;
-        return [$this->getCurrentAttrs($entityAttr),
-            'file',
-            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
-            'maxSize' => ($maxSize) ? $maxSize : null
-        ];
-    }
-
-    public function requiredValidator($entityAttr)
-    {
-        return [$this->getCurrentAttrs($entityAttr), 'required', 'when' => function ($model) use ($entityAttr) {
-            return $model->requireValidator($model->dependEntity->{$entityAttr});
-        }, 'enableClientValidation' => false];
-    }
-
     public function requireValidator($type)
     {
         switch ($type) {
@@ -544,17 +550,6 @@ class Items extends ActiveRecord
             default:
                 return false;
         }
-    }
-
-    private function getImageUploadBehaviorConfig($attribute)
-    {
-        $module = Yii::$app->getModule('cms');
-        return [
-            'class' => ImageUploadBehavior::class,
-            'attribute' => $attribute,
-            'filePath' => $module->path . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => $module->host . '/data/items/[[attribute_id]]/[[filename]].[[extension]]',
-        ];
     }
 
     public function getEntity()

@@ -5,6 +5,7 @@ namespace afzalroq\cms\entities;
 use afzalroq\cms\components\FileType;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
 use yii\helpers\StringHelper;
@@ -92,7 +93,7 @@ class Collections extends ActiveRecord
     public $file_2_dimensionW;
     public $file_2_dimensionH;
     public $file_2_maxSize;
-
+    private $cpId;
     #endregion
 
     #region Override methods
@@ -147,6 +148,7 @@ class Collections extends ActiveRecord
 
     public function beforeDelete()
     {
+        $this->cpId = $this->id;
         if (!parent::beforeDelete())
             return false;
 
@@ -161,6 +163,20 @@ class Collections extends ActiveRecord
         return true;
     }
 
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        foreach (Menu::find()->all() as $menu) {
+            if ($menu->type !== Menu::TYPE_COLLECTION)
+                continue;
+            if ($menu->type_helper != $this->cpId)
+                continue;
+
+            if (!$menu->delete())
+                throw new Exception("Cannot delete id: {$menu->id} of menu");
+        }
+    }
     public function rules()
     {
         return [

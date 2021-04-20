@@ -2,6 +2,7 @@
 
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel afzalroq\cms\entities\ItemsSearch */
@@ -27,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'slug',
                 'value' => function ($model) use ($entity) {
-                    return Html::a($model->slug . ' <i class="fa fa-chevron-circle-right"></i>', ['items/view', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default']);
+                    return Html::a($model->slug ? StringHelper::truncate(strip_tags($model->slug), 30, '...') . ' <i class="fa fa-chevron-circle-right"></i>' : Yii::t('cms', 'View') . ' <i class="fa fa-chevron-circle-right"></i>', ['items/view', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default']);
                 },
                 'format' => 'html'
             ],
@@ -37,11 +38,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'text_2_0',
-                'label' => $entity->text_2_label . ' (' . $curLang . ')'
+                'value' => function ($model) use ($entity) {
+                    if ($entity->text_2 < 30)
+                        return $model->text_2_0;
+                },
+                'label' => $entity->text_2_label . ' (' . $curLang . ')',
+                'visible' => !empty($entity->text_2) ? $entity->text_2 > 30 ? false : true : false
             ],
             [
                 'attribute' => 'text_3_0',
-                'label' => $entity->text_3_label . ' (' . $curLang . ')'
+                'value' => function ($model) use ($entity) {
+                    if ($entity->text_3 < 30)
+                        return $model->text_3_0;
+                },
+                'label' => $entity->text_3_label . ' (' . $curLang . ')',
+                'visible' => !empty($entity->text_3) ? $entity->text_3 > 30 ? false : true : false
             ],
             [
                 'attribute' => 'file_1_0',

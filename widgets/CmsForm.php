@@ -335,7 +335,7 @@ class CmsForm
             $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->checkboxList($cae->getOptionList(), [
                     'value' => $this->model->getOptionValue($cae)
                 ]
-            )->label($cae->collection->slug),
+            )->label($cae->collection->name_0),
             $options
         );
     }
@@ -350,7 +350,7 @@ class CmsForm
                     'value' => $this->model->getOptionValue($cae),
                     'prompt' => ''
                 ]
-            )->label($cae->collection->slug),
+            )->label($cae->collection->name_0),
             $options
         );
     }
@@ -364,7 +364,7 @@ class CmsForm
             $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->radioList($cae->getOptionList(), [
                     'value' => $this->model->getOptionValue($cae),
                 ]
-            )->label($cae->collection->slug),
+            )->label($cae->collection->name_0),
             $options
         );
     }
