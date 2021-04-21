@@ -9,16 +9,56 @@ use yii\widgets\DetailView;
 /* @var $model afzalroq\cms\entities\Items */
 /* @var $entity Entities */
 
-$this->title = \yii\helpers\StringHelper::truncate($model->text_1_0,40,'...');
+$this->title = \yii\helpers\StringHelper::truncate($model->text_1_0, 40, '...');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug)), 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 
-[$entity_text_attrs, $entity_file_attrs] = $entity->textAndFileAttrs();
+[$entity_text_attrs, $entity_file_attrs, $seo_attrs] = $entity->textAndFileAttrs();
+
+$entity_text_attrs_translatable = [];
+$entity_text_attrs_0 = [];
+
+$file_lang_0 = [];
+$file_translatable = [];
+
+$seo_translatable = [];
+$seo_0 = [];
 
 $text_attributes = [];
 $file_attributes = [];
 $seo_values = [];
 $main_photo = [];
+
+foreach ($entity_text_attrs as $key => $attr) {
+    if ($attr == Entities::TEXT_DISABLED)
+        continue;
+    if ($attr < Entities::TEXT_TRANSLATABLE_INPUT_STRING || $attr == Entities::TEXT_COMMON_TEXTAREA || $attr == Entities::TEXT_COMMON_CKEDITOR) {
+        $entity_text_attrs_0 += [
+            $key => $attr
+        ];
+    } else {
+        $entity_text_attrs_translatable += [
+            $key => $attr
+        ];
+    }
+}
+
+foreach ($entity_file_attrs as $key => $attr) {
+    if ($attr === Entities::FILE_DISABLED)
+        continue;
+    if ($attr === Entities::FILE_TRANSLATABLE) {
+        $file_translatable += [
+            $key => $attr
+        ];
+    } else {
+        $file_lang_0 += [
+            $key => $attr
+        ];
+    }
+
+}
+
+
 $main_attributes = [
 //    'id',
 //    'entity_id',
@@ -33,44 +73,6 @@ if ($model->entity->use_date === Entities::USE_DATE_DATETIME)
 
 //$cmsForm = new CmsForm((new ActiveForm()), $model, $entity);
 
-foreach ($entity_file_attrs as $attr => $value)
-    foreach (Yii::$app->params['cms']['languages'] as $key => $language)
-        if ($entity[$attr]) {
-            $file_attributes[] = [
-                'attribute' => $attr . '_' . $key,
-                'format' => 'html',
-                'value' => function ($model) use ($attr, $key, $entity) {
-                    switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
-                        case FileType::TYPE_FILE:
-                            return $model[$attr . '_' . $key];
-                        case FileType::TYPE_IMAGE:
-                            return Html::img($model->getImageUrl($attr . '_' . $key, $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
-                        default:
-                            return null;
-                    }
-                },
-                'label' => $model->entity[$attr . '_label']
-            ];
-            if ($model->isAttrCommon($attr)) break;
-        }
-
-foreach ($entity_text_attrs as $attr => $value)
-    foreach (Yii::$app->params['cms']['languages'] as $key => $language)
-        if ($entity[$attr])
-            $text_attributes[] = [
-                'attribute' => $attr . '_' . $key,
-                'label' => $entity[$attr . '_label'] . ' (' . $language . ')',
-                'format' => 'html'
-            ];
-
-if ($entity->use_seo)
-    if ($model->seo_values)
-        foreach ($model->seo_values as $key => $value)
-            if ($value !== null)
-                $seo_values [] = [
-                    'attribute' => $key,
-                    'value' => $value,
-                ];
 
 if ($entity->use_gallery)
     $main_photo [] = [
@@ -98,32 +100,157 @@ if ($entity->use_gallery)
             ],
         ]) ?>
     </p>
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => $main_attributes
     ]) ?>
 
+    <?php if($entity->use_seo == Entities::SEO_TRANSLATABLE || !empty($entity_text_attrs_translatable) || !empty($file_translatable)): ?>
+    <div class="row" id="translatable">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
+                            <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                                <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
+                                   data-toggle="tab"><?= $language ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <div class="tab-content">
+                        <br>
+                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
+                            <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
+                                <?php foreach ($entity_text_attrs_translatable as $attr => $value)
+                                    if ($entity[$attr])
+                                        $text_attributes[] = [
+                                            'attribute' => $attr . '_' . $key,
+                                            'label' => $entity[$attr . '_label'] . ' (' . $language . ')',
+                                            'format' => 'html'
+                                        ]; ?>
+                                <?= DetailView::widget([
+                                    'model' => $model,
+                                    'attributes' => $text_attributes
+                                ]) ?>
+                                <?php $text_attributes = [] ?>
+
+                                <?php
+                                foreach ($file_translatable as $attr => $value)
+                                    if ($entity[$attr]) {
+                                        $file_attributes[] = [
+                                            'attribute' => $attr . '_' . $key,
+                                            'format' => 'html',
+                                            'value' => function ($model) use ($attr, $key, $entity) {
+                                                switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
+                                                    case FileType::TYPE_FILE:
+                                                        return $model[$attr . '_' . $key];
+                                                    case FileType::TYPE_IMAGE:
+                                                        return Html::img($model->getImageUrl($attr . '_' . $key, $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
+                                                    default:
+                                                        return null;
+                                                }
+                                            },
+                                            'label' => $model->entity[$attr . '_label']
+                                        ];
+                                        if ($model->isAttrCommon($attr)) break;
+                                    }
+                                ?>
+                                <?= DetailView::widget([
+                                    'model' => $model,
+                                    'attributes' => $file_attributes
+                                ]) ?>
+                                <?php $file_attributes = [] ?>
+
+                                <?php
+                                if ($entity->use_seo == Entities::SEO_TRANSLATABLE) {
+                                    foreach ($seo_attrs as $i => $value)
+                                        $seo_values [] = [
+                                            'attribute' => $value . '_' . $key,
+                                            'value' => $model->seo_values[$value . '_' . $key],
+                                        ];
+
+                                    echo DetailView::widget([
+                                        'model' => $model,
+                                        'attributes' => $seo_values
+                                    ]);
+
+                                    $seo_values = [];
+                                }
+                                ?>
+
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <div class="row">
         <div class="col-sm-12">
+            <?php foreach ($entity_text_attrs_0 as $attr => $value)
+                if ($entity[$attr])
+                    $text_attributes[] = [
+                        'attribute' => $attr . '_' . 0,
+                        'label' => $entity[$attr . '_label'],
+                        'format' => 'html'
+                    ]; ?>
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => $text_attributes
             ]) ?>
+            <?php $text_attributes = [] ?>
         </div>
+    </div>
+
+    <div class="row">
         <div class="col-sm-12">
+            <?php
+            foreach ($file_lang_0 as $attr => $value)
+                if ($entity[$attr]) {
+                    $file_attributes[] = [
+                        'attribute' => $attr . '_' . 0,
+                        'format' => 'html',
+                        'value' => function ($model) use ($attr, $entity) {
+                            switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
+                                case FileType::TYPE_FILE:
+                                    return $model[$attr . '_' . 0];
+                                case FileType::TYPE_IMAGE:
+                                    return Html::img($model->getImageUrl($attr . '_' . 0, $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
+                                default:
+                                    return null;
+                            }
+                        },
+                        'label' => $model->entity[$attr . '_label']
+                    ];
+                    if ($model->isAttrCommon($attr)) break;
+                }
+            ?>
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => $file_attributes
             ]) ?>
+            <?php $file_attributes = [] ?>
         </div>
     </div>
 
-    <?php if ($entity->use_seo): ?>
-        <?= DetailView::widget([
+    <?php if ($entity->use_seo && $entity->use_seo == Entities::SEO_COMMON): ?>
+        <?php
+        foreach ($seo_attrs as $i => $value)
+            $seo_values [] = [
+                'attribute' => $value . '_' . 0,
+                'value' => $model->seo_values[$value . '_' . 0],
+            ];
+
+        echo DetailView::widget([
             'model' => $model,
             'attributes' => $seo_values
-        ]) ?>
+        ]);
+
+        $seo_values = [];
+        ?>
     <?php endif; ?>
     <?php if ($entity->use_views_count): ?>
         <?= DetailView::widget([

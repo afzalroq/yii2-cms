@@ -378,16 +378,17 @@ class Entities extends ActiveRecord
     {
         $entity_text_attrs = [];
         $entity_file_attrs = [];
+        $seo_attrs = ['meta_des','meta_keyword'];
         foreach ($this->attributes as $attr => $value) {
             if (preg_match('/^text_[1-7]$/', $attr))
                 $entity_text_attrs[$attr] = $value;
             if (preg_match('/^file_[1-3]$/', $attr))
                 $entity_file_attrs[$attr] = $value;
         }
-
         return [
             $entity_text_attrs,
             $entity_file_attrs,
+            $seo_attrs
         ];
 
     }
