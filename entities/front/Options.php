@@ -28,6 +28,24 @@ class Options extends \afzalroq\cms\entities\Options
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
+    public static function getWithOptions($slug, array $orderBy = null, $limit = null, $status = null)
+    {
+        $cache = Yii::$app->getModule('cms')->cache;
+        $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
+        return \Yii::$app->{$cache}->getOrSet('options_' . $slug . $orderBy ?? $orderBy . $limit ?? $limit . $status ?? $status, function () use ($slug, $orderBy, $limit, $status) {
+            $query = self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere(['>', 'depth', 0])->orderBy('sort');
+            if ($orderBy)
+                $query->orderBy($orderBy);
+            if ($status)
+                $query->where(['status' => $status]);
+            if ($limit)
+                $query->limit($limit);
+            return $query->all();
+
+        }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
+    }
+
+
     /**
      * https://github.com/Gregwar/Image#usage
      */
@@ -39,6 +57,14 @@ class Options extends \afzalroq\cms\entities\Options
     private function getPhoto($collectionAttr, $width, $height, $operation, $background, $xPos, $yPos)
     {
         return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $operation, $background, $xPos, $yPos);
+    }
+
+    private function getAttr($entityAttr)
+    {
+        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language]))
+            $languageId = 0;
+
+        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $languageId);
     }
 
     /**
@@ -61,14 +87,6 @@ class Options extends \afzalroq\cms\entities\Options
         return $module->host . str_replace($module->path, '', $filePath);
     }
 
-    private function getAttr($entityAttr)
-    {
-        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language]))
-            $languageId = 0;
-
-        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $languageId);
-    }
-
     public function getFile2()
     {
         return $this->getFile('file_2');
@@ -84,31 +102,7 @@ class Options extends \afzalroq\cms\entities\Options
         return $this[$this->getAttr('content')];
     }
 
-    private function getMetaKeyword()
-    {
-        return $this->getSeo('meta_keyword');
-    }
-
-    private function getMetaTitle()
-    {
-        return $this->getSeo('meta_title');
-    }
-
-    private function getMetaDescription()
-    {
-        return $this->getSeo('meta_des');
-    }
-
-    private function getSeo($seoAttr)
-    {
-        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
-            $languageId = 0;
-        if (empty($this->seo_values))
-            return null;
-        return $this->seo_values[$seoAttr . '_' . $this->languageId];
-    }
-
-    public function getMeta()
+    public function registerMetaTags()
     {
         \Yii::$app->view->registerMetaTag([
             'name' => 'description',
@@ -119,5 +113,29 @@ class Options extends \afzalroq\cms\entities\Options
             'name' => 'keywords',
             'content' => $this->getMetaKeyword()
         ]);
+    }
+
+    private function getMetaDescription()
+    {
+        return $this->getSeo('meta_des');
+    }
+
+    private function getMetaKeyword()
+    {
+        return $this->getSeo('meta_keyword');
+    }
+
+    private function getMetaTitle()
+    {
+        return $this->getSeo('meta_title');
+    }
+
+    private function getSeo($seoAttr)
+    {
+        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+            $languageId = 0;
+        if (empty($this->seo_values))
+            return null;
+        return $this->seo_values[$seoAttr . '_' . $this->languageId];
     }
 }

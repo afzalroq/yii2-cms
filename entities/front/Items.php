@@ -32,6 +32,23 @@ class Items extends \afzalroq\cms\entities\Items
         }, $cacheDuration, new TagDependency(['tags' => ['items_' . $slug]]));
     }
 
+    public static function getWithOptions($slug, array $orderBy = null, $limit = null, $status = null)
+    {
+        $cache = Yii::$app->getModule('cms')->cache;
+        $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
+        return \Yii::$app->{$cache}->getOrSet('items_' . $slug . $orderBy ?? $orderBy . $limit ?? $limit . $status ?? $status, function () use ($slug, $orderBy, $limit, $status) {
+            $query = self::find()->where(['entity_id' => Entities::findOne(['slug' => $slug])->id]);
+            if ($orderBy)
+                $query->orderBy($orderBy);
+            if ($status)
+                $query->where(['status' => $status]);
+            if ($limit)
+                $query->limit($limit);
+            return $query->all();
+
+        }, $cacheDuration, new TagDependency(['tags' => ['items_' . $slug]]));
+    }
+
     public function getText1()
     {
         return $this->getText('text_1');
@@ -80,7 +97,7 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getText('text_7');
     }
 
-    public function getMeta()
+    public function registerMetaTags()
     {
         \Yii::$app->view->registerMetaTag([
             'name' => 'description',
@@ -96,6 +113,15 @@ class Items extends \afzalroq\cms\entities\Items
     private function getMetaDescription()
     {
         return $this->getSeo('meta_des');
+    }
+
+    private function getSeo($seoAttr)
+    {
+        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+            $languageId = 0;
+        if (empty($this->seo_values))
+            return null;
+        return $this->seo_values[$seoAttr . '_' . $this->languageId];
     }
 
     private function getMetaKeyword()
@@ -162,14 +188,5 @@ class Items extends \afzalroq\cms\entities\Items
     private function getMetaTitle()
     {
         return $this->getSeo('meta_title');
-    }
-
-    private function getSeo($seoAttr)
-    {
-        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
-            $languageId = 0;
-        if (empty($this->seo_values))
-            return null;
-        return $this->seo_values[$seoAttr . '_' . $this->languageId];
     }
 }

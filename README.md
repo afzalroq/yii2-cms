@@ -133,6 +133,10 @@ Unit::get('slug'); // will return data using cache
  $item->getText5(); // for get Text 5
  $item->getText6(); // for get Text 6
  $item->getText7(); // for get Text 7
+ 
+
+ //for to get meta description and meta keywords just use this command below:
+ $item-registerMetaTags(); //it generates meta tags in your view page
 ```
 
 ### Return File URI
@@ -173,4 +177,7 @@ Unit::get('slug'); // will return data using cache
 
  $option->getFile1(); // for get File 1
  $option->getFile2(); // for get File 2
+
+ //for to get meta description and meta keywords just use this command below:
+ $option-registerMetaTags(); //it generates meta tags in your view page
 ```

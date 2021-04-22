@@ -28,7 +28,8 @@ $hasTranslatableAttrs = 0;
         ]
     ]);
 
-    $cmsForm = new CmsForm($form, $model, $entity)
+    $cmsForm = new CmsForm($form, $model, $entity);
+
     ?>
 
     <?= $form->errorSummary($model) ?>

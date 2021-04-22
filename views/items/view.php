@@ -105,89 +105,6 @@ if ($entity->use_gallery)
         'attributes' => $main_attributes
     ]) ?>
 
-    <?php if($entity->use_seo == Entities::SEO_TRANSLATABLE || !empty($entity_text_attrs_translatable) || !empty($file_translatable)): ?>
-    <div class="row" id="translatable">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-body">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                            <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
-                                <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
-                                   data-toggle="tab"><?= $language ?></a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <div class="tab-content">
-                        <br>
-                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                            <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
-                                <?php foreach ($entity_text_attrs_translatable as $attr => $value)
-                                    if ($entity[$attr])
-                                        $text_attributes[] = [
-                                            'attribute' => $attr . '_' . $key,
-                                            'label' => $entity[$attr . '_label'] . ' (' . $language . ')',
-                                            'format' => 'html'
-                                        ]; ?>
-                                <?= DetailView::widget([
-                                    'model' => $model,
-                                    'attributes' => $text_attributes
-                                ]) ?>
-                                <?php $text_attributes = [] ?>
-
-                                <?php
-                                foreach ($file_translatable as $attr => $value)
-                                    if ($entity[$attr]) {
-                                        $file_attributes[] = [
-                                            'attribute' => $attr . '_' . $key,
-                                            'format' => 'html',
-                                            'value' => function ($model) use ($attr, $key, $entity) {
-                                                switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
-                                                    case FileType::TYPE_FILE:
-                                                        return $model[$attr . '_' . $key];
-                                                    case FileType::TYPE_IMAGE:
-                                                        return Html::img($model->getImageUrl($attr . '_' . $key, $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
-                                                    default:
-                                                        return null;
-                                                }
-                                            },
-                                            'label' => $model->entity[$attr . '_label']
-                                        ];
-                                        if ($model->isAttrCommon($attr)) break;
-                                    }
-                                ?>
-                                <?= DetailView::widget([
-                                    'model' => $model,
-                                    'attributes' => $file_attributes
-                                ]) ?>
-                                <?php $file_attributes = [] ?>
-
-                                <?php
-                                if ($entity->use_seo == Entities::SEO_TRANSLATABLE) {
-                                    foreach ($seo_attrs as $i => $value)
-                                        $seo_values [] = [
-                                            'attribute' => $value . '_' . $key,
-                                            'value' => $model->seo_values[$value . '_' . $key],
-                                        ];
-
-                                    echo DetailView::widget([
-                                        'model' => $model,
-                                        'attributes' => $seo_values
-                                    ]);
-
-                                    $seo_values = [];
-                                }
-                                ?>
-
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php endif; ?>
-
     <div class="row">
         <div class="col-sm-12">
             <?php foreach ($entity_text_attrs_0 as $attr => $value)
@@ -259,6 +176,88 @@ if ($entity->use_gallery)
                 'views_count'
             ]
         ]) ?>
+    <?php endif; ?>
+    <?php if($entity->use_seo == Entities::SEO_TRANSLATABLE || !empty($entity_text_attrs_translatable) || !empty($file_translatable)): ?>
+        <div class="row" id="translatable">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
+                                <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                                    <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
+                                       data-toggle="tab"><?= $language ?></a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <div class="tab-content">
+                            <br>
+                            <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
+                                <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
+                                    <?php foreach ($entity_text_attrs_translatable as $attr => $value)
+                                        if ($entity[$attr])
+                                            $text_attributes[] = [
+                                                'attribute' => $attr . '_' . $key,
+                                                'label' => $entity[$attr . '_label'] . ' (' . $language . ')',
+                                                'format' => 'html'
+                                            ]; ?>
+                                    <?= DetailView::widget([
+                                        'model' => $model,
+                                        'attributes' => $text_attributes
+                                    ]) ?>
+                                    <?php $text_attributes = [] ?>
+
+                                    <?php
+                                    foreach ($file_translatable as $attr => $value)
+                                        if ($entity[$attr]) {
+                                            $file_attributes[] = [
+                                                'attribute' => $attr . '_' . $key,
+                                                'format' => 'html',
+                                                'value' => function ($model) use ($attr, $key, $entity) {
+                                                    switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
+                                                        case FileType::TYPE_FILE:
+                                                            return $model[$attr . '_' . $key];
+                                                        case FileType::TYPE_IMAGE:
+                                                            return Html::img($model->getImageUrl($attr . '_' . $key, $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
+                                                        default:
+                                                            return null;
+                                                    }
+                                                },
+                                                'label' => $model->entity[$attr . '_label']
+                                            ];
+                                            if ($model->isAttrCommon($attr)) break;
+                                        }
+                                    ?>
+                                    <?= DetailView::widget([
+                                        'model' => $model,
+                                        'attributes' => $file_attributes
+                                    ]) ?>
+                                    <?php $file_attributes = [] ?>
+
+                                    <?php
+                                    if ($entity->use_seo == Entities::SEO_TRANSLATABLE) {
+                                        foreach ($seo_attrs as $i => $value)
+                                            $seo_values [] = [
+                                                'attribute' => $value . '_' . $key,
+                                                'value' => $model->seo_values[$value . '_' . $key],
+                                            ];
+
+                                        echo DetailView::widget([
+                                            'model' => $model,
+                                            'attributes' => $seo_values
+                                        ]);
+
+                                        $seo_values = [];
+                                    }
+                                    ?>
+
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     <?php endif; ?>
     <?php if ($entity->use_gallery): ?>
         <?= DetailView::widget([
