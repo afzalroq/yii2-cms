@@ -59,6 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => $entity->file_1_label,
                 'format' => 'html',
                 'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
+                    if ($entity->use_gallery){
+                        return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(200, 200) : '');
+                    }
                     return Html::img($model->getImageUrl('file_1_0', $entity->file_1_dimensionW, $entity->file_1_dimensionW));
                 }
             ],
