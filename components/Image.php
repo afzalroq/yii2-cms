@@ -8,7 +8,7 @@ use yii\helpers\StringHelper;
 
 class Image
 {
-    public static function  get($obj, $attr, $width, $height, $operation, $background, $xPos, $yPos, $itemPhotos = null)
+    public static function get($obj, $attr, $width, $height, $operation, $background, $xPos, $yPos, $itemPhotos = null)
     {
         $file = $itemPhotos ? $itemPhotos[$attr] : $obj[$attr];
         $module = Yii::$app->getModule('cms');
@@ -17,7 +17,10 @@ class Image
         $path = GregImage::open($file)
             ->setCacheDir($module->path . '/cache')
             ->setFallback($module->fallback);
-
+        if (!file_exists($file)) {
+            $path = GregImage::open($module->path . '/fallback.png')
+                ->setCacheDir($module->path . '/cache');
+        }
         $operation = $operation ?: $module->imageOperation;
         $background = $background ?: $module->imageBackground;
         $xPos = $xPos ?: $module->imageXPos;
@@ -27,7 +30,6 @@ class Image
         } else {
             $path->{$operation}($width, $height, $background);
         }
-
         return $module->host . str_replace($module->path, '', $path->guess());
     }
 
