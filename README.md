@@ -185,10 +185,10 @@ Unit::get('slug'); // will return data using cache
 ### Option and Items searches
 
 ```php
- $item->getEntityItemSearchResults((array) $entitySlugs, $search); // get search results with entity and items
+ \afzalroq\cms\entities\front\Items::getEntityItemSearchResults((array) $entitySlugs, $search); // get search results with entity and items
  
- $item->getOptionItemSearchResults((array) $optionSlugs, $search); // get search results with option and items
+ \afzalroq\cms\entities\front\Items::getOptionItemSearchResults((array) $optionSlugs, $search); // get search results with option and items
 
- $option->getOptionSearchResults((array) $optionSlugs, $search); // get search results with options
+ \afzalroq\cms\entities\front\Options::getOptionSearchResults((array) $optionSlugs, $search); // get search results with options
 
 ```
