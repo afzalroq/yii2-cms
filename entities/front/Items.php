@@ -3,6 +3,7 @@
 namespace afzalroq\cms\entities\front;
 
 use afzalroq\cms\entities\Entities;
+use afzalroq\cms\entities\OaI;
 use Yii;
 use yii\caching\TagDependency;
 use yii\helpers\StringHelper;
@@ -47,6 +48,41 @@ class Items extends \afzalroq\cms\entities\Items
             return $query->all();
 
         }, $cacheDuration, new TagDependency(['tags' => ['items_' . $slug]]));
+    }
+
+    public static function getEntityItemSearchResults(array $entitySlugs, $search)
+    {
+        $langId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
+        $entityId = Entities::find()->where(['slug' => $entitySlugs])->select('id')->column();
+        $query = Items::find()->where(['entity_id' => $entityId]);
+        $items = $query->andFilterWhere(['or',
+            ['like', 'text_1_' . $langId, $search],
+            ['like', 'text_2_' . $langId, $search],
+            ['like', 'text_3_' . $langId, $search],
+            ['like', 'text_4_' . $langId, $search],
+            ['like', 'text_5_' . $langId, $search],
+            ['like', 'text_6_' . $langId, $search],
+            ['like', 'text_7_' . $langId, $search],
+        ])->all();
+        return $items;
+    }
+
+    public static function getOptionItemSearchResults(array $optionSlugs, $search)
+    {
+        $langId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
+        $optionId = Options::find()->where(['slug' => $optionSlugs])->select('id')->column();
+        $OaI = OaI::find()->where(['option_id' => $optionId])->select('item_id')->column();
+        $query = Items::find()->where(['id' => $OaI]);
+        $items = $query->andFilterWhere(['or',
+            ['like', 'text_1_' . $langId, $search],
+            ['like', 'text_2_' . $langId, $search],
+            ['like', 'text_3_' . $langId, $search],
+            ['like', 'text_4_' . $langId, $search],
+            ['like', 'text_5_' . $langId, $search],
+            ['like', 'text_6_' . $langId, $search],
+            ['like', 'text_7_' . $langId, $search],
+        ])->all();
+        return $items;
     }
 
     public function getText1()
@@ -189,4 +225,5 @@ class Items extends \afzalroq\cms\entities\Items
     {
         return $this->getSeo('meta_title');
     }
+
 }

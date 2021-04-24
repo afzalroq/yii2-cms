@@ -181,3 +181,14 @@ Unit::get('slug'); // will return data using cache
  //for to get meta description and meta keywords just use this command below:
  $option-registerMetaTags(); //it generates meta tags in your view page
 ```
+
+### Option and Items searches
+
+```php
+ $item->getEntityItemSearchResults((array) $entitySlugs, $search); // get search results with entity and items
+ 
+ $item->getOptionItemSearchResults((array) $optionSlugs, $search); // get search results with option and items
+
+ $option->getOptionSearchResults((array) $optionSlugs, $search); // get search results with options
+
+```

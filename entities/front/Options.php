@@ -45,6 +45,16 @@ class Options extends \afzalroq\cms\entities\Options
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
+    public static function getOptionSearchResults(array $optionSlugs, $search)
+    {
+        $langId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
+        $query = Options::find()->where(['slug' => $optionSlugs]);
+        $options = $query->andFilterWhere(['or',
+            ['like', 'name_' . $langId, $search],
+            ['like', 'content_' . $langId, $search],
+        ])->all();
+        return $options;
+    }
 
     /**
      * https://github.com/Gregwar/Image#usage
@@ -120,6 +130,15 @@ class Options extends \afzalroq\cms\entities\Options
         return $this->getSeo('meta_des');
     }
 
+    private function getSeo($seoAttr)
+    {
+        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+            $languageId = 0;
+        if (empty($this->seo_values))
+            return null;
+        return $this->seo_values[$seoAttr . '_' . $this->languageId];
+    }
+
     private function getMetaKeyword()
     {
         return $this->getSeo('meta_keyword');
@@ -128,14 +147,5 @@ class Options extends \afzalroq\cms\entities\Options
     private function getMetaTitle()
     {
         return $this->getSeo('meta_title');
-    }
-
-    private function getSeo($seoAttr)
-    {
-        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
-            $languageId = 0;
-        if (empty($this->seo_values))
-            return null;
-        return $this->seo_values[$seoAttr . '_' . $this->languageId];
     }
 }
