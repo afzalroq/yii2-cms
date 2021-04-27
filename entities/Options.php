@@ -71,14 +71,21 @@ class Options extends ActiveRecord
     public $meta_keyword_4;
     public $languageId;
     public $treeAttribute = 'tree';
+    public $dependCollection;
     private $cpId;
 
     #endregion
 
     #region Overwrite Methods
 
-    public function __construct($config = [])
+    public function __construct($slug = null, $config = [])
     {
+        if ($slug) {
+            $this->dependCollection = Collections::findOne(['slug' => $slug]);
+            if ($this->dependCollection->manual_slug) $this->detachBehavior('slug');
+        } else {
+            $this->dependCollection = $this->collection;
+        }
         $this->setCurrentLanguage();
         parent::__construct($config);
     }
@@ -120,6 +127,19 @@ class Options extends ActiveRecord
                 // 'leftAttribute' => 'lft',
                 // 'rightAttribute' => 'rgt',
                 // 'depthAttribute' => 'depth',
+            ],
+            'slug' => [
+                'class' => 'Zelenin\yii\behaviors\Slug',
+                'slugAttribute' => 'slug',
+                'attribute' => 'name_0',
+                // o3ptional params
+                'ensureUnique' => true,
+                'replacement' => '-',
+                'lowercase' => true,
+                // false = changes after every change for $attribute
+                'immutable' => false,
+                // If intl extension is enabled, see http://userguide.icu-project.org/transforms/general.
+                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
             ]
         ];
     }
@@ -148,6 +168,15 @@ class Options extends ActiveRecord
         parent::afterSave($insert, $changedAttributes);
         TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'options_' . $this->parentCollection->slug);
         return true;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        if ($this->collection->manual_slug) {
+            $this->detachBehavior('slug');
+        }
     }
 
     public function beforeSave($insert)
@@ -218,7 +247,7 @@ class Options extends ActiveRecord
                 'maxSize' => $this->parentCollection->file_2_maxSize * 1024 * 1024
             ],
 
-            [['collection_id', 'slug', 'sort'], 'required'],
+            [['collection_id', 'sort'], 'required'],
             [['collection_id', 'sort', 'created_at', 'updated_at'], 'integer'],
             [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
             [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],

@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="items-index">
 
     <p>
+        <?php if (!$entity->disable_create_and_delete): ?>
         <?= Html::a(Yii::t('cms', 'Create'), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
+        <?php endif; ?>
     </p>
 
     <?= GridView::widget([

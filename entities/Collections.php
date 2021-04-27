@@ -34,6 +34,8 @@ use yii\helpers\StringHelper;
  * @property int|null $option_default_id
  * @property int $created_at
  * @property int $updated_at
+ * @property int|null $manual_slug
+
  *
  * @property Options $optionDefault
  * @property Options[] $options
@@ -187,7 +189,7 @@ class Collections extends ActiveRecord
 
             [['slug', 'use_in_menu', 'use_seo'], 'required'],
 
-            [['use_in_menu', 'use_seo', 'use_parenting', 'option_file_1', 'option_file_2', 'option_name', 'option_content', 'option_default_id', 'created_at', 'updated_at'], 'integer'],
+            [['use_in_menu', 'use_seo', 'use_parenting', 'manual_slug', 'option_file_1', 'option_file_2', 'option_name', 'option_content', 'option_default_id', 'created_at', 'updated_at'], 'integer'],
 
             [['option_file_1_validator', 'option_file_2_validator'], 'safe'],
 
@@ -214,6 +216,7 @@ class Collections extends ActiveRecord
             'slug' => Yii::t('cms', 'Slug'),
             'use_in_menu' => Yii::t('cms', 'Use in menu'),
             'use_parenting' => Yii::t('cms', 'Use parenting'),
+            'manual_slug' => Yii::t('cms', 'Manual Slug'),
 
             'option_file_1' => Yii::t('cms', 'Option File') . ' 1',
             'option_file_2' => Yii::t('cms', 'Option File') . ' 2',

@@ -35,9 +35,11 @@ $hasTranslatableAttrs = 0;
     <div class="box">
         <div class="box-body">
             <div class="row">
+                <?php if ($collection->manual_slug): ?>
                 <div class="col-md-4">
                     <?= $form->field($model, 'slug')->textInput() ?>
                 </div>
+                <?php endif; ?>
                 <div class="col-md-4">
                     <?= $form->field($model, 'sort')->textInput(['type' => 'number']) ?>
                 </div>

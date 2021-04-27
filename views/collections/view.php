@@ -70,6 +70,10 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                                 'value' => $model->use_seo ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
                             ],
                             [
+                                'attribute' => 'manual_slug',
+                                'value' => $model->manual_slug ? Yii::t('cms', 'Yes') : Yii::t('cms', 'No')
+                            ],
+                            [
                                 'attribute' => 'option_name',
                                 'value' => Yii::t('cms', Collections::optionNameList()[$model->option_name])
                             ],

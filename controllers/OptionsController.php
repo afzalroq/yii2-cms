@@ -117,12 +117,22 @@ class OptionsController extends Controller
      */
     public function actionCreate($slug)
     {
-        $model = new Options();
+        $model = new Options($slug);
         $collection = Collections::findOne(['slug' => $slug]);
         $model->parentCollection = $collection;
 
-        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Options::findOne(['collection_id' => $collection->id, 'depth' => 0])))
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $rootOption = Options::findOne(['collection_id' => $collection->id, 'depth' => 0]);
+                $model->appendTo($rootOption);
+                $transaction->commit();
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
+        }
 
         return $this->render('create', [
             'model' => $model,
@@ -132,7 +142,7 @@ class OptionsController extends Controller
 
     public function actionAddChild($root_id, $slug)
     {
-        $model = new Options();
+        $model = new Options($slug);
         $collection = Collections::findOne(['slug' => $slug]);
         $model->parentCollection = $collection;
 

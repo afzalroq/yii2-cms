@@ -62,6 +62,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'use_gallery')->checkbox() ?>
                     <?= $form->field($model, 'use_status')->checkbox() ?>
                     <?= $form->field($model, 'use_views_count')->checkbox() ?>
+                    <?= $form->field($model, 'disable_create_and_delete')->checkbox() ?>
                 </div>
             </div>
         </div>

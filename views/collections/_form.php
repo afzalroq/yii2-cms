@@ -38,6 +38,7 @@ use yii\widgets\ActiveForm;
                 <div class="col-sm-4">
                     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'use_parenting')->checkbox() ?>
+                    <?= $form->field($model, 'manual_slug')->checkbox() ?>
                 </div>
 
                 <div class="col-sm-4">

@@ -92,13 +92,15 @@ if ($entity->use_gallery)
 <div class="items-view">
     <p>
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $entity->slug], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if (!$entity->disable_create_and_delete) : ?>
+            <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $entity->slug], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
     </p>
     <?= DetailView::widget([
         'model' => $model,
@@ -177,7 +179,7 @@ if ($entity->use_gallery)
             ]
         ]) ?>
     <?php endif; ?>
-    <?php if($entity->use_seo == Entities::SEO_TRANSLATABLE || !empty($entity_text_attrs_translatable) || !empty($file_translatable)): ?>
+    <?php if ($entity->use_seo == Entities::SEO_TRANSLATABLE || !empty($entity_text_attrs_translatable) || !empty($file_translatable)): ?>
         <div class="row" id="translatable">
             <div class="col-md-12">
                 <div class="box">
