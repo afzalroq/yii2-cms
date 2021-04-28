@@ -2,8 +2,8 @@
 
 namespace afzalroq\cms;
 
-use yii\base\BootstrapInterface;
 use kartik\datecontrol\Module;
+use yii\base\BootstrapInterface;
 
 
 class Bootstrap implements BootstrapInterface
@@ -79,6 +79,21 @@ class Bootstrap implements BootstrapInterface
                 // other settings
             ]
         ]);
+
+        $app->getUrlManager()->addRules(
+            [
+                'c/<slug:\w+>' => 'cms/c/collection',
+                'c/<slug:\w+>/<slug2:\w+>' => 'cms/c/option',
+                'c/<slug:\w+>/<slug2:\w+>/<slug3:\w+>' => 'cms/c/item',
+
+                'e/<slug:\w+>' => 'cms/e/entity',
+                'e/<slug:\w+>/<slug2:\w+>' => 'cms/e/item',
+
+                'ce/<slug:\w+>' => 'cms/ce/entity',
+                'ce/<slug:\w+>/<slug2:\w+>' => 'cms/ce/item',
+            ]
+        );
+
     }
 }
 
