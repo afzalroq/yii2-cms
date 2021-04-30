@@ -18,8 +18,14 @@ class CController extends Controller
 
     }
 
-    public function actionItem($slug = null, $slug2 = null, $slug3 = null)
+    public function actionEntity($slug = null)
     {
 
     }
+
+    public function actionItem($slug = null, $slug2 = null)
+    {
+
+    }
+
 }
