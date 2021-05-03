@@ -11,6 +11,21 @@ use yii\helpers\StringHelper;
 class Items extends \afzalroq\cms\entities\Items
 {
 
+    public function getLink()
+    {
+        //item
+        return Menu::getItemLink($this->dependEntity, $this);
+
+        //entity
+        return Menu::getEntityLink($this->dependEntity);
+
+        //collection
+        return Menu::getCollectionLink($this->dependCollection);
+
+        //option
+        return Menu::getOptionLink($this->dependCollection, $this);
+    }
+
     public static function getAll($slug)
     {
         $cache = Yii::$app->getModule('cms')->cache;
