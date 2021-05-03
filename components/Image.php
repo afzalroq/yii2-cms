@@ -30,6 +30,14 @@ class Image
         } else {
             $path->{$operation}($width, $height, $background);
         }
+
+        if ($obj->entity->disable_watermark) {
+            $watermark = GregImage::open($module->watermark)->cropResize(intval($width * 15 / 100), intval($height * 15 / 100));
+            $path->merge($watermark, $width - intval($width * 10 / 100),
+                $height - intval($width * 10 / 100));
+        }
+
+
         return $module->host . str_replace($module->path, '', $path->guess());
     }
 

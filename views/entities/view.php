@@ -66,6 +66,7 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                                 'use_status:boolean',
                                 'use_views_count:boolean',
                                 'disable_create_and_delete:boolean',
+                                'disable_watermark:boolean',
                                 'created_at:datetime',
                                 'updated_at:datetime',
                             ]

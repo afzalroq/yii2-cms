@@ -80,6 +80,11 @@ class MenuType extends ActiveRecord
         return $this->hasMany(Menu::class, ['menu_type_id' => 'id']);
     }
 
+    public function getOptions()
+    {
+        return $this->hasMany(CaM::class, ['menu_type_id' => 'id']);
+    }
+
     public function add()
     {
         $transaction = Yii::$app->db->beginTransaction();

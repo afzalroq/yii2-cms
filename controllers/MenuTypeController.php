@@ -2,12 +2,16 @@
 
 namespace afzalroq\cms\controllers;
 
+use afzalroq\cms\entities\CaM;
 use afzalroq\cms\entities\MenuType;
+use afzalroq\cms\entities\Options;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * MenuTypeController implements the CRUD actions for MenuType model.
@@ -27,6 +31,103 @@ class MenuTypeController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionDeleteOptions($id, $camId)
+    {
+        $this->findModelCaM($camId)->delete();
+
+        return $this->redirect(['view', 'id' => $id]);
+    }
+
+    protected function findModelCaM($id)
+    {
+        if (($model = CaM::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('cms', 'The requested page does not exist.'));
+    }
+
+    public function actionUpdateOptions($id, $camId)
+    {
+
+        $model = $this->findModel($id);
+        $cam = $this->findModelCaM($camId);
+
+        if ($cam->load(Yii::$app->request->post()) && $cam->save()) {
+            return $this->redirect(['view', 'id' => $id]);
+        }
+
+        return $this->render('cam/update', [
+            'model' => $model,
+            'cam' => $cam,
+        ]);
+    }
+
+    /**
+     * Finds the MenuType model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return MenuType the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = MenuType::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('cms', 'The requested page does not exist.'));
+    }
+
+    public function actionAddOptions($id)
+    {
+        $model = $this->findModel($id);
+        $cam = new CaM();
+
+        if ($cam->load(Yii::$app->request->post()) && $cam->save()) {
+            return $this->redirect(['view', 'id' => $id]);
+        }
+
+        return $this->render('cam/create', [
+            'model' => $model,
+            'cam' => $cam,
+        ]);
+    }
+
+    public function actionOptionsList()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $id = Yii::$app->request->get('collectionId');
+            $menuType = Yii::$app->request->get('menuType');
+            $data = [];
+            $optionsList = CaM::find()
+                ->where(['menu_type_id' => $menuType])
+                ->joinWith(['option' => function (ActiveQuery $query) use ($id) {
+                    return $query->where(['collection_id' => $id]);
+                }])
+                ->select('option_id')
+                ->column();
+            if (!empty($optionsList)) {
+                $options = Options::find()->where(['collection_id' => $id])->andWhere(['>', 'depth', 0])->andWhere(['not in', 'id', $optionsList])->all();
+            } else {
+                $options = Options::find()->where(['collection_id' => $id])->andWhere(['>', 'depth', 0])->all();
+            }
+
+            foreach ($options as $option) {
+                $data[] = [
+                    'id' => $option->id,
+                    'name' => $option->name_0
+                ];
+            }
+            return [
+                'status' => 1,
+                'data' => $data
+            ];
+        }
+        return false;
     }
 
     /**
@@ -54,6 +155,7 @@ class MenuTypeController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'cam' => $this->findModelCaM($id)
         ]);
     }
 
@@ -105,21 +207,5 @@ class MenuTypeController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the MenuType model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return MenuType the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = MenuType::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException(Yii::t('cms', 'The requested page does not exist.'));
     }
 }
