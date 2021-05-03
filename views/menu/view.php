@@ -55,6 +55,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format' => 'html',
                                 'value' => $model->getTypeValue()
                             ],
+                            [
+                                'attribute' => 'created_by',
+                                'value' => function ($model) {
+                                    return $model->createdBy ? $model->createdBy->username : '';
+                                }
+                            ],
+                            [
+                                'attribute' => 'updated_by',
+                                'value' => function ($model) {
+                                    return $model->updatedBy ? $model->updatedBy->username : '';
+                                }
+                            ],
                             'created_at:datetime',
                             'updated_at:datetime',
                         ]

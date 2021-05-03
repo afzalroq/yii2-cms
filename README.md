@@ -43,6 +43,7 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
 
 - Language indexes related with database columns.
 - Admin panel tabs render by array values order
+- For Items, Options and Menu must be isset common\models\User model
 
 ```php
 'modules' => [
@@ -59,6 +60,7 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
         'imageXPos' => 'center',
         'imageYPos' => 'center',
         'fallback' => $params['storageRoot'] . '/fallback.png',
+        'watermark' => $params['storageRoot'] . '/logo.png',
         // i18n
         'languages' => [
             'ru' => [

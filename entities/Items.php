@@ -4,8 +4,10 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
+use common\models\User;
 use DomainException;
 use Yii;
+use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
@@ -143,6 +145,7 @@ class Items extends ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            BlameableBehavior::class,
             'slug' => [
                 'class' => 'Zelenin\yii\behaviors\Slug',
                 'slugAttribute' => 'slug',
@@ -557,6 +560,17 @@ class Items extends ActiveRecord
         return $this->hasOne(Entities::class, ['id' => 'entity_id']);
     }
 
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+    
     #region Photo Methods
 
     public function getPhotos()

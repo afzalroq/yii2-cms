@@ -63,6 +63,18 @@ $main_attributes = [
 //    'id',
 //    'entity_id',
     'slug',
+    [
+        'attribute' => 'created_by',
+        'value' => function ($model) {
+            return $model->createdBy ? $model->createdBy->username : '';
+        }
+    ],
+    [
+        'attribute' => 'updated_by',
+        'value' => function ($model) {
+            return $model->updatedBy ? $model->updatedBy->username : '';
+        }
+    ],
 ];
 
 if ($model->entity->use_date === Entities::USE_DATE_DATE)

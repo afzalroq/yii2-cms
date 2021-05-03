@@ -5,8 +5,10 @@ namespace afzalroq\cms\entities;
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
 use afzalroq\cms\entities\query\OptionsQuery;
+use common\models\User;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
+use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
@@ -111,6 +113,7 @@ class Options extends ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            BlameableBehavior::class,
             $this->getFileUploadBehaviorConfig('file_1_0'),
             $this->getFileUploadBehaviorConfig('file_1_1'),
             $this->getFileUploadBehaviorConfig('file_1_2'),
@@ -421,5 +424,15 @@ class Options extends ActiveRecord
         return $this->hasMany(OaI::class, ['option_id' => 'id']);
     }
 
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
     #endregion
 }

@@ -3,8 +3,10 @@
 namespace afzalroq\cms\entities;
 
 use afzalroq\cms\entities\query\MenuQuery;
+use common\models\User;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
+use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
@@ -68,6 +70,7 @@ class Menu extends ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            BlameableBehavior::class,
             'tree' => [
                 'class' => NestedSetsBehavior::class,
                 'treeAttribute' => $this->treeAttribute,
@@ -298,6 +301,17 @@ class Menu extends ActiveRecord
     public function getMenuType()
     {
         $this->hasOne(MenuType::class, ['id' => 'menu_typ_id']);
+    }
+
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
     public function typesList($key = null)
