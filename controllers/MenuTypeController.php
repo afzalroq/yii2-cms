@@ -42,11 +42,9 @@ class MenuTypeController extends Controller
 
     protected function findModelCaM($id)
     {
-        if (($model = CaM::findOne($id)) !== null) {
+        if (($model = CaM::findOne(['menu_type_id' => $id])) !== null) {
             return $model;
         }
-
-        throw new NotFoundHttpException(Yii::t('cms', 'The requested page does not exist.'));
     }
 
     public function actionUpdateOptions($id, $camId)
