@@ -51,7 +51,7 @@ use yii\db\Exception;
  * @property int|null $use_views_count
  * @property int|null $manual_slug
  * @property int|null $disable_create_and_delete
- * @property int|null $disable_watermark
+ * @property int|null $use_watermark
  * @property int $created_at
  * @property int $updated_at
  *
@@ -306,7 +306,7 @@ class Entities extends ActiveRecord
             [['slug', 'text_1_label', 'text_2_label', 'text_3_label', 'text_4_label', 'text_5_label', 'text_6_label', 'text_7_label', 'file_1_label', 'file_2_label', 'file_3_label'], 'string', 'max' => 255],
 
             [['use_date', 'use_seo', 'use_gallery', 'use_in_menu', 'use_status', 'use_views_count', 'manual_slug'], 'required'],
-            [['use_date', 'use_seo', 'use_gallery', 'use_in_menu', 'use_status', 'use_views_count', 'manual_slug', 'disable_create_and_delete', 'disable_watermark'], 'integer'],
+            [['use_date', 'use_seo', 'use_gallery', 'use_in_menu', 'use_status', 'use_views_count', 'manual_slug', 'disable_create_and_delete', 'use_watermark'], 'integer'],
 
             [['slug'], 'required'],
             [['slug'], 'unique'],
@@ -372,7 +372,7 @@ class Entities extends ActiveRecord
             'use_views_count' => Yii::t('cms', 'Use Views Count'),
             'manual_slug' => Yii::t('cms', 'Manual Slug'),
             'disable_create_and_delete' => Yii::t('cms', 'Disable create and delete'),
-            'disable_watermark' => Yii::t('cms', 'Disable watermark'),
+            'use_watermark' => Yii::t('cms', 'Use watermark'),
             'created_at' => Yii::t('cms', 'Created at'),
             'updated_at' => Yii::t('cms', 'Updated at'),
         ];
