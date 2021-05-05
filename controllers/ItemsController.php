@@ -94,17 +94,21 @@ class ItemsController extends Controller
             $model->load(Yii::$app->request->post());
             return Json::encode(\yii\widgets\ActiveForm::validate($model));
         }
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             foreach ($model->files as $file) $model->addPhoto($file);
-            return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
+            if (Yii::$app->request->post('save') === 'addNew')
+                return $this->redirect(['create', 'slug' => $slug]);
+
+            return $this->redirect(['index', 'slug' => $slug]);
         }
+
 
         return $this->render('create', [
             'model' => $model,
             'entity' => Entities::findOne(['slug' => $slug])
         ]);
     }
+
 
     /**
      * Updates an existing Items model.

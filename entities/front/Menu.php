@@ -16,7 +16,7 @@ class Menu extends Nestable
         $cache = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
         return \Yii::$app->{$cache}->getOrSet('menu_' . $slug, function () use ($slug) {
-            return (new MenuWidget())->getMenu($slug);
+            return (new MenuWidget())->getMenu($slug)[0]['children'];
         }, $cacheDuration, new TagDependency(['tags' => ['menu_' . $slug]]));
     }
 }

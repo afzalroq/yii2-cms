@@ -17,6 +17,20 @@ class MenuWidget extends Nestable
 {
     private $_uniqueItems = [];
 
+    protected function renderItems($_items = NULL)
+    {
+        return '';
+    }
+
+    public function registerAssets() {
+        return '';
+    }
+
+    public function run()
+    {
+        return '';
+    }
+
     public function getMenu($slug = null)
     {
         if (MenuType::findOne(['slug' => $slug]))
