@@ -192,5 +192,5 @@ Unit::get('slug'); // will return data using cache
  \afzalroq\cms\entities\front\Items::getOptionItemSearchResults((array) $optionSlugs, $search); // get search results with option and items
 
  \afzalroq\cms\entities\front\Options::getOptionSearchResults((array) $optionSlugs, $search); // get search results with options
-
+ 
 ```
