@@ -570,7 +570,11 @@ class Items extends ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
-    
+
+    public function getOption()
+    {
+        return $this->hasOne(OaI::class, ['item_id' => 'id']);
+    }
     #region Photo Methods
 
     public function getPhotos()

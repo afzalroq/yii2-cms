@@ -79,4 +79,13 @@ class OaI extends ActiveRecord
     {
         return $this->hasOne(Options::class, ['id' => 'option_id']);
     }
+    /**
+     * Gets query for [[OptionFront]].
+     *
+     * @return ActiveQuery
+     */
+    public function getOptionFront()
+    {
+        return $this->hasOne(\afzalroq\cms\entities\front\Options::class, ['id' => 'option_id']);
+    }
 }
