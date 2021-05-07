@@ -26,20 +26,9 @@ class m210128_053616_create_cms_menu_type_table extends Migration
 
         $this->addColumn('cms_menu', 'menu_type_id', $this->integer()->notNull());
         $this->createIndex('idx-cms_menu-menu_typ_id', 'cms_menu', 'menu_type_id');
-        $this->addForeignKey(
-            'fkey-cms_menu-menu_type_id',
-            'cms_menu',
-            'menu_type_id',
-            'cms_menu_type',
-            'id'
-        );
+        $this->addForeignKey('fkey-cms_menu-menu_type_id', 'cms_menu', 'menu_type_id', 'cms_menu_type', 'id');
 
-        $this->createIndex(
-            'index-cms_collections-slug',
-            'cms_menu_type',
-            'slug',
-            true
-        );
+        $this->createIndex('index-cms_collections-slug', 'cms_menu_type', 'slug', true);
     }
 
     /**

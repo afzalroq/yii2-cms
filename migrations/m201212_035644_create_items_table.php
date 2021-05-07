@@ -78,25 +78,10 @@ class m201212_035644_create_items_table extends Migration
 			'updated_at' => $this->integer()->unsigned()->notNull(),
 		], $tableOptions);
 
-		$this->createIndex(
-			'index-cms_items-slug',
-			'cms_items',
-			'slug',
-			true
-		);
-		$this->createIndex(
-			'index-cms_items-entity_id',
-			'cms_items',
-			'entity_id'
-		);
-
-		$this->addForeignKey(
-			'fkey-cms_items-entity_id',
-			'cms_items',
-			'entity_id',
-			'cms_entities',
-			'id'
-		);
+		$this->createIndex('index-cms_items-slug', 'cms_items', 'slug', true);
+		
+		$this->createIndex('index-cms_items-entity_id', 'cms_items', 'entity_id');
+		$this->addForeignKey('fkey-cms_items-entity_id', 'cms_items', 'entity_id', 'cms_entities', 'id');
 	}
 
 	/**

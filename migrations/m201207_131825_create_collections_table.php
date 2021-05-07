@@ -39,17 +39,8 @@ class m201207_131825_create_collections_table extends Migration
             'updated_at' => $this->integer()->unsigned()->notNull(),
         ], $tableOptions);
 
-        $this->createIndex(
-            'index-cms_collections-slug',
-            'cms_collections',
-            'slug',
-            true
-        );
-        $this->createIndex(
-            'index-cms_collections-option_default_id',
-            'cms_collections',
-            'option_default_id'
-        );
+        $this->createIndex('index-cms_collections-slug', 'cms_collections', 'slug', true);
+        $this->createIndex('index-cms_collections-option_default_id', 'cms_collections', 'option_default_id');
     }
 
 
