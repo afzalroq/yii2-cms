@@ -6,9 +6,12 @@ use afzalroq\cms\entities\query\MenuQuery;
 use common\models\User;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
+use yii\base\BaseObject;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -45,11 +48,13 @@ class Menu extends ActiveRecord
     public $types;
     public $types_helper;
     public $option_id;
+    public $dependMenuType;
 
     public $action;
     public $link;
     public $treeAttribute = 'tree';
     private $CMSModule;
+
 
     #endregion
 
@@ -97,7 +102,7 @@ class Menu extends ActiveRecord
     {
         if (!parent::beforeSave($insert))
             return false;
-
+        $this->dependMenuType = MenuType::findOne(['id' => $this->menu_type_id]);
         switch ($this->type) {
             case self::TYPE_ITEM:
                 $this->type_helper = explode('_', $this->types)[1] . ',' . $this->type_helper;
@@ -105,6 +110,23 @@ class Menu extends ActiveRecord
         }
 
         return true;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'menu_' . $this->dependMenuType->slug);
+
+        return true;
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'menu_' . $this->dependMenuType->slug);
+
     }
 
     public function rules()
@@ -297,6 +319,7 @@ class Menu extends ActiveRecord
                 $this->type_helper = '';
         }
     }
+
 
     public function getMenuType()
     {
