@@ -199,13 +199,23 @@ class CmsForm
         return '';
     }
 
-    public function dateField($attr)
+    public function dateFieldCommon($attr)
     {
         switch ($this->obj['use_' . $attr]) {
             case Entities::USE_DATE_DATE:
-                return $this->date($attr);
+                return $this->date($attr.'_0');
             case Entities::USE_DATE_DATETIME:
-                return $this->date($attr, ['type' => DateControl::FORMAT_DATETIME]);
+                return $this->date($attr.'_0', ['type' => DateControl::FORMAT_DATETIME]);
+        }
+    }
+
+    public function dateFieldTranslatable($langKey, $attr)
+    {
+        switch ($this->obj['use_' . $attr]) {
+            case Entities::USE_TRANSLATABLE_DATE_DATE:
+                return $this->date($attr.'_'.$langKey);
+            case Entities::USE_TRANSLATABLE_DATE_DATETIME:
+                return $this->date($attr.'_'.$langKey, ['type' => DateControl::FORMAT_DATETIME]);
         }
     }
 

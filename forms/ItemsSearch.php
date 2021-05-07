@@ -16,7 +16,7 @@ class ItemsSearch extends Items
     public function rules()
     {
         return [
-            [['id', 'entity_id', 'date', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'entity_id', 'date_0', 'date_1', 'date_2', 'date_3', 'date_4', 'status', 'created_at', 'updated_at'], 'integer'],
             [['slug', 'text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4', 'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4', 'text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4', 'text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4', 'text_5_0', 'text_5_1', 'text_5_2', 'text_5_3', 'text_5_4', 'text_6_0', 'text_6_1', 'text_6_2', 'text_6_3', 'text_6_4', 'text_7_0', 'text_7_1', 'text_7_2', 'text_7_3', 'text_7_4', 'file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4', 'file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4', 'file_3_0', 'file_3_1', 'file_3_2', 'file_3_3', 'file_3_4'], 'safe'],
         ];
     }
@@ -60,7 +60,11 @@ class ItemsSearch extends Items
         $query->andFilterWhere([
             'id' => $this->id,
             'entity_id' => $this->entity_id,
-            'date' => $this->date,
+            'date_0' => $this->date_0,
+            'date_1' => $this->date_1,
+            'date_2' => $this->date_2,
+            'date_3' => $this->date_3,
+            'date_4' => $this->date_4,
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

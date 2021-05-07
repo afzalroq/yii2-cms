@@ -11,21 +11,6 @@ use yii\helpers\StringHelper;
 class Items extends \afzalroq\cms\entities\Items
 {
 
-    public function getLink()
-    {
-        //item
-        return Menu::getItemLink($this->dependEntity, $this);
-
-        //entity
-        return Menu::getEntityLink($this->dependEntity);
-
-        //collection
-        return Menu::getCollectionLink($this->dependCollection);
-
-        //option
-        return Menu::getOptionLink($this->dependCollection, $this);
-    }
-
     public static function getAll($slug)
     {
         $cache = Yii::$app->getModule('cms')->cache;
@@ -98,6 +83,21 @@ class Items extends \afzalroq\cms\entities\Items
             ['like', 'text_7_' . $langId, $search],
         ])->all();
         return $items;
+    }
+
+    public function getLink()
+    {
+        //item
+        return Menu::getItemLink($this->dependEntity, $this);
+
+        //entity
+        return Menu::getEntityLink($this->dependEntity);
+
+        //collection
+        return Menu::getCollectionLink($this->dependCollection);
+
+        //option
+        return Menu::getOptionLink($this->dependCollection, $this);
     }
 
     public function getText1()
@@ -233,7 +233,16 @@ class Items extends \afzalroq\cms\entities\Items
 
     public function getDate($format)
     {
-        return date($format, $this->date);
+        return date($format, $this->getDateCurrent('date'));
+    }
+
+    private function getDateCurrent($attr)
+    {
+        if ($this->entity->use_date) {
+            if ($this->entity->use_date < 3)
+                return $this[$attr . '_0'];
+            return $this[$attr . '_' . \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]];
+        }
     }
 
     private function getMetaTitle()
