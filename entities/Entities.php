@@ -91,6 +91,8 @@ class Entities extends ActiveRecord
     const USE_DATE_DISABLED = 0;
     const USE_DATE_DATE = 1;
     const USE_DATE_DATETIME = 2;
+    const USE_TRANSLATABLE_DATE_DATE = 3;
+    const USE_TRANSLATABLE_DATE_DATETIME = 4;
 
     #region seo types
     const SEO_DISABLED = 0;
@@ -226,6 +228,8 @@ class Entities extends ActiveRecord
             self::USE_DATE_DISABLED => Yii::t('cms', 'Disabled'),
             self::USE_DATE_DATE => Yii::t('cms', 'Date'),
             self::USE_DATE_DATETIME => Yii::t('cms', 'Datetime'),
+            self::USE_TRANSLATABLE_DATE_DATE => Yii::t('cms', 'Date translatable'),
+            self::USE_TRANSLATABLE_DATE_DATETIME => Yii::t('cms', 'Datetime translatable'),
         ];
     }
 

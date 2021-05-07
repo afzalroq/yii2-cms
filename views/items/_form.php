@@ -56,7 +56,7 @@ $hasTranslatableAttrs = 0;
     <div class="box">
         <div class="box-body">
             <div class="row">
-                <?= $cmsForm->dateField('date') ?>
+                <?= $cmsForm->dateFieldCommon('date') ?>
 
                 <?= $cmsForm->textFieldsCommon() ?>
                 <?= $cmsForm->fileFieldsCommon() ?>
@@ -83,7 +83,7 @@ $hasTranslatableAttrs = 0;
                         <br>
                         <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
                             <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
-
+                                <?= $cmsForm->dateFieldTranslatable($key, 'date') ?>
                                 <?= $cmsForm->textFieldsTranslatable($key, $hasTranslatableAttrs) ?>
                                 <?= $cmsForm->fileFieldsTranslatable($key, $hasTranslatableAttrs) ?>
 

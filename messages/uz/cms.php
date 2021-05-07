@@ -28,7 +28,8 @@ return [
     'action' => 'harakat',
     'Menu' => 'Menyu',
 
-
+    'Date translatable' => 'Sana tarjimali',
+    'Datetime translatable' => 'Sana va vaqt tarjimali',
 
     'No parent' => 'No parent',
     'Parent ID' => 'Parent ID',

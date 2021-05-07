@@ -73,7 +73,11 @@ use yiidreamteam\upload\ImageUploadBehavior;
  * @property string|null $file_3_3
  * @property string|null $file_3_4
  * @property string|null $seo_values
- * @property int|null $date
+ * @property int|null $date_0
+ * @property int|null $date_1
+ * @property int|null $date_2
+ * @property int|null $date_3
+ * @property int|null $date_4
  * @property int|null $status
  * @property int|null $views_count
  * @property int $created_at
@@ -345,7 +349,7 @@ class Items extends ActiveRecord
 
             ['options', 'safe'],
             [['entity_id'], 'required'],
-            [['entity_id', 'date', 'status'], 'integer'],
+            [['entity_id', 'date_0', 'date_1', 'date_2', 'date_3', 'date_4', 'status'], 'integer'],
             [['text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4',
                 'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4',
                 'text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4',
@@ -469,7 +473,11 @@ class Items extends ActiveRecord
             'meta_title_4' => Yii::t('cms', 'Seo Title') . '(' . $language4 . ')',
             'meta_des_4' => Yii::t('cms', 'Seo Description') . '(' . $language4 . ')',
             'meta_keyword_4' => Yii::t('cms', 'Seo Keywords') . '(' . $language4 . ')',
-            'date' => Yii::t('cms', 'Date'),
+            'date_0' => Yii::t('cms', 'Date'). '(' . $language0 . ')',
+            'date_1' => Yii::t('cms', 'Date'). '(' . $language1 . ')',
+            'date_2' => Yii::t('cms', 'Date'). '(' . $language2 . ')',
+            'date_3' => Yii::t('cms', 'Date'). '(' . $language3 . ')',
+            'date_4' => Yii::t('cms', 'Date'). '(' . $language4 . ')',
             'status' => Yii::t('cms', 'Status'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),

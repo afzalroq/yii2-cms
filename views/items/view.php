@@ -28,6 +28,7 @@ $text_attributes = [];
 $file_attributes = [];
 $seo_values = [];
 $main_photo = [];
+$data_translatable = [];
 
 foreach ($entity_text_attrs as $key => $attr) {
     if ($attr == Entities::TEXT_DISABLED)
@@ -78,9 +79,9 @@ $main_attributes = [
 ];
 
 if ($model->entity->use_date === Entities::USE_DATE_DATE)
-    $main_attributes[] = 'date:date';
+    $main_attributes[] = 'date_0:date';
 if ($model->entity->use_date === Entities::USE_DATE_DATETIME)
-    $main_attributes[] = 'date:datetime';
+    $main_attributes[] = 'date_0:datetime';
 
 
 //$cmsForm = new CmsForm((new ActiveForm()), $model, $entity);
@@ -208,6 +209,28 @@ if ($entity->use_gallery)
                             <br>
                             <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
                                 <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
+                                    <?php
+                                    if ($model->entity->use_date === Entities::USE_TRANSLATABLE_DATE_DATE) {
+                                        $data_translatable[] = 'date_' . $key . ':date';
+
+                                        echo DetailView::widget([
+                                            'model' => $model,
+                                            'attributes' => $data_translatable
+                                        ]);
+
+                                        $data_translatable = [];
+                                    }
+                                    if ($model->entity->use_date === Entities::USE_TRANSLATABLE_DATE_DATETIME) {
+                                        $data_translatable[] = 'date_' . $key . ':datetime';
+
+                                        echo DetailView::widget([
+                                            'model' => $model,
+                                            'attributes' => $data_translatable
+                                        ]);
+
+                                        $data_translatable = [];
+                                    }
+                                    ?>
                                     <?php foreach ($entity_text_attrs_translatable as $attr => $value)
                                         if ($entity[$attr])
                                             $text_attributes[] = [
@@ -264,6 +287,7 @@ if ($entity->use_gallery)
                                         $seo_values = [];
                                     }
                                     ?>
+
 
                                 </div>
                             <?php endforeach; ?>

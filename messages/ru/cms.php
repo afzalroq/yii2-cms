@@ -89,6 +89,8 @@ return [
     'Required' => 'Oбязательный',
     'Date' => 'Дата',
     'Datetime' => 'Дата и время',
+    'Date translatable' => 'Дата переводимый',
+    'Datetime translatable' => 'Дата и время переводимый',
 
     //items
 
