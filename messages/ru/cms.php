@@ -100,5 +100,6 @@ return [
     'Pictures' => 'Фотографий',
     'Gallery main Photo' => 'Галерея главная Фото',
     'If the SVG format is used in the file, no other format can be used' => 'Если в файле используется формат SVG, другой формат использовать нельзя.',
-    'View' => 'Просматривать'
+    'View' => 'Просматривать',
+    'Saved' => 'Сохранено'
 ];
