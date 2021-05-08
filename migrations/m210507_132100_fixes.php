@@ -6,7 +6,7 @@ class m210507_132100_fixes extends Migration
 {
     public function safeUp()
     {
-        //
+        #########################################################################################################
         $this->createTable('{{%cms_options_and_menu_types}}', [
             'id' => $this->primaryKey(),
             'option_id' => $this->integer()->notNull(),
@@ -22,11 +22,11 @@ class m210507_132100_fixes extends Migration
         $this->addForeignKey('fkey-cms_options_and_menu_types_menu_type_id', 'cms_options_and_menu_types', 'menu_type_id', 'cms_menu_type', 'id');
 
 
-        //
+        #########################################################################################################
         $this->addColumn('cms_entities', 'disable_watermark', $this->tinyInteger());
 
 
-        //
+        #########################################################################################################
         //cms options
         $this->addColumn('cms_options', 'created_by', $this->integer());
         $this->addColumn('cms_options', 'updated_by', $this->integer());
@@ -38,13 +38,12 @@ class m210507_132100_fixes extends Migration
         $this->addColumn('cms_menu', 'updated_by', $this->integer());
 
 
-        //
+        #########################################################################################################
         $this->renameColumn('cms_entities','disable_watermark','use_watermark');
 
 
-        //
+        #########################################################################################################
         $this->renameColumn('cms_items','date','date_0');
-
         //adding columns to items
         $this->addColumn('cms_items','date_1',$this->integer()->unsigned());
         $this->addColumn('cms_items','date_2',$this->integer()->unsigned());
@@ -53,7 +52,7 @@ class m210507_132100_fixes extends Migration
 
 
 
-        //
+        #########################################################################################################
         $this->dropForeignKey('fkey-cms_options_and_items-option_id', 'cms_options_and_items');
         $this->addForeignKey('fkey-cms_options_and_items-option_id', 'cms_options_and_items', 'option_id', 'cms_options', 'id', 'CASCADE', 'CASCADE');
 
