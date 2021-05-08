@@ -45,35 +45,13 @@ class m201208_111804_create_options_table extends Migration
 			'updated_at' => $this->integer()->unsigned()->notNull(),
 		], $tableOptions);
 
-		$this->createIndex(
-			'index-cms_options-slug',
-			'cms_options',
-			'slug',
-			true
-		);
+		$this->createIndex('index-cms_options-slug', 'cms_options', 'slug', true);
 
-		$this->createIndex(
-			'index-cms_options-collection_id',
-			'cms_options',
-			'collection_id'
-		);
+		$this->createIndex('index-cms_options-collection_id', 'cms_options', 'collection_id');
+        $this->addForeignKey('fkey-cms_options-collection_id', 'cms_options', 'collection_id', 'cms_collections', 'id');
 
-		$this->addForeignKey(
-			'fkey-cms_options-collection_id',
-			'cms_options',
-			'collection_id',
-			'cms_collections',
-			'id'
-		);
-
-		$this->addForeignKey(
-			'fkey-cms_collections-option_default_id',
-			'cms_collections',
-			'option_default_id',
-			'cms_options',
-			'id'
-		);
-	}
+        $this->addForeignKey('fkey-cms_collections-option_default_id', 'cms_collections', 'option_default_id', 'cms_options', 'id');
+    }
 
 	/**
 	 * {@inheritdoc}

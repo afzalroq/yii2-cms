@@ -54,13 +54,7 @@ class m201210_060118_create_entities_table extends Migration
             'updated_at' => $this->integer()->unsigned()->notNull(),
         ], $tableOptions);
 
-        $this->createIndex(
-            'index-cms_entities-slug',
-            'cms_entities',
-            'slug',
-            true
-        );
-
+        $this->createIndex('index-cms_entities-slug', 'cms_entities', 'slug', true);
     }
 
 

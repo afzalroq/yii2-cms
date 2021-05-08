@@ -23,30 +23,11 @@ class m201218_061950_create_collections_and_entities_table extends Migration
 			'updated_at' => $this->integer()->unsigned()->notNull(),
 		]);
 
-		$this->createIndex(
-			'index-cms_collections_and_entities-collection_id',
-			'cms_collections_and_entities',
-			'collection_id');
+        $this->createIndex('index-cms_collections_and_entities-collection_id', 'cms_collections_and_entities', 'collection_id');
+        $this->addForeignKey('fkey-cms_collections_and_entities-collection_id', 'cms_collections_and_entities', 'collection_id', 'cms_collections', 'id');
 
-		$this->createIndex(
-			'index-cms_collections_and_entities-entities_id',
-			'cms_collections_and_entities',
-			'entity_id');
-
-		$this->addForeignKey(
-			'fkey-cms_collections_and_entities-collection_id',
-			'cms_collections_and_entities',
-			'collection_id',
-			'cms_collections',
-
-			'id');
-
-		$this->addForeignKey(
-			'fkey-cms_collections_and_entities-entities_id',
-			'cms_collections_and_entities',
-			'entity_id',
-			'cms_entities',
-			'id');
+        $this->createIndex('index-cms_collections_and_entities-entities_id', 'cms_collections_and_entities', 'entity_id');
+        $this->addForeignKey('fkey-cms_collections_and_entities-entities_id', 'cms_collections_and_entities', 'entity_id', 'cms_entities', 'id');
 	}
 
 	/**
