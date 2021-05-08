@@ -13,9 +13,7 @@ use yii\widgets\ActiveForm;
 
 $hasTranslatableAttrs = 0;
 ?>
-<?php if (Yii::$app->session->hasFlash('success')): ?>
-    <div style="margin:5px 0 0 0;" class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div>
-<?php endif; ?>
+
 
 <div class="items-form">
     <?php
@@ -34,7 +32,9 @@ $hasTranslatableAttrs = 0;
 
     <div  style="position: sticky;top: 10px!important;">
         <?= Html::submitButton(Yii::t('cms', 'Save and add new'), ['class' => 'btn btn-success', 'name' => 'save', 'value' => 'addNew']) ?>
-        <?= Html::submitButton(Yii::t('cms', 'Save and Close'), ['class' => 'btn btn-warning', 'name' => 'save', 'value' => 'close']) ?>
+        <?= Html::submitButton(Yii::t('cms', 'Save and Close'), ['class' => 'btn btn-warning', 'name' => 'save', 'value' => 'saveClose']) ?>
+        <?= Html::submitButton(Yii::t('cms', 'Save'), ['class' => 'btn btn-success', 'name' => 'save', 'value' => 'save']) ?>
+        <?= Html::submitButton(Yii::t('cms', 'Close'), ['class' => 'btn btn-danger', 'name' => 'save', 'value' => 'close']) ?>
     </div>
     <?= $form->errorSummary($model) ?>
     <?= $form->field($model, 'entity_id')->textInput(['value' => $entity->id, 'type' => 'hidden'])->label(false) ?>

@@ -94,10 +94,25 @@ class ItemsController extends Controller
             $model->load(Yii::$app->request->post());
             return Json::encode(\yii\widgets\ActiveForm::validate($model));
         }
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            foreach ($model->files as $file) $model->addPhoto($file);
-            if (Yii::$app->request->post('save') === 'addNew')
+        if ($model->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->post('save') === 'addNew') {
+                $model->save();
+                foreach ($model->files as $file) $model->addPhoto($file);
+                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
                 return $this->redirect(['create', 'slug' => $slug]);
+            }
+            if (Yii::$app->request->post('save') === 'saveClose') {
+                $model->save();
+                foreach ($model->files as $file) $model->addPhoto($file);
+                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
+                return $this->redirect(['index', 'slug' => $slug]);
+            }
+            if (Yii::$app->request->post('save') === 'save') {
+                $model->save();
+                foreach ($model->files as $file) $model->addPhoto($file);
+                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
+                return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+            }
 
             return $this->redirect(['index', 'slug' => $slug]);
         }
@@ -123,9 +138,27 @@ class ItemsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            foreach ($model->files as $file) $model->addPhoto($file);
-            return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
+        if ($model->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->post('save') === 'addNew') {
+                $model->save();
+                foreach ($model->files as $file) $model->addPhoto($file);
+                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
+                return $this->redirect(['create', 'slug' => $slug]);
+            }
+            if (Yii::$app->request->post('save') === 'saveClose') {
+                $model->save();
+                foreach ($model->files as $file) $model->addPhoto($file);
+                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
+                return $this->redirect(['index', 'slug' => $slug]);
+            }
+            if (Yii::$app->request->post('save') === 'save') {
+                $model->save();
+                foreach ($model->files as $file) $model->addPhoto($file);
+                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
+                return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+            }
+
+            return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
         }
 
         return $this->render('update', [
@@ -159,17 +192,16 @@ class ItemsController extends Controller
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 
+    public function removePhoto($id, $photoId): void
+    {
+        $model = $this->findModel($id);
+        $model->removePhoto($photoId);
+        $model->save();
+    }
 
     public function actionMovePhotoUp($id, $photo_id, $slug)
     {
         $this->movePhotoUp($id, $photo_id);
-        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
-
-    }
-
-    public function actionMovePhotoDown($id, $photo_id, $slug)
-    {
-        $this->movePhotoDown($id, $photo_id);
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
 
     }
@@ -180,17 +212,17 @@ class ItemsController extends Controller
         $model->movePhotoUp($photoId);
     }
 
+    public function actionMovePhotoDown($id, $photo_id, $slug)
+    {
+        $this->movePhotoDown($id, $photo_id);
+        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
+
+    }
+
     public function movePhotoDown($id, $photoId): void
     {
         $model = $this->findModel($id);
         $model->movePhotoDown($photoId);
-        $model->save();
-    }
-
-    public function removePhoto($id, $photoId): void
-    {
-        $model = $this->findModel($id);
-        $model->removePhoto($photoId);
         $model->save();
     }
 }
