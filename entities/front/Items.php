@@ -231,17 +231,15 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getFile('file_3');
     }
 
-    public function getDate()
+    public function getDate($format = null)
     {
-        if ($this->entity->use_date) {
-            if ($this->entity->use_date < 3)
-                return $this['date_0'];
-            return $this['date_' . \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]];
+        if ($format) {
+            return date($format, $this->getDate());
         }
-    }
 
-    private function getDateCurrent($attr)
-    {
+        return in_array($this->dependEntity->use_date, [Entities::USE_DATE_DISABLED, Entities::USE_DATE_DATE, Entities::USE_DATE_DATETIME])
+            ? $this['date_0']
+            : $this['date_' . \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]];
     }
 
     private function getMetaTitle()
