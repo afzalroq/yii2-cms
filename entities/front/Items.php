@@ -7,6 +7,7 @@ use afzalroq\cms\entities\OaI;
 use Yii;
 use yii\caching\TagDependency;
 use yii\helpers\StringHelper;
+use yii\helpers\Url;
 
 class Items extends \afzalroq\cms\entities\Items
 {
@@ -237,7 +238,7 @@ class Items extends \afzalroq\cms\entities\Items
             return date($format, $this->getDate());
         }
 
-        return in_array($this->dependEntity->use_date, [Entities::USE_DATE_DISABLED, Entities::USE_DATE_DATE, Entities::USE_DATE_DATETIME])
+        return in_array($this->entity->use_date, [Entities::USE_DATE_DISABLED, Entities::USE_DATE_DATE, Entities::USE_DATE_DATETIME])
             ? $this['date_0']
             : $this['date_' . \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]];
     }

@@ -7,20 +7,16 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use afzalroq\cms\entities\Items;
 
-/**
- * ItemsSearch represents the model behind the search form of `afzalroq\cms\entities\Items`.
- */
 class ItemsSearch extends Items
 {
 
     public function rules()
     {
         return [
-            [['id', 'entity_id', 'date_0', 'date_1', 'date_2', 'date_3', 'date_4', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['slug', 'text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4', 'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4', 'text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4', 'text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4', 'text_5_0', 'text_5_1', 'text_5_2', 'text_5_3', 'text_5_4', 'text_6_0', 'text_6_1', 'text_6_2', 'text_6_3', 'text_6_4', 'text_7_0', 'text_7_1', 'text_7_2', 'text_7_3', 'text_7_4', 'file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4', 'file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4', 'file_3_0', 'file_3_1', 'file_3_2', 'file_3_3', 'file_3_4'], 'safe'],
+            [['id', 'entity_id', 'date_0', 'date_1', 'date_2', 'date_3', 'date_4', 'status'], 'integer'],
+            [['slug', 'text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4', 'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4', 'text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4', 'text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4', 'text_5_0', 'text_5_1', 'text_5_2', 'text_5_3', 'text_5_4', 'text_6_0', 'text_6_1', 'text_6_2', 'text_6_3', 'text_6_4', 'text_7_0', 'text_7_1', 'text_7_2', 'text_7_3', 'text_7_4'], 'safe'],
         ];
     }
-
 
     public function scenarios()
     {
@@ -66,8 +62,6 @@ class ItemsSearch extends Items
             'date_3' => $this->date_3,
             'date_4' => $this->date_4,
             'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'slug', $this->slug])
@@ -105,22 +99,7 @@ class ItemsSearch extends Items
             ->andFilterWhere(['like', 'text_7_1', $this->text_7_1])
             ->andFilterWhere(['like', 'text_7_2', $this->text_7_2])
             ->andFilterWhere(['like', 'text_7_3', $this->text_7_3])
-            ->andFilterWhere(['like', 'text_7_4', $this->text_7_4])
-            ->andFilterWhere(['like', 'file_1_0', $this->file_1_0])
-            ->andFilterWhere(['like', 'file_1_1', $this->file_1_1])
-            ->andFilterWhere(['like', 'file_1_2', $this->file_1_2])
-            ->andFilterWhere(['like', 'file_1_3', $this->file_1_3])
-            ->andFilterWhere(['like', 'file_1_4', $this->file_1_4])
-            ->andFilterWhere(['like', 'file_2_0', $this->file_2_0])
-            ->andFilterWhere(['like', 'file_2_1', $this->file_2_1])
-            ->andFilterWhere(['like', 'file_2_2', $this->file_2_2])
-            ->andFilterWhere(['like', 'file_2_3', $this->file_2_3])
-            ->andFilterWhere(['like', 'file_2_4', $this->file_2_4])
-            ->andFilterWhere(['like', 'file_3_0', $this->file_3_0])
-            ->andFilterWhere(['like', 'file_3_1', $this->file_3_1])
-            ->andFilterWhere(['like', 'file_3_2', $this->file_3_2])
-            ->andFilterWhere(['like', 'file_3_3', $this->file_3_3])
-            ->andFilterWhere(['like', 'file_3_4', $this->file_3_4]);
+            ->andFilterWhere(['like', 'text_7_4', $this->text_7_4]);
 
         return $dataProvider;
     }
