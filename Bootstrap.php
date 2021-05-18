@@ -86,22 +86,9 @@ class Bootstrap implements BootstrapInterface
                 'c/<c:\w+>/<o:\w+>' => 'c/option',
 
                 'e/<e:\w+>' => 'c/entity',
-                'e/<e:\w+>/<i:\d+><-?><\w+?>' => 'c/item',
+                'e/<e:\w+>/<i:\d+><-\w+?>' => 'c/item',
             ]
         );
 
     }
 }
-
-
-// /**
-//  * Dump variables and die.
-//  */
-// if ( ! function_exists('dd') ) {
-
-//     function dd() {
-//         call_user_func_array( 'dump' , func_get_args() );
-//         die();
-//     }
-
-// }
