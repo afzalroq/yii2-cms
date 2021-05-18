@@ -387,7 +387,7 @@ class Entities extends ActiveRecord implements Linkable
     {
         $entity_text_attrs = [];
         $entity_file_attrs = [];
-        $seo_attrs = ['meta_des','meta_keyword'];
+        $seo_attrs = ['meta_des', 'meta_keyword'];
         foreach ($this->attributes as $attr => $value) {
             if (preg_match('/^text_[1-7]$/', $attr))
                 $entity_text_attrs[$attr] = $value;
@@ -457,8 +457,9 @@ class Entities extends ActiveRecord implements Linkable
         }
     }
 
-    public function getLink():string
+    public function getLink(): string
     {
         return 'e/' . $this->slug;
     }
+
 }

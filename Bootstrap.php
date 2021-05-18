@@ -82,11 +82,11 @@ class Bootstrap implements BootstrapInterface
 
         $app->getUrlManager()->addRules(
             [
-                'c/<slug:\w+>' => 'c/collection',
-                'c/<slug:\w+>/<slug2:\w+>' => 'c/option',
+                'c/<c:\w+>' => 'c/collection',
+                'c/<c:\w+>/<o:\w+>' => 'c/option',
 
-                'e/<slug:\w+>' => 'c/entity',
-                'e/<slug:\w+>/<slug2:\w+>' => 'c/item',
+                'e/<e:\w+>' => 'c/entity',
+                'e/<e:\w+>/<i:\d+><-?><\w+?>' => 'c/item',
             ]
         );
 
