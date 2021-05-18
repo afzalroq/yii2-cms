@@ -4,12 +4,12 @@ namespace afzalroq\cms\entities\front;
 
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\OaI;
+use afzalroq\cms\interfaces\Linkable;
 use Yii;
 use yii\caching\TagDependency;
 use yii\helpers\StringHelper;
-use yii\helpers\Url;
 
-class Items extends \afzalroq\cms\entities\Items
+class Items extends \afzalroq\cms\entities\Items implements Linkable
 {
 
     public static function getAll($slug)
@@ -86,19 +86,9 @@ class Items extends \afzalroq\cms\entities\Items
         return $items;
     }
 
-    public function getLink()
+    public function getLink():string
     {
-        //item
-        return Menu::getItemLink($this->dependEntity, $this);
-
-        //entity
-        return Menu::getEntityLink($this->dependEntity);
-
-        //collection
-        return Menu::getCollectionLink($this->dependCollection);
-
-        //option
-        return Menu::getOptionLink($this->dependCollection, $this);
+        return 'e/' . $this->entity->slug . '/' . $this->slug;
     }
 
     public function getText1()

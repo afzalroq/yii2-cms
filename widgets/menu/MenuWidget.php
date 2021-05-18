@@ -5,6 +5,7 @@ namespace afzalroq\cms\widgets\menu;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\Items;
+use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\MenuType;
 use afzalroq\cms\entities\Options;
 use slatiusa\nestable\Nestable;
@@ -17,12 +18,8 @@ class MenuWidget extends Nestable
 {
     private $_uniqueItems = [];
 
-    protected function renderItems($_items = NULL)
+    public function registerAssets()
     {
-        return '';
-    }
-
-    public function registerAssets() {
         return '';
     }
 
@@ -34,9 +31,9 @@ class MenuWidget extends Nestable
     public function getMenu($slug = null)
     {
         if (MenuType::findOne(['slug' => $slug]))
-            return $this->prepareItems(\afzalroq\cms\entities\Menu::find()->where(['menu_type_id' => MenuType::findOne(['slug' => $slug])->id])->orderBy('id'));
+            return $this->prepareItems(Menu::find()->where(['menu_type_id' => MenuType::findOne(['slug' => $slug])->id])->orderBy('id'));
 
-        throw new UnknownPropertyException(Yii::t('cms','Menu type not found').' : '.$slug);
+        throw new UnknownPropertyException(Yii::t('cms', 'Menu type not found') . ' : ' . $slug);
     }
 
     protected function prepareItems($activeQuery): array
@@ -62,38 +59,33 @@ class MenuWidget extends Nestable
 
     private static function getLink($model)
     {
-
         switch ($model->type) {
-            case \afzalroq\cms\entities\Menu::TYPE_ACTION:
-                $link = '/' . rtrim($model->type_helper, '/');
+            case Menu::TYPE_ACTION:
+                return '/' . rtrim($model->type_helper, '/');
                 break;
-            case \afzalroq\cms\entities\Menu::TYPE_LINK:
-                $link = mb_strtolower($model->type_helper);
+            case Menu::TYPE_LINK:
+                return mb_strtolower($model->type_helper);
                 break;
-            case \afzalroq\cms\entities\Menu::TYPE_COLLECTION:
-                $collection = Collections::findOne($model->type_helper);
-                $link = 'c/' . $collection->slug;
+            case Menu::TYPE_COLLECTION:
+                return Collections::findOne($model->type_helper)->link;
                 break;
-            case \afzalroq\cms\entities\Menu::TYPE_OPTION:
-                $option = Options::findOne($model->type_helper);
-                $link = 'c/' . $option->collection->slug . '/' . $option->slug;
+            case Menu::TYPE_OPTION:
+                return \afzalroq\cms\entities\front\Options::findOne($model->type_helper)->link;
                 break;
-            case \afzalroq\cms\entities\Menu::TYPE_ITEM:
-                $item = Items::findOne($model->type_helper);
-                $link = 'e/' . $item->entity->slug . '/' . $item->slug;
+            case Menu::TYPE_ENTITY:
+                return Entities::findOne($model->type_helper)->link;
                 break;
-            case \afzalroq\cms\entities\Menu::TYPE_ENTITY:
-                $entity = Entities::findOne($model->type_helper);
-                $link = 'e/' . $entity->slug;
-                break;
-            case \afzalroq\cms\entities\Menu::TYPE_ENTITY_ITEM:
-                $item = Items::findOne($model->type_helper);
-                $link = 'e/' . $item->entity->slug . '/' . $item->slug;
+            case Menu::TYPE_ITEM:
+            case Menu::TYPE_ENTITY_ITEM:
+                return \afzalroq\cms\entities\front\Items::findOne($model->type_helper)->link;
                 break;
             default:
-                $link = '#';
+                return '#';
         }
+    }
 
-        return $link;
+    protected function renderItems($_items = NULL)
+    {
+        return '';
     }
 }

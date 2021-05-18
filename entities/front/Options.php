@@ -3,11 +3,12 @@
 namespace afzalroq\cms\entities\front;
 
 use afzalroq\cms\entities\Collections;
+use afzalroq\cms\interfaces\Linkable;
 use Yii;
 use yii\caching\TagDependency;
 use yii\helpers\StringHelper;
 
-class Options extends \afzalroq\cms\entities\Options
+class Options extends \afzalroq\cms\entities\Options implements Linkable
 {
 
     public static function getAll($slug)
@@ -147,5 +148,10 @@ class Options extends \afzalroq\cms\entities\Options
     private function getMetaTitle()
     {
         return $this->getSeo('meta_title');
+    }
+
+    public function getLink():string
+    {
+        return 'c/' . $this->collection->slug . '/' . $this->slug;
     }
 }

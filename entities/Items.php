@@ -4,6 +4,7 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
+use afzalroq\cms\interfaces\Linkable;
 use common\models\User;
 use DomainException;
 use Yii;

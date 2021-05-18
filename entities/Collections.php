@@ -3,6 +3,7 @@
 namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
+use afzalroq\cms\interfaces\Linkable;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
@@ -41,7 +42,7 @@ use yii\helpers\StringHelper;
  * @property Options[] $options
  */
 
-class Collections extends ActiveRecord
+class Collections extends ActiveRecord implements Linkable
 {
     #region Constants
 
@@ -411,4 +412,9 @@ class Collections extends ActiveRecord
     #endregion
 
     #endregion
+
+    public function getLink():string
+    {
+        return 'c/' . $this->slug;
+    }
 }

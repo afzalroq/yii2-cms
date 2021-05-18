@@ -3,6 +3,7 @@
 namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
+use afzalroq\cms\interfaces\Linkable;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
@@ -58,7 +59,7 @@ use yii\db\Exception;
  * @property Items[] $items
  * @property CaE[] $caes
  */
-class Entities extends ActiveRecord
+class Entities extends ActiveRecord implements Linkable
 {
     #region Constants
     #region TEXT types
@@ -454,5 +455,10 @@ class Entities extends ActiveRecord
             if (!$menu->delete())
                 throw new Exception("Cannot delete id: {$menu->id} of menu");
         }
+    }
+
+    public function getLink():string
+    {
+        return 'e/' . $this->slug;
     }
 }
