@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     return Html::img($model->getImageUrl('file_1_0', $entity->file_1_dimensionW, $entity->file_1_dimensionW));
                 },
-                'visible' => $entity->file_1_0 ? true : false
+                'visible' => $entity->file_1 ? true : false
             ],
 //            [
 //                'attribute' => 'date_0',
