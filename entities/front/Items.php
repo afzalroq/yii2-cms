@@ -88,7 +88,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
 
     public function getLink(): string
     {
-        return 'e/' . $this->entity->slug . '/' . $this->id . '-' . $this->slug;
+        return '/e/' . $this->entity->slug . '/' . $this->id . '-' . $this->slug;
     }
 
     public function getText1()

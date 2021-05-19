@@ -460,7 +460,7 @@ class Entities extends ActiveRecord implements Linkable
 
     public function getLink(): string
     {
-        return 'e/' . $this->slug;
+        return '/e/' . $this->slug;
     }
 
 }

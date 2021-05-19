@@ -416,6 +416,6 @@ class Collections extends ActiveRecord implements Linkable
 
     public function getLink():string
     {
-        return 'c/' . $this->slug;
+        return '/c/' . $this->slug;
     }
 }
