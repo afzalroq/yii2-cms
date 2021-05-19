@@ -17,7 +17,6 @@ return [
     'Articles' => 'Yangiliklar',
     'Page' => 'Sahifa',
     'Pages' => 'Sahifalar',
-    'Save' => 'Saqlash',
     'Categories' => 'Kategoriyalar',
 
     'Status' => 'Holat',
@@ -37,11 +36,16 @@ return [
 
     'Parent' => 'Parent',
 
+    // buttons
     'Create' => 'Qo`shish',
     'Update' => 'Yangilash',
     'Delete' => 'O`chirish',
     'Choose' => 'Tanlang',
     'Upload' => 'Yuklash',
+    'Save' => 'Saqlash',
+    'Save and Add new' => 'Saqlash va Yangi qo`shish',
+    'Save and Close' => 'Saqlash va Yopish',
+    'Close' => 'Yopish',
 
     'Search on site' => 'Saytdan qidirish',
     'Search' => 'Izlash',

@@ -197,6 +197,7 @@ class Collections extends ActiveRecord implements Linkable
             [['name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'slug', 'option_file_1_label', 'option_file_2_label'], 'string', 'max' => 255],
 
             [['slug'], 'unique'],
+            [['slug'], 'afzalroq\cms\validators\SlugValidator'],
         ];
     }
 

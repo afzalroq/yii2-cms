@@ -52,8 +52,15 @@ class Module extends \yii\base\Module
     {
         $languageIds = [];
         foreach ($this->languages as $prefix => $language) {
+            //deprecated
             \Yii::$app->params['cms']['languageIds'][$prefix] = $language['id'];
             \Yii::$app->params['cms']['languages'][$language['id']] = $language['name'];
+
+            // preferred params
+            \Yii::$app->params['l-name'][$language['id']] = $language['name'];
+            \Yii::$app->params['l-name'][$prefix] = $language['name'];
+            \Yii::$app->params['l'][$language['id']] = $prefix;
+            \Yii::$app->params['l'][$prefix] = $language['id'];
         }
     }
 

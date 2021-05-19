@@ -14,7 +14,6 @@ use yii\widgets\ActiveForm;
 $hasTranslatableAttrs = 0;
 ?>
 
-
 <div class="items-form">
     <?php
     $form = ActiveForm::begin([
@@ -27,14 +26,27 @@ $hasTranslatableAttrs = 0;
     ]);
 
     $cmsForm = new CmsForm($form, $model, $entity);
-
     ?>
 
-    <div  style="position: sticky;top: 10px!important;">
-        <?= Html::submitButton(Yii::t('cms', 'Save and add new'), ['class' => 'btn btn-success', 'name' => 'save', 'value' => 'addNew']) ?>
-        <?= Html::submitButton(Yii::t('cms', 'Save and Close'), ['class' => 'btn btn-warning', 'name' => 'save', 'value' => 'saveClose']) ?>
-        <?= Html::submitButton(Yii::t('cms', 'Save'), ['class' => 'btn btn-success', 'name' => 'save', 'value' => 'save']) ?>
-        <?= Html::submitButton(Yii::t('cms', 'Close'), ['class' => 'btn btn-danger', 'name' => 'save', 'value' => 'close']) ?>
+    <style>
+        .wrapper {
+            overflow-x: initial;
+            overflow-y: initial;
+        }
+        .sticky {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 10px 0 10px 10px;
+            background: #fff;
+            border: 1px solid #ccc;
+        }
+    </style>
+    <div class="sticky">
+        <?= Html::submitButton('<i class="fa fa-plus"></i> ' . Yii::t('cms', 'Save and Add new'), ['class' => 'btn btn-primary', 'name' => 'save', 'value' => 'addNew']) ?>
+        <?= Html::submitButton('<i class="fa fa-check"></i> ' . Yii::t('cms', 'Save and Close'), ['class' => 'btn btn-warning', 'name' => 'save', 'value' => 'saveClose']) ?>
+        <?= Html::submitButton('<i class="fa fa-refresh"></i> ' . Yii::t('cms', 'Save'), ['class' => 'btn btn-success', 'name' => 'save', 'value' => 'save']) ?>
+        <?= Html::submitButton('<i class="fa fa-close"></i> ' . Yii::t('cms', 'Close'), ['class' => 'btn btn-danger pull-right', 'name' => 'save', 'value' => 'close', 'style' => 'margin-right: 10px;']) ?>
     </div>
     <?= $form->errorSummary($model) ?>
     <?= $form->field($model, 'entity_id')->textInput(['value' => $entity->id, 'type' => 'hidden'])->label(false) ?>

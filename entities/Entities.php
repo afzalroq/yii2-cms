@@ -315,6 +315,7 @@ class Entities extends ActiveRecord implements Linkable
 
             [['slug'], 'required'],
             [['slug'], 'unique'],
+            [['slug'], 'afzalroq\cms\validators\SlugValidator'],
         ];
     }
 

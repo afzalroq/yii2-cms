@@ -361,6 +361,7 @@ class Items extends ActiveRecord
 
             ['slug', 'string', 'max' => 255],
             [['slug'], 'unique'],
+            [['slug'], 'afzalroq\cms\validators\SlugValidator'],
 
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Entities::class, 'targetAttribute' => ['entity_id' => 'id']],
 

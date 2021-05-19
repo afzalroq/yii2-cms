@@ -31,12 +31,16 @@ return [
 
     'Parent' => 'Парент',
 
+    // buttons
     'Create' => 'Добавить',
     'Update' => 'Обновить',
     'Delete' => 'Удалить',
     'Save' => 'Сохранить',
     'Choose' => 'Выберите',
     'Upload' => 'Загрузить',
+    'Save and Add new' => 'Сохранить и Добавить новую',
+    'Save and Close' => 'Сохранить и Закрыть',
+    'Close' => 'Закрыть',
 
     'Search on site' => 'Поиск по сайту',
     'Search' => 'Поиск',

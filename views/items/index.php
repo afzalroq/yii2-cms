@@ -2,22 +2,21 @@
 
 use yii\grid\GridView;
 use yii\helpers\Html;
-use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel afzalroq\cms\entities\ItemsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $entity \afzalroq\cms\entities\Entities */
 
-$curLang = Yii::$app->params['cms']['languages'][Yii::$app->params['cms']['languageIds'][Yii::$app->language]];
-$this->title = Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug));
+$curLang = Yii::$app->params['l-name'][Yii::$app->language];
+$this->title = $entity->{"name_" . Yii::$app->params['l'][Yii::$app->language]};
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="items-index">
 
     <p>
         <?php if (!$entity->disable_create_and_delete): ?>
-        <?= Html::a(Yii::t('cms', 'Create'), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('cms', 'Create'), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
         <?php endif; ?>
     </p>
 
@@ -28,9 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             [
-                'attribute' => 'slug',
+                'attribute' => 'id',
                 'value' => function ($model) use ($entity) {
-                    return Html::a($model->slug ? StringHelper::truncate(strip_tags($model->slug), 30, '...') . ' <i class="fa fa-chevron-circle-right"></i>' : Yii::t('cms', 'View') . ' <i class="fa fa-chevron-circle-right"></i>', ['items/view', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default']);
+                    return Html::a($model->id . ' <i class="fa fa-chevron-circle-right"></i>', ['items/view', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default']);
                 },
                 'format' => 'html'
             ],
@@ -61,15 +60,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => $entity->file_1_label,
                 'format' => 'html',
                 'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
-                    if ($entity->use_gallery){
+                    if ($entity->use_gallery) {
                         return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(200, 200) : '');
                     }
                     return Html::img($model->getImageUrl('file_1_0', $entity->file_1_dimensionW, $entity->file_1_dimensionW));
-                }
+                },
+                'visible' => $entity->file_1_0 ? true : false
             ],
+//            [
+//                'attribute' => 'date_0',
+//                'label' => "Date",
+//                'format' => 'html',
+//                'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
+//                    if ($entity->use_date) {
+//                        return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(200, 200) : '');
+//                    }
+//                    return Html::img($model->getImageUrl('file_1_0', $entity->file_1_dimensionW, $entity->file_1_dimensionW));
+//                },
+//                'visible' => $entity->use_date ? true : false
+//            ],
             'created_at:datetime',
         ],
-    ]); ?>
-
+    ]) ?>
 
 </div>
