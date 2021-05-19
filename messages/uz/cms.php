@@ -54,7 +54,6 @@ return [
     'Article Categories' => 'Yangilik Kategoriyalari',
     'Are you sure you want to delete this item?' => 'Haqiqatan ham ushbu elementni yo\'q qilmoqchimisiz?',
     'The requested page does not exist.' => 'So‘ralgan sahifa mavjud emas.',
-    'Addresses of sales offices UZTELECOM' => 'UZTELECOM savdo ofislarining manzillari',
 
     'Disabled' => '',
     'Common' => 'Umumiy',
@@ -63,12 +62,11 @@ return [
     //items
 
     'Seo Title' => 'SEO sarlavha',
-    'Seo Description' => 'Seo izoh',
-    'Seo Keywords' => 'SEO keyword',
+    'Seo Keywords' => 'SEO kalit so`zlar',
+    'Seo Description' => 'SEO tavsif',
     'Pictures' => 'Rasmlar',
     'Gallery main Photo' => 'Galeriya uchun bosh rasm',
     'If the SVG format is used in the file, no other format can be used' => 'Agar faylda SVG format ishlatilgan bo\'lsa boshqa formatlarni ishlatish mumkin emas',
-    'View' => 'Ko\'rish',
     'Saved' => 'Saqlandi'
 
 ];
