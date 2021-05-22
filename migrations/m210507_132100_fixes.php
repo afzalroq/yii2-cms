@@ -59,7 +59,7 @@ class m210507_132100_fixes extends Migration
         $this->dropForeignKey('fkey-cms_options_and_items-item_id', 'cms_options_and_items');
         $this->addForeignKey('fkey-cms_options_and_items-item_id', 'cms_options_and_items', 'item_id', 'cms_items', 'id', 'CASCADE', 'CASCADE');
 
-        $this->alterColumn('cms_entities', 'use_watermark', $this->tinyInteger()->defaultValue(0)->notNull());
+        $this->alterColumn('cms_entities', 'use_watermark', $this->tinyInteger()->defaultValue(0));
         $this->alterColumn('cms_entities', 'disable_create_and_delete', $this->tinyInteger()->defaultValue(0)->notNull());
         $this->alterColumn('cms_collections', 'manual_slug', $this->tinyInteger()->defaultValue(0)->notNull());
 

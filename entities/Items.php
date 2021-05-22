@@ -584,6 +584,18 @@ class Items extends ActiveRecord
         return $this->hasOne(OaI::class, ['item_id' => 'id']);
     }
 
+
+    public function getDate($format = null)
+    {
+        if ($format) {
+            return date($format, $this->getDate());
+        }
+
+        return in_array($this->entity->use_date, [Entities::USE_DATE_DISABLED, Entities::USE_DATE_DATE, Entities::USE_DATE_DATETIME])
+            ? $this['date_0']
+            : $this['date_' . \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]];
+    }
+
     #region Photo Methods
 
     public function getPhotos()

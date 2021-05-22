@@ -222,17 +222,6 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
         return $this->getFile('file_3');
     }
 
-    public function getDate($format = null)
-    {
-        if ($format) {
-            return date($format, $this->getDate());
-        }
-
-        return in_array($this->entity->use_date, [Entities::USE_DATE_DISABLED, Entities::USE_DATE_DATE, Entities::USE_DATE_DATETIME])
-            ? $this['date_0']
-            : $this['date_' . \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]];
-    }
-
     private function getMetaTitle()
     {
         return $this->getSeo('meta_title');

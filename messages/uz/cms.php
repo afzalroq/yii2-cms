@@ -51,9 +51,11 @@ return [
     'Search' => 'Izlash',
     'Мore info' => 'Qo\'shimcha ma\'lumot',
 
-    'Article Categories' => 'Yangilik Kategoriyalari',
+    // Messages
     'Are you sure you want to delete this item?' => 'Haqiqatan ham ushbu elementni yo\'q qilmoqchimisiz?',
     'The requested page does not exist.' => 'So‘ralgan sahifa mavjud emas.',
+    'Only [a-z0-9-] symbols are allowed.' => 'Faqat [a-z0-9-] belgilariga ruxsat berilgan.',
+
 
     'Disabled' => '',
     'Common' => 'Umumiy',

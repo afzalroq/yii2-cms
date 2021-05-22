@@ -42,8 +42,10 @@ return [
     'Save and Close' => 'Сохранить и Закрыть',
     'Close' => 'Закрыть',
 
+    // Messages
     'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить этот элемент?Вы уверены, что хотите удалить этот элемент?',
     'The requested page does not exist.' => 'Запрашиваемая страница не существует.',
+    'Only [a-z0-9-] symbols are allowed.' => 'Разрешены только символы [a-z0-9-].',
 
     //collection
     'Collection' => 'Коллекция',

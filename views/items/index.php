@@ -67,18 +67,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'visible' => $entity->file_1 ? true : false
             ],
-//            [
-//                'attribute' => 'date_0',
-//                'label' => "Date",
-//                'format' => 'html',
-//                'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
-//                    if ($entity->use_date) {
-//                        return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(200, 200) : '');
-//                    }
-//                    return Html::img($model->getImageUrl('file_1_0', $entity->file_1_dimensionW, $entity->file_1_dimensionW));
-//                },
-//                'visible' => $entity->use_date ? true : false
-//            ],
+            [
+                'attribute' => 'use_gallery',
+                'label' => Yii::t('cms', 'Photo'),
+                'format' => 'html',
+                'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
+                    return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(200, 200) : '');
+                },
+                'visible' => $entity->use_gallery ? true : false
+            ],
+            [
+                'attribute' => 'date_0',
+                'label' => Yii::t('cms', 'Date'),
+                'format' => 'html',
+                'value' => function (\afzalroq\cms\entities\Items $item) use ($entity) {
+                    return in_array($entity->use_date, [\afzalroq\cms\entities\Entities::USE_DATE_DATETIME, \afzalroq\cms\entities\Entities::USE_TRANSLATABLE_DATE_DATETIME])
+                        ? $item->getDate('d-M, Y H:i')
+                        : $item->getDate('d-M, Y');
+                },
+                'visible' => $entity->use_date ? true : false
+            ],
             'created_at:datetime',
         ],
     ]) ?>

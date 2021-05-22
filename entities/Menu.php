@@ -124,9 +124,8 @@ class Menu extends ActiveRecord
     public function afterDelete()
     {
         parent::afterDelete();
-
+        $this->dependMenuType = MenuType::findOne(['id' => $this->menu_type_id]);
         TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'menu_' . $this->dependMenuType->slug);
-
     }
 
     public function rules()
