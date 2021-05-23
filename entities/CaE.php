@@ -76,7 +76,7 @@ class CaE extends ActiveRecord
             }
         }
 
-        return ArrayHelper::map($options, 'id', 'name_'.Yii::$app->params['cms']['languageIds'][Yii::$app->language]);
+        return ArrayHelper::map($options, 'id', 'name_'. Yii::$app->params['l'][Yii::$app->language]);
     }
 
     public function behaviors()

@@ -15,7 +15,6 @@ use sadovojav\ckeditor\CKEditor;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 class CmsForm
@@ -203,9 +202,9 @@ class CmsForm
     {
         switch ($this->obj['use_' . $attr]) {
             case Entities::USE_DATE_DATE:
-                return $this->date($attr.'_0');
+                return $this->date($attr . '_0', true);
             case Entities::USE_DATE_DATETIME:
-                return $this->date($attr.'_0', ['type' => DateControl::FORMAT_DATETIME]);
+                return $this->date($attr . '_0', true, ['type' => DateControl::FORMAT_DATETIME]);
         }
     }
 
@@ -213,9 +212,9 @@ class CmsForm
     {
         switch ($this->obj['use_' . $attr]) {
             case Entities::USE_TRANSLATABLE_DATE_DATE:
-                return $this->date($attr.'_'.$langKey);
+                return $this->date($attr . '_' . $langKey, false);
             case Entities::USE_TRANSLATABLE_DATE_DATETIME:
-                return $this->date($attr.'_'.$langKey, ['type' => DateControl::FORMAT_DATETIME]);
+                return $this->date($attr . '_' . $langKey, false, ['type' => DateControl::FORMAT_DATETIME]);
         }
     }
 
@@ -252,16 +251,18 @@ class CmsForm
         return Html::tag(
             'div',
             $this->form->field($this->model, $attr)->textInput($options)->label($this->obj[$entityAttr . '_label']),
-            ['class' => 'col-sm-6']
+            ['class' => 'col-sm-12']
         );
     }
 
-    public function date($attr, $options = ['type' => DateControl::FORMAT_DATE])
+    public function date($attr, $isCommon, $options = ['type' => DateControl::FORMAT_DATE])
     {
         return Html::tag(
             'div',
-            $this->form->field($this->model, $attr)->widget(DateControl::class, $options),
-            ['class' => 'col-sm-4']
+            $this->form->field($this->model, $attr)
+                ->widget(DateControl::class, $options)
+                ->label(Yii::t('cms', 'Date')),
+            ['class' => 'col-sm-3']
         );
     }
 
@@ -302,6 +303,7 @@ class CmsForm
 
     public function file($attr, $entityAttr, $label, $options = [])
     {
+        $module = Yii::$app->getModule('cms');
 
         $options = array_merge([
             'options' => [
@@ -323,7 +325,7 @@ class CmsForm
                 ],
                 'initialPreviewAsData' => true,
                 'initialPreview' => [
-                    'http://localhost:20082/data/' . strtolower(StringHelper::basename($this->model::className())) . '/' . $this->model->id . '/' . $this->model[$attr]
+                    $module->path . '/data/' . strtolower(StringHelper::basename($this->model::className())) . '/' . $this->model->id . '/' . $this->model[$attr]
                 ],
                 'maxFileSize' => $this->obj[$entityAttr . '_maxSize'] * 1024
             ],
@@ -345,7 +347,7 @@ class CmsForm
             $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->checkboxList($cae->getOptionList(), [
                     'value' => $this->model->getOptionValue($cae)
                 ]
-            )->label($cae->collection->name_0),
+            )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
             $options
         );
     }
@@ -360,7 +362,7 @@ class CmsForm
                     'value' => $this->model->getOptionValue($cae),
                     'prompt' => ''
                 ]
-            )->label($cae->collection->name_0),
+            )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
             $options
         );
     }
@@ -374,7 +376,7 @@ class CmsForm
             $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->radioList($cae->getOptionList(), [
                     'value' => $this->model->getOptionValue($cae),
                 ]
-            )->label($cae->collection->name_0),
+            )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
             $options
         );
     }

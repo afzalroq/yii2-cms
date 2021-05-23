@@ -69,7 +69,6 @@ $hasTranslatableAttrs = 0;
         <div class="box-body">
             <div class="row">
                 <?= $cmsForm->dateFieldCommon('date') ?>
-
                 <?= $cmsForm->textFieldsCommon() ?>
                 <?= $cmsForm->fileFieldsCommon() ?>
             </div>
@@ -98,7 +97,6 @@ $hasTranslatableAttrs = 0;
                                 <?= $cmsForm->dateFieldTranslatable($key, 'date') ?>
                                 <?= $cmsForm->textFieldsTranslatable($key, $hasTranslatableAttrs) ?>
                                 <?= $cmsForm->fileFieldsTranslatable($key, $hasTranslatableAttrs) ?>
-
                             </div>
                         <?php endforeach; ?>
                     </div>

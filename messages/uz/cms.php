@@ -6,6 +6,8 @@ return [
     'Updated at' => 'Yangilangan vaqti',
     'Created At' => 'Qo`shilgan vaqti',
     'Updated At' => 'Yangilangan vaqti',
+    'Created by' => 'Qo`shgan',
+    'Updated by' => 'Yangilagan',
     'Category' => 'Kategoriya',
     'Title' => 'Nomi',
     'Slug' => 'Slug',
@@ -49,12 +51,12 @@ return [
 
     'Search on site' => 'Saytdan qidirish',
     'Search' => 'Izlash',
-    'Мore info' => 'Qo\'shimcha ma\'lumot',
 
     // Messages
     'Are you sure you want to delete this item?' => 'Haqiqatan ham ushbu elementni yo\'q qilmoqchimisiz?',
     'The requested page does not exist.' => 'So‘ralgan sahifa mavjud emas.',
     'Only [a-z0-9-] symbols are allowed.' => 'Faqat [a-z0-9-] belgilariga ruxsat berilgan.',
+    'Saved' => 'Saqlandi',
 
 
     'Disabled' => '',
@@ -67,8 +69,7 @@ return [
     'Seo Keywords' => 'SEO kalit so`zlar',
     'Seo Description' => 'SEO tavsif',
     'Pictures' => 'Rasmlar',
-    'Gallery main Photo' => 'Galeriya uchun bosh rasm',
-    'If the SVG format is used in the file, no other format can be used' => 'Agar faylda SVG format ishlatilgan bo\'lsa boshqa formatlarni ishlatish mumkin emas',
-    'Saved' => 'Saqlandi'
-
+    'Gallery main Photo' => 'Galeriya bosh rasmi',
+    'If the SVG format is used in the file, no other format can be used' => 'Agar faylda SVG format ishlatilgan bo`lsa boshqa formatlarni ishlatish mumkin emas',
+    'Views count' => 'Ko`rishlar soni'
 ];
