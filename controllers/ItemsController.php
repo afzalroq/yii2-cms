@@ -138,7 +138,9 @@ class ItemsController extends Controller
 
     public function actionDelete($id, $slug)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->delete();
+        $model->removePhotos();
         return $this->redirect(['index', 'slug' => $slug]);
     }
 

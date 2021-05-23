@@ -18,17 +18,11 @@ use yii\db\ActiveRecord;
 class OaI extends ActiveRecord
 {
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'cms_options_and_items';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -39,9 +33,6 @@ class OaI extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

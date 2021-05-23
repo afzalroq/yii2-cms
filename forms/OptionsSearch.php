@@ -12,9 +12,6 @@ use yii\data\ActiveDataProvider;
  */
 class OptionsSearch extends Options
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -23,9 +20,6 @@ class OptionsSearch extends Options
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class

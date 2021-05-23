@@ -7,9 +7,6 @@ use yii\db\Migration;
  */
 class m210128_053616_create_cms_menu_type_table extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
     public function safeUp()
     {
         $this->createTable('{{%cms_menu_type}}', [
@@ -31,9 +28,6 @@ class m210128_053616_create_cms_menu_type_table extends Migration
         $this->createIndex('index-cms_collections-slug', 'cms_menu_type', 'slug', true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
         $this->dropTable('{{%cms_menu_type}}');

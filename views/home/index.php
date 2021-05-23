@@ -11,7 +11,7 @@ use yii\widgets\ListView;
 /* @var $unitCategoryProvider ActiveDataProvider */
 /* @var $menuTypeProvider ActiveDataProvider */
 
-$this->title = 'CMS Dashboard';
+$this->title = Yii::t('cms','CMS Dashboard');
 
 ?>
 <div class="site-index">
@@ -20,7 +20,7 @@ $this->title = 'CMS Dashboard';
 
 
             <p>
-                <?= Html::a('Collections', Url::to(['/cms/collections/index']), ['class' => 'btn btn-block btn-lg btn-primary']) ?>
+                <?= Html::a(Yii::t('cms', 'Collections'), Url::to(['/cms/collections/index']), ['class' => 'btn btn-block btn-lg btn-primary']) ?>
             </p>
             <?= ListView::widget([
                 'dataProvider' => $collectionProvider,
@@ -40,7 +40,7 @@ $this->title = 'CMS Dashboard';
         </div>
         <div class="col-sm-3">
             <p>
-                <?= Html::a('Entities', Url::to(['/cms/entities/index']), ['class' => 'btn btn-block btn-lg btn-success']) ?>
+                <?= Html::a(Yii::t('cms','Entities'), Url::to(['/cms/entities/index']), ['class' => 'btn btn-block btn-lg btn-success']) ?>
             </p>
             <?= ListView::widget([
                 'dataProvider' => $entityProvider,
@@ -59,7 +59,7 @@ $this->title = 'CMS Dashboard';
         </div>
         <div class="col-sm-3">
             <p>
-                <?= Html::a('Unit Categories', Url::to(['/cms/unit-categories/index']), ['class' => 'btn btn-block btn-lg btn-warning']) ?>
+                <?= Html::a(Yii::t('cms','Unit Categories'), Url::to(['/cms/unit-categories/index']), ['class' => 'btn btn-block btn-lg btn-warning']) ?>
             </p>
             <?= ListView::widget([
                 'dataProvider' => $unitCategoryProvider,
@@ -78,7 +78,7 @@ $this->title = 'CMS Dashboard';
         </div>
         <div class="col-sm-3">
             <p>
-                <?= Html::a('Menu Types', Url::to(['/cms/menu-type/index']), ['class' => 'btn btn-block btn-lg btn-danger']) ?>
+                <?= Html::a(Yii::t('cms','Menu types'), Url::to(['/cms/menu-type/index']), ['class' => 'btn btn-block btn-lg btn-danger']) ?>
             </p>
             <?= ListView::widget([
                 'dataProvider' => $menuTypeProvider,

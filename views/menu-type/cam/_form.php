@@ -1,10 +1,10 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model abdualiym\cms\entities\Entities */
-/* @var $cam abdualiym\cms\entities\CaE */
+/* @var $model afzalroq\cms\entities\Entities */
+/* @var $cam afzalroq\cms\entities\CaE */
 
-/* @var $unassignedOptions abdualiym\cms\entities\Collections[] */
+/* @var $unassignedOptions afzalroq\cms\entities\Collections[] */
 
 use afzalroq\cms\entities\CaM;
 use yii\helpers\ArrayHelper;

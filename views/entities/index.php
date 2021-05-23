@@ -40,31 +40,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'text_2',
                 'value' => function ($model) {
                     return \afzalroq\cms\entities\Entities::textList()[$model->text_2];
-                }
+                },
+                'visible' => $searchModel->text_2 ? true : false
             ],
             [
                 'attribute' => 'text_3',
                 'value' => function ($model) {
                     return \afzalroq\cms\entities\Entities::textList()[$model->text_3];
-                }
+                },
+                'visible' => $searchModel->text_3 ? true : false
             ],
             [
                 'attribute' => 'file_1',
                 'value' => function ($model) {
                     return \afzalroq\cms\entities\Entities::fileList()[$model->file_1];
-                }
+                },
+                'visible' => $searchModel->file_1 ? true : false
             ],
             [
                 'attribute' => 'file_2',
                 'value' => function ($model) {
                     return \afzalroq\cms\entities\Entities::fileList()[$model->file_2];
-                }
+                },
+                'visible' => $searchModel->file_2 ? true : false
             ],
             [
                 'attribute' => 'file_3',
                 'value' => function ($model) {
                     return \afzalroq\cms\entities\Entities::fileList()[$model->file_3];
-                }
+                },
+                'visible' => $searchModel->file_3 ? true : false
             ],
             'created_at:datetime',
         ],

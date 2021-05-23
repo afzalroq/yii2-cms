@@ -7,17 +7,11 @@ use yii\db\Migration;
  */
 class m210201_165334_add_columns_to_cms_collections_table extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
     public function safeUp()
     {
         $this->addColumn('cms_collections', 'manual_slug', $this->tinyInteger());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
         $this->dropColumn('cms_collections', 'manual_slug');

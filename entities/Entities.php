@@ -376,7 +376,7 @@ class Entities extends ActiveRecord implements Linkable
             'use_seo' => Yii::t('cms', 'Use SEO'),
             'use_gallery' => Yii::t('cms', 'Use Gallery'),
             'use_views_count' => Yii::t('cms', 'Use Views Count'),
-            'manual_slug' => Yii::t('cms', 'Manual Slug'),
+            'manual_slug' => Yii::t('cms', 'Manual slug'),
             'disable_create_and_delete' => Yii::t('cms', 'Disable create and delete'),
             'use_watermark' => Yii::t('cms', 'Use watermark'),
             'created_at' => Yii::t('cms', 'Created at'),
@@ -430,7 +430,7 @@ class Entities extends ActiveRecord implements Linkable
      */
     public function getCaes()
     {
-        return $this->hasMany(CaE::class, ['entity_id' => 'id']);
+        return $this->hasMany(CaE::class, ['entity_id' => 'id'])->orderBy('sort');
     }
 
     #endregion

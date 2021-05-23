@@ -11,7 +11,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model afzalroq\cms\entities\Entities */
 
-$this->title = $model->slug;
+$this->title = $model->{'name_' . Yii::$app->params['l'][Yii::$app->language]};
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Entities'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
@@ -248,7 +248,7 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                                 'attributes' => [
                                     [
                                         'attribute' => 'collection_id',
-                                        'label' => 'Collection',
+                                        'label' => Yii::t('cms', 'Collection'),
                                         'value' => $cae->collection->slug
                                     ],
                                     [

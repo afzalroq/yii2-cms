@@ -16,7 +16,7 @@ $names = [];
 foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
     $names[] = [
         'attribute' => 'id',
-        'label' => 'Name ' . $language,
+        'label' => Yii::t('cms', 'Name') . "($language)",
         'value' => function ($model) use ($key) {
             return $model->getName($key);
         },

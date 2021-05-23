@@ -15,10 +15,10 @@ return [
     'Photo' => 'Rasm',
     'Date' => 'Sana',
     'Type' => 'Turi',
-    'Article' => 'Yangilik',
-    'Articles' => 'Yangiliklar',
-    'Page' => 'Sahifa',
-    'Pages' => 'Sahifalar',
+
+    'Name' => 'Sarlavha',
+
+
     'Categories' => 'Kategoriyalar',
 
     'Status' => 'Holat',
@@ -34,11 +34,10 @@ return [
 
     'No parent' => 'No parent',
     'Parent ID' => 'Parent ID',
-    'ID' => 'ID',
-
     'Parent' => 'Parent',
 
-    // buttons
+
+    // Buttons
     'Create' => 'Qo`shish',
     'Update' => 'Yangilash',
     'Delete' => 'O`chirish',
@@ -49,6 +48,7 @@ return [
     'Save and Close' => 'Saqlash va Yopish',
     'Close' => 'Yopish',
 
+    // ???
     'Search on site' => 'Saytdan qidirish',
     'Search' => 'Izlash',
 
@@ -59,12 +59,53 @@ return [
     'Saved' => 'Saqlandi',
 
 
-    'Disabled' => '',
+    // Forms ???
+    'Disabled' => '---',
     'Common' => 'Umumiy',
     'Translatable' => 'Tarjimali',
+    'Common textarea' => 'Umumiy textarea',
+    'Common ckeditor' => 'Umumiy ckeditor',
+    'Translatable textarea' => 'Tarjimali textarea',
+    'Translatable ckeditor' => 'Tarjimali ckeditor',
+
+
+    // Common
+    'CMS Dashboard' => 'CMS Boshqaruv paneli',
+    'ID' => 'ID',
+    'Slug' => 'Slag',
+    'Size' => 'Kenglik',
+    'Files' => 'Fayllar',
+    'Manual slug' => 'Sozlanagigan slag',
+    'Use in menu' => 'Menu ga qo`shish',
+    'Use SEO' => 'SEO qo`shish',
+
+    // Collections
+    'Collection' => 'Kolleksiya',
+    'Collections' => 'Kolleksiyalar',
+    'View options' => 'Option larni ko`rish',
+    'Use parenting' => 'Kataloglash qo`shish',
+    'View options' => 'Option larni ko`rish',
+    'Use in menu' => 'Menu ga qo`shish',
+    'Use parenting' => 'Kataloglash qo`shish',
+
+    // Unit
+    'Unit Categories' => 'Unit kategoriyalari',
+
+    // Menu
+    'Menu types' => 'Menu kategoriyalari',
+
+    // Entities
+    'Entity' => 'Entity',
+    'Entities' => 'Entity lar',
+    'Use date' => 'Sana qo`shish',
+    'Use status' => 'Status qo`shish',
+    'Use Gallery' => 'Galereya qo`shish',
+    'Use Views Count' => 'Ko`rishlar soni qo`shish',
+    'Disable create and delete' => 'Qo`shish/O`chirishni chegaralash',
+    'Use watermark' => 'Watermark qo`shish',
+    'Add collection' => 'Kolleksiya qo`shish',
 
     //items
-
     'Seo Title' => 'SEO sarlavha',
     'Seo Keywords' => 'SEO kalit so`zlar',
     'Seo Description' => 'SEO tavsif',
