@@ -89,34 +89,22 @@ class ItemsController extends Controller
     {
         $model = new Items($slug);
 
-
         if (Yii::$app->request->isAjax) {
             $model->load(Yii::$app->request->post());
             return Json::encode(\yii\widgets\ActiveForm::validate($model));
         }
         if ($model->load(Yii::$app->request->post())) {
-            if (Yii::$app->request->post('save') === 'addNew') {
+            $operation = Yii::$app->request->post('save');
+            if (in_array($operation, ['add-new', 'save-close', 'save'])) {
                 $model->save();
                 foreach ($model->files as $file) $model->addPhoto($file);
-                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
-                return $this->redirect(['create', 'slug' => $slug]);
-            }
-            if (Yii::$app->request->post('save') === 'saveClose') {
-                $model->save();
-                foreach ($model->files as $file) $model->addPhoto($file);
-                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
-                return $this->redirect(['index', 'slug' => $slug]);
-            }
-            if (Yii::$app->request->post('save') === 'save') {
-                $model->save();
-                foreach ($model->files as $file) $model->addPhoto($file);
-                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
-                return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
+                if ($operation === 'add-new')  return $this->redirect(['create', 'slug' => $slug]);
+                if ($operation === 'save') return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
             }
 
             return $this->redirect(['index', 'slug' => $slug]);
         }
-
 
         return $this->render('create', [
             'model' => $model,
@@ -125,40 +113,21 @@ class ItemsController extends Controller
     }
 
 
-    /**
-     * Updates an existing Items model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id, $slug)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if (Yii::$app->request->post('save') === 'addNew') {
+            $operation = Yii::$app->request->post('save');
+            if (in_array($operation, ['add-new', 'save-close', 'save'])) {
                 $model->save();
                 foreach ($model->files as $file) $model->addPhoto($file);
-                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
-                return $this->redirect(['create', 'slug' => $slug]);
-            }
-            if (Yii::$app->request->post('save') === 'saveClose') {
-                $model->save();
-                foreach ($model->files as $file) $model->addPhoto($file);
-                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
-                return $this->redirect(['index', 'slug' => $slug]);
-            }
-            if (Yii::$app->request->post('save') === 'save') {
-                $model->save();
-                foreach ($model->files as $file) $model->addPhoto($file);
-                Yii::$app->session->setFlash('success',Yii::t('cms', 'Saved'));
-                return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
+                if ($operation === 'add-new')  return $this->redirect(['create', 'slug' => $slug]);
+                if ($operation === 'save') return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
             }
 
-            return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+            return $this->redirect(['index', 'slug' => $slug]);
         }
 
         return $this->render('update', [
@@ -167,62 +136,38 @@ class ItemsController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Items model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id, $slug)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->delete();
+        $model->removePhotos();
         return $this->redirect(['index', 'slug' => $slug]);
     }
 
     public function actionDeletePhoto($id, $photo_id, $slug)
     {
         try {
-            $this->removePhoto($id, $photo_id);
+            $model = $this->findModel($id);
+            $model->removePhoto($photo_id);
+            $model->save();
         } catch (\DomainException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
         }
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 
-    public function removePhoto($id, $photoId): void
-    {
-        $model = $this->findModel($id);
-        $model->removePhoto($photoId);
-        $model->save();
-    }
-
     public function actionMovePhotoUp($id, $photo_id, $slug)
     {
-        $this->movePhotoUp($id, $photo_id);
-        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
-
-    }
-
-    public function movePhotoUp($id, $photoId): void
-    {
         $model = $this->findModel($id);
-        $model->movePhotoUp($photoId);
+        $model->movePhotoUp($photo_id);
+        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 
     public function actionMovePhotoDown($id, $photo_id, $slug)
     {
-        $this->movePhotoDown($id, $photo_id);
-        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
-
-    }
-
-    public function movePhotoDown($id, $photoId): void
-    {
         $model = $this->findModel($id);
-        $model->movePhotoDown($photoId);
+        $model->movePhotoDown($photo_id);
         $model->save();
+        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 }

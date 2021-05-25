@@ -18,9 +18,6 @@ use yii\web\Response;
  */
 class MenuTypeController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [

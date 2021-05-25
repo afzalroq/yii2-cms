@@ -2,10 +2,10 @@
 
 return [
     # site helpers
-    'Created at' => 'Время создания',
+    'Created at' => 'Время добавления',
     'Updated at' => 'Время обновления',
-    'Created At' => 'Время создания',
-    'Updated At' => 'Время обновления',
+    'Created by' => 'Добавил',
+    'Updated by' => 'Обновил',
 
     'Title' => 'Название',
     'Slug' => 'Слаг(ЧПУ)',
@@ -13,6 +13,9 @@ return [
     'Photo' => 'Картинка',
     'Date' => 'Дата',
     'Type' => 'Тип',
+
+    'Name' => 'Название',
+
 
     'Category' => 'Категория',
     'Categories' => 'Категории',
@@ -46,6 +49,7 @@ return [
     'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить этот элемент?Вы уверены, что хотите удалить этот элемент?',
     'The requested page does not exist.' => 'Запрашиваемая страница не существует.',
     'Only [a-z0-9-] symbols are allowed.' => 'Разрешены только символы [a-z0-9-].',
+    'Saved' => 'Сохранено',
 
     //collection
     'Collection' => 'Коллекция',
@@ -79,8 +83,6 @@ return [
     //option
     'Parent' => 'Родитель',
     'Sort' => 'Сортировать',
-    'Created At' => 'Создано в',
-    'Updated At' => 'Обновлено в',
 
     //entity
     'Input' => 'Ввод',
@@ -100,8 +102,7 @@ return [
     'Seo Description' => 'Seo Описание',
     'Seo Keywords' => 'SEO Ключевые слова',
     'Pictures' => 'Фотографий',
-    'Gallery main Photo' => 'Галерея главная Фото',
+    'Gallery main Photo' => 'Главное фото галереи',
     'If the SVG format is used in the file, no other format can be used' => 'Если в файле используется формат SVG, другой формат использовать нельзя.',
-    'View' => 'Просматривать',
-    'Saved' => 'Сохранено'
+    'Views count' => 'Количество просмотров'
 ];

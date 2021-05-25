@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $entity \afzalroq\cms\entities\Entities */
 
 $this->title =  \yii\helpers\StringHelper::truncate($model->text_1_0,45,'...');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Items'), 'url' => ['index', 'slug' => $entity->slug]];
+$this->params['breadcrumbs'][] = ['label' => $entity->name_0, 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = ['label' => $model->slug, 'url' => ['view', 'id' => $model->id, 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = Yii::t('cms', 'Update');
 ?>

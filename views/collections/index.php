@@ -37,27 +37,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'use_in_menu',
                     'value' => function ($model) {
                         return Collections::optionUseInMenuList()[$model->use_in_menu];
-                    }
+                    },
+                    'format' =>'boolean'
                 ],
-                'use_parenting',
+                'use_parenting:boolean',
                 [
                     'attribute' => 'option_file_1',
                     'value' => function (Collections $model) {
-                        return Yii::t('cms', Collections::optionFileList()[$model->option_file_1]);
+                        return Yii::t('cms', Collections::optionFileList()[$model->option_file_1]) . ' - ' . $model->option_file_1_label;
                     }
                 ],
-                'option_file_1_label',
                 [
-                    'attribute' => 'option_file_2',
+                    'attribute' => 'option_name',
                     'value' => function (Collections $model) {
-                        return Yii::t('cms', Collections::optionFileList()[$model->option_file_2]);
+                        return Yii::t('cms', Collections::optionNameList()[$model->option_name]);
                     }
                 ],
-                'option_file_2_label',
-                'option_name',
-                'option_content',
                 'created_at:datetime',
             ],
-        ]); ?>
+        ]) ?>
     </div>
 </div>

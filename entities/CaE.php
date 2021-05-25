@@ -29,9 +29,6 @@ class CaE extends ActiveRecord
     const TYPE_SELECT = 1;
     const TYPE_RADIO = 2;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'cms_collections_and_entities';
@@ -76,7 +73,7 @@ class CaE extends ActiveRecord
             }
         }
 
-        return ArrayHelper::map($options, 'id', 'name_'.Yii::$app->params['cms']['languageIds'][Yii::$app->language]);
+        return ArrayHelper::map($options, 'id', 'name_'. Yii::$app->params['l'][Yii::$app->language]);
     }
 
     public function behaviors()
@@ -86,9 +83,6 @@ class CaE extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -99,15 +93,12 @@ class CaE extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
             'id' => Yii::t('cms', 'ID'),
-            'collection_id' => Yii::t('cms', 'Collection ID'),
-            'entity_id' => Yii::t('cms', 'Entity ID'),
+            'collection_id' => Yii::t('cms', 'Collection'),
+            'entity_id' => Yii::t('cms', 'Entity'),
             'type' => Yii::t('cms', 'Type'),
             'sort' => Yii::t('cms', 'Sort'),
             'size' => Yii::t('cms', 'Size'),

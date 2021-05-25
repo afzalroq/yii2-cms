@@ -43,9 +43,6 @@ class CaM extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -56,9 +53,6 @@ class CaM extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

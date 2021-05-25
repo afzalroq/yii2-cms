@@ -218,7 +218,8 @@ class Collections extends ActiveRecord implements Linkable
             'slug' => Yii::t('cms', 'Slug'),
             'use_in_menu' => Yii::t('cms', 'Use in menu'),
             'use_parenting' => Yii::t('cms', 'Use parenting'),
-            'manual_slug' => Yii::t('cms', 'Manual Slug'),
+            'use_seo' => Yii::t('cms', 'Use SEO'),
+            'manual_slug' => Yii::t('cms', 'Manual slug'),
 
             'option_file_1' => Yii::t('cms', 'Option File') . ' 1',
             'option_file_2' => Yii::t('cms', 'Option File') . ' 2',
@@ -334,7 +335,7 @@ class Collections extends ActiveRecord implements Linkable
     {
         return [
             self::USE_IN_MENU_DISABLED => Yii::t('cms', 'Disabled'),
-            self::USE_IN_MENU_OPTIONS => Yii::t('cms', 'Option'),
+            self::USE_IN_MENU_OPTIONS => Yii::t('cms', 'Options'),
 //            self::USE_IN_MENU_ITEMS => Yii::t('cms', 'Item'),
             self::USE_IN_MENU_OPTIONS_ITEMS => Yii::t('cms', 'Options and items'),
         ];

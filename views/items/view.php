@@ -10,7 +10,7 @@ use yii\widgets\DetailView;
 /* @var $entity Entities */
 
 $this->title = \yii\helpers\StringHelper::truncate($model->text_1_0, 40, '...');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cms', \yii\helpers\StringHelper::mb_ucfirst($entity->slug)), 'url' => ['index', 'slug' => $entity->slug]];
+$this->params['breadcrumbs'][] = ['label' => $entity->name_0, 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 
 [$entity_text_attrs, $entity_file_attrs, $seo_attrs] = $entity->textAndFileAttrs();
@@ -61,8 +61,6 @@ foreach ($entity_file_attrs as $key => $attr) {
 
 
 $main_attributes = [
-//    'id',
-//    'entity_id',
     'slug',
     [
         'attribute' => 'created_by',
@@ -78,13 +76,14 @@ $main_attributes = [
     ],
 ];
 
+if ($entity->use_views_count) {
+    $main_attributes = array_merge($main_attributes, ['views_count']);
+}
+
 if ($model->entity->use_date === Entities::USE_DATE_DATE)
     $main_attributes[] = 'date_0:date';
 if ($model->entity->use_date === Entities::USE_DATE_DATETIME)
     $main_attributes[] = 'date_0:datetime';
-
-
-//$cmsForm = new CmsForm((new ActiveForm()), $model, $entity);
 
 
 if ($entity->use_gallery)
@@ -107,7 +106,7 @@ if ($entity->use_gallery)
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-primary']) ?>
         <?php if (!$entity->disable_create_and_delete) : ?>
             <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $entity->slug], [
-                'class' => 'btn btn-danger',
+                'class' => 'btn btn-danger pull-right',
                 'data' => [
                     'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
@@ -183,14 +182,6 @@ if ($entity->use_gallery)
 
         $seo_values = [];
         ?>
-    <?php endif; ?>
-    <?php if ($entity->use_views_count): ?>
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'views_count'
-            ]
-        ]) ?>
     <?php endif; ?>
     <?php if ($entity->use_seo == Entities::SEO_TRANSLATABLE || !empty($entity_text_attrs_translatable) || !empty($file_translatable)): ?>
         <div class="row" id="translatable">

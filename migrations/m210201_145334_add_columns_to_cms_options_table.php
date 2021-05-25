@@ -7,9 +7,6 @@ use yii\db\Migration;
  */
 class m210201_145334_add_columns_to_cms_options_table extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
     public function safeUp()
     {
         $this->addColumn('cms_options', 'tree', $this->integer()->notNull());
@@ -18,9 +15,6 @@ class m210201_145334_add_columns_to_cms_options_table extends Migration
         $this->addColumn('cms_options', 'depth', $this->integer()->notNull());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
         $this->dropColumn('cms_options', 'tree');

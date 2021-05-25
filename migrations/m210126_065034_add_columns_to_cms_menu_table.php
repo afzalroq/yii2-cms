@@ -28,9 +28,6 @@ class m210126_065034_add_columns_to_cms_menu_table extends Migration
 //        ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
         $this->dropColumn('cms_menu', 'tree');

@@ -481,7 +481,10 @@ class Items extends ActiveRecord
             'status' => Yii::t('cms', 'Status'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
-            'files' => Yii::t('cms', 'Pictures')
+            'created_by' => Yii::t('cms', 'Created by'),
+            'updated_by' => Yii::t('cms', 'Updated by'),
+            'files' => Yii::t('cms', 'Pictures'),
+            'views_count' => Yii::t('cms', 'Views count'),
         ];
     }
 
