@@ -84,9 +84,8 @@ return [
     'Collections' => 'Kolleksiyalar',
     'View options' => 'Option larni ko`rish',
     'Use parenting' => 'Kataloglash qo`shish',
-    'View options' => 'Option larni ko`rish',
     'Use in menu' => 'Menu ga qo`shish',
-    'Use parenting' => 'Kataloglash qo`shish',
+    'Use parenting' => 'Darajalash qo`shish',
 
     // Unit
     'Unit Categories' => 'Unit kategoriyalari',
@@ -97,6 +96,7 @@ return [
     // Entities
     'Entity' => 'Entity',
     'Entities' => 'Entity lar',
+    'View items' => 'Item larni ko`rish',
     'Use date' => 'Sana qo`shish',
     'Use status' => 'Status qo`shish',
     'Use Gallery' => 'Galereya qo`shish',
@@ -104,6 +104,9 @@ return [
     'Disable create and delete' => 'Qo`shish/O`chirishni chegaralash',
     'Use watermark' => 'Watermark qo`shish',
     'Add collection' => 'Kolleksiya qo`shish',
+
+    //items
+    'Options' => 'Option lar',
 
     //items
     'Seo Title' => 'SEO sarlavha',

@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model Collections */
 
-$this->title = $model->slug;
+$this->title = $model->{'name_' . Yii::$app->params['l'][Yii::$app->language]};
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Collection'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 

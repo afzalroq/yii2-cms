@@ -17,11 +17,15 @@ $this->title = Yii::t('cms','CMS Dashboard');
 <div class="site-index">
     <div class="row">
         <div class="col-sm-3">
-
-
-            <p>
-                <?= Html::a(Yii::t('cms', 'Collections'), Url::to(['/cms/collections/index']), ['class' => 'btn btn-block btn-lg btn-primary']) ?>
-            </p>
+            <div class="row">
+                <div class="col-sm-9">
+                    <?= Html::a(Yii::t('cms', 'Collections'), Url::to(['/cms/collections/index']), ['class' => 'btn btn-block btn-lg btn-primary']) ?>
+                </div>
+                <div class="col-sm-3">
+                    <?= Html::a('<i class="fa fa-plus"></i>', Url::to(['/cms/collections/create']), ['class' => 'btn btn-block btn-lg btn-primary']) ?>
+                </div>
+            </div>
+            <br>
             <?= ListView::widget([
                 'dataProvider' => $collectionProvider,
                 'options' => [
@@ -39,9 +43,15 @@ $this->title = Yii::t('cms','CMS Dashboard');
             ]) ?>
         </div>
         <div class="col-sm-3">
-            <p>
+            <div class="row">
+                <div class="col-sm-9">
                 <?= Html::a(Yii::t('cms','Entities'), Url::to(['/cms/entities/index']), ['class' => 'btn btn-block btn-lg btn-success']) ?>
-            </p>
+                </div>
+                <div class="col-sm-3">
+                    <?= Html::a('<i class="fa fa-plus"></i>', Url::to(['/cms/entities/create']), ['class' => 'btn btn-block btn-lg btn-success']) ?>
+                </div>
+            </div>
+            <br>
             <?= ListView::widget([
                 'dataProvider' => $entityProvider,
                 'options' => [
@@ -58,9 +68,15 @@ $this->title = Yii::t('cms','CMS Dashboard');
             ]) ?>
         </div>
         <div class="col-sm-3">
-            <p>
-                <?= Html::a(Yii::t('cms','Unit Categories'), Url::to(['/cms/unit-categories/index']), ['class' => 'btn btn-block btn-lg btn-warning']) ?>
-            </p>
+            <div class="row">
+                <div class="col-sm-9">
+                    <?= Html::a(Yii::t('cms','Unit Categories'), Url::to(['/cms/unit-categories/index']), ['class' => 'btn btn-block btn-lg btn-warning']) ?>
+                </div>
+                <div class="col-sm-3">
+                    <?= Html::a('<i class="fa fa-plus"></i>', Url::to(['/cms/unit-categories/create']), ['class' => 'btn btn-block btn-lg btn-warning']) ?>
+                </div>
+            </div>
+            <br>
             <?= ListView::widget([
                 'dataProvider' => $unitCategoryProvider,
                 'options' => [
@@ -77,9 +93,15 @@ $this->title = Yii::t('cms','CMS Dashboard');
             ]) ?>
         </div>
         <div class="col-sm-3">
-            <p>
-                <?= Html::a(Yii::t('cms','Menu types'), Url::to(['/cms/menu-type/index']), ['class' => 'btn btn-block btn-lg btn-danger']) ?>
-            </p>
+            <div class="row">
+                <div class="col-sm-9">
+                    <?= Html::a(Yii::t('cms','Menu types'), Url::to(['/cms/menu-type/index']), ['class' => 'btn btn-block btn-lg btn-danger']) ?>
+                </div>
+                <div class="col-sm-3">
+                    <?= Html::a('<i class="fa fa-plus"></i>', Url::to(['/cms/menu-type/create']), ['class' => 'btn btn-block btn-lg btn-danger']) ?>
+                </div>
+            </div>
+            <br>
             <?= ListView::widget([
                 'dataProvider' => $menuTypeProvider,
                 'options' => [
