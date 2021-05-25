@@ -112,7 +112,7 @@ dd($array);
 ### Examples
 
 TODO
-
+- test
 - Copy from extension root directory example widgets for frontend integration
 
 # Usage
