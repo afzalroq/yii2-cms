@@ -22,40 +22,42 @@ $this->params['breadcrumbs'][] = ['label' => $category->title, 'url' => ['/unit/
         <?= Html::a(Yii::t('unit', 'Create'), ['create', 'slug' => $category->slug], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('unit', 'Categories'), ['unit-categories/index'], ['class' => 'btn btn-primary']) ?>
     </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            'sort',
-            [
-                'attribute' => 'label',
-                'value' => function (Unit $model) use ($category) {
-                    return Html::a($model->label, ['view', 'id' => $model->id, 'slug' => $category->slug]);
-                },
-                'format' => 'raw'
+    
+    <div style="overflow: auto; overflow-y: hidden">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                'sort',
+                [
+                    'attribute' => 'label',
+                    'value' => function (Unit $model) use ($category) {
+                        return Html::a($model->label, ['view', 'id' => $model->id, 'slug' => $category->slug]);
+                    },
+                    'format' => 'raw'
+                ],
+                [
+                    'attribute' => 'type',
+                    'format' => 'html',
+                    'label' => (new Unit())->getAttributeLabel('slug'),
+                    'value' => function ($model) {
+                        return Html::tag('code', $model->slug, ['class' => 'text-bold']);
+                    }
+                ],
+                [
+                    'attribute' => 'type',
+                    'value' => function ($model) {
+                        return UnitType::name($model->type);
+                    }
+                ],
+                [
+                    'attribute' => 'inputValidator',
+                    'value' => function ($model) {
+                        return TextInput::validatorName($model->inputValidator);
+                    }
+                ],
+                'size',
             ],
-            [
-                'attribute' => 'type',
-                'format' => 'html',
-                'label' => (new Unit())->getAttributeLabel('slug'),
-                'value' => function ($model) {
-                    return Html::tag('code', $model->slug, ['class' => 'text-bold']);
-                }
-            ],
-            [
-                'attribute' => 'type',
-                'value' => function ($model) {
-                    return UnitType::name($model->type);
-                }
-            ],
-            [
-                'attribute' => 'inputValidator',
-                'value' => function ($model) {
-                    return TextInput::validatorName($model->inputValidator);
-                }
-            ],
-            'size',
-        ],
-    ]); ?>
+        ]); ?>
+    </div>
 </div>
