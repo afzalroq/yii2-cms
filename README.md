@@ -194,3 +194,4 @@ Unit::get('slug'); // will return data using cache
  \afzalroq\cms\entities\front\Options::getOptionSearchResults((array) $optionSlugs, $search); // get search results with options
  
 ```
+test
