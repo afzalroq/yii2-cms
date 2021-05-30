@@ -18,30 +18,32 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a("<i class='glyphicon glyphicon-home'></i> " . Yii::t('yii', 'Home'), ['/cms/home/index'], ['class' => 'btn btn-warning']) ?>
         <?= Html::a(Yii::t('unit', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    
+    <div style="overflow: auto; overflow-y: hidden">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-                        [
-                            'attribute' => 'title',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Html::a($model->title, ['view', 'id' => $model->id], ['class' => 'btn btn-link']);
-                            }
-                        ],
-            [
-                'attribute' => 'id',
-                'value' => function (Categories $model) {
-                    return Html::a(Yii::t('unit','Manage Units'), ['unit/index', 'slug' => $model->slug], ['class' => 'btn btn-default']);
-                },
-                'label' => Yii::t('unit', 'Unit'),
-                'format' => 'raw'
+                            [
+                                'attribute' => 'title',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    return Html::a($model->title, ['view', 'id' => $model->id], ['class' => 'btn btn-link']);
+                                }
+                            ],
+                [
+                    'attribute' => 'id',
+                    'value' => function (Categories $model) {
+                        return Html::a(Yii::t('unit','Manage Units'), ['unit/index', 'slug' => $model->slug], ['class' => 'btn btn-default']);
+                    },
+                    'label' => Yii::t('unit', 'Unit'),
+                    'format' => 'raw'
+                ],
+                'created_at:datetime',
+                'updated_at:datetime',
             ],
-            'created_at:datetime',
-            'updated_at:datetime',
-        ],
-    ]); ?>
+        ]); ?>
+    </div>
 </div>
