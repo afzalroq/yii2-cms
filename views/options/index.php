@@ -11,8 +11,10 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $collection Collections */
 
-$this->title = Yii::t('cms', 'Options');
+$this->title = $collection->{"name_" . Yii::$app->params['l'][Yii::$app->language]};
 $this->params['breadcrumbs'][] = $this->title;
+
+$curLang = Yii::$app->params['l-name'][Yii::$app->language];
 ?>
 <div class="collections-index">
 
@@ -41,7 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'html'
                 ],
                 'name_0',
-//                'content_0',
                 'created_at:datetime',
             ],
         ]); ?>

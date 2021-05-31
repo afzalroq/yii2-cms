@@ -8,6 +8,8 @@ return [
     'Updated At' => 'Yangilangan vaqti',
     'Created by' => 'Qo`shgan',
     'Updated by' => 'Yangilagan',
+    'Created By' => 'Qo`shgan',
+    'Updated By' => 'Yangilagan',
     'Category' => 'Kategoriya',
     'Title' => 'Nomi',
     'Slug' => 'Slug',
@@ -24,7 +26,7 @@ return [
     'Status' => 'Holat',
     'Content' => 'Kontent',
     'Type Helper' => 'Yordamchi turi',
-    'Sort' => 'Saralash',
+    'Sort' => 'Navbat',
 
     'action' => 'harakat',
     'Menu' => 'Menyu',
@@ -92,6 +94,7 @@ return [
 
     // Menu
     'Menu types' => 'Menu kategoriyalari',
+    'Add child' => 'Ichki menyu qo`shish',
 
     // Entities
     'Entity' => 'Entity',

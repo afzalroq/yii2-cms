@@ -7,9 +7,6 @@ use yii\db\Migration;
  */
 class m201219_132100_create_options_and_items_table extends Migration
 {
-	/**
-	 * {@inheritdoc}
-	 */
 	public function safeUp()
 	{
 		$this->createTable('{{%cms_options_and_items}}', [

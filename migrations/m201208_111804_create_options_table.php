@@ -7,9 +7,6 @@ use yii\db\Migration;
  */
 class m201208_111804_create_options_table extends Migration
 {
-	/**
-	 * {@inheritdoc}
-	 */
 	public function safeUp()
 	{
 		$tableOptions = ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null;
@@ -53,9 +50,6 @@ class m201208_111804_create_options_table extends Migration
         $this->addForeignKey('fkey-cms_collections-option_default_id', 'cms_collections', 'option_default_id', 'cms_options', 'id');
     }
 
-	/**
-	 * {@inheritdoc}
-	 */
 	public function safeDown()
 	{
 		$this->dropTable('{{%cms_options}}');

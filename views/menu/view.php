@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a(Yii::t('cms', 'Add Child'), ['add-child', 'root_id' => $model->id, 'slug' => $menuType->slug], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('cms', 'Add child'), ['add-child', 'root_id' => $model->id, 'slug' => $menuType->slug], ['class' => 'btn btn-success']) ?>
     </p>
     <div class="box">
         <div class="box-body">
