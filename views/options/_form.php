@@ -20,6 +20,7 @@ $hasTranslatableAttrs = 0;
 <?php if (Yii::$app->session->hasFlash('success')): ?>
     <div style="margin:5px 0 0 0;" class="alert alert-success"><?= Yii::$app->session->getFlash('success') ?></div>
 <?php endif; ?>
+
 <div class="pages-form">
 
     <?php $form = ActiveForm::begin([

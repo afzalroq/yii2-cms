@@ -189,6 +189,8 @@ class Menu extends ActiveRecord
             'link' => Yii::t('cms', 'link'),
             'page_id' => Yii::t('cms', 'Page'),
             'articles_category_id' => Yii::t('cms', 'Articles'),
+            'created_by' => Yii::t('cms', 'Created By'),
+            'updated_by' => Yii::t('cms', 'Updated By'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];

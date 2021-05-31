@@ -82,7 +82,7 @@ return [
 
     //option
     'Parent' => 'Родитель',
-    'Sort' => 'Сортировать',
+    'Sort' => 'Очередность',
 
     //entity
     'Input' => 'Ввод',

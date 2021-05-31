@@ -10,8 +10,8 @@ use yii\widgets\DetailView;
 /* @var $model Options */
 /* @var $collection Collections */
 
-$this->title = $model->slug;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Options'), 'url' => ['index', 'slug' => $collection->slug]];
+$this->title = $model->{"name_" . Yii::$app->params['l'][Yii::$app->language]};
+$this->params['breadcrumbs'][] = ['label' => $collection->{"name_" . Yii::$app->params['l'][Yii::$app->language]}, 'url' => ['index', 'slug' => $collection->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 
 $hasTranslatableAttrs = 0;
@@ -22,7 +22,7 @@ $hasTranslatableAttrs = 0;
         echo Html::a(Yii::t('yii', 'Home'), ['index', 'slug' => $collection->slug], ['class' => 'btn btn-warning']) . "&nbsp;" .
             Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-primary']);
         if ($collection->use_parenting) {
-            echo Html::a(Yii::t('cms', 'Add Child'), ['add-child', 'root_id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-success']);
+            echo Html::a(Yii::t('cms', 'Add child'), ['add-child', 'root_id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-success']);
         }
         echo Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $collection->slug], [
             'class' => 'btn btn-danger pull-right',
@@ -104,7 +104,7 @@ $hasTranslatableAttrs = 0;
                             'slug',
                             [
                                 'attribute' => 'collection_id',
-                                'label' => 'Collection',
+                                'label' => Yii::t('cms','Collection'),
                                 'value' => $model->collection->name_0
                             ],
                             'sort',

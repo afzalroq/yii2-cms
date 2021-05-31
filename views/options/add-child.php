@@ -10,7 +10,7 @@ use yii\helpers\Url;
 /* @var $root_id integer */
 
 $this->title = Yii::t('cms', 'Create');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Options'), 'url' => ['index', 'slug' => $collection->slug]];
+$this->params['breadcrumbs'][] = ['label' => $collection->{"name_" . Yii::$app->params['l'][Yii::$app->language]}, 'url' => ['index', 'slug' => $collection->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-create">

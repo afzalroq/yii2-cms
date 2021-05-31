@@ -309,6 +309,8 @@ class Options extends ActiveRecord
             'meta_des_4' => Yii::t('cms', 'Seo Description') . '(' . $language4 . ')',
             'meta_keyword_4' => Yii::t('cms', 'Seo Keywords') . '(' . $language4 . ')',
             'sort' => Yii::t('cms', 'Sort'),
+            'created_by' => Yii::t('cms', 'Created By'),
+            'updated_by' => Yii::t('cms', 'Updated By'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];

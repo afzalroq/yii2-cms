@@ -10,7 +10,7 @@ use yii\helpers\Url;
 
 $this->title = Yii::t('cms', 'Update');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cms', 'Menu'), 'url' => ['index', 'slug' => $menuType->slug]];
-$this->params['breadcrumbs'][] = ['label' => $model->title_1, 'url' => ['view', 'id' => $model->id, 'slug' => $menuType->slug]];
+$this->params['breadcrumbs'][] = ['label' => $model->{"title_" . Yii::$app->params['l'][Yii::$app->language]}, 'url' => ['view', 'id' => $model->id, 'slug' => $menuType->slug]];
 $this->params['breadcrumbs'][] = Yii::t('cms', 'Update');
 ?>
 <div class="menu-update">
