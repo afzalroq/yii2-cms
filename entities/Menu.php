@@ -36,14 +36,10 @@ class Menu extends ActiveRecord
     const TYPE_EMPTY = 1;
     const TYPE_ACTION = 2;
     const TYPE_LINK = 3;
-
     const TYPE_OPTION = 4;
-
     const TYPE_ITEM = 5;
-
     const TYPE_COLLECTION = 6;
     const TYPE_ENTITY = 7;
-
     const TYPE_ENTITY_ITEM = 10;
     #endregion
 
@@ -189,8 +185,6 @@ class Menu extends ActiveRecord
             'link' => Yii::t('cms', 'link'),
             'page_id' => Yii::t('cms', 'Page'),
             'articles_category_id' => Yii::t('cms', 'Articles'),
-            'created_by' => Yii::t('cms', 'Created By'),
-            'updated_by' => Yii::t('cms', 'Updated By'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];
@@ -213,14 +207,7 @@ class Menu extends ActiveRecord
                 case Collections::USE_IN_MENU_OPTIONS:
                     $collections[] = [
                         'id' => $collection->id,
-                        'name' => $collection->name_0,
-                        [
-                            'name_0' => $collection->name_0,
-                            'name_1' => $collection->name_1,
-                            'name_2' => $collection->name_2,    
-                            'name_3' => $collection->name_3,    
-                            'name_4' => $collection->name_4,    
-                        ]
+                        'name' => $collection->name_0
                     ];
                     break;
                 case Collections::USE_IN_MENU_ITEMS:
@@ -229,7 +216,6 @@ class Menu extends ActiveRecord
                             'id' => $option->id,
                             'name' => $option->slug
                         ];
-
                     break;
                 default:
                     break;
@@ -241,16 +227,9 @@ class Menu extends ActiveRecord
             if ($entity->use_in_menu)
                 $entities[] = [
                     'id' => $entity->id,
-                    'name' => $entity->name_0,
-                    [
-                        'name_0' => $entity->name_0,
-                        'name_1' => $entity->name_1,
-                        'name_2' => $entity->name_2,    
-                        'name_3' => $entity->name_3,    
-                        'name_4' => $entity->name_4,    
-                    ]
+                    'name' => $entity->name_0
                 ];
-        // dd($entities);
+
         return [$collections, $entities, $options];
     }
 
@@ -311,13 +290,8 @@ class Menu extends ActiveRecord
                     foreach (Items::findAll(['entity_id' => $dependItem->entity_id]) as $item)
                         $options .= '<option ' . (($item->id == $this->type_helper) ? 'selected' : '') . ' value=' . $item->id . '>' . $item->text_1_0 . '</option>';
                 }
-                // $letters = array('я', 'о');
-                // $fruit   = array('яблоко', 'орех');
-                // $text    = 'я о';
-                // $output  = str_replace($letters, $fruit, $text);
-                // dd($output);
+
                 $this->types_helper = $options;
-                // dd($options);
                 break;
 
             case self::TYPE_COLLECTION:

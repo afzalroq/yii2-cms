@@ -159,7 +159,11 @@ class MenuController extends Controller
 
     public function actionDelete($id, $slug)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $e){
+            throw new \RuntimeException('asdasd');
+        }
         return $this->redirect(['index', 'slug' => $slug]);
     }
 
