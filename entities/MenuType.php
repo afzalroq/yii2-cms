@@ -58,20 +58,20 @@ class MenuType extends ActiveRecord
         ];
     }
 
-    // public function attributeLabels()
-    // {
-    //     return [
-    //         'id' => Yii::t('cms', 'ID'),
-    //         'slug' => Yii::t('cms', 'Slug'),
-    //         'name_0' => Yii::t('cms', 'Name 0'),
-    //         'name_1' => Yii::t('cms', 'Name 1'),
-    //         'name_2' => Yii::t('cms', 'Name 2'),
-    //         'name_3' => Yii::t('cms', 'Name 3'),
-    //         'name_4' => Yii::t('cms', 'Name 4'),
-    //         'created_at' => Yii::t('cms', 'Created At'),
-    //         'updated_at' => Yii::t('cms', 'Updated At'),
-    //     ];
-    // }
+     public function attributeLabels()
+     {
+         return [
+             'id' => Yii::t('cms', 'ID'),
+             'slug' => Yii::t('cms', 'Slug'),
+             'name_0' => Yii::t('cms', 'Name 0'),
+             'name_1' => Yii::t('cms', 'Name 1'),
+             'name_2' => Yii::t('cms', 'Name 2'),
+             'name_3' => Yii::t('cms', 'Name 3'),
+             'name_4' => Yii::t('cms', 'Name 4'),
+             'created_at' => Yii::t('cms', 'Created At'),
+             'updated_at' => Yii::t('cms', 'Updated At'),
+         ];
+     }
 
     #endregion
 

@@ -7,9 +7,6 @@ use yii\db\Migration;
  */
 class m201218_061950_create_collections_and_entities_table extends Migration
 {
-	/**
-	 * {@inheritdoc}
-	 */
 	public function safeUp()
 	{
 		$this->createTable('{{%cms_collections_and_entities}}', [
@@ -30,9 +27,6 @@ class m201218_061950_create_collections_and_entities_table extends Migration
         $this->addForeignKey('fkey-cms_collections_and_entities-entities_id', 'cms_collections_and_entities', 'entity_id', 'cms_entities', 'id');
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
 	public function safeDown()
 	{
 		$this->dropTable('{{%cms_collections_and_entities}}');

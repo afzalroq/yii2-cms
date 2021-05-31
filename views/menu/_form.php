@@ -74,11 +74,32 @@ MenuAsset::register($this);
         ] = JSON.parse('<?= JSON_encode(Menu::getTypes()) ?>'),
 
         [collectionList, entityList, optionList] = JSON.parse('<?= JSON_encode($model->COEList()) ?>'),
+
         typeList = Object.entries(JSON.parse('<?= JSON_encode($model->typesList()) ?>')),
+
         actionList = Object.entries(JSON.parse('<?= JSON_encode($model->actionsList()) ?>')),
+
         typeValue = '<?= $model->type ?>',
+
         typesValue = '<?= $model->types ?>',
+
         helperValue = '<?= $model->types_helper ?>',
+
         ajaxUrl = '<?= Url::to(['menu/type']) ?>'
 
+constEmpty, #
+constI,     []
+constO,     []
+
+constAction,[]
+constLink,  ''
+
+constE,     [E[iii[ID/uz/ru/en]],E[iii]]
+constEI,    _^
+
+constC,     [C[ooo],C[ooo]]
+constCO,    _^
+
+constOIO,   [O[iii],O[iii]]
+constOII,   _^
 </script>

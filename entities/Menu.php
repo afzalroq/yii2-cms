@@ -36,10 +36,14 @@ class Menu extends ActiveRecord
     const TYPE_EMPTY = 1;
     const TYPE_ACTION = 2;
     const TYPE_LINK = 3;
+
     const TYPE_OPTION = 4;
+
     const TYPE_ITEM = 5;
+
     const TYPE_COLLECTION = 6;
     const TYPE_ENTITY = 7;
+
     const TYPE_ENTITY_ITEM = 10;
     #endregion
 
