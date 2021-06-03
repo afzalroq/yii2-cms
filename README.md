@@ -160,6 +160,13 @@ Unit::get('slug'); // will return data using cache
 ### [View all image operations & examples from documentation](https://github.com/Gregwar/Image#usage)
 
 ```php
+// get gallery main photo URI
+$item->getGalleryPhoto(width, height, operation, background, xPos, yPos)
+
+// get gallery photos URI
+$items->getPhotos() // and use with "foreach(){}"
+
+// item photos URI
  $item->getPhoto1(width, height, operation, background, xPos, yPos); // for get Photo 1
  $item->getPhoto2(width, height, operation, background, xPos, yPos); // for get Photo 2
  $item->getPhoto3(width, height, operation, background, xPos, yPos); // for get Photo 3

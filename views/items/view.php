@@ -10,7 +10,7 @@ use yii\widgets\DetailView;
 /* @var $entity Entities */
 
 $this->title = \yii\helpers\StringHelper::truncate($model->text_1_0, 40, '...');
-$this->params['breadcrumbs'][] = ['label' => $entity->name_0, 'url' => ['index', 'slug' => $entity->slug]];
+$this->params['breadcrumbs'][] = ['label' => $entity->{"name_" . Yii::$app->params['l'][Yii::$app->language]}, 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 
 [$entity_text_attrs, $entity_file_attrs, $seo_attrs] = $entity->textAndFileAttrs();
@@ -100,7 +100,12 @@ if ($entity->use_gallery)
         'format' => 'raw'
     ];
 ?>
-
+<style>
+    body img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
 <div class="items-view">
     <p>
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-primary']) ?>
@@ -288,12 +293,12 @@ if ($entity->use_gallery)
             </div>
         </div>
     <?php endif; ?>
-    <?php if ($entity->use_gallery): ?>
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => $main_photo
-        ]) ?>
-    <?php endif; ?>
+    <?php // if ($entity->use_gallery): ?>
+        <?php //= DetailView::widget([
+//            'model' => $model,
+//            'attributes' => $main_photo
+//        ]) ?>
+    <?php //endif; ?>
     <?php if ($entity->use_gallery): ?>
         <div class="box" id="<?= $model->id ?>T">
             <div class="box-body">

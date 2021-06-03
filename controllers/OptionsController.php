@@ -6,6 +6,7 @@ use afzalroq\cms\controllers\actions\OptionsNodeMoveAction;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Options;
 use afzalroq\cms\forms\OptionsSearch;
+use http\Exception\RuntimeException;
 use richardfan\sortable\SortableAction;
 use Yii;
 use yii\db\StaleObjectException;
@@ -91,6 +92,7 @@ class OptionsController extends Controller
     }
 
     /**
+
      * Finds the Options model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
@@ -121,7 +123,7 @@ class OptionsController extends Controller
         $collection = Collections::findOne(['slug' => $slug]);
         $model->parentCollection = $collection;
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $rootOption = Options::findOne(['collection_id' => $collection->id, 'depth' => 0]);
@@ -129,8 +131,9 @@ class OptionsController extends Controller
                 $transaction->commit();
             } catch (\Exception $e) {
                 $transaction->rollBack();
-                throw $e;
+                throw new RuntimeException($e->getMessage());
             }
+//            dd($model);
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
         }
 

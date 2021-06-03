@@ -53,7 +53,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
 
     public static function getEntityItemSearchResults(array $entitySlugs, $search)
     {
-        $langId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
+        $langId = Yii::$app->params['l'][Yii::$app->language];
         $entityId = Entities::find()->where(['slug' => $entitySlugs])->select('id')->column();
         $query = Items::find()->where(['entity_id' => $entityId]);
         $items = $query->andFilterWhere(['or',
@@ -70,7 +70,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
 
     public static function getOptionItemSearchResults(array $optionSlugs, $search)
     {
-        $langId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
+        $langId = Yii::$app->params['l'][Yii::$app->language];
         $optionId = Options::find()->where(['slug' => $optionSlugs])->select('id')->column();
         $OaI = OaI::find()->where(['option_id' => $optionId])->select('item_id')->column();
         $query = Items::find()->where(['id' => $OaI]);
@@ -198,6 +198,11 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
     public function getPhoto3($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
     {
         return $this->getPhoto('file_3', $width, $height, $operation, $background, $xPos, $yPos);
+    }
+
+    public function getGalleryPhoto($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
+    {
+        return $this->mainPhoto->getPhoto($width, $height, $operation, $background, $xPos, $yPos);
     }
 
     public function getFile1()
