@@ -201,4 +201,3 @@ $items->getPhotos() // and use with "foreach(){}"
  \afzalroq\cms\entities\front\Options::getOptionSearchResults((array) $optionSlugs, $search); // get search results with options
  
 ```
-test

@@ -23,6 +23,7 @@ use yii\helpers\Url;
  * @property string $title_1
  * @property string $title_2
  * @property string $title_3
+ * @property string $title_4
  * @property int $type
  * @property string $type_helper
  * @property int $menu_type_id
@@ -143,7 +144,10 @@ class Menu extends ActiveRecord
             ['title_3', 'required', 'when' => function () {
                 return in_array(3, Yii::$app->params['cms']['languageIds']);
             }],
-            [['title_0', 'title_1', 'title_2', 'title_3'], 'string', 'max' => 255],
+            ['title_4', 'required', 'when' => function () {
+                return in_array(4, Yii::$app->params['cms']['languageIds']);
+            }],
+            [['title_0', 'title_1', 'title_2', 'title_3', 'title_4'], 'string', 'max' => 255],
 
             [['type', 'menu_type_id'], 'required'],
             [['type', 'menu_type_id'], 'integer'],
@@ -171,6 +175,7 @@ class Menu extends ActiveRecord
         $language1 = isset(Yii::$app->params['cms']['languages'][1]) ? Yii::$app->params['cms']['languages'][1] : '';
         $language2 = isset(Yii::$app->params['cms']['languages'][2]) ? Yii::$app->params['cms']['languages'][2] : '';
         $language3 = isset(Yii::$app->params['cms']['languages'][3]) ? Yii::$app->params['cms']['languages'][3] : '';
+        $language4 = isset(Yii::$app->params['cms']['languages'][4]) ? Yii::$app->params['cms']['languages'][4] : '';
 
         return [
             'id' => Yii::t('cms', 'ID'),
@@ -178,6 +183,7 @@ class Menu extends ActiveRecord
             'title_1' => Yii::t('cms', 'Title') . '(' . $language1 . ')',
             'title_2' => Yii::t('cms', 'Title') . '(' . $language2 . ')',
             'title_3' => Yii::t('cms', 'Title') . '(' . $language3 . ')',
+            'title_4' => Yii::t('cms', 'Title') . '(' . $language4 . ')',
             'type' => Yii::t('cms', 'Type'),
             'types' => Yii::t('cms', 'Type'),
             'type_helper' => Yii::t('cms', 'Type Helper'),
