@@ -102,7 +102,7 @@ class CollectionsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->deleteWithChildren();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
