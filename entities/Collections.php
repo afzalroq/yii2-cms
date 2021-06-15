@@ -159,7 +159,7 @@ class Collections extends ActiveRecord implements Linkable
 
         foreach (Options::findAll(['collection_id' => $this->id]) as $option) {
             OaI::deleteAll(['option_id' => $option->id]);
-            if (!$option->delete())
+            if (!$option->deleteWithChildren())
                 throw new Exception("Cannot delete of id: {$option->id} option");
         }
 
