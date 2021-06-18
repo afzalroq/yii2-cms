@@ -299,12 +299,21 @@ if ($entity->use_gallery)
             </div>
         </div>
     <?php endif; ?>
-    <?php // if ($entity->use_gallery): ?>
-    <?php //= DetailView::widget([
-    //            'model' => $model,
-    //            'attributes' => $main_photo
-    //        ]) ?>
-    <?php //endif; ?>
+    <?php if ($entity->use_gallery): ?>
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                [
+                    'attribute' => 'main_photo_id',
+                    'format' => 'raw',
+                    'value' => function (\afzalroq\cms\entities\Items $model) {
+                        return Html::img($model->getGalleryPhoto(10, 10));
+                    },
+                    'label' => Yii::t('cms', 'Image')
+                ]
+            ]
+        ]) ?>
+    <?php endif; ?>
     <?php if ($entity->use_gallery): ?>
         <div class="box" id="<?= $model->id ?>T">
             <div class="box-body">

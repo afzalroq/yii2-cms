@@ -628,6 +628,11 @@ class Items extends ActiveRecord
         $this->setMainPhoto($photos);
     }
 
+    public function getGalleryPhoto($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
+    {
+        return $this->mainPhoto ? $this->mainPhoto->getPhoto($width, $height, $operation, $background, $xPos, $yPos) : '';
+    }
+
     public function setMainPhoto($photos)
     {
         if (!empty($photos)) {

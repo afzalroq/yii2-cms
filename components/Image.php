@@ -10,6 +10,7 @@ class Image
 {
     public static function get($obj, $attr, $width, $height, $operation, $background, $xPos, $yPos, $itemPhotos = null)
     {
+
         $file = $itemPhotos ? $itemPhotos[$attr] : $obj[$attr];
         $module = Yii::$app->getModule('cms');
         $file = $module->path . '/data/' . mb_strtolower(StringHelper::basename($itemPhotos ? $itemPhotos::className() : $obj::className())) . '/' . $obj->id . '/' . $file;
@@ -31,12 +32,11 @@ class Image
             $path->{$operation}($width, $height, $background);
         }
 
-        if (isset($obj->entity) &&  $obj->entity->use_watermark) {
+        if (isset($obj->entity) && $obj->entity->use_watermark && is_file($module->watermark)) {
             $watermark = GregImage::open($module->watermark)->cropResize(intval($width * 15 / 100), intval($height * 15 / 100));
             $path->merge($watermark, $width - intval($width * 10 / 100),
                 $height - intval($width * 10 / 100));
         }
-
 
         return $module->host . str_replace($module->path, '', $path->guess());
     }
