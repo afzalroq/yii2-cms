@@ -114,6 +114,8 @@ class MenuType extends ActiveRecord
         $menu->title_0 = StringHelper::mb_ucfirst($this->slug) . ' menu';
         $menu->title_1 = StringHelper::mb_ucfirst($this->slug) . ' menu';
         $menu->title_2 = StringHelper::mb_ucfirst($this->slug) . ' menu';
+        $menu->title_3 = StringHelper::mb_ucfirst($this->slug) . ' menu';
+        $menu->title_4 = StringHelper::mb_ucfirst($this->slug) . ' menu';
         return $menu->makeRoot();
     }
 }
