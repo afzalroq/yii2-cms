@@ -70,14 +70,14 @@ class MenuWidget extends Nestable
                 return Collections::findOne($model->type_helper)->link;
                 break;
             case Menu::TYPE_OPTION:
-                return \afzalroq\cms\entities\front\Options::findOne($model->type_helper)->link;
+                return \afzalroq\cms\entities\front\Options::findOne($model->type_helper) ? \afzalroq\cms\entities\front\Options::findOne($model->type_helper)->link : "";
                 break;
             case Menu::TYPE_ENTITY:
                 return Entities::findOne($model->type_helper)->link;
                 break;
             case Menu::TYPE_ITEM:
             case Menu::TYPE_ENTITY_ITEM:
-                return \afzalroq\cms\entities\front\Items::findOne($model->type_helper)->link;
+                return \afzalroq\cms\entities\front\Items::findOne($model->type_helper) ? \afzalroq\cms\entities\front\Items::findOne($model->type_helper)->link : "";
                 break;
             default:
                 return '#';
