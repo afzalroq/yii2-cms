@@ -2,6 +2,7 @@
 
 use yii\grid\GridView;
 use yii\helpers\Html;
+use afzalroq\cms\components\FileType;
 
 /* @var $this yii\web\View */
 /* @var $searchModel afzalroq\cms\entities\ItemsSearch */
@@ -66,14 +67,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                         return Html::img($model->getImageUrl('file_1_0', $entity->file_1_dimensionW, $entity->file_1_dimensionW));
                     },
-                    'visible' => $entity->file_1 ? true : false
+                    'visible' => $entity->file_1 && FileType::fileMimeType($entity->file_1_mimeType) === FileType::TYPE_IMAGE ? true : false
                 ],
                 [
                     'attribute' => 'use_gallery',
                     'label' => Yii::t('cms', 'Photo'),
                     'format' => 'html',
                     'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
-                        return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(200, 200) : '');
+                        return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(10, 10) : '');
                     },
                     'visible' => $entity->use_gallery ? true : false
                 ],

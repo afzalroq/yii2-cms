@@ -27,7 +27,6 @@ class ItemsController extends Controller
         ];
     }
 
-
     /**
      * Lists all Items models.
      *
@@ -93,6 +92,7 @@ class ItemsController extends Controller
             $model->load(Yii::$app->request->post());
             return Json::encode(\yii\widgets\ActiveForm::validate($model));
         }
+
         if ($model->load(Yii::$app->request->post())) {
             $operation = Yii::$app->request->post('save');
             if (in_array($operation, ['add-new', 'save-close', 'save'])) {
@@ -116,6 +116,11 @@ class ItemsController extends Controller
     public function actionUpdate($id, $slug)
     {
         $model = $this->findModel($id);
+
+        if (Yii::$app->request->isAjax) {
+            $model->load(Yii::$app->request->post());
+            return Json::encode(\yii\widgets\ActiveForm::validate($model));
+        }
 
         if ($model->load(Yii::$app->request->post())) {
             $operation = Yii::$app->request->post('save');

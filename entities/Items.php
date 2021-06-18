@@ -344,6 +344,7 @@ class Items extends ActiveRecord
 
             [['entity_id'], 'required'],
             [['entity_id', 'date_0', 'date_1', 'date_2', 'date_3', 'date_4', 'status'], 'integer'],
+            [['date_0', 'date_1', 'date_2', 'date_3', 'date_4'], 'default', 'value' => time()],
 
             [['text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4',
                 'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4',
