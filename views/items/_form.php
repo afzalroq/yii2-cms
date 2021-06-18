@@ -33,6 +33,7 @@ $hasTranslatableAttrs = 0;
             overflow-x: initial;
             overflow-y: initial;
         }
+
         .sticky {
             position: sticky;
             top: 0;
@@ -83,22 +84,30 @@ $hasTranslatableAttrs = 0;
             <div class="box">
                 <div class="box-body">
                     <ul class="nav nav-tabs" role="tablist">
-                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                            <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                        <?php
+                        $i = 0;
+                        foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                            $i++;
+                            ?>
+                            <li role="presentation" <?= $i === 1 ? 'class="active"' : '' ?>>
                                 <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
                                    data-toggle="tab"><?= $language ?></a>
                             </li>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </ul>
                     <div class="tab-content">
                         <br>
-                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                            <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
+                        <?php
+                        $i = 0;
+                        foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                            $i++;
+                            ?>
+                            <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>">
                                 <?= $cmsForm->dateFieldTranslatable($key, 'date') ?>
                                 <?= $cmsForm->textFieldsTranslatable($key, $hasTranslatableAttrs) ?>
                                 <?= $cmsForm->fileFieldsTranslatable($key, $hasTranslatableAttrs) ?>
                             </div>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -129,24 +138,32 @@ $hasTranslatableAttrs = 0;
                     <div class="box-body">
                         <?php if ($entity->use_seo == Entities::SEO_TRANSLATABLE): ?>
                             <ul class="nav nav-tabs" role="tablist">
-                                <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                                    <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                                <?php
+                                $i = 0;
+                                foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                                    $i++;
+                                    ?>
+                                    <li role="presentation" <?= $i === 1 ? 'class="active"' : '' ?>>
                                         <a href="#<?= $key ?>S" aria-controls="<?= $key ?>S" role="tab"
                                            data-toggle="tab"><?= $language ?></a>
                                     </li>
-                                <?php endforeach; ?>
+                                <?php } ?>
                             </ul>
                             <div class="tab-content">
                                 <br>
-                                <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                                    <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
+                                <?php
+                                $i = 0;
+                                foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                                    $i++;
+                                    ?>
+                                    <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>S">
 
                                         <?php $form->field($model, 'meta_title_' . $key)->textInput() ?>
                                         <?= $form->field($model, 'meta_keyword_' . $key)->textarea() ?>
                                         <?= $form->field($model, 'meta_des_' . $key)->textarea() ?>
 
                                     </div>
-                                <?php endforeach; ?>
+                                <?php } ?>
                             </div>
                         <?php else: ?>
                             <?php $form->field($model, 'meta_title_0')->textInput() ?>

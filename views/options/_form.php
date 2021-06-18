@@ -37,9 +37,9 @@ $hasTranslatableAttrs = 0;
         <div class="box-body">
             <div class="row">
                 <?php if ($collection->manual_slug): ?>
-                <div class="col-md-4">
-                    <?= $form->field($model, 'slug')->textInput() ?>
-                </div>
+                    <div class="col-md-4">
+                        <?= $form->field($model, 'slug')->textInput() ?>
+                    </div>
                 <?php endif; ?>
                 <div class="col-md-4">
                     <?= $form->field($model, 'sort')->textInput(['type' => 'number']) ?>
@@ -89,17 +89,25 @@ $hasTranslatableAttrs = 0;
             <div class="box">
                 <div class="box-body">
                     <ul class="nav nav-tabs" role="tablist">
-                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                            <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                        <?php
+                        $i = 0;
+                        foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                            $i++;
+                            ?>
+                            <li role="presentation" <?= $i === 1 ? 'class="active"' : '' ?>>
                                 <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
                                    data-toggle="tab"><?= $language ?></a>
                             </li>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </ul>
                     <div class="tab-content">
                         <br>
-                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                            <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
+                        <?php
+                        $i = 0;
+                        foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                            $i++;
+                            ?>
+                            <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>">
 
                                 <?php
                                 if ($collection->option_name && $collection->option_name == Collections::OPTION_NAME_TRANSLATABLE) {
@@ -142,7 +150,7 @@ $hasTranslatableAttrs = 0;
                                     ?>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -157,23 +165,31 @@ $hasTranslatableAttrs = 0;
                     <div class="box-body">
                         <?php if ($collection->use_seo == Collections::SEO_TRANSLATABLE): ?>
                             <ul class="nav nav-tabs" role="tablist">
-                                <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                                    <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                                <?php
+                                $i = 0;
+                                foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                                    $i++;
+                                    ?>
+                                    <li role="presentation" <?= $i === 1 ? 'class="active"' : '' ?>>
                                         <a href="#<?= $key ?>S" aria-controls="<?= $key ?>S" role="tab"
                                            data-toggle="tab"><?= $language ?></a>
                                     </li>
-                                <?php endforeach; ?>
+                                <?php } ?>
                             </ul>
                             <div class="tab-content">
                                 <br>
-                                <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                                    <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
+                                <?php
+                                $i = 0;
+                                foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                                    $i++;
+                                    ?>
+                                    <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>S">
                                         <?php $form->field($model, 'meta_title_' . $key)->hiddenInput()->label(false) ?>
                                         <?= $form->field($model, 'meta_keyword_' . $key)->textInput() ?>
                                         <?= $form->field($model, 'meta_des_' . $key)->textInput() ?>
 
                                     </div>
-                                <?php endforeach; ?>
+                                <?php } ?>
                             </div>
                         <?php else: ?>
                             <?php $form->field($model, 'meta_title_0')->hiddenInput()->label(false) ?>
