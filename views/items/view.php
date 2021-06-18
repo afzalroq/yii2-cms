@@ -309,7 +309,7 @@ if ($entity->use_gallery)
                     'value' => function (\afzalroq\cms\entities\Items $model) {
                         return Html::img($model->getGalleryPhoto(10, 10), ['style' => 'width: 300px;']);
                     },
-                    'label' => Yii::t('cms', 'Image')
+                    'label' => Yii::t('cms', 'Gallery main Photo')
                 ]
             ]
         ]) ?>
