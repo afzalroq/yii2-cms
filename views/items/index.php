@@ -69,15 +69,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'visible' => $entity->file_1 && FileType::fileMimeType($entity->file_1_mimeType) === FileType::TYPE_IMAGE ? true : false
                 ],
-                [
-                    'attribute' => 'use_gallery',
-                    'label' => Yii::t('cms', 'Photo'),
-                    'format' => 'html',
-                    'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
-                        return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(10, 10) : '');
-                    },
-                    'visible' => $entity->use_gallery ? true : false
-                ],
+//                [
+//                    'attribute' => 'use_gallery',
+//                    'label' => Yii::t('cms', 'Photo'),
+//                    'format' => 'html',
+//                    'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
+//                        return Html::img($model->mainPhoto ? $model->mainPhoto->getPhoto(10, 10) : '');
+//                    },
+//                    'visible' => $entity->use_gallery ? true : false
+//                ],
                 [
                     'attribute' => 'date_0',
                     'label' => Yii::t('cms', 'Date'),
