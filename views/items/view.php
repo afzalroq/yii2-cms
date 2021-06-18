@@ -307,7 +307,7 @@ if ($entity->use_gallery)
                     'attribute' => 'main_photo_id',
                     'format' => 'raw',
                     'value' => function (\afzalroq\cms\entities\Items $model) {
-                        return Html::img($model->getGalleryPhoto(10, 10), ['style' => 'width: 300px;']);
+                        return Html::img($model->getGalleryPhoto(360, 270, 'zoomCrop', 'transparent', 'center', 'center'), ['style' => 'width: 300px;']);
                     },
                     'label' => Yii::t('cms', 'Gallery main Photo')
                 ]
@@ -315,7 +315,7 @@ if ($entity->use_gallery)
         ]) ?>
     <?php endif; ?>
     <?php if ($entity->use_gallery): ?>
-        <div class="box" id="<?= $model->id ?>T">
+        <div class="box" id="<?= $model->id ?>">
             <div class="box-body">
                 <div class="row">
                     <?php foreach ($model->photos as $photo): ?>
