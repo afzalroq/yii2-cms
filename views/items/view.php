@@ -300,21 +300,6 @@ if ($entity->use_gallery)
         </div>
     <?php endif; ?>
     <?php if ($entity->use_gallery): ?>
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                [
-                    'attribute' => 'main_photo_id',
-                    'format' => 'raw',
-                    'value' => function (\afzalroq\cms\entities\Items $model) {
-                        return Html::img($model->getGalleryPhoto(360, 270, 'zoomCrop', 'transparent', 'center', 'center'), ['style' => 'width: 300px;']);
-                    },
-                    'label' => Yii::t('cms', 'Gallery main Photo')
-                ]
-            ]
-        ]) ?>
-    <?php endif; ?>
-    <?php if ($entity->use_gallery): ?>
         <div class="box" id="<?= $model->id ?>">
             <div class="box-body">
                 <div class="row">
@@ -347,5 +332,20 @@ if ($entity->use_gallery)
                 </div>
             </div>
         </div>
+    <?php endif; ?>
+    <?php if ($entity->use_gallery): ?>
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                [
+                    'attribute' => 'main_photo_id',
+                    'format' => 'raw',
+                    'value' => function (\afzalroq\cms\entities\Items $model) {
+                        return Html::img($model->getGalleryPhoto(360, 270, 'zoomCrop', 'transparent', 'center', 'center'), ['style' => 'width: 300px;']);
+                    },
+                    'label' => Yii::t('cms', 'Gallery main Photo')
+                ]
+            ]
+        ]) ?>
     <?php endif; ?>
 </div>
