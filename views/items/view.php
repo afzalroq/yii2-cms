@@ -307,7 +307,7 @@ if ($entity->use_gallery)
                     'attribute' => 'main_photo_id',
                     'format' => 'raw',
                     'value' => function (\afzalroq\cms\entities\Items $model) {
-                        return Html::img($model->getGalleryPhoto(10, 10));
+                        return Html::img($model->getGalleryPhoto(10, 10), ['style' => 'width: 300px;']);
                     },
                     'label' => Yii::t('cms', 'Image')
                 ]
