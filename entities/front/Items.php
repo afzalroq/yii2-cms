@@ -202,7 +202,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
 
     public function getGalleryPhoto($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
     {
-        return $this->mainPhoto ? $this->mainPhoto->getPhoto($width, $height, $operation, $background, $xPos, $yPos) : $this->getPhoto1();
+        return $this->mainPhoto ? $this->mainPhoto->getPhoto($width, $height, $operation, $background, $xPos, $yPos) : '';
     }
 
     public function getFile1()
