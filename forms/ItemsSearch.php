@@ -3,9 +3,9 @@
 namespace afzalroq\cms\forms;
 
 use afzalroq\cms\entities\Entities;
+use afzalroq\cms\entities\Items;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use afzalroq\cms\entities\Items;
 
 class ItemsSearch extends Items
 {
@@ -33,13 +33,10 @@ class ItemsSearch extends Items
      */
     public function search($params, $slug)
     {
-        $entites = Entities::findOne(['slug' => $slug]);
-        $query = Items::find()->where(['entity_id' => $entites->id]);
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
-            'query' => $query
+            'query' => Items::find()
+                ->where(['entity_id' => (Entities::findOne(['slug' => $slug]))->id])
+                ->orderBy('id DESC')
         ]);
 
         $this->load($params);

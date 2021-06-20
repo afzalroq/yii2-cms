@@ -33,6 +33,7 @@ $hasTranslatableAttrs = 0;
             overflow-x: initial;
             overflow-y: initial;
         }
+
         .sticky {
             position: sticky;
             top: 0;
@@ -43,7 +44,9 @@ $hasTranslatableAttrs = 0;
         }
     </style>
     <div class="sticky">
-        <?= Html::submitButton('<i class="fa fa-plus"></i> ' . Yii::t('cms', 'Save and Add new'), ['class' => 'btn btn-success', 'name' => 'save', 'value' => 'add-new']) ?>
+        <?php if (!$entity->disable_create_and_delete) {
+            echo Html::submitButton('<i class="fa fa-plus"></i> ' . Yii::t('cms', 'Save and Add new'), ['class' => 'btn btn-success', 'name' => 'save', 'value' => 'add-new']);
+        } ?>
         <?= Html::submitButton('<i class="fa fa-check"></i> ' . Yii::t('cms', 'Save and Close'), ['class' => 'btn btn-warning', 'name' => 'save', 'value' => 'save-close']) ?>
         <?= Html::submitButton('<i class="fa fa-refresh"></i> ' . Yii::t('cms', 'Save'), ['class' => 'btn btn-primary', 'name' => 'save', 'value' => 'save']) ?>
         <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('cms', 'Close'), ['items/index', 'slug' => $entity->slug], ['class' => 'btn btn-danger pull-right', 'name' => 'save', 'value' => 'close', 'style' => 'margin-right: 10px;']) ?>
