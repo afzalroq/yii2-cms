@@ -33,10 +33,10 @@ class ItemsSearch extends Items
      */
     public function search($params, $slug)
     {
+        $query = Items::find()->where(['entity_id' => (Entities::findOne(['slug' => $slug]))->id])->orderBy('id DESC');
+        
         $dataProvider = new ActiveDataProvider([
-            'query' => Items::find()
-                ->where(['entity_id' => (Entities::findOne(['slug' => $slug]))->id])
-                ->orderBy('id DESC')
+            'query' => $query
         ]);
 
         $this->load($params);
