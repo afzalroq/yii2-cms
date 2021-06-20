@@ -341,7 +341,7 @@ if ($entity->use_gallery)
                     'attribute' => 'main_photo_id',
                     'format' => 'raw',
                     'value' => function (\afzalroq\cms\entities\Items $model) {
-                        return Html::img($model->getGalleryPhoto(360, 270, 'zoomCrop', 'transparent', 'center', 'center'), ['style' => 'width: 300px;']);
+                        return Html::img($model->getGalleryPhoto(480, 360, 'scaleResize', 'transparent', 'center', 'center'), ['style' => 'width: 300px;']);
                     },
                     'label' => Yii::t('cms', 'Gallery main Photo')
                 ]
