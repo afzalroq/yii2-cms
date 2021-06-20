@@ -34,7 +34,7 @@ class ItemPhotos extends \yii\db\ActiveRecord
 
     public static function create(UploadedFile $file, int $id): self
     {
-        $photo = new static();
+        $photo = new self();
         $photo->cms_item_id = $id;
         $photo->file = $file;
         return $photo;

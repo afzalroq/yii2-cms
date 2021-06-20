@@ -194,17 +194,25 @@ if ($entity->use_gallery)
                 <div class="box">
                     <div class="box-body">
                         <ul class="nav nav-tabs" role="tablist">
-                            <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                                <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                            <?php
+                            $i = 0;
+                            foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                                $i++;
+                                ?>
+                                <li role="presentation" <?= $i === 1 ? 'class="active"' : '' ?>>
                                     <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
                                        data-toggle="tab"><?= $language ?></a>
                                 </li>
-                            <?php endforeach; ?>
+                            <?php } ?>
                         </ul>
                         <div class="tab-content">
                             <br>
-                            <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                                <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
+                            <?php
+                            $i = 0;
+                            foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                                $i++;
+                                ?>
+                                <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>">
                                     <?php
                                     if ($model->entity->use_date === Entities::USE_TRANSLATABLE_DATE_DATE) {
                                         $data_translatable[] = 'date_' . $key . ':date';
@@ -283,24 +291,16 @@ if ($entity->use_gallery)
                                         $seo_values = [];
                                     }
                                     ?>
-
-
                                 </div>
-                            <?php endforeach; ?>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     <?php endif; ?>
-    <?php // if ($entity->use_gallery): ?>
-        <?php //= DetailView::widget([
-//            'model' => $model,
-//            'attributes' => $main_photo
-//        ]) ?>
-    <?php //endif; ?>
     <?php if ($entity->use_gallery): ?>
-        <div class="box" id="<?= $model->id ?>T">
+        <div class="box" id="<?= $model->id ?>">
             <div class="box-body">
                 <div class="row">
                     <?php foreach ($model->photos as $photo): ?>
@@ -332,5 +332,20 @@ if ($entity->use_gallery)
                 </div>
             </div>
         </div>
+    <?php endif; ?>
+    <?php if ($entity->use_gallery): ?>
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                [
+                    'attribute' => 'main_photo_id',
+                    'format' => 'raw',
+                    'value' => function (\afzalroq\cms\entities\Items $model) {
+                        return Html::img($model->getGalleryPhoto(360, 270, 'zoomCrop', 'transparent', 'center', 'center'), ['style' => 'width: 300px;']);
+                    },
+                    'label' => Yii::t('cms', 'Gallery main Photo')
+                ]
+            ]
+        ]) ?>
     <?php endif; ?>
 </div>

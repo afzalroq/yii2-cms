@@ -86,22 +86,30 @@ $hasTranslatableAttrs = 0;
             <div class="box">
                 <div class="box-body">
                     <ul class="nav nav-tabs" role="tablist">
-                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                            <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
+                        <?php
+                        $i = 0;
+                        foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                            $i++;
+                            ?>
+                            <li role="presentation" <?= $i === 1 ? 'class="active"' : '' ?>>
                                 <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
                                    data-toggle="tab"><?= $language ?></a>
                             </li>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </ul>
                     <div class="tab-content">
                         <br>
-                        <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                            <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>">
+                        <?php
+                        $i = 0;
+                        foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                            $i++;
+                            ?>
+                            <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>">
                                 <?= $cmsForm->dateFieldTranslatable($key, 'date') ?>
                                 <?= $cmsForm->textFieldsTranslatable($key, $hasTranslatableAttrs) ?>
                                 <?= $cmsForm->fileFieldsTranslatable($key, $hasTranslatableAttrs) ?>
                             </div>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -109,45 +117,6 @@ $hasTranslatableAttrs = 0;
     </div>
     <!--#endregion -->
 
-    <!--#region Translatable Seo -->
-    <?php if ($entity->use_seo > 0): ?>
-        <div class="row">
-            <div class="col-md-12">
-                <hr>
-                <div class="box">
-                    <div class="box-body">
-                        <?php if ($entity->use_seo == Entities::SEO_TRANSLATABLE): ?>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                                    <li role="presentation" <?= $key == 0 ? 'class="active"' : '' ?>>
-                                        <a href="#<?= $key ?>S" aria-controls="<?= $key ?>S" role="tab"
-                                           data-toggle="tab"><?= $language ?></a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                            <div class="tab-content">
-                                <br>
-                                <?php foreach (Yii::$app->params['cms']['languages'] as $key => $language) : ?>
-                                    <div role="tabpanel" class="tab-pane <?= $key == 0 ? 'active' : '' ?>" id="<?= $key ?>S">
-
-                                        <?php $form->field($model, 'meta_title_' . $key)->textInput() ?>
-                                        <?= $form->field($model, 'meta_keyword_' . $key)->textarea() ?>
-                                        <?= $form->field($model, 'meta_des_' . $key)->textarea() ?>
-
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php else: ?>
-                            <?php $form->field($model, 'meta_title_0')->textInput() ?>
-                            <?= $form->field($model, 'meta_keyword_0')->textarea() ?>
-                            <?= $form->field($model, 'meta_des_0')->textarea() ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
-    <!--#endregion -->
 
     <?php if ($entity->use_gallery): ?>
         <div class="box box-default">
@@ -161,6 +130,54 @@ $hasTranslatableAttrs = 0;
             </div>
         </div>
     <?php endif; ?>
+
+    <!--#region Translatable Seo -->
+    <?php if ($entity->use_seo > 0): ?>
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+                <div class="box">
+                    <div class="box-body">
+                        <?php if ($entity->use_seo == Entities::SEO_TRANSLATABLE): ?>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <?php
+                                $i = 0;
+                                foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                                    $i++;
+                                    ?>
+                                    <li role="presentation" <?= $i === 1 ? 'class="active"' : '' ?>>
+                                        <a href="#<?= $key ?>S" aria-controls="<?= $key ?>S" role="tab"
+                                           data-toggle="tab"><?= $language ?></a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                            <div class="tab-content">
+                                <br>
+                                <?php
+                                $i = 0;
+                                foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
+                                    $i++;
+                                    ?>
+                                    <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>S">
+
+                                        <?php $form->field($model, 'meta_title_' . $key)->textInput() ?>
+                                        <?= $form->field($model, 'meta_keyword_' . $key)->textarea() ?>
+                                        <?= $form->field($model, 'meta_des_' . $key)->textarea() ?>
+
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        <?php else: ?>
+                            <?php $form->field($model, 'meta_title_0')->textInput() ?>
+                            <?= $form->field($model, 'meta_keyword_0')->textarea() ?>
+                            <?= $form->field($model, 'meta_des_0')->textarea() ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+    <!--#endregion -->
 
     <?php ActiveForm::end(); ?>
 
