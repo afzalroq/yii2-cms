@@ -133,7 +133,7 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     private function getSeo($seoAttr)
     {
-        if (!($languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]))
+        if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language]))
             $languageId = 0;
         if (empty($this->seo_values))
             return null;

@@ -94,7 +94,7 @@ class Options extends ActiveRecord
 
     private function setCurrentLanguage()
     {
-        $this->languageId = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        $this->languageId = \Yii::$app->params['l'][\Yii::$app->language];
         if (!$this->languageId)
             $this->languageId = 0;
     }

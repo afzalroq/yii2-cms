@@ -93,7 +93,7 @@ class TextInput extends UnitActiveRecord
 
     public function get()
     {
-        $key = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        $key = \Yii::$app->params['l'][\Yii::$app->language];
 
         if (!$this['data_' . $key]) {
             $key = 0;
@@ -102,7 +102,7 @@ class TextInput extends UnitActiveRecord
         return $this->{'data_' . $key};
     }
 
-    public function getFormField($form, $key, $language)
+    public function getFormField($form, $key = '0', $language = '')
     {
         $thisLanguage = $language ? '(' . $language . ')' : '';
         return $form->field($this, '[' . $this->id . ']data_' . $key)->textInput()->label($this->label . $thisLanguage);

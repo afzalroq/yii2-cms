@@ -56,7 +56,7 @@ class Unit extends \yii\db\ActiveRecord
 
     public static function getPhotoUrl($object, $thumbProfile = null): string
     {
-        $key = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        $key = \Yii::$app->params['l'][\Yii::$app->language];
 
         if (!$object['photo_' . $key]) $key = 0;
 

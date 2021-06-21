@@ -597,7 +597,7 @@ class Items extends ActiveRecord
 
         return in_array($this->entity->use_date, [Entities::USE_DATE_DISABLED, Entities::USE_DATE_DATE, Entities::USE_DATE_DATETIME])
             ? $this['date_0']
-            : $this['date_' . \Yii::$app->params['cms']['languageIds'][\Yii::$app->language]];
+            : $this['date_' . \Yii::$app->params['l'][\Yii::$app->language]];
     }
 
     #region Photo Methods

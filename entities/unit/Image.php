@@ -79,7 +79,7 @@ class Image extends UnitActiveRecord
 
     public function get($thumbProfile = null)
     {
-        $key = \Yii::$app->params['cms']['languageIds'][\Yii::$app->language];
+        $key = \Yii::$app->params['l'][\Yii::$app->language];
 
         if (!$this['data_' . $key]) {
             $key = 0;
