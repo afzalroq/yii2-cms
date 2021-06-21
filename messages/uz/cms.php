@@ -3,13 +3,13 @@
 return [
     // site helpers
     'Created at' => 'Qo`shilgan vaqti',
-    'Updated at' => 'Yangilangan vaqti',
+    'Updated at' => 'Tahrirlagangan vaqti',
     'Created At' => 'Qo`shilgan vaqti',
-    'Updated At' => 'Yangilangan vaqti',
+    'Updated At' => 'Tahrirlangan vaqti',
     'Created by' => 'Qo`shgan',
-    'Updated by' => 'Yangilagan',
+    'Updated by' => 'Tahrirlagan',
     'Created By' => 'Qo`shgan',
-    'Updated By' => 'Yangilagan',
+    'Updated By' => 'Tahrirlagan',
     'Category' => 'Kategoriya',
     'Title' => 'Nomi',
     'Slug' => 'Slug',
@@ -41,7 +41,7 @@ return [
 
     // Buttons
     'Create' => 'Qo`shish',
-    'Update' => 'Yangilash',
+    'Update' => 'Tahrirlash',
     'Delete' => 'O`chirish',
     'Choose' => 'Tanlang',
     'Upload' => 'Yuklash',
