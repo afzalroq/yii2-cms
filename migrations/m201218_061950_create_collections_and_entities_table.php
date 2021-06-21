@@ -9,6 +9,8 @@ class m201218_061950_create_collections_and_entities_table extends Migration
 {
 	public function safeUp()
 	{
+        $tableOptions = ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB' : null;
+
 		$this->createTable('{{%cms_collections_and_entities}}', [
 			'id' => $this->primaryKey(),
 			'collection_id' => $this->integer(),
@@ -18,7 +20,7 @@ class m201218_061950_create_collections_and_entities_table extends Migration
 			'size' => $this->tinyInteger(),
 			'created_at' => $this->integer()->unsigned()->notNull(),
 			'updated_at' => $this->integer()->unsigned()->notNull(),
-		]);
+		], $tableOptions);
 
         $this->createIndex('index-cms_collections_and_entities-collection_id', 'cms_collections_and_entities', 'collection_id');
         $this->addForeignKey('fkey-cms_collections_and_entities-collection_id', 'cms_collections_and_entities', 'collection_id', 'cms_collections', 'id');

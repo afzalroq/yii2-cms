@@ -9,6 +9,8 @@ class m210128_053616_create_cms_menu_type_table extends Migration
 {
     public function safeUp()
     {
+        $tableOptions = ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB' : null;
+
         $this->createTable('{{%cms_menu_type}}', [
             'id' => $this->primaryKey(),
             'slug' => $this->string()->notNull()->unique(),
@@ -19,7 +21,7 @@ class m210128_053616_create_cms_menu_type_table extends Migration
             'name_4' => $this->string(),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'updated_at' => $this->integer()->unsigned()->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->addColumn('cms_menu', 'menu_type_id', $this->integer()->notNull());
         $this->createIndex('idx-cms_menu-menu_typ_id', 'cms_menu', 'menu_type_id');

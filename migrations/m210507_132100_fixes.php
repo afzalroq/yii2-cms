@@ -6,6 +6,8 @@ class m210507_132100_fixes extends Migration
 {
     public function safeUp()
     {
+        $tableOptions = ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB' : null;
+
         #########################################################################################################
         $this->createTable('{{%cms_options_and_menu_types}}', [
             'id' => $this->primaryKey(),
@@ -13,7 +15,7 @@ class m210507_132100_fixes extends Migration
             'menu_type_id' => $this->integer()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'updated_at' => $this->integer()->unsigned()->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('index-cms_options_and_menu_types_option_id', 'cms_options_and_menu_types', 'option_id');
         $this->addForeignKey('fkey-cms_options_and_menu_types_option_id', 'cms_options_and_menu_types', 'option_id', 'cms_options', 'id');
@@ -39,17 +41,16 @@ class m210507_132100_fixes extends Migration
 
 
         #########################################################################################################
-        $this->renameColumn('cms_entities','disable_watermark','use_watermark');
+        $this->renameColumn('cms_entities', 'disable_watermark', 'use_watermark');
 
 
         #########################################################################################################
-        $this->renameColumn('cms_items','date','date_0');
+        $this->renameColumn('cms_items', 'date', 'date_0');
         //adding columns to items
-        $this->addColumn('cms_items','date_1',$this->integer()->unsigned());
-        $this->addColumn('cms_items','date_2',$this->integer()->unsigned());
-        $this->addColumn('cms_items','date_3',$this->integer()->unsigned());
-        $this->addColumn('cms_items','date_4',$this->integer()->unsigned());
-
+        $this->addColumn('cms_items', 'date_1', $this->integer()->unsigned());
+        $this->addColumn('cms_items', 'date_2', $this->integer()->unsigned());
+        $this->addColumn('cms_items', 'date_3', $this->integer()->unsigned());
+        $this->addColumn('cms_items', 'date_4', $this->integer()->unsigned());
 
 
         #########################################################################################################

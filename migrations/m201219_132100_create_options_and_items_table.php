@@ -9,10 +9,12 @@ class m201219_132100_create_options_and_items_table extends Migration
 {
 	public function safeUp()
 	{
-		$this->createTable('{{%cms_options_and_items}}', [
+        $tableOptions = ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB' : null;
+
+        $this->createTable('{{%cms_options_and_items}}', [
 			'option_id' => $this->integer()->notNull(),
 			'item_id' => $this->integer()->notNull()
-		]);
+		], $tableOptions);
 
 		$this->createIndex('index-cms_options_and_items-option_id', 'cms_options_and_items', 'option_id');
         $this->addForeignKey('fkey-cms_options_and_items-option_id', 'cms_options_and_items', 'option_id', 'cms_options', 'id');
