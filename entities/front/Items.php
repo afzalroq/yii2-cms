@@ -227,4 +227,18 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
         return $this->getSeo('meta_title');
     }
 
+    public function updateViewsCount()
+    {
+        $session = Yii::$app->session;
+        $items = $session->get('session_items');
+        $items = empty($items) ? [] : $items;
+        if (isset($items[$this->id])) {
+            return;
+        }
+        $items = array_merge($items, ['id' => $this->id]);
+        $item->views_count++;
+        $item->save();
+        $session->set('session_items', $items);
+        return;
+    }
 }
