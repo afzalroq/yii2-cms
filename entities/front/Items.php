@@ -232,14 +232,12 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
         $session = Yii::$app->session;
         $items = $session->get('session_items');
         $items = empty($items) ? [] : $items;
-        if (isset($items[$this->id])) {
-            return;
+        if (!isset($items[$this->id])) {
+            $items = array_merge($items, [$this->id => true]);
+            $session->set('session_items', $items);
+            $this->views_count++;
+            $this->detachBehaviors();
+            $this->save();
         }
-        $items = array_merge($items, [$this->id => true]);
-        $this->views_count++;
-        $this->detachBehaviors();
-        $this->save();
-        $session->set('session_items', $items);
-        return;
     }
 }
