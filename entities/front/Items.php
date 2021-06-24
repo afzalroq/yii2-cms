@@ -235,7 +235,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
         if (isset($items[$this->id])) {
             return;
         }
-        $items = array_merge($items, ['id' => $this->id]);
+        $items = array_merge($items, [$this->id => true]);
         $this->views_count++;
         $this->detachBehaviors();
         $this->save();
