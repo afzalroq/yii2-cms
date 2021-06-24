@@ -237,6 +237,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
         }
         $items = array_merge($items, ['id' => $this->id]);
         $this->views_count++;
+        $this->detachBehaviors();
         $this->save();
         $session->set('session_items', $items);
         return;
