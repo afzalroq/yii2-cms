@@ -230,10 +230,9 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
     public function updateViewsCount()
     {
         $session = Yii::$app->session;
-        $items = $session->get('session_items');
-        $items = empty($items) ? [] : $items;
+        $items = $session->get('session_items', []);
         if (!isset($items[$this->id])) {
-            $items = array_merge($items, [$this->id => true]);
+            $items += [$this->id => true];
             $session->set('session_items', $items);
             $this->views_count++;
             $this->detachBehaviors();
