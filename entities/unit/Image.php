@@ -88,9 +88,9 @@ class Image extends UnitActiveRecord
         return $thumbProfile ? $this->getThumbFileUrl('data_' . $key, $thumbProfile) : $this->getImageFileUrl('data_' . $key);
     }
 
-    public function getFormField($form, $key, $language)
+    public function getFormField($form, $key = '0', $language = '')
     {
-        $thisLanguage = $language ? '('.$language.')' : '';
+        $thisLanguage = $language ? '(' . $language . ')' : '';
         return $form->field($this, '[' . $this->id . ']data_' . $key)->widget(FileInput::class, [
             'options' => ['accept' => 'image/*'],
             'language' => Yii::$app->language,

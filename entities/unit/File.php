@@ -81,9 +81,9 @@ class File extends UnitActiveRecord
         return $this->getUploadedFileUrl('data_' . $key);
     }
 
-    public function getFormField($form, $key, $language)
+    public function getFormField($form, $key = '0', $language = '')
     {
-        $thisLanguage = $language ? '('.$language.')' : '';
+        $thisLanguage = $language ? '(' . $language . ')' : '';
         return $form->field($this, '[' . $this->id . ']data_' . $key)->widget(FileInput::class, [ // TODO use form array and key is BLOCK_ID
             'options' => ['accept' => '*'],
             'language' => Yii::$app->language,

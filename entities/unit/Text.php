@@ -64,16 +64,17 @@ class Text extends UnitActiveRecord
         return $this->{'data_' . $key};
     }
 
-    public function getFormField($form, $key, $language)
+
+    public function getFormField($form, $key = '0', $language = '')
     {
-        $thisLanguage = $language ? '('.$language.')' : '';
+        $thisLanguage = $language ? '(' . $language . ')' : '';
         switch ($this->type) {
             case UnitType::STRINGS:
             case UnitType::STRING_COMMON:
-                return $form->field($this, '['.$this->id.']data_' . $key)->textarea(['rows' => 16])->label($this->label . $thisLanguage);
+                return $form->field($this, '[' . $this->id . ']data_' . $key)->textarea(['rows' => 16])->label($this->label . $thisLanguage);
             case UnitType::TEXTS:
             case UnitType::TEXT_COMMON:
-                return $form->field($this, '['.$this->id.']data_' . $key)->widget(CKEditor::class, [
+                return $form->field($this, '[' . $this->id . ']data_' . $key)->widget(CKEditor::class, [
                     'editorOptions' => ElFinder::ckeditorOptions('elfinder', [
                         'preset' => 'full',
                         'extraPlugins' => 'image2,widget,oembed,video',
