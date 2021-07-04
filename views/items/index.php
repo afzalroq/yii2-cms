@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'id',
                     'value' => function ($model) use ($entity) {
-                        return Html::a($model->id . ' <i class="fa fa-chevron-circle-right"></i>', ['items/view', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default']);
+                        return Html::a($model->id . ' <i class="fa fa-chevron-circle-right"></i>', ['cms/items/view', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default']);
                     },
                     'format' => 'html'
                 ],
