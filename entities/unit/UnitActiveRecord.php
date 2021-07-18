@@ -3,6 +3,7 @@
 namespace afzalroq\cms\entities\unit;
 
 use yii\db\ActiveRecord;
+use afzalroq\cms\helpers\UnitType;
 
 /**
  * @property int $id
