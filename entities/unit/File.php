@@ -73,13 +73,7 @@ class File extends UnitActiveRecord
 
     public function get()
     {
-        $key = \Yii::$app->params['l'][\Yii::$app->language];
-
-        if (!$this['data_' . $key]) {
-            $key = 0;
-        }
-
-        return $this->getUploadedFileUrl('data_' . $key);
+        return $this->getUploadedFileUrl('data_' . $this->getKey());
     }
 
     public function getFormField($form, $key = '0', $language = '')

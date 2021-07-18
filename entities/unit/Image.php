@@ -78,14 +78,10 @@ class Image extends UnitActiveRecord
         return $this->getThumbFileUrl('data_' . $key, 'md');
     }
 
+
     public function get($thumbProfile = null)
     {
-        $key = \Yii::$app->params['l'][\Yii::$app->language];
-
-        if (!$this['data_' . $key]) {
-            $key = 0;
-        }
-
+        $key = $this->getKey();
         return $thumbProfile ? $this->getThumbFileUrl('data_' . $key, $thumbProfile) : $this->getImageFileUrl('data_' . $key);
     }
 

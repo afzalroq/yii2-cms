@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
             foreach ($units as $unit) {
                 foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                     if (in_array($unit->type, [UnitType::TEXT_COMMON, UnitType::STRING_COMMON, UnitType::IMAGE_COMMON, UnitType::FILE_COMMON, UnitType::INPUT_COMMON])) {
-                        echo '<div class="col-sm-' . $unit->size . '">' . ($unit->getModelByType())->getFormField($form, $key, $language) . '</div>';
+                        echo '<div class="col-sm-' . $unit->size . '">' . ($unit->getModelByType())->getFormField($form) . '</div>';
                         break;
                     }
                     if (!in_array($unit->type, [UnitType::TEXT_COMMON, UnitType::STRING_COMMON, UnitType::IMAGE_COMMON, UnitType::FILE_COMMON, UnitType::INPUT_COMMON])) {

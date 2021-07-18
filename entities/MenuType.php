@@ -52,9 +52,11 @@ class MenuType extends ActiveRecord
     {
         return [
             [['slug'], 'required'],
-            [['created_at', 'updated_at'], 'integer'],
-            [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4'], 'string', 'max' => 255],
+            [['name_0', 'name_1', 'name_2', 'name_3', 'name_4'], 'string', 'max' => 255],
+
+            ['slug', 'string', 'max' => 255],
             [['slug'], 'unique'],
+            [['slug'], 'afzalroq\cms\validators\SlugValidator'],
         ];
     }
 

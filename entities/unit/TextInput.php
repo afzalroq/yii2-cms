@@ -94,13 +94,7 @@ class TextInput extends UnitActiveRecord
 
     public function get()
     {
-        $key = \Yii::$app->params['l'][\Yii::$app->language];
-
-        if (!$this['data_' . $key]) {
-            $key = 0;
-        }
-
-        return $this->{'data_' . $key};
+        return $this->{'data_' . $this->getKey()};
     }
 
     public function getFormField($form, $key = '0', $language = '')
