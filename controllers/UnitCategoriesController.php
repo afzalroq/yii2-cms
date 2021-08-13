@@ -89,7 +89,7 @@ class UnitCategoriesController extends Controller
         foreach ($units as $unit) {
             $modelByType = $unit->getModelByType();
             $modelByType->load(Yii::$app->request->post());
-            $modelByType->save();
+            $modelByType->save(false);
         }
 
         return $this->render('units', [

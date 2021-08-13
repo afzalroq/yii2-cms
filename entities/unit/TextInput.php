@@ -57,9 +57,11 @@ class TextInput extends UnitActiveRecord
     public function rules()
     {
         return [
-            [['data_0', 'data_1', 'data_2', 'data_3', 'data_4'],
-                self::getValidator(Unit::findOne(['data_0' => $this->data_0])->inputValidator)['validator'],
-                'message' => self::getValidator(Unit::findOne(['data_0' => $this->data_0])->inputValidator)['massege']],
+            [
+                ['data_0', 'data_1', 'data_2', 'data_3', 'data_4'],
+                self::getValidator($this->inputValidator)['validator'],
+                'message' => self::getValidator($this->inputValidator)['massege']
+            ],
         ];
     }
 
