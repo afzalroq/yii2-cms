@@ -53,6 +53,11 @@ use yii\db\Exception;
  * @property int|null $manual_slug
  * @property int|null $disable_create_and_delete
  * @property int|null $use_watermark
+ * @property int|null use_comments
+ * @property int|null use_votes
+ * @property int|null max_level
+ * @property int|null use_moderation
+ * @property int|null comment_without_login
  * @property int $created_at
  * @property int $updated_at
  *
@@ -101,6 +106,11 @@ class Entities extends ActiveRecord implements Linkable
     const SEO_TRANSLATABLE = 2;
     #endregion seo types
     #endregion
+
+    #commen section
+    const COMMENT_ON = 1;
+    const COMMENT_OFF = 2;
+    const COMMENT_ON_REQUIRED = 3;
 
     #region Extra attributes
     public $file_1_mimeType;
@@ -316,7 +326,22 @@ class Entities extends ActiveRecord implements Linkable
             [['slug'], 'required'],
             [['slug'], 'unique'],
             [['slug'], 'afzalroq\cms\validators\SlugValidator'],
+
+            // comment section uchun qo'shilgan maydonlar
+            [['comment_without_login','use_moderation'],'boolean'],
+            [['max_level','use_votes', 'use_comments'],'integer'],
+            [['max_level', 'use_comments', 'use_votes'], 'default', 'value' => self::COMMENT_OFF],
+            [['use_votes','use_comments'], 'in', 'range' => [self::COMMENT_ON, self::COMMENT_OFF, self::COMMENT_ON_REQUIRED]],
         ];
+    }
+
+    public function either($attribute_name, $params)
+    {
+        $field1 = $this->getAttributeLabel($attribute_name);
+        $field2 = $this->getAttributeLabel($params['other']);
+        if (empty($this->$attribute_name) && empty($this->{$params['other']})) {
+            $this->addError($attribute_name, Yii::t('yii', "either {$field1} or {$field2} is required."));
+        }
     }
 
     public function checkMimeType($attribute, $params)
@@ -381,6 +406,12 @@ class Entities extends ActiveRecord implements Linkable
             'use_watermark' => Yii::t('cms', 'Use watermark'),
             'created_at' => Yii::t('cms', 'Created at'),
             'updated_at' => Yii::t('cms', 'Updated at'),
+
+            'use_comments' => Yii::t('cms', 'Use comment'),
+            'use_votes' => Yii::t('cms', 'Use votes'),
+            'max_level' => Yii::t('cms', 'Max level'),
+            'use_moderation' => Yii::t('cms', 'Use moderation'),
+            'comment_without_login' => Yii::t('cms', 'Can Comment without login'),
         ];
     }
 
@@ -463,4 +494,14 @@ class Entities extends ActiveRecord implements Linkable
         return '/e/' . $this->slug;
     }
 
+    public static function getCommentTextUseOrNot()
+    {
+        return [
+            self::COMMENT_OFF => Yii::t('cms', 'Disabled'),
+            self::COMMENT_ON => Yii::t('cms','Comment On'),
+            self::COMMENT_ON_REQUIRED => Yii::t('cms','Comment On and required'),
+        ];
+    }
+
 }
+
