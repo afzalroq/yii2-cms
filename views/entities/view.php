@@ -152,13 +152,13 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                                         [
                                             'attribute' => 'use_comments',
                                             'value' => function ($model) {
-                                                return Entities::getCommentTextUseOrNot()[$model->use_comments];
+                                                return $model->use_comments ? Entities::getCommentTextUseOrNot()[$model->use_comments] : '';
                                             }
                                         ],
                                         [
                                             'attribute' => 'use_votes',
                                             'value' => function ($model) {
-                                                return Entities::getCommentTextUseOrNot()[$model->use_votes];
+                                                return $model->use_votes ? Entities::getCommentTextUseOrNot()[$model->use_votes] : '';
                                             }
                                         ],
                                         'max_level',
@@ -292,3 +292,4 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
     <?php endif; ?>
 
 </div>
+
