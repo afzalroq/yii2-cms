@@ -37,16 +37,26 @@ use yii\widgets\ActiveForm;
                 </div>
                 <div class="col-md-3">
                     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'manual_slug')->checkbox() ?>
+                    <?= $form->field($model, 'use_in_menu')->checkbox() ?>
+                    <?= $form->field($model, 'use_gallery')->checkbox() ?>
+                    <?= $form->field($model, 'use_status')->checkbox() ?>
+                    <?= $form->field($model, 'use_views_count')->checkbox() ?>
+                    <?= $form->field($model, 'disable_create_and_delete')->checkbox() ?>
+                    <?= $form->field($model, 'use_watermark')->checkbox() ?>
                 </div>
                 <div class="col-md-3">
+                    <div class="row">
                     <?php $model->use_date = $model->isNewRecord ? Entities::USE_DATE_DISABLED : $model->use_date ?>
                     <?= $form->field($model, 'use_date')->widget(ToggleButtonGroup::class, [
                         'type' => 'radio',
                         'items' => Entities::dateList(),
                         'labelOptions' => ['class' => 'btn-info tbg']
                     ]) ?>
-                </div>
-                <div class="col-md-3">
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row">
                     <?php $model->use_seo = $model->isNewRecord ? Collections::SEO_DISABLED : $model->use_seo ?>
                     <?= $form->field($model, 'use_seo')->widget(ToggleButtonGroup::class, [
                         'type' => 'radio',
@@ -55,15 +65,23 @@ use yii\widgets\ActiveForm;
                             'class' => 'btn btn-info'
                         ]
                     ]) ?>
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    <?= $form->field($model, 'manual_slug')->checkbox() ?>
-                    <?= $form->field($model, 'use_in_menu')->checkbox() ?>
-                    <?= $form->field($model, 'use_gallery')->checkbox() ?>
-                    <?= $form->field($model, 'use_status')->checkbox() ?>
-                    <?= $form->field($model, 'use_views_count')->checkbox() ?>
-                    <?= $form->field($model, 'disable_create_and_delete')->checkbox() ?>
-                    <?= $form->field($model, 'use_watermark')->checkbox() ?>
+                    <?= $form->field($model, 'use_comments')->widget(ToggleButtonGroup::class, [
+                        'type' => 'radio',
+                        'items' => Entities::getCommentTextUseOrNot(),
+                        'labelOptions' => ['class' => 'btn-info tbg']
+                    ]) ?>
+                    <?= $form->field($model, 'use_votes')->widget(ToggleButtonGroup::class, [
+                        'type' => 'radio',
+                        'items' => Entities::getCommentTextUseOrNot(),
+                        'labelOptions' => ['class' => 'btn-info tbg']
+                    ]) ?>
+
+                    <?= $form->field($model, 'max_level')->textInput(['type'=>'number','min' => 0,'max' => 3]) ?>
+                    <?= $form->field($model, 'use_moderation')->checkbox([]) ?>
+                    <?= $form->field($model, 'comment_without_login')->checkbox([]) ?>
                 </div>
             </div>
         </div>
@@ -211,6 +229,4 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
-
-
 </div>

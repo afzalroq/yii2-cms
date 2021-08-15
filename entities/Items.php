@@ -4,7 +4,6 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
-use afzalroq\cms\interfaces\Linkable;
 use common\models\User;
 use DomainException;
 use Yii;
@@ -80,7 +79,9 @@ use yiidreamteam\upload\ImageUploadBehavior;
  * @property int|null $date_3
  * @property int|null $date_4
  * @property int|null $status
- * @property int|null $views_count
+ * @property int|null $comments_count
+ * @property int|null $votes_count
+ * @property int|null $avarage_voting
  * @property int $created_at
  * @property int $updated_at
  * @property ItemPhotos[] $photos
@@ -369,6 +370,12 @@ class Items extends ActiveRecord
             ['files', 'each', 'rule' => ['image']],
 
             [['main_photo_id'], 'exist', 'skipOnError' => true, 'targetClass' => ItemPhotos::class, 'targetAttribute' => ['main_photo_id' => 'id']],
+
+            // comment section uchun qo'shilgan maydonlar
+            [['comments_count', 'votes_count'], 'integer'],
+            [['comments_count', 'votes_count'], 'default', 'value' => 0],
+            [['avarage_voting'], 'number'],
+            [['avarage_voting'], 'default', 'value' => 0.0]
         ];
     }
 
@@ -486,6 +493,10 @@ class Items extends ActiveRecord
             'updated_by' => Yii::t('cms', 'Updated by'),
             'files' => Yii::t('cms', 'Pictures'),
             'views_count' => Yii::t('cms', 'Views count'),
+
+            'comments_count' => Yii::t('cms', 'Comment count'),
+            'avarage_voting' => Yii::t('cms', 'Avarage voting'),
+            'votes_count' => Yii::t('cms', 'Votes Count'),
         ];
     }
 
@@ -696,4 +707,48 @@ class Items extends ActiveRecord
     #endregion
 
     #endregion
+
+    public function addComment(ItemComments $comment): void
+    {
+        $count = $this->comments_count;
+        $avarage = $this->avarage_voting;
+        $count_votes = $this->votes_count;
+
+        $this->comments_count = $count + 1;
+
+        if ($comment->vote) {
+            $count_votes++;
+            $this->votes_count = $count_votes;
+            $this->avarage_voting = $this->votes_count != 0 ? ((($count_votes-1) * $avarage + $comment->vote) / $count_votes) : 0;
+        }
+        $this->save();
+    }
+
+    public function deleteComment(ItemComments $comment): void
+    {
+        $count = $this->comments_count;
+        $avarage = $this->avarage_voting;
+        $count_votes = $this->votes_count;
+
+        $this->comments_count = $count - 1;
+
+        if ($comment->vote) {
+            $count_votes--;
+            $this->votes_count = $count_votes;
+            $this->avarage_voting = $count_votes != 0 ? ((($count_votes + 1) * $avarage - $comment->vote) / $count_votes) : 0;
+        }
+
+        $this->save();
+    }
+
+    public function calculateCommentsAndVotes()
+    {
+        $count_comments = ItemComments::find()->where(['item_id' => $this->id])->andWhere(['is not','text', null])->count();
+        $count_votes = ItemComments::find()->where(['item_id' => $this->id])->andWhere(['is not','vote', null])->count();
+        $summ_votes = ItemComments::find()->where(['item_id' => $this->id])->andWhere(['is not','vote', null])->sum('vote');
+        $this->votes_count = $count_votes;
+        $this->comments_count = $count_comments;
+        $this->avarage_voting = $count_votes == 0 ? 0 : $summ_votes / $count_votes;
+        $this->save();
+    }
 }

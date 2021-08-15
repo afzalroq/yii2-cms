@@ -2,8 +2,8 @@
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\CaE;
-use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Entities;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
@@ -140,6 +140,31 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                                     'text_6_label',
                                     'text_7_label',
                                 ]
+                            ]) ?>
+                        </div>
+                        <hr>
+                        <br>
+                        <div class="col-sm-12">
+                            <?= DetailView::widget([
+                                'model' => $model,
+                                'attributes' =>
+                                    [
+                                        [
+                                            'attribute' => 'use_comments',
+                                            'value' => function ($model) {
+                                                return Entities::getCommentTextUseOrNot()[$model->use_comments];
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'use_votes',
+                                            'value' => function ($model) {
+                                                return Entities::getCommentTextUseOrNot()[$model->use_votes];
+                                            }
+                                        ],
+                                        'max_level',
+                                        'use_moderation:boolean',
+                                        'comment_without_login:boolean',
+                                    ]
                             ]) ?>
                         </div>
                     </div>

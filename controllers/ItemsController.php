@@ -3,6 +3,7 @@
 namespace afzalroq\cms\controllers;
 
 use afzalroq\cms\entities\Entities;
+use afzalroq\cms\entities\ItemComments;
 use afzalroq\cms\entities\Items;
 use afzalroq\cms\forms\ItemsSearch;
 use Yii;
@@ -56,7 +57,10 @@ class ItemsController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'entity' => Entities::findOne(['slug' => $slug])
+            'entity' => Entities::findOne(['slug' => $slug]),
+            'commentsDataProvider' => new \yii\data\ActiveDataProvider([
+                'query' => ItemComments::find()->where(['item_id' => $id])
+            ])
         ]);
     }
 
@@ -173,6 +177,13 @@ class ItemsController extends Controller
         $model = $this->findModel($id);
         $model->movePhotoDown($photo_id);
         $model->save();
+        return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
+    }
+
+    public function actionRefreshCommentStats($id, $slug)
+    {
+        $model = $this->findModel($id);
+        $model->calculateCommentsAndVotes();
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 }

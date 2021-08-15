@@ -118,5 +118,39 @@ return [
     'Pictures' => 'Rasmlar',
     'Gallery main Photo' => 'Galeriya bosh rasmi',
     'If the SVG format is used in the file, no other format can be used' => 'Agar faylda SVG format ishlatilgan bo`lsa boshqa formatlarni ishlatish mumkin emas',
-    'Views count' => 'Ko`rishlar soni'
+    'Views count' => 'Ko`rishlar soni',
+
+    //comments uchun
+
+    //items ga qo'shildi
+    'Comment count' => 'Kommentlar soni',
+    'Avarage voting' => 'O\'rtacha ovoz',
+    'Use comment' => 'Komment qo\'shish imkoniyati',
+    //entities ga qo'shildi
+    'Use votes' => 'Ovoz berish',
+    'Use comment text' => 'Komment yozish(text)',
+    'Use parent_id' => 'Kommentlarga javob yozish',
+    'Max level count' => 'Javob yozishning eng yuqori bosqichi',
+    'Use moderation' => 'Moderatsiya',
+    'Use comment count' => 'Komment sonlarini hisoblash',
+    'Comments Section' => 'Kommentariylar bo\'limi',
+    'Comment Text' => 'Kemmentariy',
+    'Comment Username' => 'Foydalanuvchi',
+    'Use Avarage voting' => 'O\'rtacha reytingni hisoblash',
+    'Comment Off' => 'O\'chirilgan',
+    'Comment On' => 'Yoqilgan',
+    'Comment On and required' => 'Yoqilgan va majburiy',
+    'Can Comment without login' => 'Avtorizatsiyasiz ham komment qoldirish',
+    'Comment Status Draft' => 'Qoralama',
+    'Comment Status checked' => 'Aktiv',
+    'Comment Status Deleted' => 'O\'chirilgan',
+    'Reply' => 'Javob berish',
+    'Draft' => 'Qoralama holatiga o\'tkazish',
+    'Public' => 'Aktiv holatga o\'tkazish',
+    'Add Comment' => 'Komment qo\'shish',
+    'Comment Vote' => 'Ovoz',
+    'Status' => 'Holati',
+    'Are you sure you want to refresh the stats?' => 'Rostdan ham Kommentariyalar statistikasini yangilamoqchimisiz?',
+    'Refresh' => 'Yangilash',
+    'Votes Count' => 'Ovoz berishlar soni',
 ];
