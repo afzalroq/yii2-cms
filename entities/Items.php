@@ -4,6 +4,7 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
+use afzalroq\cms\entities\front\Comments;
 use common\models\User;
 use DomainException;
 use Yii;
@@ -708,7 +709,7 @@ class Items extends ActiveRecord
 
     #endregion
 
-    public function addComment(ItemComments $comment): void
+    public function addComment($comment): void
     {
         $count = $this->comments_count;
         $avarage = $this->avarage_voting;
@@ -724,7 +725,7 @@ class Items extends ActiveRecord
         $this->save();
     }
 
-    public function deleteComment(ItemComments $comment): void
+    public function deleteComment($comment): void
     {
         $count = $this->comments_count;
         $avarage = $this->avarage_voting;
@@ -743,9 +744,9 @@ class Items extends ActiveRecord
 
     public function calculateCommentsAndVotes()
     {
-        $count_comments = ItemComments::find()->where(['item_id' => $this->id])->andWhere(['is not','text', null])->count();
-        $count_votes = ItemComments::find()->where(['item_id' => $this->id])->andWhere(['is not','vote', null])->count();
-        $summ_votes = ItemComments::find()->where(['item_id' => $this->id])->andWhere(['is not','vote', null])->sum('vote');
+        $count_comments = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not','text', null])->count();
+        $count_votes = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not','vote', null])->count();
+        $summ_votes = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not','vote', null])->sum('vote');
         $this->votes_count = $count_votes;
         $this->comments_count = $count_comments;
         $this->avarage_voting = $count_votes == 0 ? 0 : $summ_votes / $count_votes;

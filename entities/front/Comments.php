@@ -70,4 +70,19 @@ class Comments extends \afzalroq\cms\entities\ItemComments
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        if($this->user_id && is_null($this->username)){
+            $this->username = $this->user->full_name;
+        }
+
+        if($this->status == self::STATUS_CHECKED){
+            $this->item->addComment($this);
+        }
+
+        if($this->status != self::STATUS_CHECKED && !$this->isNewRecord){
+            $this->item->deleteComment($this);
+        }
+        return true;
+    }
 }
