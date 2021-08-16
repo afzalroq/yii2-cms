@@ -244,7 +244,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
     {
         $pageSize = 5;
         return new \yii\data\ActiveDataProvider([
-            'query' => ItemComments::find()->where(['item_id' => $id])->limit($page * $pageSize),
+            'query' => \afzalroq\cms\entities\ItemComments::find()->where(['item_id' => $id])->limit($page * $pageSize),
             'pagination' => false
             // 'sort' => [
             //     'defaultOrder' => [
