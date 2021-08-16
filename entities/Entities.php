@@ -108,8 +108,8 @@ class Entities extends ActiveRecord implements Linkable
     #endregion
 
     #commen section
-    const COMMENT_ON = 1;
-    const COMMENT_OFF = 2;
+    const COMMENT_OFF = 1;
+    const COMMENT_ON = 2;
     const COMMENT_ON_REQUIRED = 3;
 
     #region Extra attributes
