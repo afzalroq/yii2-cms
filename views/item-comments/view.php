@@ -43,6 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     [
+                        'attribute' => 'user_id',
+                        'label' => Yii::t('cms', 'Comment Username'),
+                        'value' => function ($model) use ($entity) {
+                            return $model->username;
+                        },
+                    ],
+                    [
                         'attribute' => 'text',
                         'visible' => $entity->use_comments !== \afzalroq\cms\entities\Entities::COMMENT_OFF,
                     ],
@@ -69,26 +76,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         'dataProvider' => $model->getChilds(),
                         'columns' => [
                             [
+                                'attribute' => 'user_id',
+                                'label' => Yii::t('cms', 'Comment Username'),
+                                'value' => function ($model) use ($entity) {
+                                    return $model->username;
+                                },
+                            ],
+                            [
                                 'attribute' => 'text',
                                 'visible' => $entity->use_comments != Entities::COMMENT_OFF
                             ],
                             [
                                 'attribute' => 'vote',
                                 'visible' => $entity->use_votes != Entities::COMMENT_OFF
-                            ],
-                            [
-                                'attribute' => 'user_id',
-                                'label' => Yii::t('cms', 'Comment Username'),
-                                'value' => function ($model) use ($entity) {
-                                    if ($entity->comment_without_login) {
-                                        if ($model->user)
-                                            return $model->user->username;
-                                        else
-                                            $model->username;
-                                    } else {
-                                        return $model->user->username;
-                                    }
-                                },
                             ],
                             [
                                 'attribute' => 'status',

@@ -384,6 +384,13 @@ if ($entity->use_gallery)
                     'dataProvider' => $commentsDataProvider,
                     'columns' => [
                         [
+                            'attribute' => 'user_id',
+                            'label' => Yii::t('cms', 'Comment Username'),
+                            'value' => function ($model) use ($entity) {
+                                return $model->username;
+                            },
+                        ],
+                        [
                             'attribute' => 'text',
                             'visible' => $entity->use_comments != Entities::COMMENT_OFF
                         ],
@@ -391,20 +398,7 @@ if ($entity->use_gallery)
                             'attribute' => 'vote',
                             'visible' => $entity->use_votes != Entities::COMMENT_OFF
                         ],
-                        [
-                            'attribute' => 'user_id',
-                            'label' => Yii::t('cms', 'Comment Username'),
-                            'value' => function ($model) use ($entity) {
-                                if ($entity->comment_without_login) {
-                                    if ($model->user)
-                                        return $model->user->username;
-                                    else
-                                        $model->username;
-                                } else {
-                                    return $model->user->username;
-                                }
-                            },
-                        ],
+
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {
