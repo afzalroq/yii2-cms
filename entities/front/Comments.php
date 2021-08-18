@@ -71,7 +71,8 @@ class Comments extends \afzalroq\cms\entities\ItemComments
                 'message' => \Yii::t('cms', 'To write comment you should log in first')
             ],
 
-            [['reCaptcha'], ReCaptchaValidator2::class, 'uncheckedMessage' => Yii::t('app', 'Пожалуйста, подтвердите, что вы не бот.')],
+            
+            [['reCaptcha'], ReCaptchaValidator2::class, 'uncheckedMessage' => Yii::t('cms', 'Please confirm that you are not a bot.')],
         ];
     }
 

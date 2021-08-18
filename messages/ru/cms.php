@@ -135,4 +135,5 @@ return [
     'Are you sure you want to refresh the stats?' => 'Вы уверены, что хотите обновить статистику?',
     'Refresh' => 'Обновить',
     'Votes Count' => 'Количество голосов',
+    'Please confirm that you are not a bot.' => 'Пожалуйста, подтвердите, что вы не бот.',
 ];

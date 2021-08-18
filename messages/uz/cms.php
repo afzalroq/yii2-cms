@@ -149,4 +149,6 @@ return [
     'Are you sure you want to refresh the stats?' => 'Rostdan ham Kommentariyalar statistikasini yangilamoqchimisiz?',
     'Refresh' => 'Yangilash',
     'Votes Count' => 'Ovoz berishlar soni',
+    'Please confirm that you are not a bot.' => 'Iltimos, Bot emasligingizni tasdoqlang.',
+
 ];
