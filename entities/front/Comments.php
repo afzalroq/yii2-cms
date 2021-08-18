@@ -72,7 +72,7 @@ class Comments extends \afzalroq\cms\entities\ItemComments
             ],
 
             
-            [['reCaptcha'], ReCaptchaValidator2::class, 'uncheckedMessage' => Yii::t('cms', 'Please confirm that you are not a bot.')],
+            [['reCaptcha'], ReCaptchaValidator2::class, 'when' => function($model) {return !Yii::$app->user->can('moderator');}, 'uncheckedMessage' => Yii::t('cms', 'Please confirm that you are not a bot.')],
         ];
     }
 
