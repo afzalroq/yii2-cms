@@ -79,6 +79,7 @@ class ItemComments extends \yii\db\ActiveRecord
             'vote' => Yii::t('cms', 'Comment Vote'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
+            'reCaptcha' => Yii::t('app', 'reCaptcha'),
         ];
     }
 

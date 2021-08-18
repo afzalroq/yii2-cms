@@ -7,11 +7,14 @@ use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\ItemComments;
 use afzalroq\cms\entities\Items;
 use yii\base\Model;
+use himiklab\yii2\recaptcha\ReCaptchaValidator2;
+
 
 class Comments extends \afzalroq\cms\entities\ItemComments
 {
     protected $entity;
     protected $item;
+    public $reCaptcha;
 
     public function __construct(Entities $entity, Items $item, ItemComments $comment = null, $config = [])
     {
@@ -66,7 +69,9 @@ class Comments extends \afzalroq\cms\entities\ItemComments
                     return !$entity->comment_without_login;
                 },
                 'message' => \Yii::t('cms', 'To write comment you should log in first')
-            ]
+            ],
+
+            [['reCaptcha'], ReCaptchaValidator2::class, 'uncheckedMessage' => Yii::t('app', 'Пожалуйста, подтвердите, что вы не бот.')],
         ];
     }
 
