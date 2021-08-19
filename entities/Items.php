@@ -392,6 +392,10 @@ class Items extends ActiveRecord
 
     public function getCurrentAttrs($entityAttr)
     {
+        if($this->isAttrCommon($entityAttr)){
+            return [$entityAttr . '_0'];
+        }
+
         $attrs = [];
         foreach (Yii::$app->params['cms']['languages'] as $key => $language)
             $attrs[] = $entityAttr . '_' . $key;
