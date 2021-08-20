@@ -2,7 +2,6 @@
 
 namespace afzalroq\cms\entities;
 
-use common\models\User;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -107,7 +106,7 @@ class ItemComments extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(Module::getInstance()->userClass, ['id' => 'user_id']);
     }
 
     public function beforeSave($insert)

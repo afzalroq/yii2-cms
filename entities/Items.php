@@ -5,7 +5,7 @@ namespace afzalroq\cms\entities;
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
 use afzalroq\cms\entities\front\Comments;
-use common\models\User;
+use afzalroq\cms\Module;
 use DomainException;
 use Yii;
 use yii\behaviors\BlameableBehavior;
@@ -590,13 +590,13 @@ class Items extends ActiveRecord
 
     public function getCreatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'created_by']);
+        return $this->hasOne(Module::getInstance()->userClass, ['id' => 'created_by']);
     }
 
 
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'updated_by']);
+        return $this->hasOne(Module::getInstance()->userClass, ['id' => 'updated_by']);
     }
 
     public function getOption()

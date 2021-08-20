@@ -5,7 +5,6 @@ namespace afzalroq\cms\entities;
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
 use afzalroq\cms\entities\query\OptionsQuery;
-use common\models\User;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\behaviors\BlameableBehavior;
@@ -431,13 +430,13 @@ class Options extends ActiveRecord
 
     public function getCreatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'created_by']);
+        return $this->hasOne(Module::getInstance()->userClass, ['id' => 'created_by']);
     }
 
 
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'updated_by']);
+        return $this->hasOne(Module::getInstance()->userClass, ['id' => 'updated_by']);
     }
     #endregion
 }
