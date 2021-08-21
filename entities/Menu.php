@@ -13,6 +13,9 @@ use yii\db\ActiveRecord;
 use yii\db\Exception;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use afzalroq\cms\Module;
+
+
 
 /**
  * This is the model class for table "menu".

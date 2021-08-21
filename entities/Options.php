@@ -4,6 +4,7 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
+use afzalroq\cms\Module;
 use afzalroq\cms\entities\query\OptionsQuery;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;

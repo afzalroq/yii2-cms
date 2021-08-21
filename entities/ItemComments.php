@@ -4,6 +4,7 @@ namespace afzalroq\cms\entities;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use afzalroq\cms\Module;
 
 /**
  * This is the model class for table "cmc_item_photos".
