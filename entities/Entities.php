@@ -112,6 +112,16 @@ class Entities extends ActiveRecord implements Linkable
     const COMMENT_ON = 2;
     const COMMENT_ON_REQUIRED = 3;
 
+    public function isCommentsOn()
+    {
+        return in_array($this->use_comments, [self::COMMENT_ON, self::COMMENT_ON_REQUIRED]);
+    }
+
+    public function isVotesOn()
+    {
+        return in_array($this->use_votes, [self::COMMENT_ON, self::COMMENT_ON_REQUIRED]);
+    }
+
     #region Extra attributes
     public $file_1_mimeType;
     public $file_1_dimensionW;
@@ -328,10 +338,10 @@ class Entities extends ActiveRecord implements Linkable
             [['slug'], 'afzalroq\cms\validators\SlugValidator'],
 
             // comment section uchun qo'shilgan maydonlar
-            [['comment_without_login','use_moderation'],'boolean'],
-            [['max_level','use_votes', 'use_comments'],'integer'],
+            [['comment_without_login', 'use_moderation'], 'boolean'],
+            [['max_level', 'use_votes', 'use_comments'], 'integer'],
             [['max_level', 'use_comments', 'use_votes'], 'default', 'value' => self::COMMENT_OFF],
-            [['use_votes','use_comments'], 'in', 'range' => [self::COMMENT_ON, self::COMMENT_OFF, self::COMMENT_ON_REQUIRED]],
+            [['use_votes', 'use_comments'], 'in', 'range' => [self::COMMENT_ON, self::COMMENT_OFF, self::COMMENT_ON_REQUIRED]],
         ];
     }
 
@@ -498,8 +508,8 @@ class Entities extends ActiveRecord implements Linkable
     {
         return [
             self::COMMENT_OFF => Yii::t('cms', 'Disabled'),
-            self::COMMENT_ON => Yii::t('cms','Comment On'),
-            self::COMMENT_ON_REQUIRED => Yii::t('cms','Comment On and required'),
+            self::COMMENT_ON => Yii::t('cms', 'Comment On'),
+            self::COMMENT_ON_REQUIRED => Yii::t('cms', 'Comment On and required'),
         ];
     }
 

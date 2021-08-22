@@ -2,12 +2,11 @@
 
 namespace afzalroq\cms\entities\front;
 
-use Yii;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\ItemComments;
 use afzalroq\cms\entities\Items;
-use yii\base\Model;
 use himiklab\yii2\recaptcha\ReCaptchaValidator2;
+use Yii;
 
 
 class Comments extends \afzalroq\cms\entities\ItemComments
@@ -22,8 +21,7 @@ class Comments extends \afzalroq\cms\entities\ItemComments
         $this->item = $item;
         $this->item_id = $item->id;
 
-        if($comment){
-//            $this->load($comment->attributes, '');
+        if ($comment) {
             if ($comment->level < $entity->max_level) {
                 $this->level = $comment->level + 1;
                 $this->parent_id = $comment->id;
@@ -31,18 +29,18 @@ class Comments extends \afzalroq\cms\entities\ItemComments
                 $this->level = $comment->level;
                 $this->parent_id = $comment->parent_id;
             }
-        }else{
+        } else {
             $this->item_id = $item->id;
             $this->status = $entity->use_moderation ? ItemComments::STATUS_DRAFT : ItemComments::STATUS_CHECKED;
         }
     }
-    
+
     public function rules()
     {
         $entity = $this->entity;
         return [
-            [['vote', 'parent_id','item_id', 'user_id', 'level', 'status'], 'integer'],
-            [['status'],'default','value' => ItemComments::STATUS_DRAFT],
+            [['vote', 'parent_id', 'item_id', 'user_id', 'level', 'status'], 'integer'],
+            [['status'], 'default', 'value' => ItemComments::STATUS_DRAFT],
             [['level'], 'default', 'value' => 0],
 
             [['text'], 'string'],
@@ -71,22 +69,23 @@ class Comments extends \afzalroq\cms\entities\ItemComments
                 'message' => \Yii::t('cms', 'To write comment you should log in first')
             ],
 
-            
-            [['reCaptcha'], ReCaptchaValidator2::class, 'when' => function($model) {return !Yii::$app->user->can('moderator');}, 'uncheckedMessage' => Yii::t('cms', 'Please confirm that you are not a bot.')],
+            [['reCaptcha'], ReCaptchaValidator2::class, 'when' => function ($model) {
+                return !Yii::$app->user->can('moderator');
+            }, 'uncheckedMessage' => Yii::t('cms', 'Please confirm that you are not a bot.')],
         ];
     }
 
     public function beforeSave($insert)
     {
-        if($this->user_id && is_null($this->username)){
+        if ($this->user_id && is_null($this->username)) {
             $this->username = $this->user->full_name;
         }
 
-        if($this->status == self::STATUS_CHECKED){
+        if ($this->status == self::STATUS_CHECKED) {
             $this->item->addComment($this);
         }
 
-        if($this->status != self::STATUS_CHECKED && !$this->isNewRecord){
+        if ($this->status != self::STATUS_CHECKED && !$this->isNewRecord) {
             $this->item->deleteComment($this);
         }
         return true;

@@ -350,7 +350,7 @@ if ($entity->use_gallery)
         ]) ?>
     <?php endif; ?>
 
-    <?php if ($entity->use_comments != Entities::COMMENT_OFF || $entity->use_votes != Entities::COMMENT_OFF): ?>
+    <?php if ($entity->isCommentsOn() || $entity->isVotesOn()): ?>
         <div class="box">
             <div class="box-header">
                 <?= Html::a(Yii::t('cms', 'Refresh'), ['items/refresh-comment-stats', 'id' => $model->id, 'slug' => $entity->slug], [
