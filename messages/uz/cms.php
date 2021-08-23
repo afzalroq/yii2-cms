@@ -132,7 +132,7 @@ return [
     'Max level count' => 'Javob yozishning eng yuqori bosqichi',
     'Use moderation' => 'Moderatsiya',
     'Comments Section' => 'Kommentariylar bo\'limi',
-    'Comment Text' => 'Kemmentariy',
+    'Comment Text' => 'Kommentariy',
     'Comment Username' => 'Foydalanuvchi',
     'Comment On' => 'Yoqilgan',
     'Comment On and required' => 'Yoqilgan va majburiy',

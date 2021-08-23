@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
 <style>
     #entities-use_date,
     #entities-use_seo,
+    #entities-use_comments,
+    #entities-use_votes,
     #entities-file_1_mimetype,
     #entities-file_2_mimetype,
     #entities-file_3_mimetype {
