@@ -4,6 +4,7 @@ namespace afzalroq\cms;
 
 use kartik\datecontrol\Module;
 use yii\base\BootstrapInterface;
+use yii\web\Application;
 
 
 class Bootstrap implements BootstrapInterface
@@ -80,15 +81,17 @@ class Bootstrap implements BootstrapInterface
             ]
         ]);
 
-        $app->getUrlManager()->addRules(
-            [
-                'c/<c:[\w+-]+>' => 'c/collection',
-                'c/<c:[\w+-]+>/<o:[\w+-]+>' => 'c/option',
+        $app->on(Application::EVENT_BEFORE_REQUEST, [$this, 'addModuleUrlRules']);
+    }
 
-                'e/<e:[\w+-]+>' => 'c/entity',
-                'e/<e:[\w+-]+>/<i:\d+>-<w:[\w+-]*>' => 'c/item',
-            ]
-        );
+    public function addModuleUrlRules($event)
+    {
+        \Yii::$app->getUrlManager()->addRules([
+            'c/<c:[\w+-]+>' => 'c/collection',
+            'c/<c:[\w+-]+>/<o:[\w+-]+>' => 'c/option',
 
+            'e/<e:[\w+-]+>' => 'c/entity',
+            'e/<e:[\w+-]+>/<i:\d+>-<w:[\w+-]*>' => 'c/item',
+        ]);
     }
 }
