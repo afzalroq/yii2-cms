@@ -8,6 +8,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model afzalroq\cms\entities\Items */
 /* @var $entity Entities */
+/* @var $commentsDataProvider \afzalroq\cms\entities\ItemComments */
 
 $this->title = \yii\helpers\StringHelper::truncate($model->text_1_0, 40, '...');
 $this->params['breadcrumbs'][] = ['label' => $entity->{"name_" . Yii::$app->params['l'][Yii::$app->language]}, 'url' => ['index', 'slug' => $entity->slug]];
@@ -348,4 +349,90 @@ if ($entity->use_gallery)
             ]
         ]) ?>
     <?php endif; ?>
+
+    <?php if ($entity->isCommentsOn() || $entity->isVotesOn()): ?>
+        <div class="box">
+            <div class="box-header">
+                <?= Html::a(Yii::t('cms', 'Refresh'), ['items/refresh-comment-stats', 'id' => $model->id, 'slug' => $entity->slug], [
+                    'class' => 'btn btn-info pull-right',
+                    'data' => [
+                        'confirm' => Yii::t('cms', 'Are you sure you want to refresh the stats?'),
+                        'method' => 'post',
+                    ],
+                ]) ?>
+            </div>
+            <div class="box-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'comments_count',
+                        'votes_count',
+                        'avarage_voting',
+                    ]
+                ]) ?>
+            </div>
+        </div>
+
+        <br>
+        <div class="box">
+            <div class="box-header">
+                <h4><?= Yii::t('cms', 'Comments Section') ?></h4>
+                <?= Html::a(Yii::t('cms', 'Add Comment'), ['item-comments/add', 'item_id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-info pull-right']) ?>
+            </div>
+            <div class="box-body">
+                <?= \yii\grid\GridView::widget([
+                    'dataProvider' => $commentsDataProvider,
+                    'columns' => [
+                        [
+                            'attribute' => 'user_id',
+                            'label' => Yii::t('cms', 'Comment Username'),
+                            'value' => function ($model) use ($entity) {
+                                return $model->username;
+                            },
+                        ],
+                        [
+                            'attribute' => 'text',
+                            'visible' => $entity->use_comments != Entities::COMMENT_OFF
+                        ],
+                        [
+                            'attribute' => 'vote',
+                            'visible' => $entity->use_votes != Entities::COMMENT_OFF
+                        ],
+
+                        [
+                            'attribute' => 'status',
+                            'value' => function ($model) {
+                                return \afzalroq\cms\entities\ItemComments::getStatusList()[$model->status];
+                            }
+                        ],
+                        'created_at:datetime',
+                        'updated_at:datetime',
+
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{view}  {reply} {delete}',
+                            'buttons' => [
+                                'reply' => function ($url, $model) use ($entity) {
+                                    return Html::a('<i class="fa fa-reply"></i>', ['/cms/item-comments/reply', 'id' => $model->id, 'slug' => $entity->slug], []);
+                                },
+                                'view' => function ($url, $model) use ($entity) {
+                                    return Html::a('<i class="fa fa-eye"></i>', ['/cms/item-comments/view', 'id' => $model->id, 'slug' => $entity->slug]);
+                                },
+                                'delete' => function ($url, $model) use ($entity) {
+                                    return Html::a('<i class="fa fa-trash"></i>', ['/cms/item-comments/delete', 'id' => $model->id, 'slug' => $entity->slug], [
+                                        'data' => [
+                                            'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
+                                            'method' => 'post',
+                                        ],
+                                    ]);
+                                }
+                            ]
+                        ]
+                    ]
+                ])
+                ?>
+            </div>
+        </div>
+    <?php endif ?>
 </div>
+

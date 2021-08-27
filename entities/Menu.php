@@ -3,7 +3,6 @@
 namespace afzalroq\cms\entities;
 
 use afzalroq\cms\entities\query\MenuQuery;
-use common\models\User;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\base\BaseObject;
@@ -14,6 +13,9 @@ use yii\db\ActiveRecord;
 use yii\db\Exception;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use afzalroq\cms\Module;
+
+
 
 /**
  * This is the model class for table "menu".
@@ -333,13 +335,13 @@ class Menu extends ActiveRecord
 
     public function getCreatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'created_by']);
+        return $this->hasOne(Module::getInstance()->userClass, ['id' => 'created_by']);
     }
 
 
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::class, ['id' => 'updated_by']);
+        return $this->hasOne(Module::getInstance()->userClass, ['id' => 'updated_by']);
     }
 
     public function typesList($key = null)

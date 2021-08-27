@@ -6,6 +6,7 @@ use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\OaI;
 use afzalroq\cms\interfaces\Linkable;
 use Yii;
+use afzalroq\cms\entities\ItemComments;
 use yii\caching\TagDependency;
 use yii\helpers\StringHelper;
 
@@ -238,5 +239,13 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
             $this->detachBehaviors();
             $this->save();
         }
+    }
+
+    public function getComments()
+    {
+        return new \yii\data\ActiveDataProvider([
+            'query' => ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED]),
+            'pagination' => false
+        ]);
     }
 }
