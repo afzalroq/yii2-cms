@@ -84,12 +84,12 @@ class UnitCategoriesController extends Controller
     public function actionUnit($slug)
     {
         $model = Categories::findOne(['slug' => $slug]);
-
         $units = Unit::getBySlug($slug);
+        /** @var $unit Unit */
         foreach ($units as $unit) {
             $modelByType = $unit->getModelByType();
             $modelByType->load(Yii::$app->request->post());
-            $modelByType->save(false);
+            $modelByType->save();
         }
 
         return $this->render('units', [
