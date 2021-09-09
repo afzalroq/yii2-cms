@@ -79,17 +79,19 @@ class FileType
             return null;
 
         $returnType = self::TYPE_IMAGE;
-
-        foreach ($type as $item) {
-            $returnType = (self::MIME_TYPES[$item] === 'jpg'
-                || self::MIME_TYPES[$item] === 'jpeg'
-                || self::MIME_TYPES[$item] === 'png'
-                || self::MIME_TYPES[$item] === 'svg')
-                ? self::TYPE_IMAGE
-                : self::TYPE_FILE;
-
-            if ($returnType === self::TYPE_FILE)
-                return $returnType;
+        
+        if(is_countable($type)){
+            foreach ($type as $item) {
+                $returnType = (self::MIME_TYPES[$item] === 'jpg'
+                    || self::MIME_TYPES[$item] === 'jpeg'
+                    || self::MIME_TYPES[$item] === 'png'
+                    || self::MIME_TYPES[$item] === 'svg')
+                    ? self::TYPE_IMAGE
+                    : self::TYPE_FILE;
+    
+                if ($returnType === self::TYPE_FILE)
+                    return $returnType;
+            }
         }
         return $returnType;
     }
