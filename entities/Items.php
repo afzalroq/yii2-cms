@@ -285,25 +285,25 @@ class Items extends ActiveRecord
                                 $this->options[$cae->collection->slug] = $oai->option_id;
                                 break;
                         }
-
+        
         if ($this->entity->use_seo) {
-            $this->meta_title_0 = $this->seo_values['meta_title_0'];
-            $this->meta_title_1 = $this->seo_values['meta_title_1'];
-            $this->meta_title_2 = $this->seo_values['meta_title_2'];
-            $this->meta_title_3 = $this->seo_values['meta_title_3'];
-            $this->meta_title_4 = $this->seo_values['meta_title_4'];
+            $this->meta_title_0 = isset($this->seo_values['meta_title_0']) ? $this->seo_values['meta_title_0'] : "";
+            $this->meta_title_1 = isset($this->seo_values['meta_title_1']) ? $this->seo_values['meta_title_1'] : "";
+            $this->meta_title_2 = isset($this->seo_values['meta_title_2']) ? $this->seo_values['meta_title_2'] : "";
+            $this->meta_title_3 = isset($this->seo_values['meta_title_3']) ? $this->seo_values['meta_title_3'] : "";
+            $this->meta_title_4 = isset($this->seo_values['meta_title_4']) ? $this->seo_values['meta_title_4'] : "";
 
-            $this->meta_des_0 = $this->seo_values['meta_des_0'];
-            $this->meta_des_1 = $this->seo_values['meta_des_1'];
-            $this->meta_des_2 = $this->seo_values['meta_des_2'];
-            $this->meta_des_3 = $this->seo_values['meta_des_3'];
-            $this->meta_des_4 = $this->seo_values['meta_des_4'];
+            $this->meta_des_0 = isset($this->seo_values['meta_des_0']) ? $this->seo_values['meta_des_0'] : "";
+            $this->meta_des_1 = isset($this->seo_values['meta_des_1']) ? $this->seo_values['meta_des_1'] : "";
+            $this->meta_des_2 = isset($this->seo_values['meta_des_2']) ? $this->seo_values['meta_des_2'] : "";
+            $this->meta_des_3 = isset($this->seo_values['meta_des_3']) ? $this->seo_values['meta_des_3'] : "";
+            $this->meta_des_4 = isset($this->seo_values['meta_des_4']) ? $this->seo_values['meta_des_4'] : "";
 
-            $this->meta_keyword_0 = $this->seo_values['meta_keyword_0'];
-            $this->meta_keyword_1 = $this->seo_values['meta_keyword_1'];
-            $this->meta_keyword_2 = $this->seo_values['meta_keyword_2'];
-            $this->meta_keyword_3 = $this->seo_values['meta_keyword_3'];
-            $this->meta_keyword_4 = $this->seo_values['meta_keyword_4'];
+            $this->meta_keyword_0 = isset($this->seo_values['meta_keyword_0']) ? $this->seo_values['meta_keyword_0'] : "";
+            $this->meta_keyword_1 = isset($this->seo_values['meta_keyword_1']) ? $this->seo_values['meta_keyword_1'] : "";
+            $this->meta_keyword_2 = isset($this->seo_values['meta_keyword_2']) ? $this->seo_values['meta_keyword_2'] : "";
+            $this->meta_keyword_3 = isset($this->seo_values['meta_keyword_3']) ? $this->seo_values['meta_keyword_3'] : "";
+            $this->meta_keyword_4 = isset($this->seo_values['meta_keyword_4']) ? $this->seo_values['meta_keyword_4'] : "";
         }
     }
 
