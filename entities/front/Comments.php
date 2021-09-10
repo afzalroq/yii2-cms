@@ -5,6 +5,7 @@ namespace afzalroq\cms\entities\front;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\ItemComments;
 use afzalroq\cms\entities\Items;
+use yii\behaviors\TimestampBehavior;
 use himiklab\yii2\recaptcha\ReCaptchaValidator2;
 use Yii;
 
@@ -74,6 +75,14 @@ class Comments extends \afzalroq\cms\entities\ItemComments
             }, 'uncheckedMessage' => Yii::t('cms', 'Please confirm that you are not a bot.')],
         ];
     }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+
 
     public function beforeSave($insert)
     {
