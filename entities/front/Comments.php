@@ -86,6 +86,11 @@ class Comments extends \afzalroq\cms\entities\ItemComments
 
     public function beforeSave($insert)
     {
+        if($this->isNewRecord){
+            $this->created_at = time();
+            $this->updated_at = time();
+        }
+        
         if ($this->user_id && is_null($this->username)) {
             $this->username = $this->user->full_name;
         }
