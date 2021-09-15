@@ -22,7 +22,7 @@ class FileType
 
     public static function fileExtensions($type)
     {
-        if ($type === null)
+        if (!$type)
             return null;
 
         $accepts = '';
@@ -101,7 +101,7 @@ class FileType
 
     public static function fileAccepts($type)
     {
-        if ($type === null)
+        if (!$type)
             return null;
 
         $accepts = '';
