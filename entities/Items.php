@@ -285,7 +285,7 @@ class Items extends ActiveRecord
                                 $this->options[$cae->collection->slug] = $oai->option_id;
                                 break;
                         }
-        
+
         if ($this->entity->use_seo) {
             $this->meta_title_0 = isset($this->seo_values['meta_title_0']) ? $this->seo_values['meta_title_0'] : "";
             $this->meta_title_1 = isset($this->seo_values['meta_title_1']) ? $this->seo_values['meta_title_1'] : "";
@@ -382,7 +382,7 @@ class Items extends ActiveRecord
 
     public function fileValidator($entityAttr)
     {
-        $maxSize = $this->dependEntity[$entityAttr . '_maxSize'] * 1024 * 1024;
+        $maxSize = ($this->dependEntity[$entityAttr . '_maxSize'] ?: 0) * 1024 * 1024;
         return [$this->getCurrentAttrs($entityAttr),
             'file',
             'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
@@ -392,7 +392,7 @@ class Items extends ActiveRecord
 
     public function getCurrentAttrs($entityAttr)
     {
-        if($this->isAttrCommon($entityAttr)){
+        if ($this->isAttrCommon($entityAttr)) {
             return [$entityAttr . '_0'];
         }
 
@@ -724,7 +724,7 @@ class Items extends ActiveRecord
         if ($comment->vote) {
             $count_votes++;
             $this->votes_count = $count_votes;
-            $this->avarage_voting = $this->votes_count != 0 ? ((($count_votes-1) * $avarage + $comment->vote) / $count_votes) : 0;
+            $this->avarage_voting = $this->votes_count != 0 ? ((($count_votes - 1) * $avarage + $comment->vote) / $count_votes) : 0;
         }
         $this->save();
     }
@@ -748,9 +748,9 @@ class Items extends ActiveRecord
 
     public function calculateCommentsAndVotes()
     {
-        $count_comments = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not','text', null])->count();
-        $count_votes = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not','vote', null])->count();
-        $summ_votes = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not','vote', null])->sum('vote');
+        $count_comments = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not', 'text', null])->count();
+        $count_votes = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not', 'vote', null])->count();
+        $summ_votes = ItemComments::find()->where(['item_id' => $this->id, 'status' => ItemComments::STATUS_CHECKED])->andWhere(['is not', 'vote', null])->sum('vote');
         $this->votes_count = $count_votes;
         $this->comments_count = $count_comments;
         $this->avarage_voting = $count_votes == 0 ? 0 : $summ_votes / $count_votes;
