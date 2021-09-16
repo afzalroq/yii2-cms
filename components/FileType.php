@@ -78,7 +78,7 @@ class FileType
 
     public static function fileMimeType($type)
     {
-        if ($type === null)
+        if (!$type)
             return null;
 
         $returnType = self::TYPE_IMAGE;
