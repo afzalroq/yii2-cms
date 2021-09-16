@@ -241,7 +241,7 @@ class Options extends ActiveRecord
             [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
                 'file',
                 'extensions' => FileType::fileExtensions($this->parentCollection->file_1_mimeType),
-                'maxSize' => $this->parentCollection->file_1_maxSize * 1024 * 1024
+                'maxSize' => ($this->parentCollection->file_1_maxSize ?: 0) * 1024 * 1024
             ],
 
             [['file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'],
