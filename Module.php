@@ -26,7 +26,7 @@ class Module extends \yii\base\Module
     public $path;
     public $host;
     public $cache = 'cache';
-    public $cacheDuration = YII_ENV_DEV ? 0 : 3600;
+    public $cacheDuration = YII_ENV_DEV ? 1 : 3600;
     public $fallback;
     public $watermark;
     public $imageOperation = 'cropResize';
