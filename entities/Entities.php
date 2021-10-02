@@ -122,6 +122,16 @@ class Entities extends ActiveRecord implements Linkable
         return in_array($this->use_votes, [self::COMMENT_ON, self::COMMENT_ON_REQUIRED]);
     }
 
+    public function isTranslateble($field)
+    {
+        return in_array($this->{$field}, [self::TEXT_TRANSLATABLE_INPUT_STRING, self::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED, self::TEXT_TRANSLATABLE_TEXTAREA, self::TEXT_TRANSLATABLE_CKEDITOR]);
+    }
+
+    public function isHaveHtmltags($field)
+    {
+        return $this->{$field} == self::TEXT_TRANSLATABLE_CKEDITOR;
+    }
+
     #region Extra attributes
     public $file_1_mimeType;
     public $file_1_dimensionW;
