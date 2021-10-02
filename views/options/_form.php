@@ -41,9 +41,6 @@ $hasTranslatableAttrs = 0;
                         <?= $form->field($model, 'slug')->textInput() ?>
                     </div>
                 <?php endif; ?>
-                <div class="col-md-4">
-                    <?= $form->field($model, 'sort')->textInput(['type' => 'number']) ?>
-                </div>
             </div>
             <div class="row">
                 <?php if ($collection->option_name == Collections::OPTION_NAME_COMMON): ?>

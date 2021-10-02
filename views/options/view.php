@@ -115,7 +115,7 @@ $hasTranslatableAttrs = 0;
                                 'label' => Yii::t('cms','Collection'),
                                 'value' => $model->collection->name_0
                             ],
-                            'sort',
+                            // 'sort',
                             [
                                 'attribute' => 'created_by',
                                 'value' => function ($model) {

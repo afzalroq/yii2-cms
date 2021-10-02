@@ -39,6 +39,8 @@ class ItemComments extends \yii\db\ActiveRecord
     {
         $entity = Entities::findOne(['slug' => \Yii::$app->request->get('slug')]);
         return [
+            [['text','username', 'vote'],'filter','filter'=>'\yii\helpers\HtmlPurifier::process'],
+
             [['vote', 'parent_id', 'item_id', 'user_id', 'level', 'status'], 'integer'],
             [['status'], 'default', 'value' => ItemComments::STATUS_DRAFT],
             [['level'], 'default', 'value' => 0],

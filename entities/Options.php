@@ -250,7 +250,7 @@ class Options extends ActiveRecord
                 'maxSize' => ($this->parentCollection->file_2_maxSize ?: 0) * 1024 * 1024
             ],
 
-            [['collection_id', 'sort'], 'required'],
+            [['collection_id'], 'required'],
             [['collection_id', 'sort', 'created_at', 'updated_at'], 'integer'],
             [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
             [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],
