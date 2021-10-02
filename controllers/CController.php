@@ -5,8 +5,10 @@ namespace afzalroq\cms\controllers;
 use yii\web\Controller;
 
 
-class CController extends Controller
+class CMSController extends Controller
 {
+
+
 
     public function actionCollection($slug = null)
     {

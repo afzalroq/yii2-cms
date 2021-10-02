@@ -100,11 +100,14 @@ class ItemsController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $operation = Yii::$app->request->post('save');
             if (in_array($operation, ['add-new', 'save-close', 'save'])) {
-                $model->save();
-                foreach ($model->files as $file) $model->addPhoto($file);
-                Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
-                if ($operation === 'add-new')  return $this->redirect(['create', 'slug' => $slug]);
-                if ($operation === 'save') return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                if ($model->save()) {
+                    foreach ($model->files as $file) $model->addPhoto($file);
+                    Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
+                    if ($operation === 'add-new') return $this->redirect(['create', 'slug' => $slug]);
+                    if ($operation === 'save') return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                } else {
+                    Yii::$app->session->setFlash('error', implode('\n', $model->getFirstErrors()));
+                }
             }
 
             return $this->redirect(['index', 'slug' => $slug]);
@@ -129,11 +132,14 @@ class ItemsController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $operation = Yii::$app->request->post('save');
             if (in_array($operation, ['add-new', 'save-close', 'save'])) {
-                $model->save();
-                foreach ($model->files as $file) $model->addPhoto($file);
-                Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
-                if ($operation === 'add-new')  return $this->redirect(['create', 'slug' => $slug]);
-                if ($operation === 'save') return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                if ($model->save()) {
+                    foreach ($model->files as $file) $model->addPhoto($file);
+                    Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
+                    if ($operation === 'add-new') return $this->redirect(['create', 'slug' => $slug]);
+                    if ($operation === 'save') return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                } else {
+                    Yii::$app->session->setFlash('error', implode('\n', $model->getFirstErrors()));
+                }
             }
 
             return $this->redirect(['index', 'slug' => $slug]);

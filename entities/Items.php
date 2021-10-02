@@ -4,7 +4,6 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
-use afzalroq\cms\entities\front\Comments;
 use afzalroq\cms\Module;
 use DomainException;
 use Yii;
@@ -207,6 +206,8 @@ class Items extends ActiveRecord
 
     public function beforeSave($insert)
     {
+        $this->slug = preg_replace('/[^a-z0-9\-]/', '', $this->slug);
+
         if ($this->entity->use_seo)
             $this->seo_values = [
                 'meta_title_0' => $this->meta_title_0 ?? null,
@@ -364,7 +365,9 @@ class Items extends ActiveRecord
 
             ['slug', 'string', 'max' => 255],
             [['slug'], 'unique'],
-            [['slug'], 'afzalroq\cms\validators\SlugValidator'],
+            [['slug'], 'afzalroq\cms\validators\SlugValidator', 'when' => function ($model) {
+                return $model->dependEntity->manual_slug;
+            }],
 
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Entities::class, 'targetAttribute' => ['entity_id' => 'id']],
 
