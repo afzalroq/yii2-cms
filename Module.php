@@ -17,6 +17,7 @@ use afzalroq\cms\components\Language;
  * @property string $imageBackground
  * @property string $imageXPos
  * @property string $imageYPos
+ * @property array|null $textConverter
  * @property array $languages
  * @property array $menuActions
  */
@@ -33,6 +34,7 @@ class Module extends \yii\base\Module
     public $imageBackground = 'transparent';
     public $imageXPos = 'center';
     public $imageYPos = 'center';
+    public $textConverter = null;
     public $languages;
     public $menuActions;
 
