@@ -374,7 +374,7 @@ if ($entity->use_gallery)
         </div>
 
         <br>
-        <div class="box">
+        <div class="box" id="comments-section">
             <div class="box-header">
                 <h4><?= Yii::t('cms', 'Comments Section') ?></h4>
                 <?= Html::a(Yii::t('cms', 'Add Comment'), ['item-comments/add', 'item_id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-info pull-right']) ?>
