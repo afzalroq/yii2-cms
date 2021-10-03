@@ -117,6 +117,29 @@ TODO
 
 # Usage
 
+
+### Use in frontend CController extending CMSController for proper menu generated links work
+```php
+class CController extends CMSController {
+    
+    public function actionCollection(string $c)
+    {
+    }
+
+    public function actionOption(string $c, string $o)
+    {
+    }
+
+    public function actionEntity(string $e)
+    {
+    }
+
+    public function actionItem(string $e, int $i)
+    {
+    }
+}
+```
+
 ### Unit getter
 
 ```php
