@@ -125,7 +125,13 @@ Unit::get('slug'); // will return data using cache
 
 ---
 
+
 ### Item Getters
+
+```php
+\afzalroq\cms\entities\front\OaI::getItemIdsByCollection($slug) : array // of item Ids
+\afzalroq\cms\entities\front\OaI::getItemIdsByOption($slug) : array // of item Ids
+```
 
 ```php
  $item->getText1(); // for get Text 1
