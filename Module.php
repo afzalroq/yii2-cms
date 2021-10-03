@@ -37,6 +37,7 @@ class Module extends \yii\base\Module
     public $textConverter = null;
     public $languages;
     public $menuActions;
+    public $optimized = false;
 
     private static function dataKeys()
     {

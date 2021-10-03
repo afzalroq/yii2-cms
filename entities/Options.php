@@ -428,7 +428,7 @@ class Options extends ActiveRecord
     {
         return $this->hasMany(OaI::class, ['option_id' => 'id']);
     }
-
+    
     public function getCreatedBy()
     {
         return $this->hasOne(Module::getInstance()->userClass, ['id' => 'created_by']);
@@ -439,5 +439,6 @@ class Options extends ActiveRecord
     {
         return $this->hasOne(Module::getInstance()->userClass, ['id' => 'updated_by']);
     }
+    
     #endregion
 }

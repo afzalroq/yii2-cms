@@ -98,6 +98,7 @@ class Items extends ActiveRecord
      * @var mixed|null
      */
     public $options;
+    public $o;
     public $files;
     public $meta_title_0;
     public $meta_title_1;
@@ -400,19 +401,31 @@ class Items extends ActiveRecord
             $this->detachBehavior('slug');
         }
 
-        foreach (OaI::findAll(['item_id' => $this->id]) as $oai)
-            foreach ($this->entity->caes as $cae)
-                foreach ($cae->collection->options as $option)
-                    if ($option->id === $oai->option_id)
-                        switch ($cae->type) {
-                            case CaE::TYPE_CHECKBOX:
-                                $this->options[$cae->collection->slug][] = $oai->option_id;
-                                break;
-                            case CaE::TYPE_SELECT:
-                            case CaE::TYPE_RADIO:
-                                $this->options[$cae->collection->slug] = $oai->option_id;
-                                break;
-                        }
+        if(Yii::$app->getModule('cms')->optimized){
+            $options = \afzalroq\cms\entities\front\Options::findAll(OaI::find()->select('option_id')->where(['item_id' => $this->id])->column());
+            $collections = Collections::findAll(CaE::find()->select('collection_id')->where(['entity_id' => $this->entity_id])->column());
+            foreach ($options as $option) {
+                foreach ($collections as $collection) {
+                    if ($option->collection_id == $collection->id) {
+                        $this->o[$collection->slug][] = $option;
+                    }
+                }
+            }
+        } else {
+            foreach (OaI::findAll(['item_id' => $this->id]) as $oai)
+                foreach ($this->entity->caes as $cae)
+                    foreach ($cae->collection->options as $option)
+                        if ($option->id === $oai->option_id)
+                            switch ($cae->type) {
+                                case CaE::TYPE_CHECKBOX:
+                                    $this->options[$cae->collection->slug][] = $oai->option_id;
+                                    break;
+                                case CaE::TYPE_SELECT:
+                                case CaE::TYPE_RADIO:
+                                    $this->options[$cae->collection->slug] = $oai->option_id;
+                                    break;
+                            }
+        }
 
         if ($this->entity->use_seo) {
             $this->meta_title_0 = isset($this->seo_values['meta_title_0']) ? $this->seo_values['meta_title_0'] : "";
