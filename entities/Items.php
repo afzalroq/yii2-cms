@@ -411,7 +411,8 @@ class Items extends ActiveRecord
                     }
                 }
             }
-        } else {
+        }
+//        else {
             foreach (OaI::findAll(['item_id' => $this->id]) as $oai)
                 foreach ($this->entity->caes as $cae)
                     foreach ($cae->collection->options as $option)
@@ -425,7 +426,7 @@ class Items extends ActiveRecord
                                     $this->options[$cae->collection->slug] = $oai->option_id;
                                     break;
                             }
-        }
+//        }
 
         if ($this->entity->use_seo) {
             $this->meta_title_0 = isset($this->seo_values['meta_title_0']) ? $this->seo_values['meta_title_0'] : "";
