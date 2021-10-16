@@ -7,6 +7,7 @@ use yii\bootstrap\ToggleButtonGroup;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use afzalroq\cms\entities\Entities;
 
 /* @var $this yii\web\View */
 /* @var $model Collections */
@@ -89,6 +90,41 @@ use yii\widgets\ActiveForm;
                     ]) ?>
                 </div>
             </div>
+            <br> <br> <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="box">
+                        <div class="box-body">
+                            <?= $form->field($model, 'text_1')->dropDownList(Entities::textList()) ?>
+                            <?= $form->field($model, 'text_1_label')->textInput(['maxlength' => true]) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="box">
+                        <div class="box-body">
+                            <?= $form->field($model, 'text_2')->dropDownList(Entities::textList()) ?>
+                            <?= $form->field($model, 'text_2_label')->textInput(['maxlength' => true]) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="box">
+                        <div class="box-body">
+                            <?= $form->field($model, 'text_3')->dropDownList(Entities::textList()) ?>
+                            <?= $form->field($model, 'text_3_label')->textInput(['maxlength' => true]) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="box">
+                        <div class="box-body">
+                            <?= $form->field($model, 'text_4')->dropDownList(Entities::textList()) ?>
+                            <?= $form->field($model, 'text_4_label')->textInput(['maxlength' => true]) ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <br>
             <br>
             <div class="row">
@@ -144,12 +180,11 @@ use yii\widgets\ActiveForm;
             </div>
 
         </div>
+
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('cms', 'Create') : Yii::t('cms', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+
     </div>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('cms', 'Create') : Yii::t('cms', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>

@@ -11,6 +11,27 @@ use yii\helpers\StringHelper;
 class Options extends \afzalroq\cms\entities\Options implements Linkable
 {
 
+    public $dependCollection;
+
+    public function __construct($slug = null, $config = [])
+    {
+        if ($slug) {
+            $this->dependCollection = Collections::findOne(['slug' => $slug]);
+            if ($this->dependCollection->manual_slug) $this->detachBehavior('slug');
+        } else {
+            $this->dependCollection = $this->collection;
+        }
+        $this->setCurrentLanguage();
+        parent::__construct($config);
+    }
+
+    private function setCurrentLanguage()
+    {
+        $this->languageId = \Yii::$app->params['l'][\Yii::$app->language];
+        if (!$this->languageId)
+            $this->languageId = 0;
+    }
+
     public static function getAll($slug)
     {
         $cache = Yii::$app->getModule('cms')->cache;
@@ -70,12 +91,12 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
         return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $operation, $background, $xPos, $yPos);
     }
 
-    private function getAttr($entityAttr)
+    private function getAttr($collectionAttr)
     {
         if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language]))
             $languageId = 0;
 
-        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $languageId);
+        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_0' : "_" . $languageId);
     }
 
     /**
@@ -111,6 +132,39 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
     public function getContent()
     {
         return $this[$this->getAttr('content')];
+    }
+
+    public function getText1()
+    {
+        return $this->getText('text_1');
+    }
+
+    private function getText($collectionAttr)
+    {
+
+        return $this[$this->getAttrOption($collectionAttr)];
+    }
+
+    private function getAttrOption($collectionAttr)
+    {
+        if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language]))
+            $languageId = 0;
+        return $collectionAttr . ($this->isAttrCommonOptions($collectionAttr) ? '_0' : "_" . $languageId);
+    }
+
+    public function getText2()
+    {
+        return $this->getText('text_2');
+    }
+
+    public function getText3()
+    {
+        return $this->getText('text_3');
+    }
+
+    public function getText4()
+    {
+        return $this->getText('text_4');
     }
 
     public function registerMetaTags()
@@ -150,7 +204,7 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
         return $this->getSeo('meta_title');
     }
 
-    public function getLink():string
+    public function getLink(): string
     {
         return '/c/' . $this->collection->slug . '/' . $this->slug;
     }

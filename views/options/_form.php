@@ -41,9 +41,6 @@ $hasTranslatableAttrs = 0;
                         <?= $form->field($model, 'slug')->textInput() ?>
                     </div>
                 <?php endif; ?>
-                <div class="col-md-4">
-                    <?= $form->field($model, 'sort')->textInput(['type' => 'number']) ?>
-                </div>
             </div>
             <div class="row">
                 <?php if ($collection->option_name == Collections::OPTION_NAME_COMMON): ?>
@@ -80,8 +77,12 @@ $hasTranslatableAttrs = 0;
                 }
                 ?>
             </div>
+            <div class="row">
+                <?= $cmsForm->textFieldsCommonCollection() ?>
+            </div>
         </div>
     </div>
+
 
     <div class="row" id="translatable">
         <div class="col-md-12">
@@ -110,23 +111,28 @@ $hasTranslatableAttrs = 0;
                             <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>">
 
                                 <?php
-                                if ($collection->option_name && $collection->option_name == Collections::OPTION_NAME_TRANSLATABLE) {
-                                    $hasTranslatableAttrs = 1;
-                                    echo $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]);
-                                } ?>
+                                if ($collection->option_name && $collection->option_name == Collections::OPTION_NAME_TRANSLATABLE): $hasTranslatableAttrs = 1; ?>
+                                    <div class="col-md-12">
+                                    <?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]); ?>
+                                    </div>
+                                <?php endif; ?>
+
 
                                 <?php if ($collection->option_content == Collections::OPTION_CONTENT_TRANSLATABLE_TEXTAREA): $hasTranslatableAttrs = 1 ?>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <?= $form->field($model, 'content_' . $key)->textarea()->label(Yii::t('cms', 'Description')) ?>
                                     </div>
                                 <?php endif; ?>
 
                                 <?php
-                                if ($collection->option_content == Collections::OPTION_CONTENT_TRANSLATABLE_CKEDITOR) {
-                                    $hasTranslatableAttrs = 1;
-                                    echo $cmsForm->ckeditor('content_' . $key, Yii::t('cms', 'Description'));
-                                } ?>
-
+                                if ($collection->option_content == Collections::OPTION_CONTENT_TRANSLATABLE_CKEDITOR): $hasTranslatableAttrs = 1; ?>
+                                    <div class="col-md-12">
+                                        <?= $cmsForm->ckeditor('content_' . $key, Yii::t('cms', 'Description')); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>">
+                                    <?= $cmsForm->textFieldsTranslatableCollection($key, $hasTranslatableAttrs) ?>
+                                </div>
 
                                 <div class="row">
                                     <?php

@@ -15,6 +15,28 @@ $this->params['breadcrumbs'][] = ['label' => $collection->{"name_" . Yii::$app->
 $this->params['breadcrumbs'][] = $this->title;
 
 $hasTranslatableAttrs = 0;
+$collection_text_attrs_translatable = [];
+$collectionTextAttrs_0 = [];
+$text_attributes = [];
+
+
+$collectionTextAttrs = $collection->textAttrs();
+
+
+foreach ($collectionTextAttrs as $key => $attr) {
+    if ($attr == Collections::TEXT_DISABLED)
+        continue;
+    if ($attr < Collections::TEXT_TRANSLATABLE_INPUT_STRING || $attr == Collections::TEXT_COMMON_TEXTAREA || $attr == Collections::TEXT_COMMON_CKEDITOR) {
+        $collectionTextAttrs_0 += [
+            $key => $attr
+        ];
+    } else {
+        $collection_text_attrs_translatable += [
+            $key => $attr
+        ];
+    }
+}
+
 ?>
 <div class="menu-view">
     <p>
@@ -33,6 +55,54 @@ $hasTranslatableAttrs = 0;
         ]);
         ?>
     </p>
+    <div class="row">
+        <div class="col-sm-6">
+            <?php
+
+            $attributes = [];
+            if ($model->getCorT('name') !== null && !$model->getCorT('name'))
+                $attributes[] = 'name_0';
+            if ($model->getCorT('content') !== null && !$model->getCorT('content'))
+                $attributes[] = 'content_0:html';
+            if ($model->getCorT('file_1') !== null && !$model->getCorT('file_1'))
+                $attributes[] = [
+                    'attribute' => 'file_1_0',
+                    'format' => 'html',
+                    'value' => $model->getFileAttrValue('file_1_0'),
+                    'label' => $collection->option_file_1_label
+                ];
+
+            if ($model->getCorT('file_2') !== null && !$model->getCorT('file_2'))
+                $attributes[] = [
+                    'attribute' => 'file_2_0',
+                    'format' => 'html',
+                    'value' => $model->getFileAttrValue('file_2_0'),
+                    'label' => $collection->option_file_1_label
+                ];
+            echo DetailView::widget([
+                'model' => $model,
+                'attributes' => $attributes
+            ]) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <?php foreach ($collectionTextAttrs_0 as $attr => $value)
+                if ($collection[$attr])
+                    $text_attributes[] = [
+                        'attribute' => $attr . '_' . 0,
+                        'label' => $collection[$attr . '_label'],
+                        'format' => 'html'
+                    ];
+            ?>
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => $text_attributes
+            ]);
+            ?>
+            <?php $text_attributes = [] ?>
+        </div>
+    </div>
 
     <div class="row" id="translatable">
         <div class="col-sm-12">
@@ -42,9 +112,9 @@ $hasTranslatableAttrs = 0;
                         <?php
                         $i = 0;
                         foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
-                        $i++;
-                        ?>
-                        <li role="presentation" <?= $i ===1 ? 'class="active"' : '' ?>>
+                            $i++;
+                            ?>
+                            <li role="presentation" <?= $i === 1 ? 'class="active"' : '' ?>>
                                 <a href="#<?= $key ?>" aria-controls="<?= $key ?>" role="tab"
                                    data-toggle="tab"><?= $language ?></a>
                             </li>
@@ -55,9 +125,9 @@ $hasTranslatableAttrs = 0;
                         <?php
                         $i = 0;
                         foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
-                        $i++;
-                        ?>
-                            <div role="tabpanel" class="tab-pane <?= $i===1 ? 'active' : '' ?>" id="<?= $key ?>">
+                            $i++;
+                            ?>
+                            <div role="tabpanel" class="tab-pane <?= $i === 1 ? 'active' : '' ?>" id="<?= $key ?>">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <?php
@@ -91,6 +161,19 @@ $hasTranslatableAttrs = 0;
                                             'model' => $model,
                                             'attributes' => $attributes
                                         ]) ?>
+                                        <?php foreach ($collection_text_attrs_translatable as $attr => $value)
+                                            if ($collection[$attr])
+                                                $text_attributes[] = [
+                                                    'attribute' => $attr . '_' . $key,
+                                                    'label' => $collection[$attr . '_label'] . ' (' . $language . ')',
+                                                    'format' => 'html'
+                                                ]; ?>
+                                        <?= DetailView::widget([
+                                            'model' => $model,
+                                            'attributes' => $text_attributes
+                                        ]);
+                                        ?>
+                                        <?php $text_attributes = [] ?>
                                     </div>
                                 </div>
                             </div>
@@ -112,10 +195,10 @@ $hasTranslatableAttrs = 0;
                             'slug',
                             [
                                 'attribute' => 'collection_id',
-                                'label' => Yii::t('cms','Collection'),
+                                'label' => Yii::t('cms', 'Collection'),
                                 'value' => $model->collection->name_0
                             ],
-                            'sort',
+                            // 'sort',
                             [
                                 'attribute' => 'created_by',
                                 'value' => function ($model) {
@@ -133,34 +216,7 @@ $hasTranslatableAttrs = 0;
                         ]
                     ]) ?>
                 </div>
-                <div class="col-sm-6">
-                    <?php
 
-                    $attributes = [];
-                    if ($model->getCorT('name') !== null && !$model->getCorT('name'))
-                        $attributes[] = 'name_0';
-                    if ($model->getCorT('content') !== null && !$model->getCorT('content'))
-                        $attributes[] = 'content_0:html';
-                    if ($model->getCorT('file_1') !== null && !$model->getCorT('file_1'))
-                        $attributes[] = [
-                            'attribute' => 'file_1_0',
-                            'format' => 'html',
-                            'value' => $model->getFileAttrValue('file_1_0'),
-                            'label' => $collection->option_file_1_label
-                        ];
-
-                    if ($model->getCorT('file_2') !== null && !$model->getCorT('file_2'))
-                        $attributes[] = [
-                            'attribute' => 'file_2_0',
-                            'format' => 'html',
-                            'value' => $model->getFileAttrValue('file_2_0'),
-                            'label' => $collection->option_file_1_label
-                        ];
-                    echo DetailView::widget([
-                        'model' => $model,
-                        'attributes' => $attributes
-                    ]) ?>
-                </div>
             </div>
         </div>
     </div>

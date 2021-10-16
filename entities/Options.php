@@ -4,8 +4,8 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
-use afzalroq\cms\Module;
 use afzalroq\cms\entities\query\OptionsQuery;
+use afzalroq\cms\Module;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\behaviors\BlameableBehavior;
@@ -32,6 +32,26 @@ use yiidreamteam\upload\FileUploadBehavior;
  * @property string|null $content_2
  * @property string|null $content_3
  * @property string|null $content_4
+ * @property string|null $text_1_0
+ * @property string|null $text_1_1
+ * @property string|null $text_1_2
+ * @property string|null $text_1_3
+ * @property string|null $text_1_4
+ * @property string|null $text_2_0
+ * @property string|null $text_2_1
+ * @property string|null $text_2_2
+ * @property string|null $text_2_3
+ * @property string|null $text_2_4
+ * @property string|null $text_3_0
+ * @property string|null $text_3_1
+ * @property string|null $text_3_2
+ * @property string|null $text_3_3
+ * @property string|null $text_3_4
+ * @property string|null $text_4_0
+ * @property string|null $text_4_1
+ * @property string|null $text_4_2
+ * @property string|null $text_4_3
+ * @property string|null $text_4_4
  * @property string|null $file_1_0
  * @property string|null $file_1_1
  * @property string|null $file_1_2
@@ -86,6 +106,7 @@ class Options extends ActiveRecord
             $this->dependCollection = Collections::findOne(['slug' => $slug]);
             if ($this->dependCollection->manual_slug) $this->detachBehavior('slug');
         } else {
+
             $this->dependCollection = $this->collection;
         }
         $this->setCurrentLanguage();
@@ -250,7 +271,7 @@ class Options extends ActiveRecord
                 'maxSize' => ($this->parentCollection->file_2_maxSize ?: 0) * 1024 * 1024
             ],
 
-            [['collection_id', 'sort'], 'required'],
+            [['collection_id'], 'required'],
             [['collection_id', 'sort', 'created_at', 'updated_at'], 'integer'],
             [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
             [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],
@@ -259,6 +280,11 @@ class Options extends ActiveRecord
             [['slug'], 'afzalroq\cms\validators\SlugValidator'],
 
             [['collection_id'], 'exist', 'skipOnError' => true, 'targetClass' => Collections::class, 'targetAttribute' => ['collection_id' => 'id']],
+            [['text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4',
+                'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4',
+                'text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4',
+                'text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4'
+            ], 'string'],
         ];
     }
 
@@ -283,6 +309,26 @@ class Options extends ActiveRecord
             'content_2' => Yii::t('cms', 'Content') . '(' . $language2 . ')',
             'content_3' => Yii::t('cms', 'Content') . '(' . $language3 . ')',
             'content_4' => Yii::t('cms', 'Content') . '(' . $language4 . ')',
+            'text_1_0' => Yii::t('cms', 'Text 1') . '(' . $language0 . ')',
+            'text_1_1' => Yii::t('cms', 'Text 1') . '(' . $language1 . ')',
+            'text_1_2' => Yii::t('cms', 'Text 1') . '(' . $language2 . ')',
+            'text_1_3' => Yii::t('cms', 'Text 1') . '(' . $language3 . ')',
+            'text_1_4' => Yii::t('cms', 'Text 1') . '(' . $language4 . ')',
+            'text_2_0' => Yii::t('cms', 'Text 2') . '(' . $language0 . ')',
+            'text_2_1' => Yii::t('cms', 'Text 2') . '(' . $language1 . ')',
+            'text_2_2' => Yii::t('cms', 'Text 2') . '(' . $language2 . ')',
+            'text_2_3' => Yii::t('cms', 'Text 2') . '(' . $language3 . ')',
+            'text_2_4' => Yii::t('cms', 'Text 2') . '(' . $language4 . ')',
+            'text_3_0' => Yii::t('cms', 'Text 3') . '(' . $language0 . ')',
+            'text_3_1' => Yii::t('cms', 'Text 3') . '(' . $language1 . ')',
+            'text_3_2' => Yii::t('cms', 'Text 3') . '(' . $language2 . ')',
+            'text_3_3' => Yii::t('cms', 'Text 3') . '(' . $language3 . ')',
+            'text_3_4' => Yii::t('cms', 'Text 3') . '(' . $language4 . ')',
+            'text_4_0' => Yii::t('cms', 'Text 4') . '(' . $language0 . ')',
+            'text_4_1' => Yii::t('cms', 'Text 4') . '(' . $language1 . ')',
+            'text_4_2' => Yii::t('cms', 'Text 4') . '(' . $language2 . ')',
+            'text_4_3' => Yii::t('cms', 'Text 4') . '(' . $language3 . ')',
+            'text_4_4' => Yii::t('cms', 'Text 4') . '(' . $language4 . ')',
             'file_1_0' => Yii::t('cms', 'File') . '1(' . $language0 . ')',
             'file_1_1' => Yii::t('cms', 'File') . '1(' . $language1 . ')',
             'file_1_2' => Yii::t('cms', 'File') . '1(' . $language2 . ')',
@@ -398,6 +444,28 @@ class Options extends ActiveRecord
         return false;
     }
 
+    public function isAttrCommonOptions($collectionAttr)
+    {
+        if (!$this->dependCollection)
+            $this->dependCollection = $this->collection;
+
+        switch ($this->dependCollection->{$collectionAttr}) {
+            case Entities::TEXT_COMMON_INPUT_STRING:
+            case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_INT:
+            case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_URL:
+            case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
+            case Entities::TEXT_COMMON_TEXTAREA:
+            case Entities::TEXT_COMMON_CKEDITOR:
+                return true;
+            case Entities::TEXT_DISABLED:
+                return Entities::DISABLED;
+        }
+        return false;
+
+    }
+
     public function isAttrTranslatable($collectionAttr)
     {
         if (!$this->parentCollection)
@@ -439,5 +507,21 @@ class Options extends ActiveRecord
     {
         return $this->hasOne(Module::getInstance()->userClass, ['id' => 'updated_by']);
     }
+
+    public function requireValidator($type)
+    {
+        switch ($type) {
+            case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
+            case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED:
+            case Entities::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     #endregion
 }

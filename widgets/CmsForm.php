@@ -6,6 +6,7 @@ namespace afzalroq\cms\widgets;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\CaE;
+use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\Items;
 use kartik\datecontrol\DateControl;
@@ -34,15 +35,21 @@ class CmsForm
 
     public $entityTextAttrs;
     public $entityFileAttrs;
+    public $collectionTextAttrs;
+
 
     public function __construct($form, $model, $obj = null)
     {
         $this->form = $form;
         $this->model = $model;
         $this->obj = $obj;
-
         if ($obj instanceof Entities)
             [$this->entityTextAttrs, $this->entityFileAttrs] = $this->obj->textAndFileAttrs();
+
+        if ($obj instanceof Collections)
+            $this->collectionTextAttrs = $this->obj->textAttrs();
+
+
     }
 
     public function oaIFields()
@@ -99,6 +106,7 @@ class CmsForm
 
     public function textFieldsTranslatable($langKey, &$hasTranslatableAttrs)
     {
+
         foreach ($this->entityTextAttrs as $entityAttr => $value) {
             $attr = $entityAttr . '_' . $langKey;
             switch ($this->obj{$entityAttr}) {
@@ -141,6 +149,53 @@ class CmsForm
         }
         return '';
     }
+
+    public function textFieldsTranslatableCollection($langKey, &$hasTranslatableAttrs)
+    {
+
+        foreach ($this->collectionTextAttrs as $collectionAttr => $value) {
+            $attr = $collectionAttr . '_' . $langKey;
+            switch ($this->obj{$collectionAttr}) {
+                case Entities::TEXT_TRANSLATABLE_INPUT_STRING:
+                    $hasTranslatableAttrs = 1;
+                    echo $this->input($attr, $collectionAttr, []);
+                    break;
+                case Entities::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED:
+                    $hasTranslatableAttrs = 1;
+                    echo $this->input($attr, $collectionAttr, ['required' => 'required']);
+                    break;
+                case Entities::TEXT_TRANSLATABLE_INPUT_INT:
+                    $hasTranslatableAttrs = 1;
+                    echo $this->input($attr, $collectionAttr, ['type' => 'number']);
+                    break;
+                case Entities::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED:
+                    $hasTranslatableAttrs = 1;
+                    echo $this->input($attr, $collectionAttr, ['type' => 'number', 'required' => 'required']);
+                    break;
+                case Entities::TEXT_TRANSLATABLE_INPUT_URL:
+                    $hasTranslatableAttrs = 1;
+                    echo $this->input($attr, $collectionAttr, ['type' => 'url']);
+                    break;
+                case Entities::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED:
+                    $hasTranslatableAttrs = 1;
+                    echo $this->input($attr, $collectionAttr, ['type' => 'url', 'required' => 'required']);
+                    break;
+                case Entities::TEXT_TRANSLATABLE_TEXTAREA:
+                    $hasTranslatableAttrs = 1;
+                    echo $this->textArea($attr, $collectionAttr);
+                    break;
+                case Entities::TEXT_TRANSLATABLE_CKEDITOR:
+                    $hasTranslatableAttrs = 1;
+                    echo $this->ckeditor($attr, $this->obj[$collectionAttr . '_label']);
+                    break;
+                default:
+                    echo '';
+                    break;
+            }
+        }
+        return '';
+    }
+
 
     public function fileFieldsCommon()
     {
@@ -189,6 +244,43 @@ class CmsForm
                     break;
                 case Entities::TEXT_COMMON_CKEDITOR:
                     echo $this->ckeditor($attr, $this->obj[$entityAttr . '_label']);
+                    break;
+                default:
+                    echo '';
+                    break;
+            }
+        }
+        return '';
+    }
+
+    public function textFieldsCommonCollection()
+    {
+        foreach ($this->collectionTextAttrs as $collectionAttr => $value) {
+            $attr = $collectionAttr . '_0';
+            switch ($this->obj{$collectionAttr}) {
+                case Entities::TEXT_COMMON_INPUT_STRING:
+                    echo $this->input($attr, $collectionAttr, []);
+                    break;
+                case Entities::TEXT_COMMON_INPUT_STRING_REQUIRED:
+                    echo $this->input($attr, $collectionAttr, ['required' => 'required']);
+                    break;
+                case Entities::TEXT_COMMON_INPUT_INT:
+                    echo $this->input($attr, $collectionAttr, ['type' => 'number']);
+                    break;
+                case Entities::TEXT_COMMON_INPUT_INT_REQUIRED:
+                    echo $this->input($attr, $collectionAttr, ['type' => 'number', 'required' => 'required']);
+                    break;
+                case Entities::TEXT_COMMON_INPUT_URL:
+                    echo $this->input($attr, $collectionAttr, ['type' => 'url']);
+                    break;
+                case Entities::TEXT_COMMON_INPUT_URL_REQUIRED:
+                    echo $this->input($attr, $collectionAttr, ['type' => 'url', 'required' => 'required']);
+                    break;
+                case Entities::TEXT_COMMON_TEXTAREA:
+                    echo $this->textArea($attr, $collectionAttr);
+                    break;
+                case Entities::TEXT_COMMON_CKEDITOR:
+                    echo $this->ckeditor($attr, $this->obj[$collectionAttr . '_label']);
                     break;
                 default:
                     echo '';
