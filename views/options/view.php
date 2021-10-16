@@ -1,6 +1,7 @@
 <?php
 
 use afzalroq\cms\entities\Collections;
+use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\Options;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -24,9 +25,9 @@ $collectionTextAttrs = $collection->textAttrs();
 
 
 foreach ($collectionTextAttrs as $key => $attr) {
-    if ($attr == Collections::TEXT_DISABLED)
+    if ($attr == Entities::TEXT_DISABLED)
         continue;
-    if ($attr < Collections::TEXT_TRANSLATABLE_INPUT_STRING || $attr == Collections::TEXT_COMMON_TEXTAREA || $attr == Collections::TEXT_COMMON_CKEDITOR) {
+    if ($attr < Entities::TEXT_TRANSLATABLE_INPUT_STRING || $attr == Entities::TEXT_COMMON_TEXTAREA || $attr == Entities::TEXT_COMMON_CKEDITOR) {
         $collectionTextAttrs_0 += [
             $key => $attr
         ];
