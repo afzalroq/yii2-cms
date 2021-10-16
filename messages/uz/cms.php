@@ -13,7 +13,7 @@ return [
     'Category' => 'Kategoriya',
     'Title' => 'Nomi',
     'Slug' => 'Slug',
-    'Description' => 'Ta\'rif',
+    'Description' => 'Matn',
     'Photo' => 'Rasm',
     'Date' => 'Sana',
     'Type' => 'Turi',

@@ -26,40 +26,40 @@ class FileType
             return null;
 
         $accepts = '';
-        if(is_countable($type)){
+        
 
-            foreach ($type as $item) {
-                switch (self::MIME_TYPES[$item]) {
-                    case 'jpg':
-                        $accepts .= 'jpg, jpeg,';
-                        break;
-                    case 'png':
-                        $accepts .= 'png,';
-                        break;
-                    case 'gif':
-                        $accepts .= 'gif,';
-                        break;
-                    case 'svg':
-                        $accepts .= 'svg,';
-                        break;
-                    case 'pdf':
-                        $accepts .= 'pdf,';
-                        break;
-                    case 'word':
-                        $accepts .= 'doc, .docx,';
-                        break;
-                    case 'excel':
-                        $accepts .= 'xls, xlsx,';
-                        break;
-                    case 'mp4':
-                        $accepts .= 'mp4,';
-                        break;
-                    case 'mp3':
-                        $accepts .= 'mp3,';
-                        break;
-                }
+        foreach ($type as $item) {
+            switch (self::MIME_TYPES[$item]) {
+                case 'jpg':
+                    $accepts .= 'jpg, jpeg,';
+                    break;
+                case 'png':
+                    $accepts .= 'png,';
+                    break;
+                case 'gif':
+                    $accepts .= 'gif,';
+                    break;
+                case 'svg':
+                    $accepts .= 'svg,';
+                    break;
+                case 'pdf':
+                    $accepts .= 'pdf,';
+                    break;
+                case 'word':
+                    $accepts .= 'doc, .docx,';
+                    break;
+                case 'excel':
+                    $accepts .= 'xls, xlsx,';
+                    break;
+                case 'mp4':
+                    $accepts .= 'mp4,';
+                    break;
+                case 'mp3':
+                    $accepts .= 'mp3,';
+                    break;
             }
         }
+        
 
         return substr($accepts, 0, -1);
 
@@ -83,18 +83,17 @@ class FileType
 
         $returnType = self::TYPE_IMAGE;
         
-        if(is_countable($type)){
-            foreach ($type as $item) {
-                $returnType = (self::MIME_TYPES[$item] === 'jpg'
-                    || self::MIME_TYPES[$item] === 'jpeg'
-                    || self::MIME_TYPES[$item] === 'png'
-                    || self::MIME_TYPES[$item] === 'svg')
-                    ? self::TYPE_IMAGE
-                    : self::TYPE_FILE;
-    
-                if ($returnType === self::TYPE_FILE)
-                    return $returnType;
-            }
+        
+        foreach ($type as $item) {
+            $returnType = (self::MIME_TYPES[$item] === 'jpg'
+                || self::MIME_TYPES[$item] === 'jpeg'
+                || self::MIME_TYPES[$item] === 'png'
+                || self::MIME_TYPES[$item] === 'svg')
+                ? self::TYPE_IMAGE
+                : self::TYPE_FILE;
+
+            if ($returnType === self::TYPE_FILE)
+                return $returnType;
         }
         return $returnType;
     }
@@ -105,38 +104,36 @@ class FileType
             return null;
 
         $accepts = '';
-        if(is_countable($type)){
 
-            foreach ($type as $item) {
-                switch (self::MIME_TYPES[$item]) {
-                    case 'jpg':
-                        $accepts .= '.jpg,.jpeg,';
-                        break;
-                    case 'png':
-                        $accepts .= '.png,';
-                        break;
-                    case 'svg':
-                        $accepts .= '.svg,';
-                        break;
-                    case 'gif':
-                        $accepts .= '.gif,';
-                        break;
-                    case 'pdf':
-                        $accepts .= '.pdf,';
-                        break;
-                    case 'word':
-                        $accepts .= '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,';
-                        break;
-                    case 'excel':
-                        $accepts .= '.xls,.xlsx,';
-                        break;
-                    case 'mp4':
-                        $accepts .= '.mp4,';
-                        break;
-                    case 'mp3':
-                        $accepts .= '.mp3,';
-                        break;
-                }
+        foreach ($type as $item) {
+            switch (self::MIME_TYPES[$item]) {
+                case 'jpg':
+                    $accepts .= '.jpg,.jpeg,';
+                    break;
+                case 'png':
+                    $accepts .= '.png,';
+                    break;
+                case 'svg':
+                    $accepts .= '.svg,';
+                    break;
+                case 'gif':
+                    $accepts .= '.gif,';
+                    break;
+                case 'pdf':
+                    $accepts .= '.pdf,';
+                    break;
+                case 'word':
+                    $accepts .= '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,';
+                    break;
+                case 'excel':
+                    $accepts .= '.xls,.xlsx,';
+                    break;
+                case 'mp4':
+                    $accepts .= '.mp4,';
+                    break;
+                case 'mp3':
+                    $accepts .= '.mp3,';
+                    break;
             }
         }
         return substr($accepts, 0, -1);

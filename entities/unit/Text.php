@@ -56,7 +56,11 @@ class Text extends UnitActiveRecord
 
     public function get()
     {
-        return $this->{'data_' . $this->getKey()};
+        $text = $this->{'data_' . $this->getKey()};
+        if (in_array($this->type, [UnitType::STRINGS, UnitType::STRING_COMMON])) {
+            return nl2br($text);
+        }
+        return $text;
     }
 
     public function getFormField($form, $key = '0', $language = '')
