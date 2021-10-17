@@ -206,6 +206,10 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     public function getLink(): string
     {
-        return '/c/' . $this->collection->slug . '/' . $this->slug;
+        if ($this->collection){
+            return '/c/' . $this->collection->slug . '/' . $this->slug;
+        } else {
+            return "#";
+        }
     }
 }

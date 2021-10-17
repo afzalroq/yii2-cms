@@ -7,6 +7,7 @@ use afzalroq\cms\components\Image;
 use afzalroq\cms\Module;
 use DomainException;
 use Yii;
+use afzalroq\cms\entities\front\Options;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
@@ -401,31 +402,39 @@ class Items extends ActiveRecord
             $this->detachBehavior('slug');
         }
 
-        if(Yii::$app->getModule('cms')->optimized){
-            $options = \afzalroq\cms\entities\front\Options::findAll(OaI::find()->select('option_id')->where(['item_id' => $this->id])->column());
+        if (Yii::$app->getModule('cms')->optimized) {
+            $options = Options::findAll(OaI::find()->select('option_id')->where(['item_id' => $this->id])->column());
             $collections = Collections::findAll(CaE::find()->select('collection_id')->where(['entity_id' => $this->entity_id])->column());
-            foreach ($options as $option) {
-                foreach ($collections as $collection) {
+
+            foreach ($collections as $collection) {
+                $this->o[$collection->slug] = [];
+            }
+
+            foreach ($collections as $collection) {
+                foreach ($options as $option) {
                     if ($option->collection_id == $collection->id) {
                         $this->o[$collection->slug][] = $option;
                     }
                 }
+                if (!count($this->o[$collection->slug])) {
+                    $this->o[$collection->slug][] = new Options();
+                }
             }
         }
 //        else {
-            foreach (OaI::findAll(['item_id' => $this->id]) as $oai)
-                foreach ($this->entity->caes as $cae)
-                    foreach ($cae->collection->options as $option)
-                        if ($option->id === $oai->option_id)
-                            switch ($cae->type) {
-                                case CaE::TYPE_CHECKBOX:
-                                    $this->options[$cae->collection->slug][] = $oai->option_id;
-                                    break;
-                                case CaE::TYPE_SELECT:
-                                case CaE::TYPE_RADIO:
-                                    $this->options[$cae->collection->slug] = $oai->option_id;
-                                    break;
-                            }
+        foreach (OaI::findAll(['item_id' => $this->id]) as $oai)
+            foreach ($this->entity->caes as $cae)
+                foreach ($cae->collection->options as $option)
+                    if ($option->id === $oai->option_id)
+                        switch ($cae->type) {
+                            case CaE::TYPE_CHECKBOX:
+                                $this->options[$cae->collection->slug][] = $oai->option_id;
+                                break;
+                            case CaE::TYPE_SELECT:
+                            case CaE::TYPE_RADIO:
+                                $this->options[$cae->collection->slug] = $oai->option_id;
+                                break;
+                        }
 //        }
 
         if ($this->entity->use_seo) {
