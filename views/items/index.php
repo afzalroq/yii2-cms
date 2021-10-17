@@ -1,8 +1,8 @@
 <?php
 
+use afzalroq\cms\components\FileType;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use afzalroq\cms\components\FileType;
 
 /* @var $this yii\web\View */
 /* @var $searchModel afzalroq\cms\entities\ItemsSearch */
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('cms', 'Create'), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
         <?php endif; ?>
     </p>
-    
+
     <div style="overflow: auto; overflow-y: hidden">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -31,7 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'id',
                     'value' => function ($model) use ($entity) {
-                        return Html::a($model->id . ' <i class="fa fa-chevron-circle-right"></i>', ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default']);
+                        return Html::a($model->id . ' <i class="fa fa-chevron-circle-right"></i>', ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default'])
+                            . Html::a('<i class="fa fa-edit"></i>', ['/cms/items/update', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-default']);
                     },
                     'format' => 'html'
                 ],
@@ -92,5 +93,5 @@ $this->params['breadcrumbs'][] = $this->title;
                 'created_at:datetime',
             ],
         ]) ?>
-    </div>   
+    </div>
 </div>
