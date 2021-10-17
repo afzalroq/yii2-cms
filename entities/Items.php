@@ -409,7 +409,6 @@ class Items extends ActiveRecord
                     if ($option->collection_id == $collection->id) {
                         $this->o[$collection->slug][] = $option;
                     }
-                    $this->o[$collection->slug][] = "";
                 }
             }
         }
