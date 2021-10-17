@@ -417,7 +417,7 @@ class Items extends ActiveRecord
                     }
                 }
                 if (!count($this->o[$collection->slug])) {
-                    $this->o[$collection->slug][] = new Options();
+                    $this->o[$collection->slug][] = null;
                 }
             }
         }

@@ -88,10 +88,6 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     private function getPhoto($collectionAttr, $width, $height, $operation, $background, $xPos, $yPos)
     {
-        if(!$this->id){
-            $this->file_1_0 = "";
-            return $this->getImageUrl("file_1_0", $width, $height, $operation, $background, $xPos, $yPos);
-        };
         return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $operation, $background, $xPos, $yPos);
     }
 
@@ -210,10 +206,6 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     public function getLink(): string
     {
-        if ($this->collection){
-            return '/c/' . $this->collection->slug . '/' . $this->slug;
-        } else {
-            return "#";
-        }
+        return '/c/' . $this->collection->slug . '/' . $this->slug;
     }
 }
