@@ -90,15 +90,7 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
     {
         if(!$this->id){
             $this->file_1_0 = "";
-            $this->file_1_1 = "";
-            $this->file_1_2 = "";
-            $this->file_1_3 = "";
-            $this->file_1_4 = "";
-            $this->file_2_0 = "";
-            $this->file_2_1 = "";
-            $this->file_2_2 = "";
-            $this->file_2_3 = "";
-            $this->file_2_4 = "";
+            return $this->getImageUrl("file_1_0", $width, $height, $operation, $background, $xPos, $yPos);
         };
         return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $operation, $background, $xPos, $yPos);
     }
