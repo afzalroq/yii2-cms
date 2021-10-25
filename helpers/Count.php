@@ -22,7 +22,7 @@ class Count
     {
         $cache = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
-        return Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
+        return Yii::$app->{$cache}->getOrSet('count_options_' . $slug, function () use ($slug) {
             return Options::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere(['>', 'depth', 0])->count();
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }

@@ -34,7 +34,7 @@ class Module extends \yii\base\Module
     public $imageBackground = 'transparent';
     public $imageXPos = 'center';
     public $imageYPos = 'center';
-    public $textConverter = null;
+    public $textConverter = false;
     public $languages;
     public $menuActions;
     public $optimized = false;
