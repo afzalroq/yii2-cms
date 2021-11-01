@@ -16,7 +16,8 @@ class m210812_131330_add_column_to_cms_items_table extends Migration
 
     public function safeDown()
     {
-        $this->dropColumn('{{%cms_items}}', 'comment_count');
+        $this->dropColumn('{{%cms_items}}', 'votes_count');
+        $this->dropColumn('{{%cms_items}}', 'comments_count');
         $this->dropColumn('{{%cms_items}}', 'avarage_voting');
     }
 }
