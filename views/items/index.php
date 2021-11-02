@@ -70,12 +70,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
                                 if ($entity->use_gallery) {
                                     return"
-                                    <a href='" .$model->mainPhoto ? $model->mainPhoto->getPhoto(1024, 1024) : ''."'>
-                                        <img src='". $model->mainPhoto ? $model->mainPhoto->getPhoto(25, 25) : '' ."'/>
-                                    </a>
-                                ";
+                                    <img class='img-circle-prewiew' src='". $model->mainPhoto ? $model->mainPhoto->getPhoto(75, 75) : ''  ."'/>";
                                 }
-                                return "<img class='img-circle-prewiew' src='". $model->getImageUrl('file_1_0',25, 25) ."'/>";
+                                return "<img class='img-circle-prewiew' src='". $model->getImageUrl('file_1_0',75, 75) ."'/>";
 
 //                            "
 //                                <div class='img-circle-prewiew' >

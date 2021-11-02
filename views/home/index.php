@@ -61,7 +61,7 @@ $this->title = Yii::t('cms','CMS Dashboard');
                 'itemView' => function ($model) {
                     $str = '';
                     foreach ($model->caes as $cae){
-                        $str = ''. $cae->collection->slug;
+                        $str ='"'.$cae->collection->slug .'" '. $str;
                     }
                     return Html::tag('span', count($model->items), ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/entities/view', 'id' => $model->id])) . '<br>' . Html::tag('p', 'slug: ' . $model->slug, ['class' => 'font-italic text-warning']) .Html::tag('p', $str? '<br>' .  $str : '', ['class' => 'font-italic text-success']);
                 },
@@ -113,7 +113,7 @@ $this->title = Yii::t('cms','CMS Dashboard');
                     'class' => 'list-group'
                 ],
                 'itemView' => function ($model) {
-                    return Html::tag('span', count($model->menus), ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/menu-type/view', 'id' => $model->id]));
+                    return Html::tag('span', count($model->menus)-1, ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/menu-type/view', 'id' => $model->id]));
                 },
                 'itemOptions' => [
                     'tag' => 'li',
