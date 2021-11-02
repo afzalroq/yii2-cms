@@ -257,7 +257,7 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
             <div class="box-body">
                 <div class="row">
                     <?php foreach ($model->caes as $cae): ?>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <p>
                                 <?= Html::a(Yii::t('cms', 'Update'), ['update-collections', 'id' => $model->id, 'caeId' => $cae->id], ['class' => 'btn btn-sm btn-primary']) ?>
                                 <?= Html::a(Yii::t('cms', 'Delete'), ['delete-collections', 'id' => $model->id, 'caeId' => $cae->id], [
@@ -279,6 +279,11 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                                     [
                                         'attribute' => 'type',
                                         'value' => CaE::typeList()[$cae->type]
+                                    ],
+                                    [
+                                        'attribute' => 'type',
+                                        'label' => Yii::t('cms', 'Location'),
+                                        'value' => CaE::typeLocation()[$cae->location]
                                     ],
                                     'sort',
                                     'size'

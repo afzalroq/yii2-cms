@@ -136,4 +136,9 @@ return [
     'Refresh' => 'Обновить',
     'Votes Count' => 'Количество голосов',
     'Please confirm that you are not a bot.' => 'Пожалуйста, подтвердите, что вы не бот.',
+    'Top' => 'Верх',
+    'Bottom' => 'Низ',
+    'Location' => 'Место нахождения',
+
+
 ];

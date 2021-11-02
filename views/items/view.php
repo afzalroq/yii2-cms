@@ -4,6 +4,7 @@ use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Entities;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use afzalroq\cms\entities\front\Items;
 
 /* @var $this yii\web\View */
 /* @var $model afzalroq\cms\entities\Items */
@@ -100,6 +101,7 @@ if ($entity->use_gallery)
         'label' => Yii::t('cms', 'Gallery main Photo'),
         'format' => 'raw'
     ];
+
 ?>
 <style>
     body img {
@@ -149,15 +151,33 @@ if ($entity->use_gallery)
                 if ($entity[$attr]) {
                     $file_attributes[] = [
                         'attribute' => $attr . '_' . 0,
-                        'format' => 'html',
+                        'format' => 'raw',
                         'value' => function ($model) use ($attr, $entity) {
                             switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
+                                case FileType::TYPE_AUDIO:
+                                {
+                                    return "<audio controls='controls'>
+                                            <source src='" . $model->getFile1()  .   "'  type='audio/mp3' />
+                                           </audio>" ;
+                                    break;
+                                }
+                                case FileType::TYPE_VIDEO:
+                                {
+                                    return "<video width=". $model->entity[$attr . '_dimensionW'] ." height=" . $model->entity[$attr . '_dimensionH'] ." controls>
+                                                  <source src='" . $model->getFile1()  .   "' type='video/mp4'>
+                                                  <source src='" . $model->getFile1()  .   "' type='video/ogg'>
+                                                Your browser does not support the video tag.
+                                                </video>" ;
+                                    break;
+                                }
                                 case FileType::TYPE_FILE:
-                                    return $model[$attr . '_' . 0];
+                                    return $model->getFile1();
                                 case FileType::TYPE_IMAGE:
                                     return Html::img($model->getImageUrl($attr . '_' . 0, $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
-                                default:
+                                default:{
                                     return null;
+
+                                }
                             }
                         },
                         'label' => $model->entity[$attr . '_label']
@@ -254,11 +274,25 @@ if ($entity->use_gallery)
                                         if ($entity[$attr]) {
                                             $file_attributes[] = [
                                                 'attribute' => $attr . '_' . $key,
-                                                'format' => 'html',
+                                                'format' => 'raw',
                                                 'value' => function ($model) use ($attr, $key, $entity) {
                                                     switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
+                                                        case FileType::TYPE_AUDIO:
+                                                        {
+                                                            return "<audio controls='controls'>
+                                                                <source src='" . $model->getFile1()  .   "'  type='audio/mp3' />
+                                                               </audio>" ;
+                                                            break;
+                                                        }
+                                                        case FileType::TYPE_VIDEO:
+                                                        {
+                                                            return "<video width=". $model->entity[$attr . '_dimensionW'] ." height=" . $model->entity[$attr . '_dimensionH'] ." controls>
+                                                              <source src='" . $model->getFile1()  .   "' type='video/mp4'>
+                                                                </video>" ;
+                                                            break;
+                                                        }
                                                         case FileType::TYPE_FILE:
-                                                            return $model[$attr . '_' . $key];
+                                                            return $model->getFile1();
                                                         case FileType::TYPE_IMAGE:
                                                             return Html::img($model->getImageUrl($attr . '_' . $key, $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
                                                         default:
@@ -435,4 +469,3 @@ if ($entity->use_gallery)
         </div>
     <?php endif ?>
 </div>
-

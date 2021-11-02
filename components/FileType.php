@@ -19,6 +19,8 @@ class FileType
     ];
     const TYPE_FILE = 0;
     const TYPE_IMAGE = 1;
+    const TYPE_AUDIO = 8;
+    const TYPE_VIDEO = 7;
 
     public static function fileExtensions($type)
     {
@@ -26,7 +28,7 @@ class FileType
             return null;
 
         $accepts = '';
-        
+
 
         foreach ($type as $item) {
             switch (self::MIME_TYPES[$item]) {
@@ -59,7 +61,7 @@ class FileType
                     break;
             }
         }
-        
+
 
         return substr($accepts, 0, -1);
 
@@ -82,15 +84,24 @@ class FileType
             return null;
 
         $returnType = self::TYPE_IMAGE;
-        
-        
+
         foreach ($type as $item) {
-            $returnType = (self::MIME_TYPES[$item] === 'jpg'
-                || self::MIME_TYPES[$item] === 'jpeg'
-                || self::MIME_TYPES[$item] === 'png'
-                || self::MIME_TYPES[$item] === 'svg')
-                ? self::TYPE_IMAGE
-                : self::TYPE_FILE;
+            switch (self::MIME_TYPES[$item]){
+                case "jpg" :
+                case "png" :
+                case "jpeg" :
+                case "svg" :
+                    $returnType = self::TYPE_IMAGE;
+                    break;
+                case "mp3":
+                    $returnType = self::TYPE_AUDIO;
+                    break;
+                case "mp4":
+                    $returnType = self::TYPE_VIDEO;
+                    break;
+                default:
+                    $returnType = self::TYPE_FILE;
+            }
 
             if ($returnType === self::TYPE_FILE)
                 return $returnType;

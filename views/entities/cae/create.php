@@ -12,10 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cae-create">
 
-	<?= $this->render('_form', [
-		'model' => $model,
-		'cae' => $cae,
-		'unassignedCollections' => $unassignedCollections
-	]) ?>
+    <?= $this->render('_form', [
+        'model' => $model,
+        'cae' => $cae,
+        'unassignedCollections' => $unassignedCollections
+    ]) ?>
 
 </div>

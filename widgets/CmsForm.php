@@ -14,6 +14,7 @@ use kartik\file\FileInput;
 use mihaildev\elfinder\ElFinder;
 use sadovojav\ckeditor\CKEditor;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\widgets\ActiveForm;
@@ -52,16 +53,33 @@ class CmsForm
 
     }
 
-    public function oaIFields()
+    private function locationEdit($item){
+        if ($item->locayion === null){
+            $item->location = 0;
+        }
+        return $item;
+    }
+
+    public function oaIFields($j= null)
     {
         $caes = $this->obj->caes;
+//        $result = ArrayHelper::filter($caes, $caes['location'][$j]);
         usort($caes, function ($a, $b) {
             if ($a->sort == $b->sort)
                 return 0;
             return ($a->sort < $b->sort) ? -1 : 1;
         });
 
+        $caes = array_map( function ($item) {
+            if ($item->location === null){
+                $item->location = 0;
+            }
+            return $item;
+        },$caes);
 
+        $caes = array_filter($caes, function ($item) use($j){
+            return $item->location == $j;
+        });
         foreach ($caes as $cae) {
             if (empty($cae->collection->options))
                 continue;
@@ -90,6 +108,8 @@ class CmsForm
                 $attr = $entityAttr . '_' . $key;
                 switch (FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
                     case FileType::TYPE_FILE:
+                    case FileType::TYPE_AUDIO:
+                    case FileType::TYPE_VIDEO:
                         $hasTranslatableAttrs = 1;
                         echo $this->file($attr, $entityAttr, $this->obj[$entityAttr . '_label'], []);
                         break;
@@ -204,6 +224,8 @@ class CmsForm
                 $attr = $entityAttr . '_0';
                 switch (FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
                     case FileType::TYPE_FILE:
+                    case FileType::TYPE_VIDEO:
+                    case FileType::TYPE_AUDIO:
                         echo $this->file($attr, $entityAttr, $this->obj[$entityAttr . '_label'], []);
                         break;
                     case FileType::TYPE_IMAGE:

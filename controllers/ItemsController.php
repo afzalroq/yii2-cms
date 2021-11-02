@@ -4,7 +4,7 @@ namespace afzalroq\cms\controllers;
 
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\ItemComments;
-use afzalroq\cms\entities\Items;
+use afzalroq\cms\entities\front\Items;
 use afzalroq\cms\forms\ItemsSearch;
 use Yii;
 use yii\filters\VerbFilter;

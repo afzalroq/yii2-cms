@@ -16,7 +16,6 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->errorSummary($cae) ?>
-
     <?= Html::activeHiddenInput($cae, 'entity_id', ['value' => $model->id]) ?>
 
     <div class="box">
@@ -28,11 +27,14 @@ use yii\widgets\ActiveForm;
                 <div class="col-sm-3">
                     <?= $form->field($cae, 'type')->dropDownList(CaE::typeList()) ?>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <?= $form->field($cae, 'sort')->textInput(['type' => 'number']) ?>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <?= $form->field($cae, 'size')->textInput(['type' => 'number']) ?>
+                </div>
+                <div class="col-sm-2">
+                    <?= $form->field($cae, 'location')->dropDownList(CaE::typeLocation()) ?>
                 </div>
             </div>
         </div>

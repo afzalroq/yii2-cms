@@ -33,7 +33,7 @@ $this->title = Yii::t('cms','CMS Dashboard');
                     'class' => 'list-group'
                 ],
                 'itemView' => function ($model) {
-                    return Html::tag('span', count($model->options), ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/collections/view', 'id' => $model->id]));
+                    return Html::tag('span', count($model->options)-1, ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/collections/view', 'id' => $model->id]))  . '<br>' . Html::tag('p', 'slug: ' . $model->slug, ['class' => 'font-italic text-success']);
                 },
                 'itemOptions' => [
                     'tag' => 'li',
@@ -45,7 +45,7 @@ $this->title = Yii::t('cms','CMS Dashboard');
         <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-9">
-                <?= Html::a(Yii::t('cms','Entities'), Url::to(['/cms/entities/index']), ['class' => 'btn btn-block btn-lg btn-success']) ?>
+                    <?= Html::a(Yii::t('cms','Entities'), Url::to(['/cms/entities/index']), ['class' => 'btn btn-block btn-lg btn-success']) ?>
                 </div>
                 <div class="col-sm-3">
                     <?= Html::a('<i class="fa fa-plus"></i>', Url::to(['/cms/entities/create']), ['class' => 'btn btn-block btn-lg btn-success']) ?>
@@ -59,7 +59,11 @@ $this->title = Yii::t('cms','CMS Dashboard');
                     'class' => 'list-group'
                 ],
                 'itemView' => function ($model) {
-                    return Html::tag('span', count($model->items), ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/entities/view', 'id' => $model->id]));
+                    $str = '';
+                    foreach ($model->caes as $cae){
+                        $str = ''. $cae->collection->slug;
+                    }
+                    return Html::tag('span', count($model->items), ['class' => 'badge']) . Html::a($model->name_0, Url::to(['/cms/entities/view', 'id' => $model->id])) . '<br>' . Html::tag('p', 'slug: ' . $model->slug, ['class' => 'font-italic text-warning']) .Html::tag('p', $str? '<br>' .  $str : '', ['class' => 'font-italic text-success']);
                 },
                 'itemOptions' => [
                     'tag' => 'li',

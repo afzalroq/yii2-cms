@@ -1,5 +1,6 @@
 <?php
 
+use afzalroq\cms\entities\CaE;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\widgets\CmsForm;
 use kartik\file\FileInput;
@@ -62,7 +63,7 @@ $hasTranslatableAttrs = 0;
                         <?= $form->field($model, 'slug')->textInput() ?>
                     </div>
                 <?php endif; ?>
-                <?= $cmsForm->oaIFields(); ?>
+                <?=  $cmsForm->oaIFields(CaE::Location_Top); ?>
             </div>
         </div>
     </div>
@@ -132,7 +133,13 @@ $hasTranslatableAttrs = 0;
         </div>
     </div>
     <!--#endregion -->
-
+    <div class="box">
+        <div class="box-body">
+            <div class="row">
+                <?=  $cmsForm->oaIFields(CaE::Location_Bottom); ?>
+            </div>
+        </div>
+    </div>
 
 
     <!--#region Translatable Seo -->

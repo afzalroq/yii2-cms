@@ -66,6 +66,12 @@ $hasTranslatableAttrs = 0;
 
                     if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_FILE)
                         echo $cmsForm->file('file_1_0', 'file_1', $collection->option_file_1_label);
+
+                    if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_AUDIO)
+                        echo $cmsForm->file('file_1_0', 'file_1', $collection->option_file_1_label);
+
+                    if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_VIDEO)
+                        echo $cmsForm->file('file_1_0', 'file_1', $collection->option_file_1_label);
                 }
 
                 if ($collection->option_file_2 == Collections::OPTION_FILE_COMMON) {
@@ -73,6 +79,13 @@ $hasTranslatableAttrs = 0;
                         echo $cmsForm->image('file_2_0', 'file_2', $collection->option_file_2_label);
 
                     if (FileType::fileMimeType($collection->file_2_mimeType) === FileType::TYPE_FILE)
+                        echo $cmsForm->file('file_2_0', 'file_2', $collection->option_file_2_label);
+
+
+                    if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_AUDIO)
+                        echo $cmsForm->file('file_2_0', 'file_2', $collection->option_file_2_label);
+
+                    if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_VIDEO)
                         echo $cmsForm->file('file_2_0', 'file_2', $collection->option_file_2_label);
                 }
                 ?>
@@ -113,7 +126,7 @@ $hasTranslatableAttrs = 0;
                                 <?php
                                 if ($collection->option_name && $collection->option_name == Collections::OPTION_NAME_TRANSLATABLE): $hasTranslatableAttrs = 1; ?>
                                     <div class="col-md-12">
-                                    <?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]); ?>
+                                        <?= $form->field($model, 'name_' . $key)->textInput(['maxlength' => true]); ?>
                                     </div>
                                 <?php endif; ?>
 
@@ -143,6 +156,10 @@ $hasTranslatableAttrs = 0;
 
                                         if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_FILE)
                                             echo $cmsForm->file('file_1_' . $key, 'file_1', $collection->option_file_1_label);
+                                        if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_VIDEO)
+                                            echo $cmsForm->file('file_1_' . $key, 'file_1', $collection->option_file_1_label);
+                                        if (FileType::fileMimeType($collection->file_1_mimeType) === FileType::TYPE_AUDIO)
+                                            echo $cmsForm->file('file_1_' . $key, 'file_1', $collection->option_file_1_label);
                                     }
 
                                     if ($collection->option_file_2 == Collections::OPTION_FILE_TRANSLATABLE) {
@@ -151,6 +168,10 @@ $hasTranslatableAttrs = 0;
                                             echo $cmsForm->image('file_2_' . $key, 'file_2', $collection->option_file_2_label);
 
                                         if (FileType::fileMimeType($collection->file_2_mimeType) === FileType::TYPE_FILE)
+                                            echo $cmsForm->file('file_2_' . $key, 'file_2', $collection->option_file_2_label);
+                                        if (FileType::fileMimeType($collection->file_2_mimeType) === FileType::TYPE_VIDEO)
+                                            echo $cmsForm->file('file_2_' . $key, 'file_2', $collection->option_file_2_label);
+                                        if (FileType::fileMimeType($collection->file_2_mimeType) === FileType::TYPE_AUDIO)
                                             echo $cmsForm->file('file_2_' . $key, 'file_2', $collection->option_file_2_label);
                                     }
                                     ?>

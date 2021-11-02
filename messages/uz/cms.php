@@ -150,5 +150,8 @@ return [
     'Refresh' => 'Yangilash',
     'Votes Count' => 'Ovoz berishlar soni',
     'Please confirm that you are not a bot.' => 'Iltimos, Bot emasligingizni tasdiqlang.',
+    'Top' => 'Yuqori',
+    'Bottom' => 'Pastki qism',
+    'Location' => 'Joylashuv',
 
 ];
