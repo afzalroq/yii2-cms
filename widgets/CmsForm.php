@@ -369,7 +369,7 @@ class CmsForm
         );
     }
 
-    public function date($attr, $isCommon, $options = ['type' => DateControl::FORMAT_DATE])
+    public function date($attr, $isCommon, $options = ['type' => DateControl::FORMAT_DATE, 'style' => 'z-index:1000;'])
     {
         return Html::tag(
             'div',
