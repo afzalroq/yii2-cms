@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\entities;
 
+use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Null_;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -21,6 +22,7 @@ use yii\helpers\ArrayHelper;
  * @property int $created_at
  * @property int $updated_at
  * @property int $location
+ * @property boolean $show_index
 
  *
 
@@ -105,9 +107,11 @@ class CaE extends ActiveRecord
         return [
             [['collection_id', 'entity_id', 'sort'], 'required'],
             [['collection_id', 'entity_id', 'type', 'location', 'sort', 'size'], 'integer'],
+            ['show_index', 'boolean'],
             [['collection_id'], 'exist', 'skipOnError' => true, 'targetClass' => Collections::class, 'targetAttribute' => ['collection_id' => 'id']],
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Entities::class, 'targetAttribute' => ['entity_id' => 'id']],
             [['location'], 'default', 'value'=> 0],
+            [['show_index'], 'default', 'value'=> false ],
         ];
     }
 
@@ -121,6 +125,7 @@ class CaE extends ActiveRecord
             'sort' => Yii::t('cms', 'Sort'),
             'size' => Yii::t('cms', 'Size'),
             'location' => Yii::t('cms','Location'),
+            'show_index' => Yii::t('cms', 'Show on Index page'),
             'created_at' => Yii::t('cms', 'Created At'),
             'updated_at' => Yii::t('cms', 'Updated At'),
         ];

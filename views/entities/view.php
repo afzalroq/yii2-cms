@@ -285,6 +285,17 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                                         'label' => Yii::t('cms', 'Location'),
                                         'value' => CaE::typeLocation()[$cae->location]
                                     ],
+                                    [
+                                        'attribute' => 'show_index',
+                                        'label' => Yii::t('cms', 'Show on Index page'),
+                                        'value' => function ($cae) {
+                                            if ($cae->show_index === 1){
+                                                return 'Ha';
+                                            } else{
+                                                return 'Yo`q';
+                                            }
+                                        }
+                                    ],
                                     'sort',
                                     'size'
                                 ]

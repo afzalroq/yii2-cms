@@ -35,13 +35,14 @@ class ItemsController extends Controller
      */
     public function actionIndex($slug)
     {
-        $searchModel = new ItemsSearch();
+        $entity=Entities::findOne(['slug' => $slug]);
+        $searchModel = new ItemsSearch($entity);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $slug);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'entity' => Entities::findOne(['slug' => $slug])
+            'entity' => $entity
         ]);
     }
 

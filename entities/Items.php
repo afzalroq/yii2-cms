@@ -94,6 +94,7 @@ class Items extends ActiveRecord
     const STATUS_DRAFT = 0;
     const STATUS_ACTIVE = 1;
 
+    public static $option_key = 0;
     #region Extra Attributes
 
     /**
@@ -456,6 +457,24 @@ class Items extends ActiveRecord
         foreach (Yii::$app->params['cms']['languages'] as $key => $language)
             $attrs[] = $entityAttr . '_' . $key;
         return $attrs;
+    }
+
+    public function getOptionsName()
+    {
+        return $this->hasMany(Options::className(),['id' => 'option_id'])->viaTable('{{%cms_options_and_items}}',   ['item_id' =>'id']);
+    }
+
+    public function getOptionValue2()
+    {
+        if(count($this->o) > self::$option_key){
+        }else{
+            self::$option_key = 0;
+        }
+        self::$option_key = self::$option_key + 1;
+
+        if(array_values($this->o)[self::$option_key - 1][0]){
+            return array_values($this->o)[self::$option_key - 1][0]->name_0;
+        }
     }
 
     public function requiredValidator($entityAttr)

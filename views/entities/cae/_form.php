@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
                 <div class="col-sm-3">
                     <?= $form->field($cae, 'collection_id')->dropDownList(ArrayHelper::map($unassignedCollections, 'id', 'slug')) ?>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <?= $form->field($cae, 'type')->dropDownList(CaE::typeList()) ?>
                 </div>
                 <div class="col-sm-2">
@@ -35,6 +35,9 @@ use yii\widgets\ActiveForm;
                 </div>
                 <div class="col-sm-2">
                     <?= $form->field($cae, 'location')->dropDownList(CaE::typeLocation()) ?>
+                </div>
+                <div class="col-sm-1 "  style=" margin-top: 25px">
+                    <?= $form->field($cae, 'show_index')->checkbox(['checked'=> false]) ?>
                 </div>
             </div>
         </div>

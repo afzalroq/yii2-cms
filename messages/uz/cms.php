@@ -153,5 +153,6 @@ return [
     'Top' => 'Yuqori',
     'Bottom' => 'Pastki qism',
     'Location' => 'Joylashuv',
+    'Show on Index page' => 'Asosiy sahifada ko`rsatilsin'
 
 ];
