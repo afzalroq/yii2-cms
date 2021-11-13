@@ -84,18 +84,14 @@ $columns =  array_merge(
             'format' => 'html',
             'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
                 if ($entity->use_gallery) {
-                    return "
-                                    <img class='img-circle-prewiew' style=' height: 60px;  width: 80px' src='" . $model->mainPhoto ? $model->mainPhoto->getPhoto(1024, 1024) : '' . "'/>";
+                    if ($model->mainPhoto) {
+                        return "<img class='img-circle-prewiew' style=' height: 60px;  width: 80px' src='" . $model->mainPhoto->getPhoto(1024, 1024) . "'/>";
+                    } elseif ($model->file_1_0) {
+                        return "<img class='img-circle-prewiew' style=' height: 60px;  width: 80px' src='" . $model->getImageUrl('file_1_0', 1024, 1024) . "'/>";
+                    }
+                } elseif ($model->file_1_0) {
+                    return "<img class='img-circle-prewiew' style=' height: 60px;  width: 80px' src='" . $model->getImageUrl('file_1_0', 1024, 1024) . "'/>";
                 }
-                return "<img class='img-circle-prewiew' style=' height: 60px;  width: 80px' src='" . $model->getImageUrl('file_1_0', 1024, 1024) . "'/>";
-
-//                            "
-//                                <div class='img-circle-prewiew' >
-//                                    <a href='" .$model->getImageUrl('file_1_0',1024, 1024) ."'>
-//                                        <img src='". $model->getImageUrl('file_1_0',25, 25) ."'/>
-//                                    </a>
-//                                </div>
-//                                ";
             },
             'visible' => $entity->file_1 && FileType::fileMimeType($entity->file_1_mimeType) === FileType::TYPE_IMAGE ? true : false
         ],
