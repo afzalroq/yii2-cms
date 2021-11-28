@@ -466,7 +466,7 @@ class Items extends ActiveRecord
 
     public function getOptionValue2()
     {
-        if(count($this->o) > self::$option_key){
+        if(is_array($this->o) && count($this->o) > self::$option_key){
         }else{
             self::$option_key = 0;
         }
