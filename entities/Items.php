@@ -472,7 +472,7 @@ class Items extends ActiveRecord
         }
         self::$option_key = self::$option_key + 1;
 
-        if(array_values($this->o)[self::$option_key - 1][0]){
+        if($this->o && array_values($this->o)[self::$option_key - 1][0]){
             return array_values($this->o)[self::$option_key - 1][0]->name_0;
         }
     }
