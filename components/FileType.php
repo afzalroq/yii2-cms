@@ -48,7 +48,7 @@ class FileType
                     $accepts .= 'pdf,';
                     break;
                 case 'word':
-                    $accepts .= 'doc, .docx,';
+                    $accepts .= 'doc, docx,';
                     break;
                 case 'excel':
                     $accepts .= 'xls, xlsx,';
