@@ -38,7 +38,8 @@ class Module extends \yii\base\Module
     public $languages;
     public $menuActions;
     public $optimized = false;
-
+    public $pageSize = 10;
+    
     private static function dataKeys()
     {
         return [0, 1, 2, 3, 4];
