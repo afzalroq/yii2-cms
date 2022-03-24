@@ -87,7 +87,7 @@ class ItemsSearch extends Items
             return $dataProvider;
         }
 
-        $query->joinWith('optionsName');
+//        $query->joinWith('optionsName');
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -141,7 +141,7 @@ class ItemsSearch extends Items
             if (!empty($this->$category)) {
                 $id = explode('_', $this->$category)[1];
                 $option = Options::findOne($id);
-                $query->andWhere(['cms_items.id' => OaI::getItemIdsByOption($option->slug)]);
+                $query->andFilterWhere(['cms_items.id' => OaI::getItemIdsByOption($option->slug)]);
             };
         }
         return $dataProvider;

@@ -489,6 +489,19 @@ class Options extends ActiveRecord
         return false;
     }
 
+    public function getName()
+    {
+        return $this[$this->getAttr('name')];
+    }
+
+    private function getAttr($collectionAttr)
+    {
+        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language]))
+            $languageId = 0;
+
+        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_0' : "_" . $languageId);
+    }
+
     public function getCollection()
     {
         return $this->hasOne(Collections::class, ['id' => 'collection_id']);

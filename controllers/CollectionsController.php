@@ -5,14 +5,10 @@ namespace afzalroq\cms\controllers;
 use Yii;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\forms\CollectionsSearch;
-use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * CollectionsController implements the CRUD actions for Collections model.
- */
 class CollectionsController extends Controller
 {
 

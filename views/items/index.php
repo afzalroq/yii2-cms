@@ -7,7 +7,7 @@ use yii\helpers\Html;
 \afzalroq\cms\assets\GalleryAsset::register($this);
 
 /* @var $this yii\web\View */
-/* @var $searchModel afzalroq\cms\entities\ */
+/* @var $searchModel afzalroq\cms\forms\ItemsSeab rch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $entity \afzalroq\cms\entities\Entities */
 
@@ -30,21 +30,27 @@ foreach ($caes as $k => $cae) {
     $filter_array = \yii\helpers\ArrayHelper::map($options, function ($item) use ($cae) {
         return $cae->collection->slug . '_' . $item->id;
     }, function ($item) {
-        return $item->name_0;
+        return $item->getName();
     });
 
     $category_columns[] = [
         'attribute' => "caes_{$k}",
         'label' => $searchModel->getAttributeLabel("caes_{$k}"),
         'format' => 'raw',
-        'value' =>  function($model){
-            return $model->getOptionValue2();
+        'value' => function ($model) use ($cae) {
+            $string = "";
+            foreach ($model->o[$cae->collection->slug] as $option) {
+                if ($option) {
+                    $string .= $option->name . ", ";
+                }
+            };
+            return rtrim($string, ', ');
         },
         'filter' => $filter_array,
     ];
 }
 
-$columns =  array_merge(
+$columns = array_merge(
     [
         ['class' => 'yii\grid\SerialColumn'],
 

@@ -54,6 +54,7 @@ php yii migrate/up --migrationPath=@vendor/afzalroq/yii2-cms/migrations
         'host' => $params['storageHostInfo'], // 'https://site.example'    
         'cache' => 'cache', // default cache component name
         'cacheDuration' => 3600, // default cache duration 3600 second
+        'optimized' => false, // set true for get items with options as $item->o 
         // images
         'imageOperation' => 'cropResize',
         'imageBackground' => 'transparent',

@@ -4,11 +4,11 @@ namespace afzalroq\cms\entities;
 
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
+use afzalroq\cms\entities\front\Options;
 use afzalroq\cms\helpers\TextConverter;
 use afzalroq\cms\Module;
 use DomainException;
 use Yii;
-use afzalroq\cms\entities\front\Options;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
@@ -94,7 +94,6 @@ class Items extends ActiveRecord
     const STATUS_DRAFT = 0;
     const STATUS_ACTIVE = 1;
 
-    public static $option_key = 0;
     #region Extra Attributes
 
     /**
@@ -237,9 +236,9 @@ class Items extends ActiveRecord
 
         if ($insert && $entity->use_status != null) $this->status = self::STATUS_DRAFT;
         if (Module::getInstance()->textConverter) {
-            $uz = \Yii::$app->params['cms']['languageIds']['uz']??null;
-            $oz = \Yii::$app->params['cms']['languageIds']['oz']??null;
-            if($oz && $uz){
+            $uz = \Yii::$app->params['cms']['languageIds']['uz'] ?? null;
+            $oz = \Yii::$app->params['cms']['languageIds']['oz'] ?? null;
+            if ($oz && $uz) {
                 $entity = $this->entity;
                 for ($i = 1; $i <= 7; $i++) {
                     if ($entity->isTranslateble('text_' . $i)) {
@@ -265,8 +264,6 @@ class Items extends ActiveRecord
         }
         return parent::beforeSave($insert);
     }
-
-
 
 
     public function afterSave($insert, $changedAttributes)
@@ -461,20 +458,7 @@ class Items extends ActiveRecord
 
     public function getOptionsName()
     {
-        return $this->hasMany(Options::className(),['id' => 'option_id'])->viaTable('{{%cms_options_and_items}}',   ['item_id' =>'id']);
-    }
-
-    public function getOptionValue2()
-    {
-        if(is_array($this->o) && count($this->o) > self::$option_key){
-        }else{
-            self::$option_key = 0;
-        }
-        self::$option_key = self::$option_key + 1;
-
-        if($this->o && array_values($this->o)[self::$option_key - 1][0]){
-            return array_values($this->o)[self::$option_key - 1][0]->name_0;
-        }
+        return $this->hasMany(Options::className(), ['id' => 'option_id'])->viaTable('{{%cms_options_and_items}}', ['item_id' => 'id']);
     }
 
     public function requiredValidator($entityAttr)
