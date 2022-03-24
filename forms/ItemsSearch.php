@@ -8,6 +8,7 @@ use afzalroq\cms\entities\Items;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use afzalroq\cms\entities\front\OaI;
+use Yii;
 
 class ItemsSearch extends Items
 {
