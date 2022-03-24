@@ -71,7 +71,10 @@ class ItemsSearch extends Items
         $query = Items::find()->where(['entity_id' => (Entities::findOne(['slug' => $slug]))->id])->orderBy('id DESC');
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => Yii::$app->getModule('cms')->pageSize
+            ]
         ]);
 
         $this->load($params);
