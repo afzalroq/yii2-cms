@@ -129,7 +129,7 @@ class CmsForm
 
         foreach ($this->entityTextAttrs as $entityAttr => $value) {
             $attr = $entityAttr . '_' . $langKey;
-            switch ($this->obj{$entityAttr}) {
+            switch ($this->obj[$entityAttr]) {
                 case Entities::TEXT_TRANSLATABLE_INPUT_STRING:
                     $hasTranslatableAttrs = 1;
                     echo $this->input($attr, $entityAttr, []);
@@ -175,7 +175,7 @@ class CmsForm
 
         foreach ($this->collectionTextAttrs as $collectionAttr => $value) {
             $attr = $collectionAttr . '_' . $langKey;
-            switch ($this->obj{$collectionAttr}) {
+            switch ($this->obj[$collectionAttr]) {
                 case Entities::TEXT_TRANSLATABLE_INPUT_STRING:
                     $hasTranslatableAttrs = 1;
                     echo $this->input($attr, $collectionAttr, []);
@@ -242,7 +242,7 @@ class CmsForm
     {
         foreach ($this->entityTextAttrs as $entityAttr => $value) {
             $attr = $entityAttr . '_0';
-            switch ($this->obj{$entityAttr}) {
+            switch ($this->obj[$entityAttr]) {
                 case Entities::TEXT_COMMON_INPUT_STRING:
                     echo $this->input($attr, $entityAttr, []);
                     break;
@@ -279,7 +279,7 @@ class CmsForm
     {
         foreach ($this->collectionTextAttrs as $collectionAttr => $value) {
             $attr = $collectionAttr . '_0';
-            switch ($this->obj{$collectionAttr}) {
+            switch ($this->obj[$collectionAttr]) {
                 case Entities::TEXT_COMMON_INPUT_STRING:
                     echo $this->input($attr, $collectionAttr, []);
                     break;

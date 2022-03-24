@@ -12,7 +12,7 @@ class m211106_134754_add_column_to_cms_collection_and_entities_table extends Mig
      */
     public function safeUp()
     {
-        $this->addColumn('{{%cms_collections_and_entities}}', 'show_index', $this->boolean());
+        $this->addColumn('{{%cms_collections_and_entities}}', 'show_index', $this->boolean()->defaultValue(false));
     }
 
     /**

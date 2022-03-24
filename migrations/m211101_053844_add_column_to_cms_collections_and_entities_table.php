@@ -12,7 +12,7 @@ class m211101_053844_add_column_to_cms_collections_and_entities_table extends Mi
      */
     public function safeUp()
     {
-        $this->addColumn('{{%cms_collections_and_entities}}', 'location', $this->tinyInteger());
+        $this->addColumn('{{%cms_collections_and_entities}}', 'location', $this->tinyInteger()->defaultValue(0));
     }
 
     /**

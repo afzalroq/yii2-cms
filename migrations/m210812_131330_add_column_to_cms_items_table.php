@@ -9,8 +9,8 @@ class m210812_131330_add_column_to_cms_items_table extends Migration
 {
     public function safeUp()
     {
-        $this->addColumn('{{%cms_items}}', 'votes_count', $this->integer());
-        $this->addColumn('{{%cms_items}}', 'comments_count', $this->integer());
+        $this->addColumn('{{%cms_items}}', 'votes_count', $this->integer()->defaultValue(0));
+        $this->addColumn('{{%cms_items}}', 'comments_count', $this->integer()->defaultValue(0));
         $this->addColumn('{{%cms_items}}', 'avarage_voting', $this->decimal(5,1));
     }
 
