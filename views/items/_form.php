@@ -50,7 +50,7 @@ $hasTranslatableAttrs = 0;
         } ?>
         <?= Html::submitButton('<i class="fa fa-check"></i> ' . Yii::t('cms', 'Save and Close'), ['class' => 'btn btn-warning', 'name' => 'save', 'value' => 'save-close']) ?>
         <?= Html::submitButton('<i class="fa fa-refresh"></i> ' . Yii::t('cms', 'Save'), ['class' => 'btn btn-primary', 'name' => 'save', 'value' => 'save']) ?>
-        <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('cms', 'Close'), ['items/index', 'slug' => $entity->slug], ['class' => 'btn btn-danger pull-right', 'name' => 'save', 'value' => 'close', 'style' => 'margin-right: 10px;']) ?>
+        <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('cms', 'Close'), ['/cms/items/index', 'slug' => $entity->slug], ['class' => 'btn btn-danger pull-right', 'name' => 'save', 'value' => 'close', 'style' => 'margin-right: 10px;']) ?>
     </div>
     <?= $form->errorSummary($model) ?>
     <?= $form->field($model, 'entity_id')->textInput(['value' => $entity->id, 'type' => 'hidden'])->label(false) ?>
