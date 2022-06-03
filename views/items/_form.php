@@ -81,21 +81,6 @@ $hasTranslatableAttrs = 0;
     <!--#endregion -->
 
 
-
-    <?php if ($entity->use_gallery): ?>
-        <div class="box box-default">
-            <div class="box-body">
-                <?= $form->field($model, 'files[]')->widget(FileInput::class, [
-                    'options' => [
-                        'accept' => 'image/*',
-                        'multiple' => true,
-                    ]
-                ]) ?>
-            </div>
-        </div>
-    <?php endif; ?>
-
-
     <!--#region Translatable -->
     <div class="row" id="translatable">
         <div class="col-md-12">
@@ -140,6 +125,22 @@ $hasTranslatableAttrs = 0;
             </div>
         </div>
     </div>
+
+
+
+    <?php if ($entity->use_gallery): ?>
+        <div class="box box-default">
+            <div class="box-body">
+                <?= $form->field($model, 'files[]')->widget(FileInput::class, [
+                    'options' => [
+                        'accept' => 'image/*',
+                        'multiple' => true,
+                    ]
+                ]) ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
 
 
     <!--#region Translatable Seo -->
