@@ -50,6 +50,8 @@ foreach ($caes as $k => $cae) {
     ];
 }
 
+$firstKey = array_key_first(Yii::$app->params['cms']['languages']);
+
 $columns = array_merge(
     [
         ['class' => 'yii\grid\SerialColumn'],
@@ -63,11 +65,11 @@ $columns = array_merge(
             'format' => 'html'
         ],
         [
-            'attribute' => 'text_1_0',
+            'attribute' => 'text_1_' . $firstKey,
             'label' => $entity->text_1_label . ' (' . $curLang . ')'
         ],
         [
-            'attribute' => 'text_2_0',
+            'attribute' => 'text_2_' . $firstKey,
             'value' => function ($model) use ($entity) {
                 if ($entity->text_2 < 30)
                     return $model->text_2_0;
@@ -76,7 +78,7 @@ $columns = array_merge(
             'visible' => !empty($entity->text_2) ? $entity->text_2 > 30 ? false : true : false
         ],
         [
-            'attribute' => 'text_3_0',
+            'attribute' => 'text_3_' . $firstKey,
             'value' => function ($model) use ($entity) {
                 if ($entity->text_3 < 30)
                     return $model->text_3_0;
@@ -85,7 +87,7 @@ $columns = array_merge(
             'visible' => !empty($entity->text_3) ? $entity->text_3 > 30 ? false : true : false
         ],
         [
-            'attribute' => 'file_1_0',
+            'attribute' => 'file_1_' . $firstKey,
             'label' => $entity->file_1_label,
             'format' => 'html',
             'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
@@ -111,7 +113,7 @@ $columns = array_merge(
 //                    'visible' => $entity->use_gallery ? true : false
 //                ],
         [
-            'attribute' => 'date_0',
+            'attribute' => 'date_' . $firstKey,
             'label' => Yii::t('cms', 'Date'),
             'format' => 'html',
             'value' => function (\afzalroq\cms\entities\Items $item) use ($entity) {
