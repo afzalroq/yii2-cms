@@ -1,8 +1,6 @@
 <?php
 
-
 namespace afzalroq\cms\components;
-
 
 class FileType
 {
