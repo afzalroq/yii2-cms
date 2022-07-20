@@ -440,6 +440,7 @@ class Items extends ActiveRecord
         return [$this->getCurrentAttrs($entityAttr),
             'file',
             'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
+            'checkExtensionByMimeType' => false,
             'maxSize' => ($maxSize) ? $maxSize : null
         ];
     }
