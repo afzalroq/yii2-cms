@@ -439,7 +439,7 @@ class Items extends ActiveRecord
         $maxSize = ($this->dependEntity[$entityAttr . '_maxSize'] ?: 0) * 1024 * 1024;
         return [$this->getCurrentAttrs($entityAttr),
             'file',
-            'extensions' => FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType']),
+            'extensions' => [FileType::fileExtensions($this->dependEntity[$entityAttr . '_mimeType'])],
             'maxSize' => ($maxSize) ? $maxSize : null
         ];
     }
