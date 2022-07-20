@@ -27,42 +27,42 @@ class FileType
         if (!$type){
             return null;
         }
-        
-        $accepts = [];
-        
+
+        $accepts = '';
+
         foreach ($type as $item) {
             switch (self::MIME_TYPES[$item]) {
                 case 'jpg':
-                    $accepts = array_merge($accepts, ['jpg', 'jpeg']);
+                    $accepts .= '"jpg", "jpeg",';
                     break;
                 case 'png':
-                    $accepts = array_merge($accepts, ['png']);
+                    $accepts .= '"png",';
                     break;
                 case 'gif':
-                    $accepts = array_merge($accepts, ['gif']);
+                    $accepts .= '"gif",';
                     break;
                 case 'svg':
-                    $accepts = array_merge($accepts, ['svg']);
+                    $accepts .= '"svg",';
                     break;
                 case 'pdf':
-                    $accepts = array_merge($accepts, ['pdf']);
+                    $accepts .= '"pdf",';
                     break;
                 case 'word':
-                    $accepts = array_merge($accepts, ['doc', 'docx']);
+                    $accepts .= '"doc", "docx",';
                     break;
                 case 'excel':
-                    $accepts = array_merge($accepts, ['xls', 'xlsx']);
+                    $accepts .= '"xls", "xlsx",';
                     break;
                 case 'mp4':
-                    $accepts = array_merge($accepts, ['mp4']);
+                    $accepts .= '"mp4",';
                     break;
                 case 'mp3':
-                    $accepts = array_merge($accepts, ['mp3']);
+                    $accepts .= '"mp3",';
                     break;
             }
         }
-
-        return $accepts;
+        
+        return substr($accepts, 0, -1);
 
         throw new \Exception('mime type not Ok');
     }
