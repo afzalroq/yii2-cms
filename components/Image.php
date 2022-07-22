@@ -35,7 +35,11 @@ class Image
 
         if (isset($obj->entity) && $obj->entity->use_watermark && is_file($module->watermark)) {
             $watermark = GregImage::open($module->watermark)->scaleResize(intval($width * 15 / 100), intval($height * 15 / 100));
-            $path->merge($watermark, $width - intval($width * 17 / 100), $height - intval($width * 17 / 100));
+            $path->merge(
+                $watermark,
+                $width - intval($width * $module->watermarkRight / 100),
+                $height - intval($width * $module->watermarkBottom / 100)
+            );
         }
 
         return $module->host . str_replace($module->path, '', $path->guess());

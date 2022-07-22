@@ -2,6 +2,8 @@
 
 namespace afzalroq\cms\components;
 
+use afzalroq\cms\entities\Entities;
+
 class FileType
 {
     const MIME_TYPES = [
@@ -20,14 +22,19 @@ class FileType
     const TYPE_AUDIO = 8;
     const TYPE_VIDEO = 7;
 
+    public static function hasImage(Entities $entity): bool
+    {
+        return ($entity->file_1 && FileType::fileMimeType($entity->file_1_mimeType) === FileType::TYPE_IMAGE) || $entity->use_gallery;
+    }
+
     public static function fileExtensions($type)
     {
-        if (!$type){
+        if (!$type) {
             return null;
         }
-        
+
         $accepts = [];
-        
+
         foreach ($type as $item) {
             switch (self::MIME_TYPES[$item]) {
                 case 'jpg':
@@ -83,7 +90,7 @@ class FileType
         $returnType = self::TYPE_IMAGE;
 
         foreach ($type as $item) {
-            switch (self::MIME_TYPES[$item]){
+            switch (self::MIME_TYPES[$item]) {
                 case "jpg" :
                 case "png" :
                 case "jpeg" :

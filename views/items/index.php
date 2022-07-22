@@ -91,17 +91,24 @@ $columns = array_merge(
             'label' => $entity->file_1_label,
             'format' => 'html',
             'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
+                $w = $w0 = $entity['file_1_dimensionW'];
+                $h = $h0 = $entity['file_1_dimensionH'];
+                if ($w0 > 64) {
+                    $diff = $w0 / 64;
+                    $w = 64;
+                    $h = $h0 / $diff;
+                }
                 if ($entity->use_gallery) {
                     if ($model->mainPhoto) {
-                        return "<img class='img-circle-prewiew' style=' height: 60px;  width: 80px' src='" . $model->mainPhoto->getPhoto(1024, 1024) . "'/>";
+                        return "<img class='img-circle-prewiew' style='height: ${h}px;  width: ${w}px' src='" . $model->mainPhoto->getPhoto($w0, $h0) . "'/>";
                     } elseif ($model->file_1_0) {
-                        return "<img class='img-circle-prewiew' style=' height: 60px;  width: 80px' src='" . $model->getImageUrl('file_1_0', 1024, 1024) . "'/>";
+                        return "<img class='img-circle-prewiew' style='height: ${h}px;  width: ${w}px' src='" . $model->getImageUrl('file_1_0', $w0, $h0) . "'/>";
                     }
                 } elseif ($model->file_1_0) {
-                    return "<img class='img-circle-prewiew' style=' height: 60px;  width: 80px' src='" . $model->getImageUrl('file_1_0', 1024, 1024) . "'/>";
+                    return "<img class='img-circle-prewiew' style='height: ${h}px;  width: ${w}px' src='" . $model->getImageUrl('file_1_0', $w0, $h0) . "'/>";
                 }
             },
-            'visible' => $entity->file_1 && FileType::fileMimeType($entity->file_1_mimeType) === FileType::TYPE_IMAGE ? true : false
+            'visible' => FileType::hasImage($entity)
         ],
 //                [
 //                    'attribute' => 'use_gallery',
@@ -134,27 +141,27 @@ $columns = array_merge(
 
 
 ?>
-    <div class="items-index">
-        <p>
-            <?php if (!$entity->disable_create_and_delete): ?>
-                <?= Html::a(Yii::t('cms', 'Create'), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
-            <?php endif; ?>
-        </p>
+<div class="items-index">
+    <p>
+        <?php if (!$entity->disable_create_and_delete): ?>
+            <?= Html::a(Yii::t('cms', 'Create'), ['create', 'slug' => $entity->slug], ['class' => 'btn btn-success']) ?>
+        <?php endif; ?>
+    </p>
 
-        <div style="overflow: auto; overflow-y: hidden">
-            <div class='lightgallery'>
-                <?= GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'columns' => $columns
-                ]) ?>
-            </div>
+    <div style="overflow: auto; overflow-y: hidden">
+        <div class='lightgallery'>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => $columns
+            ]) ?>
         </div>
     </div>
-    <div id="image-viewer">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="full-image">
-    </div>
+</div>
+<div id="image-viewer">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="full-image">
+</div>
 
 
 <?php $this->registerJs(<<<JS

@@ -13,6 +13,8 @@ use afzalroq\cms\components\Language;
  * @property integer $cacheDuration
  * @property string $fallback
  * @property string $watermark
+ * @property integer $watermarkBottom
+ * @property integer $watermarkRight
  * @property string $imageOperation
  * @property string $imageBackground
  * @property string $imageXPos
@@ -30,6 +32,8 @@ class Module extends \yii\base\Module
     public $cacheDuration = YII_ENV_DEV ? 1 : 3600;
     public $fallback;
     public $watermark;
+    public $watermarkBottom = 15;
+    public $watermarkRight = 15;
     public $imageOperation = 'cropResize';
     public $imageBackground = 'transparent';
     public $imageXPos = 'center';

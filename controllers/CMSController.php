@@ -10,11 +10,9 @@ class CMSController extends Controller
 {
     public function afterAction($action, $result)
     {
-        $result = parent::afterAction($action, $result);
-        if ($result == null) {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        } else {
+        if ($result = parent::afterAction($action, $result)) {
             return $result;
         }
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

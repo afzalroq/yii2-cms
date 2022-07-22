@@ -2,6 +2,7 @@
 
 namespace afzalroq\cms\entities\front;
 
+use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\ItemComments;
 use afzalroq\cms\entities\OaI;
@@ -52,12 +53,12 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
         }, $cacheDuration, new TagDependency(['tags' => ['items_' . $slug]]));
     }
 
-    public static function getEntityItemSearchResults(array $entitySlugs, $search)
+    public static function searchByEntityQuery(array $entitySlugs, $search)
     {
         $langId = Yii::$app->params['l'][Yii::$app->language];
         $entityId = Entities::find()->where(['slug' => $entitySlugs])->select('id')->column();
         $query = Items::find()->where(['entity_id' => $entityId]);
-        $items = $query->andFilterWhere(['or',
+        return $query->andFilterWhere(['or',
             ['like', 'text_1_' . $langId, $search],
             ['like', 'text_2_' . $langId, $search],
             ['like', 'text_3_' . $langId, $search],
@@ -65,17 +66,16 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
             ['like', 'text_5_' . $langId, $search],
             ['like', 'text_6_' . $langId, $search],
             ['like', 'text_7_' . $langId, $search],
-        ])->all();
-        return $items;
+        ]);
     }
 
-    public static function getOptionItemSearchResults(array $optionSlugs, $search)
+    public static function searchByOptionsQuery(array $optionSlugs, $search)
     {
         $langId = Yii::$app->params['l'][Yii::$app->language];
         $optionId = Options::find()->where(['slug' => $optionSlugs])->select('id')->column();
         $OaI = OaI::find()->where(['option_id' => $optionId])->select('item_id')->column();
         $query = Items::find()->where(['id' => $OaI]);
-        $items = $query->andFilterWhere(['or',
+        return $query->andFilterWhere(['or',
             ['like', 'text_1_' . $langId, $search],
             ['like', 'text_2_' . $langId, $search],
             ['like', 'text_3_' . $langId, $search],
@@ -83,8 +83,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
             ['like', 'text_5_' . $langId, $search],
             ['like', 'text_6_' . $langId, $search],
             ['like', 'text_7_' . $langId, $search],
-        ])->all();
-        return $items;
+        ]);
     }
 
     public function getLink(): string
@@ -144,12 +143,52 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
     {
         \Yii::$app->view->registerMetaTag([
             'name' => 'description',
-            'content' => $this->getMetaDescription()
+            'content' => $this->getMetaDescription() ?: $this->text2
         ]);
 
         \Yii::$app->view->registerMetaTag([
-            'name' => 'keywords',
-            'content' => $this->getMetaKeyword()
+            'property' => 'og:type',
+            'content' => 'article'
+        ]);
+
+        \Yii::$app->view->registerMetaTag([
+            'property' => 'og:title',
+            'content' => $this->text1
+        ]);
+
+        \Yii::$app->view->registerMetaTag([
+            'property' => 'og:description',
+            'content' => $this->getMetaDescription() ?: $this->text2
+        ]);
+
+        \Yii::$app->view->registerMetaTag([
+            'property' => 'og:url',
+            'content' => Yii::$app->getUrlManager()->createAbsoluteUrl($this->link)
+        ]);
+
+        $imageUrl = \Yii::$app->getModule('cms')->watermark ?: \Yii::$app->getModule('cms')->fallback;
+        if (FileType::hasImage($this->entity)) {
+            $w = $w0 = $this->entity['file_1_dimensionW'];
+            $h = $h0 = $this->entity['file_1_dimensionH'];
+            if ($w0 > 640) {
+                $diff = $w0 / 640;
+                $w = 640;
+                $h = $h0 / $diff;
+            }
+            if ($this->entity->use_gallery) {
+                if ($this->mainPhoto) {
+                    $imageUrl = $this->mainPhoto->getPhoto($w, $h);
+                } elseif ($this->file_1_0) {
+                    $imageUrl = $this->getImageUrl('file_1_0', $w, $h);
+                }
+            } elseif ($this->file_1_0) {
+                $imageUrl = $this->getImageUrl('file_1_0', $w, $h);
+            }
+        }
+
+        \Yii::$app->view->registerMetaTag([
+            'property' => 'og:image',
+            'content' => $imageUrl
         ]);
     }
 
