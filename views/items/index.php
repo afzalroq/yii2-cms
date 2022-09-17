@@ -11,14 +11,11 @@ use yii\helpers\Html;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $entity \afzalroq\cms\entities\Entities */
 
-//$this->registerCssFile('/vendor/afzalroq/yii2-cms/assets/css/image-preview.css');
-
 $curLang = Yii::$app->params['l-name'][Yii::$app->language];
 $this->title = $entity->{"name_" . Yii::$app->params['l'][Yii::$app->language]};
 $this->params['breadcrumbs'][] = $this->title;
 $caes = $entity->caes;
 
-//dd($searchModel);
 $caes = array_filter($entity->caes, function ($item) {
     return $item->show_index == 1;
 });
@@ -66,7 +63,11 @@ $columns = array_merge(
         ],
         [
             'attribute' => 'text_1_' . $firstKey,
-            'label' => $entity->text_1_label . ' (' . $curLang . ')'
+            'value' => function ($model) use ($firstKey, $entity) {
+                return Html::a($model->{'text_1_' . $firstKey}, ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug]);
+            },
+            'label' => $entity->text_1_label . ' (' . $curLang . ')',
+            'format' => 'html'
         ],
         [
             'attribute' => 'text_2_' . $firstKey,
@@ -109,6 +110,12 @@ $columns = array_merge(
                 }
             },
             'visible' => FileType::hasImage($entity)
+        ],
+
+        [
+            'attribute' => 'views_count',
+            'label' => Yii::t('cms', 'Views count'),
+            'visible' => $entity->use_views_count
         ],
 //                [
 //                    'attribute' => 'use_gallery',

@@ -125,7 +125,61 @@ class Entities extends ActiveRecord implements Linkable
 
     public function isTranslateble($field)
     {
-        return in_array($this->{$field}, [self::TEXT_TRANSLATABLE_INPUT_STRING, self::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED, self::TEXT_TRANSLATABLE_TEXTAREA, self::TEXT_TRANSLATABLE_CKEDITOR]);
+        return in_array($this->{$field}, $this->translatableTextTypes());
+    }
+
+    private function translatableTextTypes()
+    {
+        return [
+            self::TEXT_TRANSLATABLE_INPUT_STRING,
+            self::TEXT_TRANSLATABLE_INPUT_STRING_REQUIRED,
+            self::TEXT_TRANSLATABLE_INPUT_INT,
+            self::TEXT_TRANSLATABLE_INPUT_INT_REQUIRED,
+            self::TEXT_TRANSLATABLE_INPUT_URL,
+            self::TEXT_TRANSLATABLE_INPUT_URL_REQUIRED,
+            self::TEXT_TRANSLATABLE_TEXTAREA,
+            self::TEXT_TRANSLATABLE_CKEDITOR
+        ];
+    }
+
+    private function commonTextTypes()
+    {
+        return [
+            self::TEXT_COMMON_INPUT_STRING,
+            self::TEXT_COMMON_INPUT_STRING_REQUIRED,
+            self::TEXT_COMMON_INPUT_INT,
+            self::TEXT_COMMON_INPUT_INT_REQUIRED,
+            self::TEXT_COMMON_INPUT_URL,
+            self::TEXT_COMMON_INPUT_URL_REQUIRED,
+            self::TEXT_COMMON_TEXTAREA,
+            self::TEXT_COMMON_CKEDITOR
+        ];
+    }
+
+    public function isCommonText($field)
+    {
+        return in_array($this->{$field}, $this->commonTextTypes());
+    }
+
+    public function hasCommonFiles()
+    {
+        return in_array(self::FILE_COMMON, [$this->file_1, $this->file_2, $this->file_3]);
+    }
+
+    public function hasCommonDate()
+    {
+        return in_array($this->use_date, [self::USE_DATE_DATE, self::USE_DATE_DATETIME]);
+    }
+
+    public function hasCommonTexts()
+    {
+        return $this->isCommonText('text_1') ||
+            $this->isCommonText('text_2') ||
+            $this->isCommonText('text_3') ||
+            $this->isCommonText('text_4') ||
+            $this->isCommonText('text_5') ||
+            $this->isCommonText('text_6') ||
+            $this->isCommonText('text_7');
     }
 
     public function isHaveHtmltags($field)

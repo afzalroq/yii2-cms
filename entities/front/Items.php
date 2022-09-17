@@ -143,7 +143,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
     {
         \Yii::$app->view->registerMetaTag([
             'name' => 'description',
-            'content' => $this->getMetaDescription() ?: $this->text2
+            'content' => strip_tags($this->getMetaDescription() ?: $this->text2)
         ]);
 
         \Yii::$app->view->registerMetaTag([
@@ -158,7 +158,7 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
 
         \Yii::$app->view->registerMetaTag([
             'property' => 'og:description',
-            'content' => $this->getMetaDescription() ?: $this->text2
+            'content' => strip_tags($this->getMetaDescription() ?: $this->text2)
         ]);
 
         \Yii::$app->view->registerMetaTag([

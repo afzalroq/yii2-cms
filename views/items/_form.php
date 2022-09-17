@@ -63,28 +63,28 @@ $hasTranslatableAttrs = 0;
                         <?= $form->field($model, 'slug')->textInput() ?>
                     </div>
                 <?php endif; ?>
-                <?=  $cmsForm->oaIFields(CaE::Location_Top); ?>
+                <?= $cmsForm->oaIFields(CaE::Location_Top); ?>
             </div>
         </div>
     </div>
 
     <!--#region Common -->
-    <div class="box">
-        <div class="box-body">
-            <div class="row">
-                <?= $cmsForm->dateFieldCommon('date') ?>
-                <?= $cmsForm->textFieldsCommon() ?>
-                <?= $cmsForm->fileFieldsCommon() ?>
+    <?php if ($entity->hasCommonTexts() || $entity->hasCommonDate()): ?>
+        <div class="box">
+            <div class="box-body">
+                <div class="row">
+                    <?= $cmsForm->dateFieldCommon('date') ?>
+                    <?= $cmsForm->textFieldsCommon() ?>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
     <!--#endregion -->
 
 
     <!--#region Translatable -->
     <div class="row" id="translatable">
         <div class="col-md-12">
-            <hr>
             <div class="box">
                 <div class="box-body">
                     <ul class="nav nav-tabs" role="tablist">
@@ -121,11 +121,10 @@ $hasTranslatableAttrs = 0;
     <div class="box">
         <div class="box-body">
             <div class="row">
-                <?=  $cmsForm->oaIFields(CaE::Location_Bottom); ?>
+                <?= $cmsForm->oaIFields(CaE::Location_Bottom); ?>
             </div>
         </div>
     </div>
-
 
 
     <?php if ($entity->use_gallery): ?>
@@ -141,7 +140,13 @@ $hasTranslatableAttrs = 0;
         </div>
     <?php endif; ?>
 
-
+    <?php if ($entity->hasCommonFiles()): ?>
+        <div class="box">
+            <div class="box-body">
+                <?= $cmsForm->fileFieldsCommon() ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <!--#region Translatable Seo -->
     <?php if ($entity->use_seo > 0): ?>

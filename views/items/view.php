@@ -368,21 +368,6 @@ if ($entity->use_gallery)
             </div>
         </div>
     <?php endif; ?>
-    <?php if ($entity->use_gallery): ?>
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                [
-                    'attribute' => 'main_photo_id',
-                    'format' => 'raw',
-                    'value' => function (\afzalroq\cms\entities\Items $model) {
-                        return Html::img($model->getGalleryPhoto(480, 360, 'scaleResize', 'transparent', 'center', 'center'), ['style' => 'width: 300px;']);
-                    },
-                    'label' => Yii::t('cms', 'Gallery main Photo')
-                ]
-            ]
-        ]) ?>
-    <?php endif; ?>
 
     <?php if ($entity->isCommentsOn() || $entity->isVotesOn()): ?>
         <div class="box">

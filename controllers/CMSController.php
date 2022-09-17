@@ -13,6 +13,6 @@ class CMSController extends Controller
         if ($result = parent::afterAction($action, $result)) {
             return $result;
         }
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(\Yii::t('cms', 'The requested page does not exist.'));
     }
 }
