@@ -456,10 +456,10 @@ class CmsForm
     {
         $options['class'] = 'col-sm-' . $cae->size;
 
-        return Html::tag(
-            'div',
+        return Html::tag('div',
             $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->checkboxList($cae->getOptionList(), [
-                    'value' => $this->model->getOptionValue($cae)
+                    'value' => $this->model->getOptionValue($cae),
+                    'class' => 'cms-form-checkbox_list'
                 ]
             )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
             $options

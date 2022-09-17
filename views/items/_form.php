@@ -43,6 +43,10 @@ $hasTranslatableAttrs = 0;
             background: #fff;
             border: 1px solid #ccc;
         }
+
+        .cms-form-checkbox_list label{
+            padding-right: 10px;
+        }
     </style>
     <div class="sticky">
         <?php if (!$entity->disable_create_and_delete) {
