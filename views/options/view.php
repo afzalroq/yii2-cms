@@ -42,8 +42,7 @@ foreach ($collectionTextAttrs as $key => $attr) {
 <div class="menu-view">
     <p>
         <?php
-        echo Html::a(Yii::t('yii', 'Home'), ['index', 'slug' => $collection->slug], ['class' => 'btn btn-warning']) . "&nbsp;" .
-            Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-primary']);
+        echo Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-primary']);
         if ($collection->use_parenting) {
             echo Html::a(Yii::t('cms', 'Add child'), ['add-child', 'root_id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-success']);
         }
@@ -59,7 +58,6 @@ foreach ($collectionTextAttrs as $key => $attr) {
     <div class="row">
         <div class="col-sm-6">
             <?php
-
             $attributes = [];
             if ($model->getCorT('name') !== null && !$model->getCorT('name'))
                 $attributes[] = 'name_0';

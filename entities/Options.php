@@ -148,21 +148,15 @@ class Options extends ActiveRecord
             'tree' => [
                 'class' => NestedSetsBehavior::class,
                 'treeAttribute' => $this->treeAttribute,
-                // 'leftAttribute' => 'lft',
-                // 'rightAttribute' => 'rgt',
-                // 'depthAttribute' => 'depth',
             ],
             'slug' => [
                 'class' => 'Zelenin\yii\behaviors\Slug',
                 'slugAttribute' => 'slug',
                 'attribute' => 'name_0',
-                // o3ptional params
                 'ensureUnique' => true,
                 'replacement' => '-',
                 'lowercase' => true,
-                // false = changes after every change for $attribute
                 'immutable' => false,
-                // If intl extension is enabled, see http://userguide.icu-project.org/transforms/general.
                 'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
             ]
         ];

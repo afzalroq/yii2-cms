@@ -2,7 +2,6 @@
 
 use afzalroq\cms\entities\Collections;
 use richardfan\sortable\SortableGridView;
-use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -15,6 +14,8 @@ $this->title = $collection->{"name_" . Yii::$app->params['l'][Yii::$app->languag
 $this->params['breadcrumbs'][] = $this->title;
 
 $curLang = Yii::$app->params['l-name'][Yii::$app->language];
+$firstKey = array_key_first(Yii::$app->params['cms']['languages']);
+
 ?>
 <div class="collections-index">
 
@@ -29,20 +30,23 @@ $curLang = Yii::$app->params['l-name'][Yii::$app->language];
             'sortUrl' => Url::to(['sortItem']),
             'columns' => [
                 [
-                    'content' => function(){
+                    'content' => function () {
                         return "<span class='glyphicon glyphicon-resize-vertical'></span>";
                     },
-                    'contentOptions' => ['style'=>'cursor:move;', 'class' => 'moveItem'],
+                    'contentOptions' => ['style' => 'cursor:move;', 'class' => 'moveItem'],
                 ],
                 ['class' => 'yii\grid\SerialColumn'],
                 [
-                    'attribute' => 'slug',
-                    'value' => function ($model) use ($collection) {
-                        return Html::a($model->slug . ' <i class="fa fa-chevron-circle-right"></i>', ['options/view', 'id' => $model->id, 'slug' => $collection->slug], ['class' => 'btn btn-default']);
+                    'attribute' => 'name_' . $firstKey,
+                    'value' => function ($model) use ($firstKey, $collection) {
+                        return Html::a('<i class="fa fa-edit"></i> ' . $model->{'name_' . $firstKey}, [
+                            '/cms/options/update', 'id' => $model->id, 'slug' => $collection->slug
+                        ]);
                     },
+//                    'label' => $entity->text_1_label . ' (' . $curLang . ')',
                     'format' => 'html'
                 ],
-                'name_0',
+                'slug',
                 'created_at:datetime',
             ],
         ]); ?>
