@@ -1,16 +1,16 @@
 <?php
 
+use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Entities;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use afzalroq\cms\components\FileType;
 
 /* @var $this yii\web\View */
 /* @var $model afzalroq\cms\entities\Items */
 /* @var $entity Entities */
 /* @var $commentsDataProvider \afzalroq\cms\entities\ItemComments */
 
-$this->title = \yii\helpers\StringHelper::truncate($model->text_1_0, 40, '...');
+$this->title = \yii\helpers\StringHelper::truncate($model->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]}, 40, '...');
 $this->params['breadcrumbs'][] = ['label' => $entity->{"name_" . Yii::$app->params['l'][Yii::$app->language]}, 'url' => ['index', 'slug' => $entity->slug]];
 $this->params['breadcrumbs'][] = $this->title;
 
