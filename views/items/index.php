@@ -64,12 +64,13 @@ $columns = array_merge(
         [
             'attribute' => 'text_1_' . $firstKey,
             'value' => function ($model) use ($firstKey, $entity, $frontHost) {
-                return Html::a($model->{'text_1_' . $firstKey}, ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug])
+                return
+                    Html::a($model->{'text_1_' . $firstKey}, ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug])
                     . " "
                     . Html::a('<i class="fa fa-external-link"></i>', trim($frontHost, '/') . $model->link, ['target' => '_blank']);
             },
             'label' => $entity->text_1_label . ' (' . $curLang . ')',
-            'format' => 'html'
+            'format' => 'raw'
         ],
         [
             'attribute' => 'text_2_' . $firstKey,
