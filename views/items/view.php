@@ -62,7 +62,13 @@ foreach ($entity_file_attrs as $key => $attr) {
 
 
 $main_attributes = [
-    'slug',
+    [
+        'attribute' => 'slug',
+        'value' => function ($model) {
+            return Html::tag("code", $model->slug);
+        },
+        'format' => 'raw'
+    ],
     [
         'attribute' => 'created_by',
         'value' => function ($model) {

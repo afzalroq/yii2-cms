@@ -159,14 +159,11 @@ class Items extends ActiveRecord implements Linkable
             'slug' => [
                 'class' => 'Zelenin\yii\behaviors\Slug',
                 'slugAttribute' => 'slug',
-                'attribute' => 'text_1_0',
-                // optional params
+                'attribute' => 'text_1_' . Yii::$app->getModule('cms')->firstKey,
                 'ensureUnique' => true,
                 'replacement' => '-',
                 'lowercase' => true,
-                // false = changes after every change for $attribute
                 'immutable' => false,
-                // If intl extension is enabled, see http://userguide.icu-project.org/transforms/general.
                 'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
             ],
             $this->getImageUploadBehaviorConfig('file_1_0'),
