@@ -123,10 +123,14 @@ $hasTranslatableAttrs = 0;
                             $hasTranslatableAttrs = 1;
                             echo $form->field($model, 'content_' . $key)->textarea()->label(Yii::t('cms', 'Description'));
                         }
+                        ?>
 
+                        <?php
                         if ($collection->option_content == Collections::OPTION_CONTENT_TRANSLATABLE_CKEDITOR) {
                             $hasTranslatableAttrs = 1;
-                            echo $cmsForm->ckeditor('content_' . $key, Yii::t('cms', 'Description'));
+                            echo "<div class='row'>" .
+                                $cmsForm->ckeditor('content_' . $key, Yii::t('cms', 'Description'))
+                                . "</div>";
                         }
                         ?>
 
