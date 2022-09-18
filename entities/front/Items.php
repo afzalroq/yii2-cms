@@ -11,7 +11,7 @@ use Yii;
 use yii\caching\TagDependency;
 use yii\helpers\StringHelper;
 
-class Items extends \afzalroq\cms\entities\Items implements Linkable
+class Items extends \afzalroq\cms\entities\Items
 {
 
     public static function getAll($slug)
@@ -84,11 +84,6 @@ class Items extends \afzalroq\cms\entities\Items implements Linkable
             ['like', 'text_6_' . $langId, $search],
             ['like', 'text_7_' . $langId, $search],
         ]);
-    }
-
-    public function getLink(): string
-    {
-        return '/e/' . $this->entity->slug . '/' . $this->id . '-' . $this->slug;
     }
 
     public function getText1()

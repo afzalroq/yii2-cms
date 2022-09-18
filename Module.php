@@ -26,6 +26,7 @@ use afzalroq\cms\components\Language;
 class Module extends \yii\base\Module
 {
     public $userClass = '\common\models\User';
+    public $frontHost;
     public $path;
     public $host;
     public $cache = 'cache';

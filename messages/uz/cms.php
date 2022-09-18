@@ -49,6 +49,7 @@ return [
     'Save and Add new' => 'Saqlash va Yangi qo`shish',
     'Save and Close' => 'Saqlash va Yopish',
     'Close' => 'Yopish',
+    'View on site' => 'Saytda ko`rish',
 
     // ???
     'Search on site' => 'Saytdan qidirish',

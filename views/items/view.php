@@ -1,9 +1,9 @@
 <?php
 
-use afzalroq\cms\components\FileType;
 use afzalroq\cms\entities\Entities;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use afzalroq\cms\components\FileType;
 
 /* @var $this yii\web\View */
 /* @var $model afzalroq\cms\entities\Items */
@@ -111,6 +111,10 @@ if ($entity->use_gallery)
 <div class="items-view">
     <p>
         <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a("<i class='fa fa-external-link'></i> " . Yii::t('cms', 'View on site'),
+            trim(Yii::$app->getModule('cms')->frontHost, '/') . $model->link,
+            ['target' => '_blank', 'class' => 'btn btn-success']
+        ) ?>
         <?php if (!$entity->disable_create_and_delete) : ?>
             <?= Html::a(Yii::t('cms', 'Delete'), ['delete', 'id' => $model->id, 'slug' => $entity->slug], [
                 'class' => 'btn btn-danger pull-right',
@@ -121,24 +125,18 @@ if ($entity->use_gallery)
             ]) ?>
         <?php endif; ?>
     </p>
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => $main_attributes
-    ]) ?>
+    <?= DetailView::widget(['model' => $model,
+        'attributes' => $main_attributes]) ?>
 
     <div class="row">
         <div class="col-sm-12">
             <?php foreach ($entity_text_attrs_0 as $attr => $value)
                 if ($entity[$attr])
-                    $text_attributes[] = [
-                        'attribute' => $attr . '_' . 0,
+                    $text_attributes[] = ['attribute' => $attr . '_' . 0,
                         'label' => $entity[$attr . '_label'],
-                        'format' => 'html'
-                    ]; ?>
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => $text_attributes
-            ]) ?>
+                        'format' => 'html']; ?>
+            <?= DetailView::widget(['model' => $model,
+                'attributes' => $text_attributes]) ?>
             <?php $text_attributes = [] ?>
         </div>
     </div>
@@ -148,8 +146,7 @@ if ($entity->use_gallery)
             <?php
             foreach ($file_lang_0 as $attr => $value)
                 if ($entity[$attr]) {
-                    $file_attributes[] = [
-                        'attribute' => $attr . '_' . 0,
+                    $file_attributes[] = ['attribute' => $attr . '_' . 0,
                         'format' => 'raw',
                         'value' => function ($model) use ($attr, $entity) {
                             switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
@@ -180,15 +177,12 @@ if ($entity->use_gallery)
                                 }
                             }
                         },
-                        'label' => $model->entity[$attr . '_label']
-                    ];
+                        'label' => $model->entity[$attr . '_label']];
                     if ($model->isAttrCommon($attr)) break;
                 }
             ?>
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => $file_attributes
-            ]) ?>
+            <?= DetailView::widget(['model' => $model,
+                'attributes' => $file_attributes]) ?>
             <?php $file_attributes = [] ?>
         </div>
     </div>
@@ -196,15 +190,11 @@ if ($entity->use_gallery)
     <?php if ($entity->use_seo && $entity->use_seo == Entities::SEO_COMMON): ?>
         <?php
         foreach ($seo_attrs as $i => $value)
-            $seo_values [] = [
-                'attribute' => $value . '_' . 0,
-                'value' => $model->seo_values[$value . '_' . 0],
-            ];
+            $seo_values [] = ['attribute' => $value . '_' . 0,
+                'value' => $model->seo_values[$value . '_' . 0],];
 
-        echo DetailView::widget([
-            'model' => $model,
-            'attributes' => $seo_values
-        ]);
+        echo DetailView::widget(['model' => $model,
+            'attributes' => $seo_values]);
 
         $seo_values = [];
         ?>
@@ -238,42 +228,33 @@ if ($entity->use_gallery)
                                     if ($model->entity->use_date === Entities::USE_TRANSLATABLE_DATE_DATE) {
                                         $data_translatable[] = 'date_' . $key . ':date';
 
-                                        echo DetailView::widget([
-                                            'model' => $model,
-                                            'attributes' => $data_translatable
-                                        ]);
+                                        echo DetailView::widget(['model' => $model,
+                                            'attributes' => $data_translatable]);
 
                                         $data_translatable = [];
                                     }
                                     if ($model->entity->use_date === Entities::USE_TRANSLATABLE_DATE_DATETIME) {
                                         $data_translatable[] = 'date_' . $key . ':datetime';
 
-                                        echo DetailView::widget([
-                                            'model' => $model,
-                                            'attributes' => $data_translatable
-                                        ]);
+                                        echo DetailView::widget(['model' => $model,
+                                            'attributes' => $data_translatable]);
 
                                         $data_translatable = [];
                                     }
                                     ?>
                                     <?php foreach ($entity_text_attrs_translatable as $attr => $value)
                                         if ($entity[$attr])
-                                            $text_attributes[] = [
-                                                'attribute' => $attr . '_' . $key,
+                                            $text_attributes[] = ['attribute' => $attr . '_' . $key,
                                                 'label' => $entity[$attr . '_label'] . ' (' . $language . ')',
-                                                'format' => 'html'
-                                            ]; ?>
-                                    <?= DetailView::widget([
-                                        'model' => $model,
-                                        'attributes' => $text_attributes
-                                    ]) ?>
+                                                'format' => 'html']; ?>
+                                    <?= DetailView::widget(['model' => $model,
+                                        'attributes' => $text_attributes]) ?>
                                     <?php $text_attributes = [] ?>
 
                                     <?php
                                     foreach ($file_translatable as $attr => $value)
                                         if ($entity[$attr]) {
-                                            $file_attributes[] = [
-                                                'attribute' => $attr . '_' . $key,
+                                            $file_attributes[] = ['attribute' => $attr . '_' . $key,
                                                 'format' => 'raw',
                                                 'value' => function ($model) use ($attr, $key, $entity) {
                                                     switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
@@ -299,29 +280,22 @@ if ($entity->use_gallery)
                                                             return null;
                                                     }
                                                 },
-                                                'label' => $model->entity[$attr . '_label']
-                                            ];
+                                                'label' => $model->entity[$attr . '_label']];
                                             if ($model->isAttrCommon($attr)) break;
                                         }
                                     ?>
-                                    <?= DetailView::widget([
-                                        'model' => $model,
-                                        'attributes' => $file_attributes
-                                    ]) ?>
+                                    <?= DetailView::widget(['model' => $model,
+                                        'attributes' => $file_attributes]) ?>
                                     <?php $file_attributes = [] ?>
 
                                     <?php
                                     if ($entity->use_seo == Entities::SEO_TRANSLATABLE) {
                                         foreach ($seo_attrs as $i => $value)
-                                            $seo_values [] = [
-                                                'attribute' => $value . '_' . $key,
-                                                'value' => $model->seo_values[$value . '_' . $key],
-                                            ];
+                                            $seo_values [] = ['attribute' => $value . '_' . $key,
+                                                'value' => $model->seo_values[$value . '_' . $key],];
 
-                                        echo DetailView::widget([
-                                            'model' => $model,
-                                            'attributes' => $seo_values
-                                        ]);
+                                        echo DetailView::widget(['model' => $model,
+                                            'attributes' => $seo_values]);
 
                                         $seo_values = [];
                                     }
@@ -341,19 +315,13 @@ if ($entity->use_gallery)
                     <?php foreach ($model->photos as $photo): ?>
                         <div class="col-md-2 col-xs-3" style="text-align: center">
                             <div class="btn-group">
-                                <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>', ['move-photo-up', 'id' => $model->id, 'photo_id' => $photo->id, 'slug' => $entity->slug], [
-                                    'class' => 'btn btn-default',
+                                <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>', ['move-photo-up', 'id' => $model->id, 'photo_id' => $photo->id, 'slug' => $entity->slug], ['class' => 'btn btn-default',
+                                    'data-method' => 'post',]) ?>
+                                <?= Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete-photo', 'id' => $model->id, 'photo_id' => $photo->id, 'slug' => $entity->slug], ['class' => 'btn btn-default',
                                     'data-method' => 'post',
-                                ]) ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete-photo', 'id' => $model->id, 'photo_id' => $photo->id, 'slug' => $entity->slug], [
-                                    'class' => 'btn btn-default',
-                                    'data-method' => 'post',
-                                    'data-confirm' => 'Remove photo?',
-                                ]) ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-arrow-right"></span>', ['move-photo-down', 'id' => $model->id, 'photo_id' => $photo->id, 'slug' => $entity->slug], [
-                                    'class' => 'btn btn-default',
-                                    'data-method' => 'post',
-                                ]) ?>
+                                    'data-confirm' => 'Remove photo?',]) ?>
+                                <?= Html::a('<span class="glyphicon glyphicon-arrow-right"></span>', ['move-photo-down', 'id' => $model->id, 'photo_id' => $photo->id, 'slug' => $entity->slug], ['class' => 'btn btn-default',
+                                    'data-method' => 'post',]) ?>
                             </div>
                             <div>
                                 <?= Html::a(
@@ -372,23 +340,15 @@ if ($entity->use_gallery)
     <?php if ($entity->isCommentsOn() || $entity->isVotesOn()): ?>
         <div class="box">
             <div class="box-header">
-                <?= Html::a(Yii::t('cms', 'Refresh'), ['items/refresh-comment-stats', 'id' => $model->id, 'slug' => $entity->slug], [
-                    'class' => 'btn btn-info pull-right',
-                    'data' => [
-                        'confirm' => Yii::t('cms', 'Are you sure you want to refresh the stats?'),
-                        'method' => 'post',
-                    ],
-                ]) ?>
+                <?= Html::a(Yii::t('cms', 'Refresh'), ['items/refresh-comment-stats', 'id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-info pull-right',
+                    'data' => ['confirm' => Yii::t('cms', 'Are you sure you want to refresh the stats?'),
+                        'method' => 'post',],]) ?>
             </div>
             <div class="box-body">
-                <?= DetailView::widget([
-                    'model' => $model,
-                    'attributes' => [
-                        'comments_count',
+                <?= DetailView::widget(['model' => $model,
+                    'attributes' => ['comments_count',
                         'votes_count',
-                        'avarage_voting',
-                    ]
-                ]) ?>
+                        'avarage_voting',]]) ?>
             </div>
         </div>
 
@@ -399,56 +359,36 @@ if ($entity->use_gallery)
                 <?= Html::a(Yii::t('cms', 'Add Comment'), ['item-comments/add', 'item_id' => $model->id, 'slug' => $entity->slug], ['class' => 'btn btn-info pull-right']) ?>
             </div>
             <div class="box-body">
-                <?= \yii\grid\GridView::widget([
-                    'dataProvider' => $commentsDataProvider,
-                    'columns' => [
-                        [
-                            'attribute' => 'user_id',
-                            'label' => Yii::t('cms', 'Comment Username'),
-                            'value' => function ($model) use ($entity) {
-                                return $model->username;
-                            },
-                        ],
-                        [
-                            'attribute' => 'text',
-                            'visible' => $entity->use_comments != Entities::COMMENT_OFF
-                        ],
-                        [
-                            'attribute' => 'vote',
-                            'visible' => $entity->use_votes != Entities::COMMENT_OFF
-                        ],
+                <?= \yii\grid\GridView::widget(['dataProvider' => $commentsDataProvider,
+                    'columns' => [['attribute' => 'user_id',
+                        'label' => Yii::t('cms', 'Comment Username'),
+                        'value' => function ($model) use ($entity) {
+                            return $model->username;
+                        },],
+                        ['attribute' => 'text',
+                            'visible' => $entity->use_comments != Entities::COMMENT_OFF],
+                        ['attribute' => 'vote',
+                            'visible' => $entity->use_votes != Entities::COMMENT_OFF],
 
-                        [
-                            'attribute' => 'status',
+                        ['attribute' => 'status',
                             'value' => function ($model) {
                                 return \afzalroq\cms\entities\ItemComments::getStatusList()[$model->status];
-                            }
-                        ],
+                            }],
                         'created_at:datetime',
                         'updated_at:datetime',
 
-                        [
-                            'class' => 'yii\grid\ActionColumn',
+                        ['class' => 'yii\grid\ActionColumn',
                             'template' => '{view}  {reply} {delete}',
-                            'buttons' => [
-                                'reply' => function ($url, $model) use ($entity) {
-                                    return Html::a('<i class="fa fa-reply"></i>', ['/cms/item-comments/reply', 'id' => $model->id, 'slug' => $entity->slug], []);
-                                },
+                            'buttons' => ['reply' => function ($url, $model) use ($entity) {
+                                return Html::a('<i class="fa fa-reply"></i>', ['/cms/item-comments/reply', 'id' => $model->id, 'slug' => $entity->slug], []);
+                            },
                                 'view' => function ($url, $model) use ($entity) {
                                     return Html::a('<i class="fa fa-eye"></i>', ['/cms/item-comments/view', 'id' => $model->id, 'slug' => $entity->slug]);
                                 },
                                 'delete' => function ($url, $model) use ($entity) {
-                                    return Html::a('<i class="fa fa-trash"></i>', ['/cms/item-comments/delete', 'id' => $model->id, 'slug' => $entity->slug], [
-                                        'data' => [
-                                            'confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
-                                            'method' => 'post',
-                                        ],
-                                    ]);
-                                }
-                            ]
-                        ]
-                    ]
-                ])
+                                    return Html::a('<i class="fa fa-trash"></i>', ['/cms/item-comments/delete', 'id' => $model->id, 'slug' => $entity->slug], ['data' => ['confirm' => Yii::t('cms', 'Are you sure you want to delete this item?'),
+                                        'method' => 'post',],]);
+                                }]]]])
                 ?>
             </div>
         </div>

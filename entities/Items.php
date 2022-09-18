@@ -6,6 +6,7 @@ use afzalroq\cms\components\FileType;
 use afzalroq\cms\components\Image;
 use afzalroq\cms\entities\front\Options;
 use afzalroq\cms\helpers\TextConverter;
+use afzalroq\cms\interfaces\Linkable;
 use afzalroq\cms\Module;
 use DomainException;
 use Yii;
@@ -89,7 +90,7 @@ use yiidreamteam\upload\ImageUploadBehavior;
  * @property ItemPhotos[] $photos
  * @property Entities $entity
  */
-class Items extends ActiveRecord
+class Items extends ActiveRecord implements Linkable
 {
     const STATUS_DRAFT = 0;
     const STATUS_ACTIVE = 1;
@@ -205,6 +206,11 @@ class Items extends ActiveRecord
             return true;
         }
         return false;
+    }
+
+    public function getLink(): string
+    {
+        return '/e/' . $this->entity->slug . '/' . $this->id . '-' . $this->slug;
     }
 
     public function beforeSave($insert)

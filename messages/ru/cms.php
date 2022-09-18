@@ -44,6 +44,7 @@ return [
     'Save and Add new' => 'Сохранить и Добавить новую',
     'Save and Close' => 'Сохранить и Закрыть',
     'Close' => 'Закрыть',
+    'View on site' => 'Смотреть на сайте',
 
     // Messages
     'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить этот элемент?Вы уверены, что хотите удалить этот элемент?',

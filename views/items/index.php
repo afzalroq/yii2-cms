@@ -48,7 +48,7 @@ foreach ($caes as $k => $cae) {
 }
 
 $firstKey = array_key_first(Yii::$app->params['cms']['languages']);
-
+$frontHost = Yii::$app->getModule('cms')->frontHost;
 $columns = array_merge(
     [
         ['class' => 'yii\grid\SerialColumn'],
@@ -63,8 +63,10 @@ $columns = array_merge(
         ],
         [
             'attribute' => 'text_1_' . $firstKey,
-            'value' => function ($model) use ($firstKey, $entity) {
-                return Html::a($model->{'text_1_' . $firstKey}, ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug]);
+            'value' => function ($model) use ($firstKey, $entity, $frontHost) {
+                return Html::a($model->{'text_1_' . $firstKey}, ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug])
+                    . " "
+                    . Html::a('<i class="fa fa-external-link"></i>', trim($frontHost, '/') . $model->link, ['target' => '_blank']);
             },
             'label' => $entity->text_1_label . ' (' . $curLang . ')',
             'format' => 'html'

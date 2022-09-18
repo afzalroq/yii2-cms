@@ -3,8 +3,8 @@
 namespace afzalroq\cms\controllers;
 
 use afzalroq\cms\entities\Entities;
-use afzalroq\cms\entities\ItemComments;
 use afzalroq\cms\entities\front\Items;
+use afzalroq\cms\entities\ItemComments;
 use afzalroq\cms\forms\ItemsSearch;
 use Yii;
 use yii\filters\VerbFilter;
@@ -35,7 +35,7 @@ class ItemsController extends Controller
      */
     public function actionIndex($slug)
     {
-        $entity=Entities::findOne(['slug' => $slug]);
+        $entity = Entities::findOne(['slug' => $slug]);
         $searchModel = new ItemsSearch($entity);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $slug);
 
