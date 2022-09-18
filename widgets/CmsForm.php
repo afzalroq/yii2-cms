@@ -474,7 +474,7 @@ class CmsForm
             'div',
             $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->dropDownList($cae->getOptionList(), [
                     'value' => $this->model->getOptionValue($cae),
-                    'prompt' => ''
+                    'prompt' => '-- -- --'
                 ]
             )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
             $options
