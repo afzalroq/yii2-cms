@@ -15,10 +15,10 @@ class Image
         $module = Yii::$app->getModule('cms');
         $file = $module->path . '/data/' . mb_strtolower(StringHelper::basename($itemPhotos ? $itemPhotos::className() : $obj::className())) . '/' . $obj->id . '/' . $file;
 
-        $path = GregImage::open($file)->setCacheDir($module->path . '/cache')->setFallback($module->fallback);
+        $path = GregImage::open($file)->setCacheDir($module->path . 'cache')->setFallback($module->fallback);
 
         if (!file_exists($file)) {
-            $path = GregImage::open($module->path . '/fallback.png')->setCacheDir($module->path . '/cache');
+            $path = GregImage::open($module->path . '/fallback.png')->setCacheDir($module->path . 'cache');
         }
 
         $operation = $operation ?: $module->imageOperation;
@@ -42,6 +42,7 @@ class Image
             );
         }
 
+//        return $module->host . str_replace($module->path, '', $path->guess());
         return $module->host . str_replace($module->path, '', $path->guess());
     }
 

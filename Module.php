@@ -54,6 +54,7 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
+        $this->fixPathParam();
         $this->registerAppParams();
         $this->validateLanguages();
     }
@@ -81,4 +82,8 @@ class Module extends \yii\base\Module
         }
     }
 
+    private function fixPathParam()
+    {
+        $this->path = rtrim($this->path, '/') . '/';
+    }
 }
