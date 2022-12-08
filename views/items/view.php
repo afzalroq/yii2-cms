@@ -146,22 +146,24 @@ if ($entity->use_gallery)
                     <?php
                     //                    dd($model);
                     $file_attributes = [];
-                    foreach ($model->o as $collectionSlug => $optionsArray) {
-                        $collectionModel = \afzalroq\cms\entities\Collections::findOne(['slug' => $collectionSlug]);
-                        $file_attributes[] = [
-                            'attribute' => 'id',
-                            'value' => function ($model) use ($optionsArray) {
-                                $tags = "";
-                                foreach ($optionsArray as $option) {
-                                    $tags .= ($option ? $option->name : "") . ", ";
-                                }
-                                return "<b>" . trim($tags, ', ') . "</b>";
-                            },
-                            'format' => 'raw',
-                            'label' => $collectionModel->name
-                        ];
-                    }
-
+                    if ($model->o) {
+                        foreach ($model->o as $collectionSlug => $optionsArray) {
+                            $collectionModel = \afzalroq\cms\entities\Collections::findOne(['slug' => $collectionSlug]);
+                            $file_attributes[] = [
+                                'attribute' => 'id',
+                                'value' => function ($model) use ($optionsArray) {
+                                    $tags = "";
+                                    foreach ($optionsArray as $option) {
+                                        $tags .= ($option ? $option->name : "") . ", ";
+                                    }
+                                    return "<b>" . trim($tags, ', ') . "</b>";
+                                },
+                                'format' => 'raw',
+                                'label' => $collectionModel->name
+                            ];
+                        }
+                    }    
+                    
                     foreach ($file_lang_0 as $attr => $value)
                         if ($entity[$attr]) {
                             $file_attributes[] = ['attribute' => $attr . '_' . 0,
