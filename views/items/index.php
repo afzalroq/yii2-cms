@@ -95,8 +95,8 @@ $columns = array_merge(
             'label' => $entity->file_1_label,
             'format' => 'html',
             'value' => function (\afzalroq\cms\entities\Items $model) use ($entity) {
-                $w = $w0 = $entity['file_1_dimensionW'];
-                $h = $h0 = $entity['file_1_dimensionH'];
+                $w = $w0 = $entity['file_1_dimensionW'] ?: 64;
+                $h = $h0 = $entity['file_1_dimensionH'] ?: 48;
                 if ($w0 > 64) {
                     $diff = $w0 / 64;
                     $w = 64;
