@@ -8,13 +8,12 @@ use afzalroq\cms\entities\Items;
 use afzalroq\cms\entities\Menu;
 use afzalroq\cms\entities\MenuType;
 use afzalroq\cms\entities\Options;
-use slatiusa\nestable\Nestable;
 use Yii;
 use yii\base\UnknownPropertyException;
 use yii\helpers\ArrayHelper;
 
 
-class MenuWidget extends Nestable
+class MenuWidget
 {
     private $_uniqueItems = [];
 
