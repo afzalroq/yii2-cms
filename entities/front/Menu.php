@@ -3,14 +3,13 @@
 namespace afzalroq\cms\entities\front;
 
 use afzalroq\cms\entities\Entities;
-use slatiusa\nestable\Nestable;
 use afzalroq\cms\widgets\menu\MenuWidget;
 use afzalroq\cms\widgets\menu\OptionWidget;
 use yii\base\BaseObject;
 use yii\caching\TagDependency;
 use Yii;
 
-class Menu extends Nestable
+class Menu
 {
     public static function getMenu($slug, $is_menu = true)
     {
