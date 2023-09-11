@@ -14,7 +14,6 @@ use kartik\file\FileInput;
 use mihaildev\elfinder\ElFinder;
 use sadovojav\ckeditor\CKEditor;
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\widgets\ActiveForm;
@@ -25,64 +24,76 @@ class CmsForm
      * @var ActiveForm
      */
     public $form;
+
     /**
      * @var Items
      */
     public $model;
+
     /**
      * @var Entities|CaE
      */
     public $obj;
 
     public $entityTextAttrs;
+
     public $entityFileAttrs;
+
     public $collectionTextAttrs;
 
 
     public function __construct($form, $model, $obj = null)
     {
-        $this->form = $form;
+        $this->form  = $form;
         $this->model = $model;
-        $this->obj = $obj;
-        if ($obj instanceof Entities)
+        $this->obj   = $obj;
+        if ($obj instanceof Entities) {
             [$this->entityTextAttrs, $this->entityFileAttrs] = $this->obj->textAndFileAttrs();
+        }
 
-        if ($obj instanceof Collections)
+        if ($obj instanceof Collections) {
             $this->collectionTextAttrs = $this->obj->textAttrs();
+        }
 
 
     }
 
-    private function locationEdit($item){
-        if ($item->locayion === null){
+    private function locationEdit($item)
+    {
+        if ($item->location === null) {
             $item->location = 0;
         }
+
         return $item;
     }
 
-    public function oaIFields($j= null)
+    public function oaIFields($j = null)
     {
         $caes = $this->obj->caes;
 //        $result = ArrayHelper::filter($caes, $caes['location'][$j]);
         usort($caes, function ($a, $b) {
-            if ($a->sort == $b->sort)
+            if ($a->sort == $b->sort) {
                 return 0;
+            }
+
             return ($a->sort < $b->sort) ? -1 : 1;
         });
 
-        $caes = array_map( function ($item) {
-            if ($item->location === null){
+        $caes = array_map(function ($item) {
+            if ($item->location === null) {
                 $item->location = 0;
             }
-            return $item;
-        },$caes);
 
-        $caes = array_filter($caes, function ($item) use($j){
+            return $item;
+        }, $caes);
+
+        $caes = array_filter($caes, function ($item) use ($j) {
             return $item->location == $j;
         });
         foreach ($caes as $cae) {
-            if (empty($cae->collection->options))
+            if (empty($cae->collection->options)) {
                 continue;
+            }
 
             switch ($cae->type) {
                 case CaE::TYPE_CHECKBOX:
@@ -98,12 +109,13 @@ class CmsForm
                     echo '';
             }
         }
+
         return '';
     }
 
     public function fileFieldsTranslatable($key, &$hasTranslatableAttrs)
     {
-        foreach ($this->entityFileAttrs as $entityAttr => $value)
+        foreach ($this->entityFileAttrs as $entityAttr => $value) {
             if ($this->obj->{$entityAttr} === Entities::FILE_TRANSLATABLE) {
                 $attr = $entityAttr . '_' . $key;
                 switch (FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
@@ -121,6 +133,8 @@ class CmsForm
                         echo '';
                 }
             }
+        }
+
         return '';
     }
 
@@ -167,6 +181,7 @@ class CmsForm
                     break;
             }
         }
+
         return '';
     }
 
@@ -213,15 +228,17 @@ class CmsForm
                     break;
             }
         }
+
         return '';
     }
 
 
     public function fileFieldsCommon()
     {
-        foreach ($this->entityFileAttrs as $entityAttr => $value)
+        $firstKey = Yii::$app->getModule('cms')->firstKey;
+        foreach ($this->entityFileAttrs as $entityAttr => $value) {
             if ($this->obj->{$entityAttr} === Entities::FILE_COMMON) {
-                $attr = $entityAttr . '_0';
+                $attr = $entityAttr . '_' . $firstKey;
                 switch (FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
                     case FileType::TYPE_FILE:
                     case FileType::TYPE_VIDEO:
@@ -235,13 +252,16 @@ class CmsForm
                         echo '';
                 }
             }
+        }
+
         return '';
     }
 
     public function textFieldsCommon()
     {
+        $firstKey = Yii::$app->getModule('cms')->firstKey;
         foreach ($this->entityTextAttrs as $entityAttr => $value) {
-            $attr = $entityAttr . '_0';
+            $attr = $entityAttr . '_' . $firstKey;
             switch ($this->obj[$entityAttr]) {
                 case Entities::TEXT_COMMON_INPUT_STRING:
                     echo $this->input($attr, $entityAttr, []);
@@ -272,13 +292,15 @@ class CmsForm
                     break;
             }
         }
+
         return '';
     }
 
     public function textFieldsCommonCollection()
     {
+        $firstKey = Yii::$app->getModule('cms')->firstKey;
         foreach ($this->collectionTextAttrs as $collectionAttr => $value) {
-            $attr = $collectionAttr . '_0';
+            $attr = $collectionAttr . '_' . $firstKey;
             switch ($this->obj[$collectionAttr]) {
                 case Entities::TEXT_COMMON_INPUT_STRING:
                     echo $this->input($attr, $collectionAttr, []);
@@ -309,16 +331,18 @@ class CmsForm
                     break;
             }
         }
+
         return '';
     }
 
     public function dateFieldCommon($attr)
     {
+        $firstKey = Yii::$app->getModule('cms')->firstKey;
         switch ($this->obj['use_' . $attr]) {
             case Entities::USE_DATE_DATE:
-                return $this->date($attr . '_0', true);
+                return $this->date($attr . '_' . $firstKey, true);
             case Entities::USE_DATE_DATETIME:
-                return $this->date($attr . '_0', true, ['type' => DateControl::FORMAT_DATETIME]);
+                return $this->date($attr . '_' . $firstKey, true, ['type' => DateControl::FORMAT_DATETIME]);
         }
     }
 
@@ -338,8 +362,8 @@ class CmsForm
     {
         $options['editorOptions'] = ElFinder::ckeditorOptions('elfinder', [
             'extraPlugins' => 'image2,widget,oembed,video',
-            'language' => Yii::$app->language,
-            'height' => 300,
+            'language'     => Yii::$app->language,
+            'height'       => 300,
         ]);
 
         return Html::tag(
@@ -383,28 +407,28 @@ class CmsForm
     public function image($attr, $entityAttr, $label, $options = [])
     {
         $options = array_merge([
-            'options' => [
-                'accept' => FileType::fileAccepts($this->obj[$entityAttr . '_mimeType'])
+            'options'       => [
+                'accept' => FileType::fileAccepts($this->obj[$entityAttr . '_mimeType']),
             ],
-            'language' => Yii::$app->language,
+            'language'      => Yii::$app->language,
             'pluginOptions' => [
-                'showCaption' => false,
-                'showRemove' => false,
-                'showUpload' => false,
-                'browseClass' => 'btn btn-primary btn-block',
-                'browseLabel' => 'Рисунок',
-                'layoutTemplates' => [
+                'showCaption'          => false,
+                'showRemove'           => false,
+                'showUpload'           => false,
+                'browseClass'          => 'btn btn-primary btn-block',
+                'browseLabel'          => 'Рисунок',
+                'layoutTemplates'      => [
                     'main1' => '<div class="kv-upload-progress hide"></div>{cancel}{upload}{browse}{preview}',
                 ],
                 'initialPreviewAsData' => true,
-                'initialPreview' => [
+                'initialPreview'       => [
                     $this->model->getImageUrl(
                         $attr,
                         $this->obj[$entityAttr . '_dimensionW'],
                         $this->obj[$entityAttr . '_dimensionH']
-                    )
+                    ),
                 ],
-                'maxFileSize' => $this->obj[$entityAttr . '_maxSize'] * 1024
+                'maxFileSize'          => $this->obj[$entityAttr . '_maxSize'] * 1024,
             ],
         ], $options);
 
@@ -420,28 +444,28 @@ class CmsForm
         $module = Yii::$app->getModule('cms');
 
         $options = array_merge([
-            'options' => [
-                'accept' => FileType::fileAccepts($this->obj[$entityAttr . '_mimeType'])
+            'options'       => [
+                'accept' => FileType::fileAccepts($this->obj[$entityAttr . '_mimeType']),
             ],
-            'language' => Yii::$app->language,
+            'language'      => Yii::$app->language,
             'pluginOptions' => [
-                'showCaption' => false,
-                'showRemove' => false,
-                'showUpload' => false,
-                'browseClass' => 'btn btn-primary btn-block',
-                'layoutTemplates' => [
+                'showCaption'            => false,
+                'showRemove'             => false,
+                'showUpload'             => false,
+                'browseClass'            => 'btn btn-primary btn-block',
+                'layoutTemplates'        => [
                     'main1' => '<div class="kv-upload-progress hide"></div>{cancel}{upload}{browse}{preview}',
                 ],
                 'initialPreviewFileType' => 'any',
-                'initialPreviewConfig' => [
+                'initialPreviewConfig'   => [
                     ['type' => 'pdf',],
-                    ['type' => 'video']
+                    ['type' => 'video'],
                 ],
-                'initialPreviewAsData' => true,
-                'initialPreview' => [
-                    $module->path . '/data/' . strtolower(StringHelper::basename($this->model::className())) . '/' . $this->model->id . '/' . $this->model[$attr]
+                'initialPreviewAsData'   => true,
+                'initialPreview'         => [
+                    $module->path . '/data/' . strtolower(StringHelper::basename($this->model::className())) . '/' . $this->model->id . '/' . $this->model[$attr],
                 ],
-                'maxFileSize' => $this->obj[$entityAttr . '_maxSize'] * 1024
+                'maxFileSize'            => $this->obj[$entityAttr . '_maxSize'] * 1024,
             ],
         ], $options);
 
@@ -457,9 +481,10 @@ class CmsForm
         $options['class'] = 'col-sm-' . $cae->size;
 
         return Html::tag('div',
-            $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->checkboxList($cae->getOptionList(), [
+            $this->form->field($this->model,
+                'options[' . $cae->collection->slug . ']')->checkboxList($cae->getOptionList(), [
                     'value' => $this->model->getOptionValue($cae),
-                    'class' => 'cms-form-checkbox_list'
+                    'class' => 'cms-form-checkbox_list',
                 ]
             )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
             $options
@@ -472,9 +497,10 @@ class CmsForm
 
         return Html::tag(
             'div',
-            $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->dropDownList($cae->getOptionList(), [
-                    'value' => $this->model->getOptionValue($cae),
-                    'prompt' => '-- -- --'
+            $this->form->field($this->model,
+                'options[' . $cae->collection->slug . ']')->dropDownList($cae->getOptionList(), [
+                    'value'  => $this->model->getOptionValue($cae),
+                    'prompt' => '-- -- --',
                 ]
             )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
             $options
@@ -487,7 +513,8 @@ class CmsForm
 
         return Html::tag(
             'div',
-            $this->form->field($this->model, 'options[' . $cae->collection->slug . ']')->radioList($cae->getOptionList(), [
+            $this->form->field($this->model,
+                'options[' . $cae->collection->slug . ']')->radioList($cae->getOptionList(), [
                     'value' => $this->model->getOptionValue($cae),
                 ]
             )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
