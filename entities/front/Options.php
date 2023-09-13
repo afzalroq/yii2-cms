@@ -115,8 +115,8 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
     private function getFile($collectionAttr)
     {
         $module = Yii::$app->getModule('cms');
-        $filePath = $module->path . '/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($collectionAttr)];
-        return $module->host . str_replace($module->path, '', $filePath);
+        $filePath = 'data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($collectionAttr)];
+        return $module->host . $filePath;
     }
 
     public function getFile2()
