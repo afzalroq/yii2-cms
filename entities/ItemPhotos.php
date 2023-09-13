@@ -93,5 +93,4 @@ class ItemPhotos extends \yii\db\ActiveRecord
     {
         return Image::get($this->item, 'file', $width, $height, $operation, $background, $xPos, $yPos, $this);
     }
-
 }
