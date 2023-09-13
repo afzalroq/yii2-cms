@@ -17,7 +17,9 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
     {
         if ($slug) {
             $this->dependCollection = Collections::findOne(['slug' => $slug]);
-            if ($this->dependCollection->manual_slug) $this->detachBehavior('slug');
+            if ($this->dependCollection->manual_slug) {
+                $this->detachBehavior('slug');
+            }
         } else {
             $this->dependCollection = $this->collection;
         }
@@ -28,82 +30,120 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
     private function setCurrentLanguage()
     {
         $this->languageId = \Yii::$app->params['l'][\Yii::$app->language];
-        if (!$this->languageId)
-            $this->languageId = 0;
+        if (!$this->languageId) {
+            $this->languageId = Yii::$app->getModule('cms')->firstKey;
+        }
     }
 
     public static function getAll($slug)
     {
-        $cache = Yii::$app->getModule('cms')->cache;
+        $cache         = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
+
         return Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
-            return self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere(['>', 'depth', 0])->orderBy('sort')->all();
+            return self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere([
+                '>',
+                'depth',
+                0,
+            ])->orderBy('sort')->all();
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
     public static function get($slug)
     {
-        $cache = Yii::$app->getModule('cms')->cache;
+        $cache         = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
+
         return Yii::$app->{$cache}->getOrSet('options_' . $slug, function () use ($slug) {
-            return self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere(['>', 'depth', 0])->one();
+            return self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere([
+                '>',
+                'depth',
+                0,
+            ])->one();
         }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
     public static function getWithOptions($slug, array $orderBy = null, $limit = null, $status = null)
     {
-        $cache = Yii::$app->getModule('cms')->cache;
+        $cache         = Yii::$app->getModule('cms')->cache;
         $cacheDuration = Yii::$app->getModule('cms')->cacheDuration;
-        return \Yii::$app->{$cache}->getOrSet('options_' . $slug . $orderBy ?? $orderBy . $limit ?? $limit . $status ?? $status, function () use ($slug, $orderBy, $limit, $status) {
-            $query = self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere(['>', 'depth', 0])->orderBy('sort');
-            if ($orderBy)
-                $query->orderBy($orderBy);
-            if ($status)
-                $query->where(['status' => $status]);
-            if ($limit)
-                $query->limit($limit);
-            return $query->all();
 
-        }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
+        return \Yii::$app->{$cache}->getOrSet('options_' . $slug . $orderBy ?? $orderBy . $limit ?? $limit . $status ?? $status,
+            function () use ($slug, $orderBy, $limit, $status) {
+                $query = self::find()->where(['collection_id' => Collections::findOne(['slug' => $slug])->id])->andWhere([
+                    '>',
+                    'depth',
+                    0,
+                ])->orderBy('sort');
+                if ($orderBy) {
+                    $query->orderBy($orderBy);
+                }
+                if ($status) {
+                    $query->where(['status' => $status]);
+                }
+                if ($limit) {
+                    $query->limit($limit);
+                }
+
+                return $query->all();
+
+            }, $cacheDuration, new TagDependency(['tags' => ['options_' . $slug]]));
     }
 
     public static function getOptionSearchResults(array $optionSlugs, $search)
     {
-        $langId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
-        $query = Options::find()->where(['slug' => $optionSlugs]);
-        $options = $query->andFilterWhere(['or',
+        $langId  = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
+        $query   = Options::find()->where(['slug' => $optionSlugs]);
+        $options = $query->andFilterWhere([
+            'or',
             ['like', 'name_' . $langId, $search],
             ['like', 'content_' . $langId, $search],
         ])->all();
+
         return $options;
     }
 
     /**
      * https://github.com/Gregwar/Image#usage
      */
-    public function getPhoto1($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
-    {
+    public function getPhoto1(
+        $width = null,
+        $height = null,
+        $operation = null,
+        $background = null,
+        $xPos = null,
+        $yPos = null
+    ) {
         return $this->getPhoto('file_1', $width, $height, $operation, $background, $xPos, $yPos);
     }
 
     private function getPhoto($collectionAttr, $width, $height, $operation, $background, $xPos, $yPos)
     {
-        return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $operation, $background, $xPos, $yPos);
+        return $this->getImageUrl($this->getAttr($collectionAttr), $width, $height, $operation, $background, $xPos,
+            $yPos);
     }
 
     private function getAttr($collectionAttr)
     {
-        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language]))
-            $languageId = 0;
+        $firstKey = Yii::$app->getModule('cms')->firstKey;
+        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language])) {
+            $languageId = $firstKey;
+        }
 
-        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_0' : "_" . $languageId);
+        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_' . $firstKey : "_" . $languageId);
     }
 
     /**
      * https://github.com/Gregwar/Image#usage
      */
-    public function getPhoto2($width = null, $height = null, $operation = null, $background = null, $xPos = null, $yPos = null)
-    {
+    public function getPhoto2(
+        $width = null,
+        $height = null,
+        $operation = null,
+        $background = null,
+        $xPos = null,
+        $yPos = null
+    ) {
         return $this->getPhoto('file_2', $width, $height, $operation, $background, $xPos, $yPos);
     }
 
@@ -114,8 +154,9 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     private function getFile($collectionAttr)
     {
-        $module = Yii::$app->getModule('cms');
+        $module   = Yii::$app->getModule('cms');
         $filePath = 'data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($collectionAttr)];
+
         return $module->host . $filePath;
     }
 
@@ -147,9 +188,12 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     private function getAttrOption($collectionAttr)
     {
-        if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language]))
-            $languageId = 0;
-        return $collectionAttr . ($this->isAttrCommonOptions($collectionAttr) ? '_0' : "_" . $languageId);
+        $firstKey = Yii::$app->getModule('cms')->firstKey;
+        if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language])) {
+            $languageId = $firstKey;
+        }
+
+        return $collectionAttr . ($this->isAttrCommonOptions($collectionAttr) ? '_' . $firstKey : "_" . $languageId);
     }
 
     public function getText2()
@@ -170,13 +214,13 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
     public function registerMetaTags()
     {
         \Yii::$app->view->registerMetaTag([
-            'name' => 'description',
-            'content' => $this->getMetaDescription()
+            'name'    => 'description',
+            'content' => $this->getMetaDescription(),
         ]);
 
         \Yii::$app->view->registerMetaTag([
-            'name' => 'keywords',
-            'content' => $this->getMetaKeyword()
+            'name'    => 'keywords',
+            'content' => $this->getMetaKeyword(),
         ]);
     }
 
@@ -187,10 +231,13 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     private function getSeo($seoAttr)
     {
-        if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language]))
-            $languageId = 0;
-        if (empty($this->seo_values))
+        if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language])) {
+            $languageId = Yii::$app->getModule('cms')->firstKey;
+        }
+        if (empty($this->seo_values)) {
             return null;
+        }
+
         return $this->seo_values[$seoAttr . '_' . $this->languageId];
     }
 
