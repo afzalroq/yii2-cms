@@ -7,7 +7,7 @@ use yii\helpers\Html;
 \afzalroq\cms\assets\GalleryAsset::register($this);
 
 /* @var $this yii\web\View */
-/* @var $searchModel afzalroq\cms\forms\ItemsSeab rch */
+/* @var $searchModel afzalroq\cms\forms\ItemsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $entity \afzalroq\cms\entities\Entities */
 
