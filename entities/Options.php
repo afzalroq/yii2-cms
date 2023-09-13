@@ -77,23 +77,41 @@ class Options extends ActiveRecord
     public $parentCollection;
 
     public $meta_title_0;
+
     public $meta_title_1;
+
     public $meta_title_2;
+
     public $meta_title_3;
+
     public $meta_title_4;
+
     public $meta_des_0;
+
     public $meta_des_1;
+
     public $meta_des_2;
+
     public $meta_des_3;
+
     public $meta_des_4;
+
     public $meta_keyword_0;
+
     public $meta_keyword_1;
+
     public $meta_keyword_2;
+
     public $meta_keyword_3;
+
     public $meta_keyword_4;
+
     public $languageId;
+
     public $treeAttribute = 'tree';
+
     public $dependCollection;
+
     private $cpId;
 
     #endregion
@@ -104,7 +122,9 @@ class Options extends ActiveRecord
     {
         if ($slug) {
             $this->dependCollection = Collections::findOne(['slug' => $slug]);
-            if ($this->dependCollection->manual_slug) $this->detachBehavior('slug');
+            if ($this->dependCollection->manual_slug) {
+                $this->detachBehavior('slug');
+            }
         } else {
 
             $this->dependCollection = $this->collection;
@@ -116,8 +136,9 @@ class Options extends ActiveRecord
     private function setCurrentLanguage()
     {
         $this->languageId = \Yii::$app->params['l'][\Yii::$app->language];
-        if (!$this->languageId)
-            $this->languageId = 0;
+        if (!$this->languageId) {
+            $this->languageId = Yii::$app->getModule('cms')->firstKey;
+        }
     }
 
     public static function tableName()
@@ -146,19 +167,19 @@ class Options extends ActiveRecord
             $this->getFileUploadBehaviorConfig('file_2_3'),
             $this->getFileUploadBehaviorConfig('file_2_4'),
             'tree' => [
-                'class' => NestedSetsBehavior::class,
+                'class'         => NestedSetsBehavior::class,
                 'treeAttribute' => $this->treeAttribute,
             ],
             'slug' => [
-                'class' => 'Zelenin\yii\behaviors\Slug',
-                'slugAttribute' => 'slug',
-                'attribute' => 'name_0',
-                'ensureUnique' => true,
-                'replacement' => '-',
-                'lowercase' => true,
-                'immutable' => false,
-                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
-            ]
+                'class'                => 'Zelenin\yii\behaviors\Slug',
+                'slugAttribute'        => 'slug',
+                'attribute'            => 'name_' . Yii::$app->getModule('cms')->firstKey,
+                'ensureUnique'         => true,
+                'replacement'          => '-',
+                'lowercase'            => true,
+                'immutable'            => false,
+                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;',
+            ],
         ];
     }
 
@@ -167,10 +188,10 @@ class Options extends ActiveRecord
         $module = Yii::$app->getModule('cms');
 
         return [
-            'class' => FileUploadBehavior::class,
+            'class'     => FileUploadBehavior::class,
             'attribute' => $attribute,
-            'filePath' => $module->path . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => $module->host . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
+            'filePath'  => $module->path . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
+            'fileUrl'   => $module->host . '/data/options/[[attribute_id]]/[[filename]].[[extension]]',
         ];
     }
 
@@ -184,7 +205,9 @@ class Options extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'options_' . $this->parentCollection->slug);
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache},
+            'options_' . $this->parentCollection->slug);
+
         return true;
     }
 
@@ -199,7 +222,7 @@ class Options extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if ($this->collection->use_seo)
+        if ($this->collection->use_seo) {
             $this->seo_values = [
                 'meta_title_0' => $this->meta_title_0 ?? null,
                 'meta_title_1' => $this->meta_title_1 ?? null,
@@ -217,8 +240,9 @@ class Options extends ActiveRecord
                 'meta_keyword_1' => $this->meta_keyword_1 ?? null,
                 'meta_keyword_2' => $this->meta_keyword_2 ?? null,
                 'meta_keyword_3' => $this->meta_keyword_3 ?? null,
-                'meta_keyword_4' => $this->meta_keyword_4 ?? null
+                'meta_keyword_4' => $this->meta_keyword_4 ?? null,
             ];
+        }
 
         return parent::beforeSave($insert); // TODO: Change the autogenerated stub
     }
@@ -226,6 +250,7 @@ class Options extends ActiveRecord
     public function beforeDelete()
     {
         $this->cpId = $this->id;
+
         return parent::beforeDelete(); // TODO: Change the autogenerated stub
     }
 
@@ -233,16 +258,20 @@ class Options extends ActiveRecord
     {
         parent::afterDelete();
 
-        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'options_' . (Collections::findOne($this->collection_id))->slug);
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache},
+            'options_' . (Collections::findOne($this->collection_id))->slug);
 
         foreach (Menu::find()->all() as $menu) {
-            if ($menu->type !== Menu::TYPE_OPTION)
+            if ($menu->type !== Menu::TYPE_OPTION) {
                 continue;
-            if ($menu->type_helper != $this->cpId)
+            }
+            if ($menu->type_helper != $this->cpId) {
                 continue;
+            }
 
-            if (!$menu->delete())
+            if (!$menu->delete()) {
                 throw new Exception("Cannot delete id: {$menu->id} of menu");
+            }
         }
     }
 
@@ -253,32 +282,86 @@ class Options extends ActiveRecord
     public function rules()
     {
         return [
-            [['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
+            [
+                ['file_1_0', 'file_1_1', 'file_1_2', 'file_1_3', 'file_1_4'],
                 'file',
                 'extensions' => FileType::fileExtensions($this->parentCollection->file_1_mimeType),
-                'maxSize' => ($this->parentCollection->file_1_maxSize ?: 0) * 1024 * 1024
+                'maxSize'    => ($this->parentCollection->file_1_maxSize ?: 0) * 1024 * 1024,
             ],
 
-            [['file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'],
+            [
+                ['file_2_0', 'file_2_1', 'file_2_2', 'file_2_3', 'file_2_4'],
                 'file',
                 'extensions' => FileType::fileExtensions($this->parentCollection->file_2_mimeType),
-                'maxSize' => ($this->parentCollection->file_2_maxSize ?: 0) * 1024 * 1024
+                'maxSize'    => ($this->parentCollection->file_2_maxSize ?: 0) * 1024 * 1024,
             ],
 
             [['collection_id'], 'required'],
             [['collection_id', 'sort', 'created_at', 'updated_at'], 'integer'],
             [['content_0', 'content_1', 'content_2', 'content_3', 'content_4'], 'string'],
-            [['slug', 'name_0', 'name_1', 'name_2', 'name_3', 'name_4', 'meta_title_0', 'meta_des_0', 'meta_keyword_0', 'meta_title_1', 'meta_keyword_1', 'meta_des_1', 'meta_title_2', 'meta_des_2', 'meta_keyword_2', 'meta_title_3', 'meta_des_3', 'meta_keyword_3', 'meta_title_4', 'meta_des_4', 'meta_keyword_4'], 'string', 'max' => 255],
+            [
+                [
+                    'slug',
+                    'name_0',
+                    'name_1',
+                    'name_2',
+                    'name_3',
+                    'name_4',
+                    'meta_title_0',
+                    'meta_des_0',
+                    'meta_keyword_0',
+                    'meta_title_1',
+                    'meta_keyword_1',
+                    'meta_des_1',
+                    'meta_title_2',
+                    'meta_des_2',
+                    'meta_keyword_2',
+                    'meta_title_3',
+                    'meta_des_3',
+                    'meta_keyword_3',
+                    'meta_title_4',
+                    'meta_des_4',
+                    'meta_keyword_4',
+                ],
+                'string',
+                'max' => 255,
+            ],
 
             [['slug'], 'unique'],
             [['slug'], 'afzalroq\cms\validators\SlugValidator'],
 
-            [['collection_id'], 'exist', 'skipOnError' => true, 'targetClass' => Collections::class, 'targetAttribute' => ['collection_id' => 'id']],
-            [['text_1_0', 'text_1_1', 'text_1_2', 'text_1_3', 'text_1_4',
-                'text_2_0', 'text_2_1', 'text_2_2', 'text_2_3', 'text_2_4',
-                'text_3_0', 'text_3_1', 'text_3_2', 'text_3_3', 'text_3_4',
-                'text_4_0', 'text_4_1', 'text_4_2', 'text_4_3', 'text_4_4'
-            ], 'string'],
+            [
+                ['collection_id'],
+                'exist',
+                'skipOnError'     => true,
+                'targetClass'     => Collections::class,
+                'targetAttribute' => ['collection_id' => 'id'],
+            ],
+            [
+                [
+                    'text_1_0',
+                    'text_1_1',
+                    'text_1_2',
+                    'text_1_3',
+                    'text_1_4',
+                    'text_2_0',
+                    'text_2_1',
+                    'text_2_2',
+                    'text_2_3',
+                    'text_2_4',
+                    'text_3_0',
+                    'text_3_1',
+                    'text_3_2',
+                    'text_3_3',
+                    'text_3_4',
+                    'text_4_0',
+                    'text_4_1',
+                    'text_4_2',
+                    'text_4_3',
+                    'text_4_4',
+                ],
+                'string',
+            ],
         ];
     }
 
@@ -291,68 +374,68 @@ class Options extends ActiveRecord
         $language4 = isset(Yii::$app->params['cms']['languages'][4]) ? Yii::$app->params['cms']['languages'][4] : '';
 
         return [
-            'id' => Yii::t('cms', 'ID'),
-            'slug' => Yii::t('cms', 'Slug'),
-            'name_0' => Yii::t('cms', 'Name') . ' (' . $language0 . ')',
-            'name_1' => Yii::t('cms', 'Name') . ' (' . $language1 . ')',
-            'name_2' => Yii::t('cms', 'Name') . ' (' . $language2 . ')',
-            'name_3' => Yii::t('cms', 'Name') . ' (' . $language3 . ')',
-            'name_4' => Yii::t('cms', 'Name') . ' (' . $language4 . ')',
-            'content_0' => Yii::t('cms', 'Content') . ' (' . $language0 . ')',
-            'content_1' => Yii::t('cms', 'Content') . ' (' . $language1 . ')',
-            'content_2' => Yii::t('cms', 'Content') . ' (' . $language2 . ')',
-            'content_3' => Yii::t('cms', 'Content') . ' (' . $language3 . ')',
-            'content_4' => Yii::t('cms', 'Content') . ' (' . $language4 . ')',
-            'text_1_0' => Yii::t('cms', 'Text 1') . ' (' . $language0 . ')',
-            'text_1_1' => Yii::t('cms', 'Text 1') . ' (' . $language1 . ')',
-            'text_1_2' => Yii::t('cms', 'Text 1') . ' (' . $language2 . ')',
-            'text_1_3' => Yii::t('cms', 'Text 1') . ' (' . $language3 . ')',
-            'text_1_4' => Yii::t('cms', 'Text 1') . ' (' . $language4 . ')',
-            'text_2_0' => Yii::t('cms', 'Text 2') . ' (' . $language0 . ')',
-            'text_2_1' => Yii::t('cms', 'Text 2') . ' (' . $language1 . ')',
-            'text_2_2' => Yii::t('cms', 'Text 2') . ' (' . $language2 . ')',
-            'text_2_3' => Yii::t('cms', 'Text 2') . ' (' . $language3 . ')',
-            'text_2_4' => Yii::t('cms', 'Text 2') . ' (' . $language4 . ')',
-            'text_3_0' => Yii::t('cms', 'Text 3') . ' (' . $language0 . ')',
-            'text_3_1' => Yii::t('cms', 'Text 3') . ' (' . $language1 . ')',
-            'text_3_2' => Yii::t('cms', 'Text 3') . ' (' . $language2 . ')',
-            'text_3_3' => Yii::t('cms', 'Text 3') . ' (' . $language3 . ')',
-            'text_3_4' => Yii::t('cms', 'Text 3') . ' (' . $language4 . ')',
-            'text_4_0' => Yii::t('cms', 'Text 4') . ' (' . $language0 . ')',
-            'text_4_1' => Yii::t('cms', 'Text 4') . ' (' . $language1 . ')',
-            'text_4_2' => Yii::t('cms', 'Text 4') . ' (' . $language2 . ')',
-            'text_4_3' => Yii::t('cms', 'Text 4') . ' (' . $language3 . ')',
-            'text_4_4' => Yii::t('cms', 'Text 4') . ' (' . $language4 . ')',
-            'file_1_0' => Yii::t('cms', 'File') . '1 (' . $language0 . ')',
-            'file_1_1' => Yii::t('cms', 'File') . '1 (' . $language1 . ')',
-            'file_1_2' => Yii::t('cms', 'File') . '1 (' . $language2 . ')',
-            'file_1_3' => Yii::t('cms', 'File') . '1 (' . $language3 . ')',
-            'file_1_4' => Yii::t('cms', 'File') . '1 (' . $language3 . ')',
-            'file_2_0' => Yii::t('cms', 'File') . '2 (' . $language0 . ')',
-            'file_2_1' => Yii::t('cms', 'File') . '2 (' . $language1 . ')',
-            'file_2_2' => Yii::t('cms', 'File') . '2 (' . $language2 . ')',
-            'file_2_3' => Yii::t('cms', 'File') . '2 (' . $language3 . ')',
-            'file_2_4' => Yii::t('cms', 'File') . '2 (' . $language4 . ')',
-            'meta_title_0' => Yii::t('cms', 'Seo Title') . ' (' . $language0 . ')',
-            'meta_des_0' => Yii::t('cms', 'Seo Description') . ' (' . $language0 . ')',
+            'id'             => Yii::t('cms', 'ID'),
+            'slug'           => Yii::t('cms', 'Slug'),
+            'name_0'         => Yii::t('cms', 'Name') . ' (' . $language0 . ')',
+            'name_1'         => Yii::t('cms', 'Name') . ' (' . $language1 . ')',
+            'name_2'         => Yii::t('cms', 'Name') . ' (' . $language2 . ')',
+            'name_3'         => Yii::t('cms', 'Name') . ' (' . $language3 . ')',
+            'name_4'         => Yii::t('cms', 'Name') . ' (' . $language4 . ')',
+            'content_0'      => Yii::t('cms', 'Content') . ' (' . $language0 . ')',
+            'content_1'      => Yii::t('cms', 'Content') . ' (' . $language1 . ')',
+            'content_2'      => Yii::t('cms', 'Content') . ' (' . $language2 . ')',
+            'content_3'      => Yii::t('cms', 'Content') . ' (' . $language3 . ')',
+            'content_4'      => Yii::t('cms', 'Content') . ' (' . $language4 . ')',
+            'text_1_0'       => Yii::t('cms', 'Text 1') . ' (' . $language0 . ')',
+            'text_1_1'       => Yii::t('cms', 'Text 1') . ' (' . $language1 . ')',
+            'text_1_2'       => Yii::t('cms', 'Text 1') . ' (' . $language2 . ')',
+            'text_1_3'       => Yii::t('cms', 'Text 1') . ' (' . $language3 . ')',
+            'text_1_4'       => Yii::t('cms', 'Text 1') . ' (' . $language4 . ')',
+            'text_2_0'       => Yii::t('cms', 'Text 2') . ' (' . $language0 . ')',
+            'text_2_1'       => Yii::t('cms', 'Text 2') . ' (' . $language1 . ')',
+            'text_2_2'       => Yii::t('cms', 'Text 2') . ' (' . $language2 . ')',
+            'text_2_3'       => Yii::t('cms', 'Text 2') . ' (' . $language3 . ')',
+            'text_2_4'       => Yii::t('cms', 'Text 2') . ' (' . $language4 . ')',
+            'text_3_0'       => Yii::t('cms', 'Text 3') . ' (' . $language0 . ')',
+            'text_3_1'       => Yii::t('cms', 'Text 3') . ' (' . $language1 . ')',
+            'text_3_2'       => Yii::t('cms', 'Text 3') . ' (' . $language2 . ')',
+            'text_3_3'       => Yii::t('cms', 'Text 3') . ' (' . $language3 . ')',
+            'text_3_4'       => Yii::t('cms', 'Text 3') . ' (' . $language4 . ')',
+            'text_4_0'       => Yii::t('cms', 'Text 4') . ' (' . $language0 . ')',
+            'text_4_1'       => Yii::t('cms', 'Text 4') . ' (' . $language1 . ')',
+            'text_4_2'       => Yii::t('cms', 'Text 4') . ' (' . $language2 . ')',
+            'text_4_3'       => Yii::t('cms', 'Text 4') . ' (' . $language3 . ')',
+            'text_4_4'       => Yii::t('cms', 'Text 4') . ' (' . $language4 . ')',
+            'file_1_0'       => Yii::t('cms', 'File') . '1 (' . $language0 . ')',
+            'file_1_1'       => Yii::t('cms', 'File') . '1 (' . $language1 . ')',
+            'file_1_2'       => Yii::t('cms', 'File') . '1 (' . $language2 . ')',
+            'file_1_3'       => Yii::t('cms', 'File') . '1 (' . $language3 . ')',
+            'file_1_4'       => Yii::t('cms', 'File') . '1 (' . $language3 . ')',
+            'file_2_0'       => Yii::t('cms', 'File') . '2 (' . $language0 . ')',
+            'file_2_1'       => Yii::t('cms', 'File') . '2 (' . $language1 . ')',
+            'file_2_2'       => Yii::t('cms', 'File') . '2 (' . $language2 . ')',
+            'file_2_3'       => Yii::t('cms', 'File') . '2 (' . $language3 . ')',
+            'file_2_4'       => Yii::t('cms', 'File') . '2 (' . $language4 . ')',
+            'meta_title_0'   => Yii::t('cms', 'Seo Title') . ' (' . $language0 . ')',
+            'meta_des_0'     => Yii::t('cms', 'Seo Description') . ' (' . $language0 . ')',
             'meta_keyword_0' => Yii::t('cms', 'Seo Keywords') . ' (' . $language0 . ')',
-            'meta_title_1' => Yii::t('cms', 'Seo Title') . ' (' . $language1 . ')',
-            'meta_des_1' => Yii::t('cms', 'Seo Description') . ' (' . $language1 . ')',
+            'meta_title_1'   => Yii::t('cms', 'Seo Title') . ' (' . $language1 . ')',
+            'meta_des_1'     => Yii::t('cms', 'Seo Description') . ' (' . $language1 . ')',
             'meta_keyword_1' => Yii::t('cms', 'Seo Keywords') . ' (' . $language1 . ')',
-            'meta_title_2' => Yii::t('cms', 'Seo Title') . ' (' . $language2 . ')',
-            'meta_des_2' => Yii::t('cms', 'Seo Description') . ' (' . $language2 . ')',
+            'meta_title_2'   => Yii::t('cms', 'Seo Title') . ' (' . $language2 . ')',
+            'meta_des_2'     => Yii::t('cms', 'Seo Description') . ' (' . $language2 . ')',
             'meta_keyword_2' => Yii::t('cms', 'Seo Keywords') . ' (' . $language2 . ')',
-            'meta_title_3' => Yii::t('cms', 'Seo Title') . ' (' . $language3 . ')',
-            'meta_des_3' => Yii::t('cms', 'Seo Description') . ' (' . $language3 . ')',
+            'meta_title_3'   => Yii::t('cms', 'Seo Title') . ' (' . $language3 . ')',
+            'meta_des_3'     => Yii::t('cms', 'Seo Description') . ' (' . $language3 . ')',
             'meta_keyword_3' => Yii::t('cms', 'Seo Keywords') . ' (' . $language3 . ')',
-            'meta_title_4' => Yii::t('cms', 'Seo Title') . ' (' . $language4 . ')',
-            'meta_des_4' => Yii::t('cms', 'Seo Description') . ' (' . $language4 . ')',
+            'meta_title_4'   => Yii::t('cms', 'Seo Title') . ' (' . $language4 . ')',
+            'meta_des_4'     => Yii::t('cms', 'Seo Description') . ' (' . $language4 . ')',
             'meta_keyword_4' => Yii::t('cms', 'Seo Keywords') . ' (' . $language4 . ')',
-            'sort' => Yii::t('cms', 'Sort'),
-            'created_by' => Yii::t('cms', 'Created By'),
-            'updated_by' => Yii::t('cms', 'Updated By'),
-            'created_at' => Yii::t('cms', 'Created At'),
-            'updated_at' => Yii::t('cms', 'Updated At'),
+            'sort'           => Yii::t('cms', 'Sort'),
+            'created_by'     => Yii::t('cms', 'Created By'),
+            'updated_by'     => Yii::t('cms', 'Updated By'),
+            'created_at'     => Yii::t('cms', 'Created At'),
+            'updated_at'     => Yii::t('cms', 'Updated At'),
         ];
     }
 
@@ -375,37 +458,48 @@ class Options extends ActiveRecord
         }
     }
 
-    public function getImageUrl($attr, $width, $height, $operation = null, $background = null, $xPos = null, $yPos = null)
-    {
+    public function getImageUrl(
+        $attr,
+        $width,
+        $height,
+        $operation = null,
+        $background = null,
+        $xPos = null,
+        $yPos = null
+    ) {
         return Image::get($this, $attr, $width, $height, $operation, $background, $xPos, $yPos);
     }
 
     public function getCorT($justAttr)
     {
-        if (!$this->collection)
+        if (!$this->collection) {
             return null;
+        }
 
         $attrValue = $this->collection['option_' . $justAttr];
         switch ($justAttr) {
             case 'name':
-                if ($attrValue === Collections::OPTION_NAME_COMMON)
+                if ($attrValue === Collections::OPTION_NAME_COMMON) {
                     return false;
-                elseif ($attrValue === Collections::OPTION_NAME_TRANSLATABLE)
+                } elseif ($attrValue === Collections::OPTION_NAME_TRANSLATABLE) {
                     return true;
+                }
                 break;
             case 'content':
                 if ($attrValue === Collections::OPTION_CONTENT_COMMON_TEXTAREA
-                    || $attrValue === Collections::OPTION_CONTENT_COMMON_CKEDITOR)
+                    || $attrValue === Collections::OPTION_CONTENT_COMMON_CKEDITOR) {
                     return false;
-                elseif ($attrValue !== Collections::OPTION_CONTENT_DISABLED)
+                } elseif ($attrValue !== Collections::OPTION_CONTENT_DISABLED) {
                     return true;
+                }
                 break;
             case 'file_1':
             case 'file_2':
-                if ($attrValue === Collections::OPTION_FILE_COMMON)
+                if ($attrValue === Collections::OPTION_FILE_COMMON) {
                     return false;
-                elseif ($attrValue === Collections::OPTION_FILE_TRANSLATABLE)
+                } elseif ($attrValue === Collections::OPTION_FILE_TRANSLATABLE) {
                     return true;
+                }
                 break;
             default:
                 return null;
@@ -421,8 +515,9 @@ class Options extends ActiveRecord
 
     public function isAttrCommon($collectionAttr)
     {
-        if (!$this->parentCollection)
+        if (!$this->parentCollection) {
             $this->parentCollection = $this->collection;
+        }
 
         switch ($this->parentCollection['option_' . $collectionAttr]) {
             case Collections::SEO_COMMON:
@@ -437,13 +532,15 @@ class Options extends ActiveRecord
             case Collections::OPTION_CONTENT_DISABLED:
                 return Collections::DISABLED;
         }
+
         return false;
     }
 
     public function isAttrCommonOptions($collectionAttr)
     {
-        if (!$this->dependCollection)
+        if (!$this->dependCollection) {
             $this->dependCollection = $this->collection;
+        }
 
         switch ($this->dependCollection->{$collectionAttr}) {
             case Entities::TEXT_COMMON_INPUT_STRING:
@@ -458,14 +555,16 @@ class Options extends ActiveRecord
             case Entities::TEXT_DISABLED:
                 return Entities::DISABLED;
         }
+
         return false;
 
     }
 
     public function isAttrTranslatable($collectionAttr)
     {
-        if (!$this->parentCollection)
+        if (!$this->parentCollection) {
             $this->parentCollection = $this->collection;
+        }
 
         switch ($this->parentCollection['option_' . $collectionAttr]) {
             case Collections::SEO_COMMON:
@@ -480,6 +579,7 @@ class Options extends ActiveRecord
             case Collections::OPTION_CONTENT_DISABLED:
                 return Collections::DISABLED;
         }
+
         return false;
     }
 
@@ -490,10 +590,12 @@ class Options extends ActiveRecord
 
     private function getAttr($collectionAttr)
     {
-        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language]))
-            $languageId = 0;
+        $firstKey = Yii::$app->getModule('cms')->firstKey;
+        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language])) {
+            $languageId = $firstKey;
+        }
 
-        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_0' : "_" . $languageId);
+        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_' . $firstKey : "_" . $languageId);
     }
 
     public function getCollection()
