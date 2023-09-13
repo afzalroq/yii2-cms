@@ -243,8 +243,8 @@ class Items extends \afzalroq\cms\entities\Items
     private function getFile($entityAttr)
     {
         $module = Yii::$app->getModule('cms');
-        $filePath = $module->path . '/data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
-        return $module->host . str_replace($module->path, '', $filePath);
+        $filePath = 'data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
+        return $module->host . $filePath;
     }
 
     public function getFile2()
