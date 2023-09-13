@@ -579,6 +579,4 @@ class Entities extends ActiveRecord implements Linkable
             self::COMMENT_ON_REQUIRED => Yii::t('cms', 'Comment On and required'),
         ];
     }
-
 }
-
