@@ -137,7 +137,7 @@ class Options extends ActiveRecord
     {
         $this->languageId = \Yii::$app->params['l'][\Yii::$app->language];
         if (!$this->languageId) {
-            $this->languageId = Yii::$app->getModule('cms')->firstKey;
+            $this->languageId = 0;
         }
     }
 
@@ -173,7 +173,7 @@ class Options extends ActiveRecord
             'slug' => [
                 'class'                => 'Zelenin\yii\behaviors\Slug',
                 'slugAttribute'        => 'slug',
-                'attribute'            => 'name_' . Yii::$app->getModule('cms')->firstKey,
+                'attribute'            => 'name_' . array_key_first(Yii::$app->params['cms']['languages']),
                 'ensureUnique'         => true,
                 'replacement'          => '-',
                 'lowercase'            => true,
@@ -590,12 +590,11 @@ class Options extends ActiveRecord
 
     private function getAttr($collectionAttr)
     {
-        $firstKey = Yii::$app->getModule('cms')->firstKey;
-        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language])) {
-            $languageId = $firstKey;
+        if (!($languageId = Yii::$app->params['l'][Yii::$app->language])) {
+            $languageId = 0;
         }
 
-        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_' . $firstKey : "_" . $languageId);
+        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_0' : "_" . $languageId);
     }
 
     public function getCollection()
