@@ -27,7 +27,6 @@ class Module extends \yii\base\Module
 {
     public $userClass = '\common\models\User';
     public $frontHost;
-    public $firstKey = 0;
     public $path;
     public $host;
     public $cache = 'cache';

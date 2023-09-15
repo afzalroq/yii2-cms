@@ -9,6 +9,11 @@ The extension allows:
 - support SEO meta tags
 - make multiple menu with parenting feature
 
+# Upgrade notes
+- remove first key property
+- use first node of languages as firstKey
+
+
 ## Installation
 
 - Install with composer:

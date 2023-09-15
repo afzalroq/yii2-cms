@@ -164,9 +164,9 @@ class Items extends ActiveRecord implements Linkable
 
     private function setCurrentLanguage()
     {
-        $this->languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language];
+        $this->languageId = Yii::$app->params['l'][Yii::$app->language];
         if (!$this->languageId) {
-            $this->languageId = Yii::$app->getModule('cms')->firstKey;
+            $this->languageId = 0;
         }
     }
 
@@ -183,7 +183,7 @@ class Items extends ActiveRecord implements Linkable
             'slug' => [
                 'class'                => 'Zelenin\yii\behaviors\Slug',
                 'slugAttribute'        => 'slug',
-                'attribute'            => 'text_1_' . Yii::$app->getModule('cms')->firstKey,
+                'attribute'            => 'text_1_' . array_key_first(Yii::$app->params['cms']['languages']),
                 'ensureUnique'         => true,
                 'replacement'          => '-',
                 'lowercase'            => true,
@@ -551,7 +551,7 @@ class Items extends ActiveRecord implements Linkable
     public function getCurrentAttrs($entityAttr)
     {
         if ($this->isAttrCommon($entityAttr)) {
-            return [$entityAttr . '_' . Yii::$app->getModule('cms')->firstKey];
+            return [$entityAttr . '_0'];
         }
 
         $attrs = [];
@@ -795,7 +795,7 @@ class Items extends ActiveRecord implements Linkable
 
         return in_array($this->entity->use_date,
             [Entities::USE_DATE_DISABLED, Entities::USE_DATE_DATE, Entities::USE_DATE_DATETIME])
-            ? $this['date_' . Yii::$app->getModule('cms')->firstKey]
+            ? $this['date_0']
             : $this['date_' . \Yii::$app->params['l'][\Yii::$app->language]];
     }
 
