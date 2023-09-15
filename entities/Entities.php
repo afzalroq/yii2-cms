@@ -5,13 +5,6 @@ namespace afzalroq\cms\entities;
 use afzalroq\cms\components\FileType;
 use afzalroq\cms\interfaces\Linkable;
 use Yii;
-use yii\behaviors\TimestampBehavior;<?php
-
-namespace afzalroq\cms\entities;
-
-use afzalroq\cms\components\FileType;
-use afzalroq\cms\interfaces\Linkable;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\ActiveQuery;
