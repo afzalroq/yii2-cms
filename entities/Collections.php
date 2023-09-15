@@ -388,7 +388,7 @@ class Collections extends ActiveRecord implements Linkable
         $option->collection_id    = $this->id;
         $option->parentCollection = $this;
         $option->tree             = Options::find()->max('tree') + 1;
-        $name                     = 'name_' . Yii::$app->getModule('cms')->firstKey;
+        $name                     = 'name_' . array_key_first(Yii::$app->params['cms']['languages']);
         $option->$name            = StringHelper::mb_ucfirst($this->slug) . ' option';
         $option->slug             = StringHelper::mb_ucfirst($this->slug) . '_option';
 
