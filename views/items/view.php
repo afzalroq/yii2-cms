@@ -10,17 +10,15 @@ use yii\widgets\DetailView;
 /* @var $entity Entities */
 /* @var $commentsDataProvider \afzalroq\cms\entities\ItemComments */
 
-$this->title                   = \yii\helpers\StringHelper::truncate($model->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]},
-    40, '...');
+$languageId                    = Yii::$app->params['l'][Yii::$app->language];
+$this->title                   = \yii\helpers\StringHelper::truncate($model->{'text_1_' . $languageId}, 40, '...');
 $this->params['breadcrumbs'][] = [
-    'label' => $entity->{"name_" . Yii::$app->params['l'][Yii::$app->language]},
+    'label' => $entity->{"name_" . $languageId},
     'url'   => ['index', 'slug' => $entity->slug],
 ];
 $this->params['breadcrumbs'][] = $this->title;
 
-$module    = Yii::$app->getModule('cms');
-$frontHost = $module->frontHost;
-$firstKey  = $module->firstKey;
+$frontHost = Yii::$app->getModule('cms')->frontHost;
 
 [$entity_text_attrs, $entity_file_attrs, $seo_attrs] = $entity->textAndFileAttrs();
 
@@ -63,7 +61,6 @@ foreach ($entity_file_attrs as $key => $attr) {
     }
 }
 
-
 $main_attributes = [
     [
         'attribute' => 'slug',
@@ -91,11 +88,11 @@ if ($entity->use_views_count) {
 }
 
 if ($model->entity->use_date === Entities::USE_DATE_DATE) {
-    $main_attributes[] = "date_$firstKey:date";
+    $main_attributes[] = "date_0:date";
 }
 
 if ($model->entity->use_date === Entities::USE_DATE_DATETIME) {
-    $main_attributes[] = "date_$firstKey:datetime";
+    $main_attributes[] = "date_0:datetime";
 }
 
 if ($entity->use_gallery) {
@@ -126,7 +123,7 @@ if ($entity->use_gallery) {
       <?= Html::a(Yii::t('cms', 'Update'), ['update', 'id' => $model->id, 'slug' => $entity->slug],
           ['class' => 'btn btn-primary']) ?>
       <?= Html::a("<i class='fa fa-external-link'></i> " . Yii::t('cms', 'View on site'),
-          trim(Yii::$app->getModule('cms')->frontHost, '/') . $model->link,
+          trim($frontHost, '/') . $model->link,
           ['target' => '_blank', 'class' => 'btn btn-success']
       ) ?>
       <?php if (!$entity->disable_create_and_delete) : ?>
@@ -175,26 +172,27 @@ if ($entity->use_gallery) {
             foreach ($file_common as $attr => $value) {
                 if ($entity[$attr]) {
                     $file_attributes[] = [
-                        'attribute' => $attr . '_' . $firstKey,
+                        'attribute' => $attr . '_0',
                         'format'    => 'raw',
-                        'value'     => function ($model) use ($attr, $entity, $firstKey) {
+                        'value'     => function ($model) use ($attr, $entity) {
                             switch (FileType::fileMimeType($entity[$attr . '_mimeType'])) {
                                 case FileType::TYPE_AUDIO:
                                     return "<audio controls='controls'>
-                                            <source src='" . $model->getFile1() . "'  type='audio/mp3' />
+                                            <source src='" . $model->getFile($attr) . "'  type='audio/mp3' />
                                            </audio>";
                                     break;
                                 case FileType::TYPE_VIDEO:
                                     return "<video width=" . $model->entity[$attr . '_dimensionW'] . " height=" . $model->entity[$attr . '_dimensionH'] . " controls>
-                                                  <source src='" . $model->getFile1() . "' type='video/mp4'>
-                                                  <source src='" . $model->getFile1() . "' type='video/ogg'>
+                                                  <source src='" . $model->getFile($attr) . "' type='video/mp4'>
+                                                  <source src='" . $model->getFile($attr) . "' type='video/ogg'>
                                                 Your browser does not support the video tag.
                                                 </video>";
                                     break;
                                 case FileType::TYPE_FILE:
-                                    return $model->getFile1();
+                                    return Html::a($model->getFile($attr), $model->getFile($attr),
+                                        ['target' => '_blank']);
                                 case FileType::TYPE_IMAGE:
-                                    return Html::img($model->getImageUrl($attr . '_' . $firstKey,
+                                    return Html::img($model->getImageUrl($attr . '_0',
                                         $model->entity[$attr . '_dimensionW'], $model->entity[$attr . '_dimensionH']));
                                 default:
                                     return null;
@@ -218,24 +216,22 @@ if ($entity->use_gallery) {
     foreach ($entity_text_attrs_common as $attr => $value) {
         if ($entity[$attr]) {
             $text_attributes[] = [
-                'attribute' => $attr . '_' . $firstKey,
+                'attribute' => $attr . '_0',
                 'label'     => $entity[$attr . '_label'],
                 'format'    => 'html',
             ];
         }
     }
     echo DetailView::widget(['model' => $model, 'attributes' => $text_attributes]);
-    $text_attributes = [];
 
     if ($entity->use_seo && $entity->use_seo == Entities::SEO_COMMON) {
         foreach ($seo_attrs as $i => $value) {
             $seo_values[] = [
-                'attribute' => $value . '_' . $firstKey,
-                'value'     => $model->seo_values[$value . '_' . $firstKey],
+                'attribute' => $value . '_0',
+                'value'     => $model->seo_values[$value . '_0'],
             ];
         }
         echo DetailView::widget(['model' => $model, 'attributes' => $seo_values]);
-        $seo_values = [];
     }
     ?>
 
@@ -274,6 +270,7 @@ if ($entity->use_gallery) {
                         $data_translatable = [];
                     }
                     ################################################################
+                    $data_translatable = [];
                     if ($model->entity->use_date === Entities::USE_TRANSLATABLE_DATE_DATETIME) {
                         $data_translatable[] = 'date_' . $key . ':datetime';
 
@@ -281,10 +278,9 @@ if ($entity->use_gallery) {
                             'model'      => $model,
                             'attributes' => $data_translatable,
                         ]);
-
-                        $data_translatable = [];
                     }
                     ################################################################
+                    $text_attributes = [];
                     foreach ($entity_text_attrs_translatable as $attr => $value) {
                         if ($entity[$attr]) {
                             $text_attributes[] = [
@@ -299,8 +295,6 @@ if ($entity->use_gallery) {
                         'model'      => $model,
                         'attributes' => $text_attributes,
                     ]);
-
-                    $text_attributes = [];
                     ################################################################
                     $file_attributes = [];
                     foreach ($file_translatable as $attr => $value) {
@@ -346,6 +340,7 @@ if ($entity->use_gallery) {
                         'attributes' => $file_attributes,
                     ]);
                     ################################################################
+                    $seo_values = [];
                     if ($entity->use_seo == Entities::SEO_TRANSLATABLE) {
                         foreach ($seo_attrs as $i => $value) {
                             $seo_values [] = [
@@ -358,8 +353,6 @@ if ($entity->use_gallery) {
                             'model'      => $model,
                             'attributes' => $seo_values,
                         ]);
-
-                        $seo_values = [];
                     }
                     ?>
                 </div>
