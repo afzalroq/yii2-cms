@@ -109,12 +109,11 @@ class Items extends \afzalroq\cms\entities\Items
 
     private function getAttr($entityAttr)
     {
-        $module = Yii::$app->getModule('cms');
         if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language])) {
-            $languageId = $module->firstKey;
+            $languageId = 0;
         }
 
-        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_' . $module->firstKey : "_" . $languageId);
+        return $entityAttr . ($this->isAttrCommon($entityAttr) ? '_0' : "_" . $languageId);
     }
 
     public function getText2()
@@ -184,7 +183,7 @@ class Items extends \afzalroq\cms\entities\Items
                 $w    = 640;
                 $h    = $h0 / $diff;
             }
-            $file1 = 'file_1_' . $module->firstKey;
+            $file1 = 'file_1_0';
             if ($this->entity->use_gallery) {
                 if ($this->mainPhoto) {
                     $imageUrl = $this->mainPhoto->getPhoto($w, $h);
@@ -210,8 +209,9 @@ class Items extends \afzalroq\cms\entities\Items
     private function getSeo($seoAttr)
     {
         if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language])) {
-            $languageId = Yii::$app->getModule('cms')->firstKey;
+            $languageId = 0;
         }
+
         if (empty($this->seo_values)) {
             return null;
         }
@@ -276,7 +276,7 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getFile('file_1');
     }
 
-    private function getFile($entityAttr)
+    public function getFile($entityAttr)
     {
         $module   = Yii::$app->getModule('cms');
         $filePath = 'data/' . mb_strtolower(StringHelper::basename($this::className())) . '/' . $this->id . '/' . $this[$this->getAttr($entityAttr)];
