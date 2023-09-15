@@ -31,7 +31,7 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
     {
         $this->languageId = \Yii::$app->params['l'][\Yii::$app->language];
         if (!$this->languageId) {
-            $this->languageId = Yii::$app->getModule('cms')->firstKey;
+            $this->languageId = 0;
         }
     }
 
@@ -125,12 +125,11 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     private function getAttr($collectionAttr)
     {
-        $firstKey = Yii::$app->getModule('cms')->firstKey;
-        if (!($languageId = Yii::$app->params['cms']['languageIds'][Yii::$app->language])) {
-            $languageId = $firstKey;
+        if (!($languageId = Yii::$app->params['l'][Yii::$app->language])) {
+            $languageId = 0;
         }
 
-        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_' . $firstKey : "_" . $languageId);
+        return $collectionAttr . ($this->isAttrCommon($collectionAttr) ? '_0' : "_" . $languageId);
     }
 
     /**
@@ -188,12 +187,11 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
 
     private function getAttrOption($collectionAttr)
     {
-        $firstKey = Yii::$app->getModule('cms')->firstKey;
         if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language])) {
-            $languageId = $firstKey;
+            $languageId = 0;
         }
 
-        return $collectionAttr . ($this->isAttrCommonOptions($collectionAttr) ? '_' . $firstKey : "_" . $languageId);
+        return $collectionAttr . ($this->isAttrCommonOptions($collectionAttr) ? '_0' : "_" . $languageId);
     }
 
     public function getText2()
@@ -232,8 +230,9 @@ class Options extends \afzalroq\cms\entities\Options implements Linkable
     private function getSeo($seoAttr)
     {
         if (!($languageId = \Yii::$app->params['l'][\Yii::$app->language])) {
-            $languageId = Yii::$app->getModule('cms')->firstKey;
+            $languageId = 0;
         }
+
         if (empty($this->seo_values)) {
             return null;
         }
