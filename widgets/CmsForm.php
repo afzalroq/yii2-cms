@@ -235,10 +235,9 @@ class CmsForm
 
     public function fileFieldsCommon()
     {
-        $firstKey = Yii::$app->getModule('cms')->firstKey;
         foreach ($this->entityFileAttrs as $entityAttr => $value) {
             if ($this->obj->{$entityAttr} === Entities::FILE_COMMON) {
-                $attr = $entityAttr . '_' . $firstKey;
+                $attr = $entityAttr . '_0';
                 switch (FileType::fileMimeType($this->obj[$entityAttr . '_mimeType'])) {
                     case FileType::TYPE_FILE:
                     case FileType::TYPE_VIDEO:
@@ -259,9 +258,8 @@ class CmsForm
 
     public function textFieldsCommon()
     {
-        $firstKey = Yii::$app->getModule('cms')->firstKey;
         foreach ($this->entityTextAttrs as $entityAttr => $value) {
-            $attr = $entityAttr . '_' . $firstKey;
+            $attr = $entityAttr . '_0';
             switch ($this->obj[$entityAttr]) {
                 case Entities::TEXT_COMMON_INPUT_STRING:
                     echo $this->input($attr, $entityAttr, []);
@@ -298,9 +296,8 @@ class CmsForm
 
     public function textFieldsCommonCollection()
     {
-        $firstKey = Yii::$app->getModule('cms')->firstKey;
         foreach ($this->collectionTextAttrs as $collectionAttr => $value) {
-            $attr = $collectionAttr . '_' . $firstKey;
+            $attr = $collectionAttr . '_0';
             switch ($this->obj[$collectionAttr]) {
                 case Entities::TEXT_COMMON_INPUT_STRING:
                     echo $this->input($attr, $collectionAttr, []);
@@ -337,12 +334,11 @@ class CmsForm
 
     public function dateFieldCommon($attr)
     {
-        $firstKey = Yii::$app->getModule('cms')->firstKey;
         switch ($this->obj['use_' . $attr]) {
             case Entities::USE_DATE_DATE:
-                return $this->date($attr . '_' . $firstKey, true);
+                return $this->date($attr . '_0', true);
             case Entities::USE_DATE_DATETIME:
-                return $this->date($attr . '_' . $firstKey, true, ['type' => DateControl::FORMAT_DATETIME]);
+                return $this->date($attr . '_0', true, ['type' => DateControl::FORMAT_DATETIME]);
         }
     }
 
