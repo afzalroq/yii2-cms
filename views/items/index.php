@@ -48,16 +48,16 @@ foreach ($caes as $k => $cae) {
     ];
 }
 
-/**
- * @var \afzalroq\cms\Module $module
- */
-$module    = Yii::$app->getModule('cms');
-$frontHost = $module->frontHost;
-$firstKey  = $module->firstKey;
+$frontHost = Yii::$app->getModule('cms')->frontHost;
+$firstKey  = array_key_first(Yii::$app->params['cms']['languages']);
+$text1     = 'text_1_' . ($entity->isCommonText('text_1') ? '0' : $firstKey);
+$text2     = 'text_2_' . ($entity->isCommonText('text_2') ? '0' : $firstKey);
+$text3     = 'text_3_' . ($entity->isCommonText('text_3') ? '0' : $firstKey);
+$file1     = 'file_1_' . ($entity->file_1 === \afzalroq\cms\entities\Entities::FILE_COMMON ? '0' : $firstKey);
+$date     = 'date_' . ($entity->hasCommonDate() ? '0' : $firstKey);
 $columns   = array_merge(
     [
         ['class' => 'yii\grid\SerialColumn'],
-
         [
             'attribute' => 'id',
             'value'     => function ($model) use ($entity) {
@@ -71,43 +71,47 @@ $columns   = array_merge(
             'format'    => 'html',
         ],
         [
-            'attribute' => 'text_1_' . $firstKey,
-            'value'     => function ($model) use ($firstKey, $entity, $frontHost) {
-                return
-                    Html::a($model->{'text_1_' . $firstKey},
-                        ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug])
-                    . " "
-                    . Html::a('<i class="fa fa-external-link"></i>', trim($frontHost, '/') . $model->link,
-                        ['target' => '_blank']);
+            'attribute' => $text1,
+            'value'     => function ($model) use ($text1, $entity, $frontHost) {
+                return Html::a(
+                        $model->$text1,
+                        ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug]
+                    )
+                    . "&nbsp;&nbsp;"
+                    . Html::a(
+                        '<i class="fa fa-external-link"></i>',
+                        trim($frontHost, '/') . $model->link,
+                        ['target' => '_blank']
+                    );
             },
             'label'     => $entity->text_1_label . ' (' . $curLang . ')',
             'format'    => 'raw',
         ],
         [
-            'attribute' => 'text_2_' . $firstKey,
-            'value'     => function ($model) use ($entity, $firstKey) {
+            'attribute' => $text2,
+            'value'     => function ($model) use ($entity, $text2) {
                 if ($entity->text_2 < 30) {
-                    return $model->{'text_2_' .$firstKey};
+                    return $model->$text2;
                 }
             },
             'label'     => $entity->text_2_label . ' (' . $curLang . ')',
-            'visible'   => !empty($entity->text_2) ? $entity->text_2 > 30 ? false : true : false,
+            'visible'   => empty($entity->text_2) ? false : $entity->text_2 < 30,
         ],
         [
-            'attribute' => 'text_3_' . $firstKey,
-            'value'     => function ($model) use ($entity, $firstKey) {
+            'attribute' => $text3,
+            'value'     => function ($model) use ($entity, $text3) {
                 if ($entity->text_3 < 30) {
-                    return $model->{'text_3_' .$firstKey};
+                    return $model->$text3;
                 }
             },
             'label'     => $entity->text_3_label . ' (' . $curLang . ')',
-            'visible'   => !empty($entity->text_3) ? $entity->text_3 > 30 ? false : true : false,
+            'visible'   => empty($entity->text_3) ? false : $entity->text_3 < 30,
         ],
         [
-            'attribute' => 'file_1_' . $firstKey,
+            'attribute' => $file1,
             'label'     => $entity->file_1_label,
             'format'    => 'html',
-            'value'     => function (\afzalroq\cms\entities\Items $model) use ($entity, $firstKey) {
+            'value'     => function (\afzalroq\cms\entities\Items $model) use ($entity, $file1) {
                 $w = $w0 = $entity['file_1_dimensionW'] ?: 64;
                 $h = $h0 = $entity['file_1_dimensionH'] ?: 48;
                 if ($w0 > 64) {
@@ -115,7 +119,6 @@ $columns   = array_merge(
                     $w    = 64;
                     $h    = $h0 / $diff;
                 }
-                $file1 = 'file_1_' . $firstKey;
                 if ($entity->use_gallery) {
                     if ($model->mainPhoto) {
                         return "<img class='img-circle-prewiew' style='height: ${h}px;  width: ${w}px' src='" . $model->mainPhoto->getPhoto($w0,
@@ -131,7 +134,6 @@ $columns   = array_merge(
             },
             'visible'   => FileType::hasImage($entity),
         ],
-
         [
             'attribute' => 'views_count',
             'label'     => Yii::t('cms', 'Views count'),
@@ -147,29 +149,18 @@ $columns   = array_merge(
 //                    'visible' => $entity->use_gallery ? true : false
 //                ],
         [
-            'attribute' => 'date_' . $firstKey,
+            'attribute' => $date,
             'label'     => Yii::t('cms', 'Date'),
             'format'    => 'html',
             'value'     => function (\afzalroq\cms\entities\Items $item) use ($entity) {
-                return in_array($entity->use_date, [
-                    \afzalroq\cms\entities\Entities::USE_DATE_DATETIME,
-                    \afzalroq\cms\entities\Entities::USE_TRANSLATABLE_DATE_DATETIME,
-                ])
-                    ? $item->getDate('d-M, Y H:i')
-                    : $item->getDate('d-M, Y');
+                return $entity->hasCommonDate() ? $item->getDate('d-M, Y H:i') : $item->getDate('d-M, Y');
             },
             'visible'   => $entity->use_date ? true : false,
         ],
-
-
 //                        $form->field($cae, 'collection_id')->dropDownList(ArrayHelper::map($unassignedCollections, 'id', 'slug'))
-
 //                        \afzalroq\cms\widgets\CmsForm::OAIList($entity),
-
         'created_at:datetime',
     ], $category_columns);
-
-
 ?>
 <div class="items-index">
   <p>
@@ -195,13 +186,11 @@ $columns   = array_merge(
 
 
 <?php $this->registerJs(<<<JS
-    
-     $(".img-circle-prewiew").click(function(){
+  $(".img-circle-prewiew").click(function(){
          $("#full-image").attr("src", $(this).attr("src"));
          $('#image-viewer').show();
      });
-
-$("#image-viewer .close").click(function(){     $('#image-viewer').hide();
+  $("#image-viewer .close").click(function(){     $('#image-viewer').hide();
 });
 JS
 );
