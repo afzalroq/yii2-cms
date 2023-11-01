@@ -176,8 +176,8 @@ class Items extends \afzalroq\cms\entities\Items
         $module   = \Yii::$app->getModule('cms');
         $imageUrl = $module->watermark ?: $module->fallback;
         if (FileType::hasImage($this->entity)) {
-            $w = $w0 = $this->entity['file_1_dimensionW'];
-            $h = $h0 = $this->entity['file_1_dimensionH'];
+            $w = $w0 = (int)$this->entity['file_1_dimensionW'];
+            $h = $h0 = (int)$this->entity['file_1_dimensionH'];
             if ($w0 > 640) {
                 $diff = $w0 / 640;
                 $w    = 640;
