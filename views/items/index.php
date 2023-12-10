@@ -54,7 +54,7 @@ $text1     = 'text_1_' . ($entity->isCommonText('text_1') ? '0' : $firstKey);
 $text2     = 'text_2_' . ($entity->isCommonText('text_2') ? '0' : $firstKey);
 $text3     = 'text_3_' . ($entity->isCommonText('text_3') ? '0' : $firstKey);
 $file1     = 'file_1_' . ($entity->file_1 === \afzalroq\cms\entities\Entities::FILE_COMMON ? '0' : $firstKey);
-$date     = 'date_' . ($entity->hasCommonDate() ? '0' : $firstKey);
+$date      = 'date_' . ($entity->hasCommonDate() ? '0' : $firstKey);
 $columns   = array_merge(
     [
         ['class' => 'yii\grid\SerialColumn'],

@@ -20,7 +20,7 @@ class ItemsController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -35,14 +35,14 @@ class ItemsController extends Controller
      */
     public function actionIndex($slug)
     {
-        $entity = Entities::findOne(['slug' => $slug]);
-        $searchModel = new ItemsSearch($entity);
+        $entity       = Entities::findOne(['slug' => $slug]);
+        $searchModel  = new ItemsSearch($entity);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $slug);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'searchModel'  => $searchModel,
             'dataProvider' => $dataProvider,
-            'entity' => $entity
+            'entity'       => $entity,
         ]);
     }
 
@@ -57,11 +57,11 @@ class ItemsController extends Controller
     public function actionView($id, $slug)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'entity' => Entities::findOne(['slug' => $slug]),
+            'model'                => $this->findModel($id),
+            'entity'               => Entities::findOne(['slug' => $slug]),
             'commentsDataProvider' => new \yii\data\ActiveDataProvider([
-                'query' => ItemComments::find()->where(['item_id' => $id])
-            ])
+                'query' => ItemComments::find()->where(['item_id' => $id]),
+            ]),
         ]);
     }
 
@@ -93,31 +93,7 @@ class ItemsController extends Controller
     {
         $model = new Items($slug);
 
-        if (Yii::$app->request->isAjax) {
-            $model->load(Yii::$app->request->post());
-            return Json::encode(\yii\widgets\ActiveForm::validate($model));
-        }
-
-        if ($model->load(Yii::$app->request->post())) {
-            $operation = Yii::$app->request->post('save');
-            if (in_array($operation, ['add-new', 'save-close', 'save'])) {
-                if ($model->save()) {
-                    foreach ($model->files as $file) $model->addPhoto($file);
-                    Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
-                    if ($operation === 'add-new') return $this->redirect(['create', 'slug' => $slug]);
-                    if ($operation === 'save') return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
-                } else {
-                    Yii::$app->session->setFlash('error', implode('\n', $model->getFirstErrors()));
-                }
-            }
-
-            return $this->redirect(['index', 'slug' => $slug]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-            'entity' => Entities::findOne(['slug' => $slug])
-        ]);
+        return $this->saveAction($model, $slug, 'create');
     }
 
 
@@ -125,8 +101,14 @@ class ItemsController extends Controller
     {
         $model = $this->findModel($id);
 
+        return $this->saveAction($model, $slug, 'update');
+    }
+
+    private function saveAction(\afzalroq\cms\entities\Items $model, string $slug, $view)
+    {
         if (Yii::$app->request->isAjax) {
             $model->load(Yii::$app->request->post());
+
             return Json::encode(\yii\widgets\ActiveForm::validate($model));
         }
 
@@ -134,10 +116,16 @@ class ItemsController extends Controller
             $operation = Yii::$app->request->post('save');
             if (in_array($operation, ['add-new', 'save-close', 'save'])) {
                 if ($model->save()) {
-                    foreach ($model->files as $file) $model->addPhoto($file);
+                    foreach ($model->files as $file) {
+                        $model->addPhoto($file);
+                    }
                     Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
-                    if ($operation === 'add-new') return $this->redirect(['create', 'slug' => $slug]);
-                    if ($operation === 'save') return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                    if ($operation === 'add-new') {
+                        return $this->redirect(['create', 'slug' => $slug]);
+                    }
+                    if ($operation === 'save') {
+                        return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                    }
                 } else {
                     Yii::$app->session->setFlash('error', implode('\n', $model->getFirstErrors()));
                 }
@@ -146,9 +134,9 @@ class ItemsController extends Controller
             return $this->redirect(['index', 'slug' => $slug]);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-            'entity' => Entities::findOne(['slug' => $slug])
+        return $this->render($view, [
+            'model'  => $model,
+            'entity' => Entities::findOne(['slug' => $slug]),
         ]);
     }
 
@@ -157,6 +145,7 @@ class ItemsController extends Controller
         $model = $this->findModel($id);
         $model->delete();
         $model->removePhotos();
+
         return $this->redirect(['index', 'slug' => $slug]);
     }
 
@@ -169,6 +158,7 @@ class ItemsController extends Controller
         } catch (\DomainException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
         }
+
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 
@@ -176,6 +166,7 @@ class ItemsController extends Controller
     {
         $model = $this->findModel($id);
         $model->movePhotoUp($photo_id);
+
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 
@@ -184,6 +175,7 @@ class ItemsController extends Controller
         $model = $this->findModel($id);
         $model->movePhotoDown($photo_id);
         $model->save();
+
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 
@@ -191,6 +183,7 @@ class ItemsController extends Controller
     {
         $model = $this->findModel($id);
         $model->calculateCommentsAndVotes();
+
         return $this->redirect(['view', 'id' => $id, 'slug' => $slug]);
     }
 }

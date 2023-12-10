@@ -188,7 +188,7 @@ class Items extends ActiveRecord implements Linkable
                 'replacement'          => '-',
                 'lowercase'            => true,
                 'immutable'            => false,
-                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;',
+                'transliterateOptions' => 'uz_Cyrl-uz_Latn; Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;',
             ],
             $this->getImageUploadBehaviorConfig('file_1_0'),
             $this->getImageUploadBehaviorConfig('file_1_1'),
@@ -272,22 +272,32 @@ class Items extends ActiveRecord implements Linkable
             $uz = \Yii::$app->params['cms']['languageIds']['uz'] ?? null;
             $oz = \Yii::$app->params['cms']['languageIds']['oz'] ?? null;
             if ($oz && $uz) {
+                $attrs  = [
+                    'text_1',
+                    'text_2',
+                    'text_3',
+                    'text_4',
+                    'text_5',
+                    'text_6',
+                    'text_7',
+                ];
                 $entity = $this->entity;
-                for ($i = 1; $i <= 7; $i++) {
-                    if ($entity->isTranslateble('text_' . $i)) {
-                        if ($entity->isHaveHtmltags('text_' . $i)) {
-                            if (empty($this->{'text_' . $i . '_' . $uz}) && !empty($this->{'text_' . $i . '_' . $oz})) {
-                                $text_2_1                         = $this->{'text_' . $i . '_' . $oz};
-                                $this->{'text_' . $i . '_' . $uz} = TextConverter::convert($text_2_1, 'to_latin');
-                            } elseif (empty($this->{'text_' . $i . '_' . $oz}) && !empty($this->{'text_' . $i . '_' . $uz})) {
-                                $text_2_1                         = $this->{'text_' . $i . '_' . $uz};
-                                $this->{'text_' . $i . '_' . $oz} = TextConverter::convert($text_2_1, 'to_cyrillic');
+
+                foreach ($attrs as $attr) {
+                    if ($entity->isTranslateble($attr)) {
+                        if ($entity->isHaveHtmltags($attr)) {
+                            if (empty($this->{$attr . '_' . $uz}) && !empty($this->{$attr . '_' . $oz})) {
+                                $attrName                  = $this->{$attr . '_' . $oz};
+                                $this->{$attr . '_' . $uz} = TextConverter::convert($attrName, 'to_latin');
+                            } elseif (empty($this->{$attr . '_' . $oz}) && !empty($this->{$attr . '_' . $uz})) {
+                                $attrName                  = $this->{$attr . '_' . $uz};
+                                $this->{$attr . '_' . $oz} = TextConverter::convert($attrName, 'to_cyrillic');
                             }
                         } else {
-                            if (empty($this->{'text_' . $i . '_' . $uz}) && !empty($this->{'text_' . $i . '_' . $oz})) {
-                                $this->{'text_' . $i . '_' . $uz} = TextConverter::to_latin($this->{'text_' . $i . '_' . $oz});
-                            } elseif (empty($this->{'text_' . $i . '_' . $oz}) && !empty($this->{'text_' . $i . '_' . $uz})) {
-                                $this->{'text_' . $i . '_' . $oz} = TextConverter::to_cyrillic($this->{'text_' . $i . '_' . $uz});
+                            if (empty($this->{$attr . '_' . $uz}) && !empty($this->{$attr . '_' . $oz})) {
+                                $this->{$attr . '_' . $uz} = TextConverter::to_latin($this->{$attr . '_' . $oz});
+                            } elseif (empty($this->{$attr . '_' . $oz}) && !empty($this->{$attr . '_' . $uz})) {
+                                $this->{$attr . '_' . $oz} = TextConverter::to_cyrillic($this->{$attr . '_' . $uz});
                             }
                         }
                     }

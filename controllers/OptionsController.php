@@ -24,7 +24,7 @@ class OptionsController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class'   => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -36,14 +36,14 @@ class OptionsController extends Controller
     {
         return [
             'nodeMove' => [
-                'class' => OptionsNodeMoveAction::class,
+                'class'     => OptionsNodeMoveAction::class,
                 'modelName' => Options::class,
             ],
             'sortItem' => [
-                'class' => SortableAction::class,
+                'class'                 => SortableAction::class,
                 'activeRecordClassName' => Options::class,
-                'orderColumn' => 'sort',
-                'startPosition' => 1, // optional, default is 0
+                'orderColumn'           => 'sort',
+                'startPosition'         => 1, // optional, default is 0
             ],
             // your other actions
         ];
@@ -59,18 +59,19 @@ class OptionsController extends Controller
     {
         $collection = Collections::findOne(['slug' => $slug]);
 
-        if ($collection->use_parenting)
+        if ($collection->use_parenting) {
             return $this->render('index_nestable', [
-                'collection' => $collection
+                'collection' => $collection,
             ]);
+        }
 
-        $searchModel = new OptionsSearch();
+        $searchModel  = new OptionsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $slug);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'searchModel'  => $searchModel,
             'dataProvider' => $dataProvider,
-            'collection' => $collection
+            'collection'   => $collection,
         ]);
     }
 
@@ -86,13 +87,12 @@ class OptionsController extends Controller
     public function actionView($id, $slug)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'collection' => Collections::findOne(['slug' => $slug])
+            'model'      => $this->findModel($id),
+            'collection' => Collections::findOne(['slug' => $slug]),
         ]);
     }
 
     /**
-
      * Finds the Options model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
@@ -119,43 +119,80 @@ class OptionsController extends Controller
      */
     public function actionCreate($slug)
     {
-        $model = new Options($slug);
-        $collection = Collections::findOne(['slug' => $slug]);
+        $model                   = new Options($slug);
+        $collection              = Collections::findOne(['slug' => $slug]);
         $model->parentCollection = $collection;
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if (Yii::$app->request->isAjax) {
+            $model->load(Yii::$app->request->post());
+
+            return Json::encode(\yii\widgets\ActiveForm::validate($model));
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            $operation   = Yii::$app->request->post('save');
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                $rootOption = Options::findOne(['collection_id' => $collection->id, 'depth' => 0]);
-                $model->appendTo($rootOption);
-                $transaction->commit();
+                if (in_array($operation, ['add-new', 'save-close', 'save'])) {
+                    if ($model->validate()) {
+                        $rootOption = Options::findOne(['collection_id' => $collection->id, 'depth' => 0]);
+                        $model->appendTo($rootOption);
+                        $transaction->commit();
+                        Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
+
+                        if ($operation === 'add-new') {
+                            return $this->redirect(['create', 'slug' => $slug]);
+                        }
+                        if ($operation === 'save') {
+                            return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+                        }
+                    } else {
+                        Yii::$app->session->setFlash('error', implode('\n', $model->getFirstErrors()));
+                    }
+                }
             } catch (\Exception $e) {
                 $transaction->rollBack();
                 throw new RuntimeException($e->getMessage());
             }
-//            dd($model);
+
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
         }
 
         return $this->render('create', [
-            'model' => $model,
-            'collection' => $collection
+            'model'      => $model,
+            'collection' => $collection,
         ]);
     }
 
     public function actionAddChild($root_id, $slug)
     {
-        $model = new Options($slug);
-        $collection = Collections::findOne(['slug' => $slug]);
+        $model                   = new Options($slug);
+        $collection              = Collections::findOne(['slug' => $slug]);
         $model->parentCollection = $collection;
 
-        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Options::findOne($root_id)))
+        if (Yii::$app->request->isAjax) {
+            $model->load(Yii::$app->request->post());
+
+            return Json::encode(\yii\widgets\ActiveForm::validate($model));
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->appendTo(Options::findOne($root_id))) {
+            $operation = Yii::$app->request->post('save');
+            Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
+            if ($operation === 'add-new') {
+                return $this->redirect(['add-child', 'root_id' => $root_id, 'slug' => $slug]);
+            }
+            if ($operation === 'save') {
+                return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+            }
+
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
+        }
 
         return $this->render('add-child', [
-            'model' => $model,
-            'root_id' => $root_id,
-            'collection' => Collections::findOne(['slug' => $slug])
+            'model'      => $model,
+            'root_id'    => $root_id,
+            'collection' => Collections::findOne(['slug' => $slug]),
         ]);
     }
 
@@ -170,16 +207,31 @@ class OptionsController extends Controller
      */
     public function actionUpdate($id, $slug)
     {
-        $model = $this->findModel($id);
+        $model                   = $this->findModel($id);
         $model->parentCollection = Collections::findOne(['slug' => $slug]);
 
+        if (Yii::$app->request->isAjax) {
+            $model->load(Yii::$app->request->post());
+
+            return Json::encode(\yii\widgets\ActiveForm::validate($model));
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $operation = Yii::$app->request->post('save');
+            Yii::$app->session->setFlash('success', Yii::t('cms', 'Saved'));
+            if ($operation === 'add-new') {
+                return $this->redirect(['create', 'slug' => $slug]);
+            }
+            if ($operation === 'save') {
+                return $this->redirect(['update', 'id' => $model->id, 'slug' => $slug]);
+            }
+
             return $this->redirect(['view', 'id' => $model->id, 'slug' => $slug]);
         }
 
         return $this->render('update', [
-            'model' => $model,
-            'collection' => Collections::findOne(['slug' => $slug])
+            'model'      => $model,
+            'collection' => Collections::findOne(['slug' => $slug]),
         ]);
     }
 

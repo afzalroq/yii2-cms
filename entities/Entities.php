@@ -70,7 +70,6 @@ class Entities extends ActiveRecord implements Linkable
     #region TEXT types
     const DISABLED = -1;
 
-    const TEXT_NULL = null;
     const TEXT_DISABLED = 0;
     const TEXT_COMMON_INPUT_STRING = 10;
     const TEXT_COMMON_INPUT_STRING_REQUIRED = 11;
@@ -212,8 +211,6 @@ class Entities extends ActiveRecord implements Linkable
     public static function textList()
     {
         return [
-            self::TEXT_NULL => Yii::t('cms', 'Disabled'),
-
             self::TEXT_DISABLED => Yii::t('cms', 'Disabled'),
 
             self::TEXT_COMMON_INPUT_STRING =>
