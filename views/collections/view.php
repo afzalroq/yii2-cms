@@ -51,25 +51,25 @@ foreach (Yii::$app->params['cms']['languages'] as $key => $language) {
                                 [
                                     'attribute' => 'text_1',
                                     'value' => function ($model) {
-                                        return Entities::textList()[$model->text_1];
+                                        return Entities::textList()[$model->text_1 ?: 0];
                                     }
                                 ],
                                 [
                                     'attribute' => 'text_2',
                                     'value' => function ($model) {
-                                        return Entities::textList()[$model->text_2];
+                                        return Entities::textList()[$model->text_2 ?: 0];
                                     }
                                 ],
                                 [
                                     'attribute' => 'text_3',
                                     'value' => function ($model) {
-                                        return Entities::textList()[$model->text_3];
+                                        return Entities::textList()[$model->text_3 ?: 0];
                                     }
                                 ],
                                 [
                                     'attribute' => 'text_4',
                                     'value' => function ($model) {
-                                        return Entities::textList()[$model->text_4];
+                                        return Entities::textList()[$model->text_4 ?: 0];
                                     }
                                 ],
                             ],
