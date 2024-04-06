@@ -224,6 +224,27 @@ class Items extends \afzalroq\cms\entities\Items
         return $this->getSeo('meta_keyword');
     }
 
+    public function isPhotoExists($photoNumber = 0): bool
+    {
+        if (!$photoNumber) {
+            if (!isset($this->mainPhoto)) {
+                return false;
+            }
+
+            $filename  = $this->mainPhoto['file'];
+            $className = $this->mainPhoto::className();
+        } else {
+            $filename  = $this[$this->getAttr('file_' . $photoNumber)];
+            $className = $this::className();
+        }
+
+        $module = Yii::$app->getModule('cms');
+        $folder = mb_strtolower(StringHelper::basename($className));
+        $file   = "{$module->path}data/$folder/{$this->id}/$filename";
+
+        return is_file($file);
+    }
+
     /**
      * https://github.com/Gregwar/Image#usage
      */
