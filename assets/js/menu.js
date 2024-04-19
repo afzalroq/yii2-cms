@@ -1,7 +1,8 @@
 //byazam
+console.log('start');
 let options = '', key, value
 const
-    self = 'self',
+    self = 'Self',
     titles = document.querySelectorAll('[data-type="titles"]'),
     helperForm = $('.field-menu-types_helper'),
     linkForm = $('.field-menu-link'),
@@ -16,7 +17,7 @@ const
 typeList.forEach((type) => options += '<option value=type_' + type[0] + '>' + type[1] + '</option>')
 actionList.forEach((action) => options += '<option value=action_' + action[0] + '>' + action[1] + '</option>')
 collectionList.forEach((collection) => options += '<option value=collection_' + collection.id + '>' + collection.name + '</option>')
-optionList.forEach((option) => options += '<option value=option_' + option.id + '>' + option.name + '</option>')
+optionList.forEach((option) => options += '<option value=option_' + option.id + '>' + option.name + '---</option>')
 entityList.forEach((entity) => options += '<option value=entity_' + entity.id + '>' + entity.name + '</option>')
 types.html(options)
 
@@ -47,11 +48,13 @@ switch (Number(typeValue)) {
 //region bindings
 
 link.on('change', function () {
+    console.log('link.on change');
     setNames(this.value)
     typeHelper.val(this.value)
 })
 
 helper.on('change', function () {
+    console.log('helper.on change');
     let text = helper.find(":selected").text()
     let value = this.value
     let [id, _type] = value.split('_')
@@ -69,6 +72,7 @@ helper.on('change', function () {
 })
 
 types.on('change', function () {
+    console.log('types.on change');
     [key, value] = this.value.split('_')
     hideAll()
 
@@ -101,6 +105,7 @@ types.on('change', function () {
 //region extra methods
 
 function postAjax(id, type) {
+    console.log('AJAX before send');
     $.ajax(ajaxUrl, {
         data: {
             id: id,
@@ -109,6 +114,7 @@ function postAjax(id, type) {
         method: 'POST',
         success: function (data) {
             if (data.status && data.data.length !== 0) {
+                console.log('AJAX', data.data);
                 options = '<option value=' + id + '_' + type + '>' + self + '</option>';
                 data.data.forEach((item) => options += '<option value=' + item.id + '>' + item.name + '</option>')
 
@@ -128,6 +134,7 @@ function postAjax(id, type) {
 }
 
 function initSelf(id, _type) {
+    console.log('initSelf');
     setNames(self)
     typeHelper.val(id)
     localStorage.setItem('type', type.val())
@@ -142,12 +149,14 @@ function initSelf(id, _type) {
 }
 // init Collection, Entity, Option, Item
 function initCEOI() {
+    console.log('initCEOI');
     types.val(typesValue)
     helperForm.slideDown()
     helper.html(helperValue)
 }
 
 function typeControl(_type) {
+    console.log('typeControl');
     type.val(_type)
     setNames('')
     typeHelper.val('')
@@ -159,11 +168,13 @@ function typeControl(_type) {
 }
 
 function hideAll() {
+    console.log('hideAll');
     linkForm.hide();
     helperForm.hide();
 }
 
 function setNames(text) {
+    console.log('setNames');
     for (title of titles) {
         title.value = text
     }
