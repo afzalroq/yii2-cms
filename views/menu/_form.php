@@ -77,9 +77,9 @@ const [constEmpty,
   [collectionList, entityList, optionList] = JSON.parse('<?= JSON_encode($model->COEList()) ?>'),
   typeList = Object.entries(JSON.parse('<?= JSON_encode($model->typesList()) ?>')),
   actionList = Object.entries(JSON.parse('<?= JSON_encode($model->actionsList()) ?>')),
-  typeValue = '<?= $model->type ?>',
-  typesValue = '<?= $model->types ?>',
-  helperValue = '<?= $model->types_helper ?>',
-  ajaxUrl = '<?= Url::to(['menu/type']) ?>';
+  typeValue = "<?= $model->type ?>",
+  typesValue = "<?= $model->types ?>",
+  helperValue = "<?= $model->types_helper ?>",
+  ajaxUrl = "<?= Url::to(['menu/type']) ?>";
 
 </script>
