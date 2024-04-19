@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'slug' => $menuType->slug,
                 'entity' => CmsNestable::ENTITY_MENU,
                 'modelOptions' => [
-                    'name' => 'title_0'
+                    'name' => 'title_' . Yii::$app->params['l'][Yii::$app->language]
                 ],
                 'pluginEvents' => [
                     'change' => 'function(e) {}',
