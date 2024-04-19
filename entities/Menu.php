@@ -3,18 +3,15 @@
 namespace afzalroq\cms\entities;
 
 use afzalroq\cms\entities\query\MenuQuery;
+use afzalroq\cms\Module;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
-use yii\base\BaseObject;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
-use yii\db\Exception;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use afzalroq\cms\Module;
-
 
 
 /**
@@ -37,25 +34,39 @@ class Menu extends ActiveRecord
 {
     #region Constants
     const TYPE_EMPTY = 1;
+
     const TYPE_ACTION = 2;
+
     const TYPE_LINK = 3;
+
     const TYPE_OPTION = 4;
+
     const TYPE_ITEM = 5;
+
     const TYPE_COLLECTION = 6;
+
     const TYPE_ENTITY = 7;
+
     const TYPE_ENTITY_ITEM = 10;
+
     #endregion
 
     #region Extra Attributes
 
     public $types;
+
     public $types_helper;
+
     public $option_id;
+
     public $dependMenuType;
 
     public $action;
+
     public $link;
+
     public $treeAttribute = 'tree';
+
     private $CMSModule;
 
 
@@ -80,12 +91,12 @@ class Menu extends ActiveRecord
             TimestampBehavior::class,
             BlameableBehavior::class,
             'tree' => [
-                'class' => NestedSetsBehavior::class,
+                'class'         => NestedSetsBehavior::class,
                 'treeAttribute' => $this->treeAttribute,
                 // 'leftAttribute' => 'lft',
                 // 'rightAttribute' => 'rgt',
                 // 'depthAttribute' => 'depth',
-            ]
+            ],
         ];
     }
 
@@ -103,8 +114,9 @@ class Menu extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if (!parent::beforeSave($insert))
+        if (!parent::beforeSave($insert)) {
             return false;
+        }
         $this->dependMenuType = MenuType::findOne(['id' => $this->menu_type_id]);
         switch ($this->type) {
             case self::TYPE_ITEM:
@@ -119,7 +131,8 @@ class Menu extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'menu_' . $this->dependMenuType->slug);
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache},
+            'menu_' . $this->dependMenuType->slug);
 
         return true;
     }
@@ -128,27 +141,48 @@ class Menu extends ActiveRecord
     {
         parent::afterDelete();
         $this->dependMenuType = MenuType::findOne(['id' => $this->menu_type_id]);
-        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache}, 'menu_' . $this->dependMenuType->slug);
+        TagDependency::invalidate(Yii::$app->{Yii::$app->getModule('cms')->cache},
+            'menu_' . $this->dependMenuType->slug);
     }
 
     public function rules()
     {
         return [
-            ['title_0', 'required', 'when' => function () {
-                return in_array(0, Yii::$app->params['cms']['languageIds']);
-            }],
-            ['title_1', 'required', 'when' => function () {
-                return in_array(1, Yii::$app->params['cms']['languageIds']);
-            }],
-            ['title_2', 'required', 'when' => function () {
-                return in_array(2, Yii::$app->params['cms']['languageIds']);
-            }],
-            ['title_3', 'required', 'when' => function () {
-                return in_array(3, Yii::$app->params['cms']['languageIds']);
-            }],
-            ['title_4', 'required', 'when' => function () {
-                return in_array(4, Yii::$app->params['cms']['languageIds']);
-            }],
+            [
+                'title_0',
+                'required',
+                'when' => function () {
+                    return in_array(0, Yii::$app->params['cms']['languageIds']);
+                },
+            ],
+            [
+                'title_1',
+                'required',
+                'when' => function () {
+                    return in_array(1, Yii::$app->params['cms']['languageIds']);
+                },
+            ],
+            [
+                'title_2',
+                'required',
+                'when' => function () {
+                    return in_array(2, Yii::$app->params['cms']['languageIds']);
+                },
+            ],
+            [
+                'title_3',
+                'required',
+                'when' => function () {
+                    return in_array(3, Yii::$app->params['cms']['languageIds']);
+                },
+            ],
+            [
+                'title_4',
+                'required',
+                'when' => function () {
+                    return in_array(4, Yii::$app->params['cms']['languageIds']);
+                },
+            ],
             [['title_0', 'title_1', 'title_2', 'title_3', 'title_4'], 'string', 'max' => 255],
 
             [['type', 'menu_type_id'], 'required'],
@@ -157,16 +191,33 @@ class Menu extends ActiveRecord
             ['type_helper', 'string'],
             ['types_helper', 'string'],
 
-            ['action', 'in', 'range' => self::actionsList(true), 'allowArray' => true, 'when' => function ($model) {
-                return $model->type == self::TYPE_ACTION;
-            }, 'enableClientValidation' => false],
+            [
+                'action',
+                'in',
+                'range'                  => self::actionsList(true),
+                'allowArray'             => true,
+                'when'                   => function ($model) {
+                    return $model->type == self::TYPE_ACTION;
+                },
+                'enableClientValidation' => false,
+            ],
 
-            ['link', 'required', 'when' => function ($model) {
-                return $model->type == self::TYPE_LINK;
-            }, 'enableClientValidation' => false],
-            ['link', 'string', 'when' => function ($model) {
-                return $model->type == self::TYPE_LINK;
-            }, 'enableClientValidation' => false],
+            [
+                'link',
+                'required',
+                'when'                   => function ($model) {
+                    return $model->type == self::TYPE_LINK;
+                },
+                'enableClientValidation' => false,
+            ],
+            [
+                'link',
+                'string',
+                'when'                   => function ($model) {
+                    return $model->type == self::TYPE_LINK;
+                },
+                'enableClientValidation' => false,
+            ],
 
         ];
     }
@@ -180,21 +231,21 @@ class Menu extends ActiveRecord
         $language4 = isset(Yii::$app->params['cms']['languages'][4]) ? Yii::$app->params['cms']['languages'][4] : '';
 
         return [
-            'id' => Yii::t('cms', 'ID'),
-            'title_0' => Yii::t('cms', 'Title') . '(' . $language0 . ')',
-            'title_1' => Yii::t('cms', 'Title') . '(' . $language1 . ')',
-            'title_2' => Yii::t('cms', 'Title') . '(' . $language2 . ')',
-            'title_3' => Yii::t('cms', 'Title') . '(' . $language3 . ')',
-            'title_4' => Yii::t('cms', 'Title') . '(' . $language4 . ')',
-            'type' => Yii::t('cms', 'Type'),
-            'types' => Yii::t('cms', 'Type'),
-            'type_helper' => Yii::t('cms', 'Type Helper'),
-            'action' => Yii::t('cms', 'Module action'),
-            'link' => Yii::t('cms', 'link'),
-            'page_id' => Yii::t('cms', 'Page'),
+            'id'                   => Yii::t('cms', 'ID'),
+            'title_0'              => Yii::t('cms', 'Title') . '(' . $language0 . ')',
+            'title_1'              => Yii::t('cms', 'Title') . '(' . $language1 . ')',
+            'title_2'              => Yii::t('cms', 'Title') . '(' . $language2 . ')',
+            'title_3'              => Yii::t('cms', 'Title') . '(' . $language3 . ')',
+            'title_4'              => Yii::t('cms', 'Title') . '(' . $language4 . ')',
+            'type'                 => Yii::t('cms', 'Type'),
+            'types'                => Yii::t('cms', 'Type'),
+            'type_helper'          => Yii::t('cms', 'Type Helper'),
+            'action'               => Yii::t('cms', 'Module action'),
+            'link'                 => Yii::t('cms', 'link'),
+            'page_id'              => Yii::t('cms', 'Page'),
             'articles_category_id' => Yii::t('cms', 'Articles'),
-            'created_at' => Yii::t('cms', 'Created At'),
-            'updated_at' => Yii::t('cms', 'Updated At'),
+            'created_at'           => Yii::t('cms', 'Created At'),
+            'updated_at'           => Yii::t('cms', 'Updated At'),
         ];
     }
 
@@ -205,25 +256,26 @@ class Menu extends ActiveRecord
     // Collections, Options and Entities List for use in menu
     public function COEList()
     {
-        $entities = [];
+        $entities    = [];
         $collections = [];
-        $options = [];
+        $options     = [];
 
         /** @var Collections $collection */
         foreach (Collections::find()->all() as $collection)
             switch ($collection->use_in_menu) {
                 case Collections::USE_IN_MENU_OPTIONS:
                     $collections[] = [
-                        'id' => $collection->id,
-                        'name' => $collection->name_0
+                        'id'   => $collection->id,
+                        'name' => $collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]},
                     ];
                     break;
                 case Collections::USE_IN_MENU_ITEMS:
-                    foreach (Options::findAll(['collection_id' => $collection->id]) as $option)
+                    foreach (Options::findAll(['collection_id' => $collection->id]) as $option) {
                         $options[] = [
-                            'id' => $option->id,
-                            'name' => $option->slug
+                            'id'   => $option->id,
+                            'name' => $option->slug,
                         ];
+                    }
                     break;
                 default:
                     break;
@@ -231,12 +283,14 @@ class Menu extends ActiveRecord
 
 
         /** @var Entities $entity */
-        foreach (Entities::find()->all() as $entity)
-            if ($entity->use_in_menu)
+        foreach (Entities::find()->all() as $entity) {
+            if ($entity->use_in_menu) {
                 $entities[] = [
-                    'id' => $entity->id,
-                    'name' => $entity->name_0
+                    'id'   => $entity->id,
+                    'name' => $entity->{'name_' . Yii::$app->params['l'][Yii::$app->language]},
                 ];
+            }
+        }
 
         return [$collections, $entities, $options];
     }
@@ -244,10 +298,12 @@ class Menu extends ActiveRecord
     public function actionsList($flip = false)
     {
         $array = [];
-        if (is_string($flip) && array_key_exists($flip, $this->CMSModule->menuActions))
+        if (is_string($flip) && array_key_exists($flip, $this->CMSModule->menuActions)) {
             return $array[$flip];
-        elseif ($flip)
+        } elseif ($flip) {
             return array_flip($this->CMSModule->menuActions);
+        }
+
         return $this->CMSModule->menuActions;
     }
 
@@ -265,38 +321,47 @@ class Menu extends ActiveRecord
 
             case self::TYPE_LINK:
                 $this->types = 'type_' . $this->type;
-                $this->link = $this->type_helper;
+                $this->link  = $this->type_helper;
                 break;
 
             case self::TYPE_OPTION:
                 $dependOption = Options::findOne($this->type_helper);
-                $options .= '<option value=' . $dependOption->collection_id . '_collection>self</option>';
+                $options      .= '<option value=' . $dependOption->collection_id . '_collection>Self</option>';
 
-                foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
-                    $options .= '<option ' . (($this->type_helper == $option->id) ? 'selected' : '') . ' value=' . $option->id . '>' . $option->name_0 . '</option>';
+                foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option) {
+                    $options .= '<option ' . (($this->type_helper == $option->id) ? 'selected' : '') . ' value=' . $option->id . '>'
+                        . $option->{'name_' . Yii::$app->params['l'][Yii::$app->language]}
+                        . '</option>';
+                }
 
-                $this->types = 'collection_' . $dependOption->collection_id;
+                $this->types        = 'collection_' . $dependOption->collection_id;
                 $this->types_helper = $options;
                 break;
 
             case self::TYPE_ITEM:
                 [$option_id, $item_id] = explode(',', $this->type_helper);
 
-                foreach (OaI::findAll(['option_id' => $option_id]) as $oai)
-                    $options .= '<option ' . (($oai->item_id == $item_id) ? 'selected' : '') . ' value=' . $oai->item_id . '>' . $oai->item->text_1_0 . '</option>';
+                foreach (OaI::findAll(['option_id' => $option_id]) as $oai) {
+                    $options .= '<option ' . (($oai->item_id == $item_id) ? 'selected' : '') . ' value=' . $oai->item_id . '>'
+                        . $oai->item->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]}
+                        . '</option>';
+                }
 
-                $this->types = 'option_' . $option_id;
+                $this->types        = 'option_' . $option_id;
                 $this->types_helper = $options;
-                $this->option_id = $option_id;
-                $this->type_helper = $item_id;
+                $this->option_id    = $option_id;
+                $this->type_helper  = $item_id;
                 break;
 
             case self::TYPE_ENTITY_ITEM:
                 if ($dependItem = Items::findOne($this->type_helper)) {
                     $this->types = 'entity_' . $dependItem->entity_id;
-                    $options .= '<option value=' . $dependItem->entity_id . '_entity>self</option>';
-                    foreach (Items::findAll(['entity_id' => $dependItem->entity_id]) as $item)
-                        $options .= '<option ' . (($item->id == $this->type_helper) ? 'selected' : '') . ' value=' . $item->id . '>' . $item->text_1_0 . '</option>';
+                    $options     .= '<option value=' . $dependItem->entity_id . '_entity>Self</option>';
+                    foreach (Items::findAll(['entity_id' => $dependItem->entity_id]) as $item) {
+                        $options .= '<option ' . (($item->id == $this->type_helper) ? 'selected' : '') . ' value=' . $item->id . '>'
+                            . $item->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]}
+                            . '</option>';
+                    }
                 }
 
                 $this->types_helper = $options;
@@ -304,22 +369,28 @@ class Menu extends ActiveRecord
 
             case self::TYPE_COLLECTION:
                 $dependOption = Options::findOne($this->type_helper);
-                $options .= '<option selected value=' . $dependOption->collection_id . '_collection>self</option>';
-                foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option)
-                    $options .= '<option value=' . $option->id . '>' . $option->name_0 . '</option>';
+                $options      .= '<option selected value=' . $dependOption->collection_id . '_collection>Self</option>';
+                foreach (Options::findAll(['collection_id' => $dependOption->collection_id]) as $option) {
+                    $options .= '<option value=' . $option->id . '>'
+                        . $option->{'name_' . Yii::$app->params['l'][Yii::$app->language]}
+                        . '</option>';
+                }
 
-                $this->types = 'collection_' . $dependOption->collection_id;
+                $this->types        = 'collection_' . $dependOption->collection_id;
                 $this->types_helper = $options;
                 break;
 
             case self::TYPE_ENTITY:
                 $dependItem = Items::findOne($this->type_helper);
-                $options .= '<option selected value=' . $dependItem->entity_id . '_entity>self</option>';
+                $options    .= '<option selected value=' . $dependItem->entity_id . '_entity>Self</option>';
 
-                foreach (Items::findAll(['entity_id' => $dependItem->entity_id]) as $item)
-                    $options .= '<option  value=' . $item->id . '>' . $item->text_1_0 . '</option>';
+                foreach (Items::findAll(['entity_id' => $dependItem->entity_id]) as $item) {
+                    $options .= '<option  value=' . $item->id . '>'
+                        . $item->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]}
+                        . '</option>';
+                }
 
-                $this->types = 'entity_' . $dependItem->entity_id;
+                $this->types        = 'entity_' . $dependItem->entity_id;
                 $this->types_helper = $options;
                 break;
             default:
@@ -346,22 +417,23 @@ class Menu extends ActiveRecord
 
     public function typesList($key = null)
     {
-        $a = [];
+        $a                   = [];
         $a[self::TYPE_EMPTY] = 'Элемент меню для вложения подменю';
-        $a[self::TYPE_LINK] = 'Ссылка';
+        $a[self::TYPE_LINK]  = 'Link';
+
         return ($key && isset($a[$key])) ? $a[$key] : $a;
     }
 
     public function typesLists($key = null)
     {
-        $a = [];
-        $a[self::TYPE_EMPTY] = 'Элемент меню для вложения подменю';
-        $a[self::TYPE_LINK] = 'Ссылка';
-        $a[self::TYPE_ACTION] = 'Action';
-        $a[self::TYPE_OPTION] = 'Option';
-        $a[self::TYPE_ITEM] = 'Option Item';
-        $a[self::TYPE_COLLECTION] = 'Collection';
-        $a[self::TYPE_ENTITY] = 'Entity';
+        $a                         = [];
+        $a[self::TYPE_EMPTY]       = 'Элемент меню для вложения подменю';
+        $a[self::TYPE_LINK]        = 'Link';
+        $a[self::TYPE_ACTION]      = 'Action';
+        $a[self::TYPE_OPTION]      = 'Option';
+        $a[self::TYPE_ITEM]        = 'Option Item';
+        $a[self::TYPE_COLLECTION]  = 'Collection';
+        $a[self::TYPE_ENTITY]      = 'Entity';
         $a[self::TYPE_ENTITY_ITEM] = 'Item';
 
         if ($key && isset($a[$key])) {
@@ -379,22 +451,29 @@ class Menu extends ActiveRecord
 
             case self::TYPE_OPTION:
                 $option = Options::findOne($this->type_helper);
-                return Html::a($option->name_0, Url::to(['options/view', 'id' => $option->id, 'slug' => $option->collection->slug]));
+
+                return Html::a($option->{'name_' . Yii::$app->params['l'][Yii::$app->language]},
+                    Url::to(['options/view', 'id' => $option->id, 'slug' => $option->collection->slug]));
 
             case self::TYPE_ITEM:
-                return Options::findOne($this->option_id)->name_0 . ', ' . Items::findOne($this->type_helper)->text_1_0;
+                return Options::findOne($this->option_id)->{'name_' . Yii::$app->params['l'][Yii::$app->language]} . ', '
+                    . Items::findOne($this->type_helper)->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]};
 
             case self::TYPE_ENTITY_ITEM:
                 $item = Items::findOne($this->type_helper);
-                return Html::a($item->text_1_0, Url::to(['items/view', 'id' => $this->type_helper, 'slug' => $item->entity->slug]));
+
+                return Html::a($item->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]},
+                    Url::to(['items/view', 'id' => $this->type_helper, 'slug' => $item->entity->slug]));
 
             case self::TYPE_COLLECTION:
                 $collection = Collections::findOne($this->type_helper);
-                return Html::a($collection->name_0, Url::to(['collections/view', 'id' => $this->type_helper]));
+
+                return Html::a($collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}, Url::to(['collections/view', 'id' => $this->type_helper]));
 
             case self::TYPE_ENTITY:
                 $entity = Entities::findOne($this->type_helper);
-                return Html::a($entity->name_0, Url::to(['entities/view', 'id' => $this->type_helper]));
+
+                return Html::a($entity->{'name_' . Yii::$app->params['l'][Yii::$app->language]}, Url::to(['entities/view', 'id' => $this->type_helper]));
             default:
                 return $this->type_helper;
         }
@@ -410,7 +489,7 @@ class Menu extends ActiveRecord
             self::TYPE_ITEM,
             self::TYPE_COLLECTION,
             self::TYPE_ENTITY,
-            self::TYPE_ENTITY_ITEM
+            self::TYPE_ENTITY_ITEM,
         ];
     }
 
