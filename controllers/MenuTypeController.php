@@ -114,7 +114,7 @@ class MenuTypeController extends Controller
             foreach ($options as $option) {
                 $data[] = [
                     'id' => $option->id,
-                    'name' => $option->name_0
+                    'name' => $option->{'name_' . Yii::$app->params['l'][Yii::$app->language]}
                 ];
             }
             return [
