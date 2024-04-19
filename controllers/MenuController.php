@@ -63,21 +63,21 @@ class MenuController extends Controller
                     foreach (Options::findAll(['collection_id' => $id]) as $option)
                         $data[] = [
                             'id' => $option->id,
-                            'name' => $option->name_0
+                            'name' => $option->{'name_' . Yii::$app->params['l'][Yii::$app->language]}
                         ];
                     break;
                 case 'option':
                     foreach (OaI::findAll(['option_id' => $id]) as $oai)
                         $data[] = [
                             'id' => $oai->item_id,
-                            'name' => $oai->item->text_1_0
+                            'name' => $oai->item->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]}
                         ];
                     break;
                 case 'entity':
                     foreach (Items::findAll(['entity_id' => $id]) as $item)
                         $data[] = [
                             'id' => $item->id,
-                            'name' => $item->text_1_0
+                            'name' => $item->{'text_1_' . Yii::$app->params['l'][Yii::$app->language]}
                         ];
                     break;
                 default:
@@ -162,7 +162,7 @@ class MenuController extends Controller
         try {
             $this->findModel($id)->delete();
         } catch (\Exception $e){
-            throw new \RuntimeException('asdasd');
+            throw new \RuntimeException('Error on delete');
         }
         return $this->redirect(['index', 'slug' => $slug]);
     }
