@@ -33,9 +33,8 @@ class OptionsNodeMoveAction extends Action
      * @param integer $lft the primaryKey of the node left of the moved node
      * @param integer $rgt the primaryKey of the node right to the moved node
      * @param integer $par the primaryKey of the parent of the moved node
-     * @param string $slug collection slug
      */
-    public function run($id = 0, $lft = 0, $rgt = 0, $par = 0, $slug)
+    public function run($id = 0, $lft = 0, $rgt = 0, $par = 0)
     {
         if (null == $this->modelName) {
             throw new InvalidConfigException("No 'modelName' supplied on action initialization.");
@@ -45,8 +44,9 @@ class OptionsNodeMoveAction extends Action
         Yii::$app->response->format = 'json';
 
         /* Locate the supplied model, left, right and parent models */
+        /** @var $model \afzalroq\cms\entities\Options */
         $model = Yii::createObject(ActiveQuery::className(), [$this->modelName])->where(['id' => $id])->one();
-        $model->parentCollection = Collections::findOne(['slug' => $slug]);
+        $model->parentCollection = Collections::findOne($model->collection_id);
         $lft = Yii::createObject(ActiveQuery::className(), [$this->modelName])->where(['id' => $lft])->one();
         $rgt = Yii::createObject(ActiveQuery::className(), [$this->modelName])->where(['id' => $rgt])->one();
         $par = Yii::createObject(ActiveQuery::className(), [$this->modelName])->where(['id' => $par])->one();
