@@ -15,6 +15,7 @@ use kartik\file\FileInput;
 use mihaildev\elfinder\ElFinder;
 use sadovojav\ckeditor\CKEditor;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\widgets\ActiveForm;
@@ -505,8 +506,13 @@ class CmsForm
                 : ''
             );
 
-            return $indent . $option->getName();
+            return [
+                'id'   => $option->id,
+                'name' => $indent . $option->getName(),
+            ];
         }, $queryResult);
+
+        $data = ArrayHelper::map($data, 'id', 'name');
 
         return Html::tag(
             'div',
