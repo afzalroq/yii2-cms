@@ -9,6 +9,7 @@ use afzalroq\cms\entities\CaE;
 use afzalroq\cms\entities\Collections;
 use afzalroq\cms\entities\Entities;
 use afzalroq\cms\entities\Items;
+use afzalroq\cms\entities\Options;
 use kartik\datecontrol\DateControl;
 use kartik\file\FileInput;
 use mihaildev\elfinder\ElFinder;
@@ -491,14 +492,32 @@ class CmsForm
     {
         $options['class'] = 'col-sm-' . $cae->size;
 
+        $queryResult = Options::find()
+            ->andWhere(['collection_id' => $cae->collection_id])
+            ->andWhere(['>', 'depth', 0])
+            ->orderBy('lft')
+            ->all();
+
+        $data = array_map(function ($option) {
+            $indent = (
+            $option->depth > 1
+                ? str_repeat('--- ', $option->depth - 1)
+                : ''
+            );
+
+            return $indent . $option->getName();
+        }, $queryResult);
+
         return Html::tag(
             'div',
-            $this->form->field($this->model,
-                'options[' . $cae->collection->slug . ']')->dropDownList($cae->getOptionList(), [
+            $this
+                ->form
+                ->field($this->model, 'options[' . $cae->collection->slug . ']')
+                ->dropDownList($data, [
                     'value'  => $this->model->getOptionValue($cae),
                     'prompt' => '-- -- --',
-                ]
-            )->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
+                ])
+                ->label($cae->collection->{'name_' . Yii::$app->params['l'][Yii::$app->language]}),
             $options
         );
     }
