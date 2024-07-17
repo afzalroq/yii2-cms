@@ -27,7 +27,8 @@ class TextConverter
                         $html .= '>';
                     }
                 } elseif ($reader->nodeType == \XMLReader::TEXT) {
-                    $html .= self::$function($reader->value);
+//                    $html .= self::$function($reader->value);
+                    $html .= self::convertText($reader->value);
                 } elseif ($reader->nodeType == \XMLReader::END_ELEMENT) {
                     $html .= '</' . $reader->name . '>';
                 }
@@ -52,6 +53,29 @@ class TextConverter
         }
 
         return $html;
+    }
+
+    public static function convertText($string): string
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://kiril-lotin.uz/");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/x-www-form-urlencoded"]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['TranslitForm[original_text]' => $string]));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $error    = curl_error($ch);
+        curl_close($ch);
+        if ($error) {
+            throw new \Exception($error);
+        }
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadHTML($response);
+        libxml_use_internal_errors(false);
+        $node = $dom->getElementById('TranslitForm_convert_text');
+        echo $node->textContent;
     }
 
     public static function to_cyrillic($string, $array = []): string
