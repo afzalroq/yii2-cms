@@ -75,7 +75,7 @@ class TextConverter
         $dom->loadHTML($response);
         libxml_use_internal_errors(false);
         $node = $dom->getElementById('TranslitForm_convert_text');
-        echo $node->textContent;
+        return $node->textContent;
     }
 
     public static function to_cyrillic($string, $array = []): string
