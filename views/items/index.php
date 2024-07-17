@@ -73,6 +73,13 @@ $columns   = array_merge(
         [
             'attribute' => $text1,
             'value'     => function ($model) use ($text1, $entity, $frontHost) {
+                $languageKeys = array_keys(Yii::$app->params['cms']['languages']);
+                foreach ($languageKeys as $languageKey) {
+                    $text1 = 'text_1_' . ($entity->isCommonText('text_1') ? '0' : $languageKey);
+                    if ($model->$text1) {
+                        break;
+                    }
+                }
                 return Html::a(
                         $model->$text1,
                         ['/cms/items/view', 'id' => $model->id, 'slug' => $entity->slug]
