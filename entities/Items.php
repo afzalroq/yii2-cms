@@ -295,9 +295,9 @@ class Items extends ActiveRecord implements Linkable
                             }
                         } else {
                             if (empty($this->{$attr . '_' . $uz}) && !empty($this->{$attr . '_' . $oz})) {
-                                $this->{$attr . '_' . $uz} = TextConverter::to_latin($this->{$attr . '_' . $oz});
+                                $this->{$attr . '_' . $uz} = TextConverter::convertText($this->{$attr . '_' . $oz});
                             } elseif (empty($this->{$attr . '_' . $oz}) && !empty($this->{$attr . '_' . $uz})) {
-                                $this->{$attr . '_' . $oz} = TextConverter::to_cyrillic($this->{$attr . '_' . $uz});
+                                $this->{$attr . '_' . $oz} = TextConverter::convertText($this->{$attr . '_' . $uz});
                             }
                         }
                     }
