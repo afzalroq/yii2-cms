@@ -62,7 +62,7 @@ class TextConverter
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/x-www-form-urlencoded"]);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['TranslitForm[original_text]' => $string]));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['TranslitForm[original_text]' => strip_tags($string)]));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         $error    = curl_error($ch);
@@ -70,11 +70,14 @@ class TextConverter
         if ($error) {
             throw new \Exception($error);
         }
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         libxml_use_internal_errors(true);
         $dom->loadHTML($response);
         libxml_use_internal_errors(false);
         $node = $dom->getElementById('TranslitForm_convert_text');
+        Yii::debug("^^^^^Sent text: $string");
+        Yii::debug("^^^^^Got text: {$node->textContent}");
+
         return $node->textContent;
     }
 
@@ -258,6 +261,4 @@ class TextConverter
 
         return strtr($string, $gost);
     }
-
-
 }
