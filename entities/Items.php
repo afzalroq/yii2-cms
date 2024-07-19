@@ -288,9 +288,9 @@ class Items extends ActiveRecord implements Linkable
                         $attrUz = $this->{$attr . '_' . $uz};
                         $attrOz = $this->{$attr . '_' . $oz};
                         if (empty($attrUz) && !empty($attrOz)) {
-                            $attrUz = TextConverter::convertText($attrOz, true);
+                            $this->{$attr . '_' . $uz} = TextConverter::convertText($attrOz, true);
                         } elseif (empty($attrOz) && !empty($attrUz)) {
-                            $attrOz = TextConverter::convertText($attrUz, false);
+                            $this->{$attr . '_' . $oz} = TextConverter::convertText($attrUz, false);
                         }
 //                        if ($entity->isHaveHtmltags($attr)) {
 //                            if (empty($attrUz) && !empty($attrOz)) {
