@@ -2,8 +2,6 @@
 
 namespace afzalroq\cms\helpers;
 
-use Yii;
-
 class TextConverter
 {
     public static function convertWithXml(&$reader, &$html, $function)
@@ -36,8 +34,34 @@ class TextConverter
                 }
             }
         }
-
     }
+
+    public static function convertText(string $string, $toLatin = true)
+    {
+        $mode = $toLatin ? 'cyrtolat' : 'lattocyr';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://lotin.uz/api/translate");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+            "mod"        => $mode,
+            "ignoreHtml" => true,
+            "text"       => $string,
+        ], JSON_THROW_ON_ERROR));
+        $response = curl_exec($ch);
+        $error    = curl_error($ch);
+        curl_close($ch);
+        if ($error) {
+            throw new \Exception($error);
+        }
+
+        $data = json_decode($response, JSON_UNESCAPED_UNICODE);
+
+        return $data['result'];
+    }
+
 
     public static function convert($text, $function)
     {
