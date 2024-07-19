@@ -285,21 +285,26 @@ class Items extends ActiveRecord implements Linkable
 
                 foreach ($attrs as $attr) {
                     if ($entity->isTranslateble($attr)) {
-                        if ($entity->isHaveHtmltags($attr)) {
-                            if (empty($this->{$attr . '_' . $uz}) && !empty($this->{$attr . '_' . $oz})) {
-                                $attrName                  = $this->{$attr . '_' . $oz};
-                                $this->{$attr . '_' . $uz} = TextConverter::convert($attrName, 'to_latin');
-                            } elseif (empty($this->{$attr . '_' . $oz}) && !empty($this->{$attr . '_' . $uz})) {
-                                $attrName                  = $this->{$attr . '_' . $uz};
-                                $this->{$attr . '_' . $oz} = TextConverter::convert($attrName, 'to_cyrillic');
-                            }
-                        } else {
-                            if (empty($this->{$attr . '_' . $uz}) && !empty($this->{$attr . '_' . $oz})) {
-                                $this->{$attr . '_' . $uz} = TextConverter::to_latin($this->{$attr . '_' . $oz});
-                            } elseif (empty($this->{$attr . '_' . $oz}) && !empty($this->{$attr . '_' . $uz})) {
-                                $this->{$attr . '_' . $oz} = TextConverter::to_cyrillic($this->{$attr . '_' . $uz});
-                            }
+                        $attrUz = $this->{$attr . '_' . $uz};
+                        $attrOz = $this->{$attr . '_' . $oz};
+                        if (empty($attrUz) && !empty($attrOz)) {
+                            $attrUz = TextConverter::convertText($attrOz, true);
+                        } elseif (empty($attrOz) && !empty($attrUz)) {
+                            $attrOz = TextConverter::convertText($attrUz, false);
                         }
+//                        if ($entity->isHaveHtmltags($attr)) {
+//                            if (empty($attrUz) && !empty($attrOz)) {
+//                                $attrUz = TextConverter::convert($attrOz, 'to_latin');
+//                            } elseif (empty($attrOz) && !empty($attrUz)) {
+//                                $attrOz = TextConverter::convert($attrUz, 'to_cyrillic');
+//                            }
+//                        } else {
+//                            if (empty($attrUz) && !empty($attrOz)) {
+//                                $attrUz = TextConverter::to_latin($attrOz);
+//                            } elseif (empty($attrOz) && !empty($attrUz)) {
+//                                $attrOz = TextConverter::to_cyrillic($attrUz);
+//                            }
+//                        }
                     }
                 }
             }
