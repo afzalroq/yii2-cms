@@ -2,6 +2,8 @@
 
 namespace afzalroq\cms\helpers;
 
+use Yii;
+
 class TextConverter
 {
     public static function convertWithXml(&$reader, &$html, $function)
