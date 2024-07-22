@@ -38,6 +38,10 @@ class TextConverter
 
     public static function convertText(string $string, $toLatin = true)
     {
+        if (str_contains($string, 'data:image')) { 
+            return '';
+        }
+
         $mode = $toLatin ? 'cyrtolat' : 'lattocyr';
 
         $ch = curl_init();
